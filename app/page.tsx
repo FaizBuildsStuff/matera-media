@@ -1,22 +1,18 @@
-import { Hero } from "@/components/Hero";
-import { WorkShowcase } from "@/components/WorkShowcase";
-import { HowItWorks } from "@/components/HowItWorks";
-import { FAQ } from "@/components/FAQ";
-import Pricing from "@/components/pricing";
-
-import { CalendlyWidget } from "@/components/CalendlyWidget";
+import { client } from "@/lib/sanity";
+import { pageQuery } from "@/lib/queries";
+import { SectionRenderer, type SectionBlock } from "@/components/SectionRenderer";
 import { Footer } from "@/components/Footer";
 
-export default function Home() {
+export default async function Home() {
+  const page = await client.fetch<{ sections?: SectionBlock[] } | null>(
+    pageQuery,
+    { slug: "home" }
+  );
+
   return (
     <div className="flex flex-col min-h-screen bg-[#05180D]">
-      <main className="flex-grow">
-        <Hero />
-        <WorkShowcase />
-        <HowItWorks />
-        <Pricing />
-        <FAQ />
-        <CalendlyWidget />
+      <main className="grow">
+        <SectionRenderer sections={page?.sections ?? undefined} />
       </main>
       <Footer />
     </div>

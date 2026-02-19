@@ -4,7 +4,20 @@ import Script from 'next/script';
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 
-export const CalendlyWidget = () => {
+const DEFAULT_CALENDLY_URL = "https://calendly.com/m-faizurrehman-crypto/30min?primary_color=059669&background_color=05180D&text_color=ffffff";
+
+type CalendlyContent = {
+    title?: string;
+    highlightedWord?: string;
+    subtitle?: string;
+    calendlyUrl?: string;
+};
+
+export const CalendlyWidget = ({ content }: { content?: CalendlyContent }) => {
+    const titleText = content?.title ?? "Let's Build Something Extraordinary";
+    const highlightedWord = content?.highlightedWord ?? "Extraordinary";
+    const subtitle = content?.subtitle ?? "Schedule a 30-minute discovery call. No commitment, just a conversation about your vision and how we can bring it to life.";
+    const calendlyUrl = content?.calendlyUrl || DEFAULT_CALENDLY_URL;
     const containerRef = useRef<HTMLDivElement>(null);
     const titleRef = useRef<HTMLDivElement>(null);
     const widgetRef = useRef<HTMLDivElement>(null);
@@ -50,13 +63,15 @@ export const CalendlyWidget = () => {
             <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
                 <div ref={titleRef} className="text-center mb-16 opacity-0">
                     <h2 className="text-4xl md:text-5xl font-medium text-white mb-6 font-instrument-sans tracking-tight leading-tight">
-                        Let's Build Something <span className="text-emerald-400 inline-block relative">
-                            Extraordinary
+                        {titleText.split(highlightedWord)[0]}
+                        <span className="text-emerald-400 inline-block relative">
+                            {highlightedWord}
                             <span className="absolute -bottom-2 left-0 w-full h-1 bg-emerald-500/30 rounded-full blur-sm"></span>
                         </span>
+                        {titleText.split(highlightedWord)[1] || ""}
                     </h2>
                     <p className="text-white/40 text-lg max-w-xl mx-auto font-light leading-relaxed">
-                        Schedule a 30-minute discovery call. No commitment, just a conversation about your vision and how we can bring it to life.
+                        {subtitle}
                     </p>
                 </div>
 
@@ -66,7 +81,7 @@ export const CalendlyWidget = () => {
                         <div className="bg-[#05180D]/80 rounded-[22px] overflow-hidden relative">
                             <div
                                 className="calendly-inline-widget w-full"
-                                data-url="https://calendly.com/m-faizurrehman-crypto/30min?primary_color=059669&background_color=05180D&text_color=ffffff"
+                                data-url={calendlyUrl}
                                 style={{ minWidth: '320px', height: '1100px' }}
                             />
                         </div>

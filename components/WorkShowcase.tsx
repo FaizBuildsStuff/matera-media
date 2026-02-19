@@ -10,41 +10,41 @@ import { ArrowUpRight, Play } from "lucide-react";
 gsap.registerPlugin(ScrollTrigger);
 
 interface WorkItem {
-    id: number;
+    id: string;
     title: string;
     category: string;
     tags: string[];
-    image?: string; // Placeholder for now
+    image?: string;
 }
 
-const works: WorkItem[] = [
-    {
-        id: 1,
-        title: "Luma Interface",
-        category: "Product Design",
-        tags: ["UI/UX", "Motion"],
-    },
-    {
-        id: 2,
-        title: "Apex Finance",
-        category: "Brand Identiy",
-        tags: ["Branding", "Strategy"],
-    },
-    {
-        id: 3,
-        title: "Nvidia Reveal",
-        category: "Commercial",
-        tags: ["3D Animation", "VFX"],
-    },
-    {
-        id: 4,
-        title: "Flow State",
-        category: "Art Direction",
-        tags: ["Concept", "Visuals"],
-    },
+const DEFAULT_WORKS: WorkItem[] = [
+    { id: "1", title: "Luma Interface", category: "Product Design", tags: ["UI/UX", "Motion"] },
+    { id: "2", title: "Apex Finance", category: "Brand Identiy", tags: ["Branding", "Strategy"] },
+    { id: "3", title: "Nvidia Reveal", category: "Commercial", tags: ["3D Animation", "VFX"] },
+    { id: "4", title: "Flow State", category: "Art Direction", tags: ["Concept", "Visuals"] },
 ];
 
-export const WorkShowcase = () => {
+type WorkShowcaseContent = {
+    title?: string;
+    highlightedWord?: string;
+    description?: string;
+    items?: Array<{ _key: string; title?: string; category?: string; tags?: string[]; image?: string }>;
+};
+
+export const WorkShowcase = ({ content }: { content?: WorkShowcaseContent }) => {
+    const title = content?.title ?? "Selected";
+    const highlightedWord = content?.highlightedWord ?? "Works";
+    const description = content?.description ?? "A curated selection of projects that define our approach to digital storytelling and visual excellence.";
+    const works: WorkItem[] = (content?.items && content.items.length > 0
+        ? content.items.map((i, idx) => ({
+            id: i._key || String(idx),
+            title: i.title ?? "",
+            category: i.category ?? "",
+            tags: i.tags ?? [],
+            image: i.image,
+          }))
+        : DEFAULT_WORKS
+    ).filter((w) => w.title);
     const sectionRef = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLDivElement>(null);
     const gridRef = useRef<HTMLDivElement>(null);
@@ -102,10 +102,10 @@ export const WorkShowcase = () => {
                 <div ref={headerRef} className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
                     <div>
                         <h2 className="text-4xl md:text-5xl font-instrument-sans font-medium text-white mb-4">
-                            Selected <span className="font-instrument-serif italic text-emerald-400">Works</span>
+                            {title} <span className="font-instrument-serif italic text-emerald-400">{highlightedWord}</span>
                         </h2>
                         <p className="text-white/60 max-w-md font-light">
-                            A curated selection of projects that define our approach to digital storytelling and visual excellence.
+                            {description}
                         </p>
                     </div>
                 </div>
