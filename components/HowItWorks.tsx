@@ -7,28 +7,31 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 // Register ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
 
-const steps = [
-    {
-        id: '01',
-        title: 'Strategy & Concept',
-        description:
-            "We dive deep into your brand's core values and objectives to craft a unique visual narrative.",
-    },
-    {
-        id: '02',
-        title: 'Production & Design',
-        description:
-            'Our team brings the concept to life with high-fidelity visuals, motion graphics, and cinematography.',
-    },
-    {
-        id: '03',
-        title: 'Launch & Optimization',
-        description:
-            'We deliver polished assets ready for deployment and help you analyze performance for maximum impact.',
-    },
+const DEFAULT_STEPS = [
+    { id: '01', title: 'Strategy & Concept', description: "We dive deep into your brand's core values and objectives to craft a unique visual narrative." },
+    { id: '02', title: 'Production & Design', description: 'Our team brings the concept to life with high-fidelity visuals, motion graphics, and cinematography.' },
+    { id: '03', title: 'Launch & Optimization', description: 'We deliver polished assets ready for deployment and help you analyze performance for maximum impact.' },
 ];
 
-export const HowItWorks = () => {
+type HowItWorksContent = {
+    label?: string;
+    title?: string;
+    highlightedWord?: string;
+    steps?: Array<{ _key: string; id?: string; title?: string; description?: string }>;
+};
+
+export const HowItWorks = ({ content }: { content?: HowItWorksContent }) => {
+    const label = content?.label ?? "Our Process";
+    const titleText = content?.title ?? "From Concept to Reality.";
+    const highlightedWord = content?.highlightedWord ?? "Reality.";
+    const steps = (content?.steps && content.steps.length > 0
+        ? content.steps.map((s) => ({
+            id: s.id ?? "",
+            title: s.title ?? "",
+            description: s.description ?? "",
+          }))
+        : DEFAULT_STEPS
+    ).filter((s) => s.title);
     const sectionRef = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLDivElement>(null);
     const listRef = useRef<HTMLDivElement>(null);
@@ -94,13 +97,14 @@ export const HowItWorks = () => {
                 {/* Header */}
                 <div ref={headerRef} className="mb-24 md:mb-32">
                     <p className="text-emerald-400 font-medium tracking-widest uppercase text-xs mb-4">
-                        Our Process
+                        {label}
                     </p>
                     <h2 className="text-4xl md:text-6xl font-instrument-sans font-medium text-white mb-6">
-                        From Concept to{' '}
+                        {titleText.split(highlightedWord)[0]}
                         <span className="font-instrument-serif italic text-emerald-400">
-                            Reality.
+                            {highlightedWord}
                         </span>
+                        {titleText.split(highlightedWord)[1] || ""}
                     </h2>
                 </div>
 

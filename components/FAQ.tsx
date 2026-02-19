@@ -13,35 +13,33 @@ import {
 // Register ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
 
-const faqs = [
-    {
-        id: "item-1",
-        question: "What is your typical turnaround time?",
-        answer: "Our standard turnaround for most projects is 2-4 weeks, depending on complexity. For expedited deliveries, we offer rush options upon request.",
-    },
-    {
-        id: "item-2",
-        question: "Do you offer revisions?",
-        answer: "Absolutely. We include 3 rounds of revisions in our standard packages to ensure the final output aligns perfectly with your vision.",
-    },
-    {
-        id: "item-3",
-        question: "How does the payment structure work?",
-        answer: "We typically require a 50% deposit to commence work, with the remaining 50% due upon final delivery. We also offer milestone-based payment plans for larger projects.",
-    },
-    {
-        id: "item-4",
-        question: "Can you help with strategy, not just production?",
-        answer: "Yes. Strategy is at the core of what we do. We don't just make things look good; we ensure they perform by aligning creative with your business goals.",
-    },
-    {
-        id: "item-5",
-        question: "What assets do I need to provide?",
-        answer: "It depends on the project. Generally, we'll need your brand guidelines, logo files, and any specific footage or copy you want included. We can handle the rest.",
-    },
+const DEFAULT_FAQS = [
+    { id: "item-1", question: "What is your typical turnaround time?", answer: "Our standard turnaround for most projects is 2-4 weeks, depending on complexity. For expedited deliveries, we offer rush options upon request." },
+    { id: "item-2", question: "Do you offer revisions?", answer: "Absolutely. We include 3 rounds of revisions in our standard packages to ensure the final output aligns perfectly with your vision." },
+    { id: "item-3", question: "How does the payment structure work?", answer: "We typically require a 50% deposit to commence work, with the remaining 50% due upon final delivery. We also offer milestone-based payment plans for larger projects." },
+    { id: "item-4", question: "Can you help with strategy, not just production?", answer: "Yes. Strategy is at the core of what we do. We don't just make things look good; we ensure they perform by aligning creative with your business goals." },
+    { id: "item-5", question: "What assets do I need to provide?", answer: "It depends on the project. Generally, we'll need your brand guidelines, logo files, and any specific footage or copy you want included. We can handle the rest." },
 ];
 
-export const FAQ = () => {
+type FAQContent = {
+    label?: string;
+    title?: string;
+    highlightedWord?: string;
+    items?: Array<{ _key: string; question?: string; answer?: string }>;
+};
+
+export const FAQ = ({ content }: { content?: FAQContent }) => {
+    const label = content?.label ?? "Common Questions";
+    const titleText = content?.title ?? "Everything you need to Know.";
+    const highlightedWord = content?.highlightedWord ?? "Know.";
+    const faqs = (content?.items && content.items.length > 0
+        ? content.items.map((i, idx) => ({
+            id: i._key || `item-${idx + 1}`,
+            question: i.question ?? "",
+            answer: i.answer ?? "",
+          }))
+        : DEFAULT_FAQS
+    ).filter((f) => f.question);
     const sectionRef = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLDivElement>(null);
     const accordionRef = useRef<HTMLDivElement>(null);
@@ -91,9 +89,11 @@ export const FAQ = () => {
             <div className="max-w-3xl mx-auto">
                 {/* Header */}
                 <div ref={headerRef} className="text-center mb-16">
-                    <p className="text-emerald-400 font-medium tracking-widest uppercase text-xs mb-4">Common Questions</p>
+                    <p className="text-emerald-400 font-medium tracking-widest uppercase text-xs mb-4">{label}</p>
                     <h2 className="text-4xl md:text-5xl font-instrument-sans font-medium text-white mb-6">
-                        Everything you need <br /> to <span className="font-instrument-serif italic text-emerald-400">Know.</span>
+                        {titleText.split(highlightedWord)[0]}
+                        <span className="font-instrument-serif italic text-emerald-400">{highlightedWord}</span>
+                        {titleText.split(highlightedWord)[1] || ""}
                     </h2>
                 </div>
 

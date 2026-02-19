@@ -6,7 +6,63 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { ArrowRight, Play } from "lucide-react";
 
-export const Hero = () => {
+type HeroContent = {
+  headline?: string;
+  highlightedWords?: string[];
+  subheadline?: string;
+  ctaPrimary?: string;
+  ctaPrimaryLink?: string;
+  ctaSecondary?: string;
+  ctaSecondaryLink?: string;
+  videoLabel?: string;
+  videoTitle?: string;
+};
+
+const DEFAULT_CONTENT: HeroContent = {
+  headline: "Scale Revenue\nWith Impact.",
+  highlightedWords: ["Revenue", "Impact"],
+  subheadline:
+    "We help B2B Brands and Creators grow with organic content and high-performance motion ad creatives.",
+  ctaPrimary: "Book a Strategy Call",
+  ctaPrimaryLink: "#schedule",
+  ctaSecondary: "View Work",
+  ctaSecondaryLink: "#work",
+  videoLabel: "Showreel 2026",
+  videoTitle: "Crafting Digital Excellence",
+};
+
+function renderHeadline(headline: string, highlightedWords: string[] = []) {
+  const lines = headline.split("\n");
+  return lines.map((line, lineIdx) => {
+    const words = line.split(" ");
+    return (
+      <React.Fragment key={lineIdx}>
+        {words.map((word, wordIdx) => {
+          const cleanWord = word.replace(/[.,!?]/g, "");
+          const isHighlighted = highlightedWords.some(
+            (w) => w.toLowerCase() === cleanWord.toLowerCase()
+          );
+          return (
+            <React.Fragment key={wordIdx}>
+              {wordIdx > 0 ? " " : ""}
+              {isHighlighted ? (
+                <span className="font-instrument-serif italic text-emerald-400/90">
+                  {word}
+                </span>
+              ) : (
+                word
+              )}
+            </React.Fragment>
+          );
+        })}
+        {lineIdx < lines.length - 1 ? <br /> : null}
+      </React.Fragment>
+    );
+  });
+}
+
+export const Hero = ({ content }: { content?: HeroContent }) => {
+    const c = { ...DEFAULT_CONTENT, ...content };
     const containerRef = useRef<HTMLDivElement>(null);
     const headlineRef = useRef<HTMLHeadingElement>(null);
     const subheadRef = useRef<HTMLParagraphElement>(null);
@@ -58,8 +114,7 @@ export const Hero = () => {
                     ref={headlineRef}
                     className="text-6xl md:text-8xl lg:text-9xl font-instrument-sans font-medium tracking-tighter text-white leading-[0.9] mb-8 mix-blend-screen"
                 >
-                    Scale <span className="font-instrument-serif italic font-normal text-emerald-400/90">Revenue</span> <br />
-                    With <span className="font-instrument-serif italic font-normal text-emerald-400/90">Impact.</span>
+                    {renderHeadline(c.headline || "", c.highlightedWords)}
                 </h1>
 
                 {/* Subheading */}
@@ -67,7 +122,7 @@ export const Hero = () => {
                     ref={subheadRef}
                     className="max-w-2xl text-lg md:text-xl text-white/60 font-light tracking-wide leading-relaxed mb-12"
                 >
-                    We help B2B Brands and Creators grow with organic content and high-performance motion ad creatives.
+                    {c.subheadline}
                 </p>
 
                 {/* CTA Buttons */}
@@ -77,13 +132,13 @@ export const Hero = () => {
                         size="lg"
                         className="bg-white text-[#05180D] hover:bg-emerald-50 px-10 py-8 text-lg rounded-full font-medium transition-all duration-300 hover:scale-105"
                     >
-                        <Link href="#schedule">
-                            Book a Strategy Call
+                        <Link href={c.ctaPrimaryLink || "#schedule"}>
+                            {c.ctaPrimary}
                             <ArrowRight className="ml-2 w-5 h-5" />
                         </Link>
                     </Button>
-                    <Link href="#work" className="text-white/70 hover:text-white flex items-center gap-3 px-6 py-4 rounded-full hover:bg-white/5 transition-all duration-300 group">
-                        <span className="text-lg">View Work</span>
+                    <Link href={c.ctaSecondaryLink || "#work"} className="text-white/70 hover:text-white flex items-center gap-3 px-6 py-4 rounded-full hover:bg-white/5 transition-all duration-300 group">
+                        <span className="text-lg">{c.ctaSecondary}</span>
                     </Link>
                 </div>
 
@@ -102,8 +157,8 @@ export const Hero = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-[#05180D]/80 via-transparent to-transparent pointer-events-none" />
 
                     <div className="absolute bottom-8 left-8 text-left">
-                        <p className="text-emerald-400 text-xs uppercase tracking-widest font-medium mb-2">Showreel 2024</p>
-                        <h3 className="text-white text-2xl font-instrument-serif italic">Crafting Digital Excellence</h3>
+                        <p className="text-emerald-400 text-xs uppercase tracking-widest font-medium mb-2">{c.videoLabel}</p>
+                        <h3 className="text-white text-2xl font-instrument-serif italic">{c.videoTitle}</h3>
                     </div>
                 </div>
             </div>

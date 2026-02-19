@@ -10,54 +10,36 @@ import { Check, Zap } from "lucide-react";
 // Register ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
 
-const plans = [
-    {
-        name: "Starter",
-        price: "$2,500",
-        period: "/project",
-        description: "Perfect for emerging brands needing a strong visual foundation.",
-        features: [
-            "Brand Identity System",
-            "Social Media Assets (5)",
-            "Basic Motion Graphics",
-            "2 Rounds of Revisions",
-            "Standard Delivery (3 weeks)"
-        ],
-        popular: false
-    },
-    {
-        name: "Growth",
-        price: "$5,000",
-        period: "/month",
-        description: "Comprehensive content production for scaling businesses.",
-        features: [
-            "Full Brand Strategy",
-            "4 High-Performance Video Ads",
-            "Unlimited Static Assets",
-            "Priority Support",
-            "Weekly Strategy Calls",
-            "48h Turnaround"
-        ],
-        popular: true
-    },
-    {
-        name: "Enterprise",
-        price: "Custom",
-        period: "",
-        description: "Tailored solutions for large-scale campaigns and organizations.",
-        features: [
-            "Dedicated Creative Team",
-            "Full-Funnel Campaign Production",
-            "TVC & Broadcast Quality",
-            "24/7 Priority Support",
-            "Custom Integrations",
-            "White-glove Onboarding"
-        ],
-        popular: false
-    }
+const DEFAULT_PLANS = [
+    { name: "Starter", price: "$2,500", period: "/project", description: "Perfect for emerging brands needing a strong visual foundation.", features: ["Brand Identity System", "Social Media Assets (5)", "Basic Motion Graphics", "2 Rounds of Revisions", "Standard Delivery (3 weeks)"], popular: false },
+    { name: "Growth", price: "$5,000", period: "/month", description: "Comprehensive content production for scaling businesses.", features: ["Full Brand Strategy", "4 High-Performance Video Ads", "Unlimited Static Assets", "Priority Support", "Weekly Strategy Calls", "48h Turnaround"], popular: true },
+    { name: "Enterprise", price: "Custom", period: "", description: "Tailored solutions for large-scale campaigns and organizations.", features: ["Dedicated Creative Team", "Full-Funnel Campaign Production", "TVC & Broadcast Quality", "24/7 Priority Support", "Custom Integrations", "White-glove Onboarding"], popular: false },
 ];
 
-export default function Pricing() {
+type PricingContent = {
+    label?: string;
+    title?: string;
+    highlightedWord?: string;
+    subtitle?: string;
+    plans?: Array<{ _key: string; name?: string; price?: string; period?: string; description?: string; features?: string[]; popular?: boolean }>;
+};
+
+export default function Pricing({ content }: { content?: PricingContent }) {
+    const label = content?.label ?? "Investment";
+    const titleText = content?.title ?? "Transparent Pricing.";
+    const highlightedWord = content?.highlightedWord ?? "Pricing.";
+    const subtitle = content?.subtitle ?? "Choose the partnership model that best fits your growth stage. No hidden fees, just results.";
+    const plans = (content?.plans && content.plans.length > 0
+        ? content.plans.map((p) => ({
+            name: p.name ?? "",
+            price: p.price ?? "",
+            period: p.period ?? "",
+            description: p.description ?? "",
+            features: p.features ?? [],
+            popular: p.popular ?? false,
+          }))
+        : DEFAULT_PLANS
+    ).filter((p) => p.name);
     const sectionRef = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLDivElement>(null);
     const cardsRef = useRef<HTMLDivElement>(null);
@@ -109,12 +91,14 @@ export default function Pricing() {
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div ref={headerRef} className="text-center mb-20 space-y-4">
-                    <p className="text-emerald-400 font-medium tracking-widest uppercase text-xs">Investment</p>
+                    <p className="text-emerald-400 font-medium tracking-widest uppercase text-xs">{label}</p>
                     <h2 className="text-4xl md:text-5xl font-instrument-sans font-medium text-white">
-                        Transparent <span className="font-instrument-serif italic text-emerald-400">Pricing.</span>
+                        {titleText.split(highlightedWord)[0]}
+                        <span className="font-instrument-serif italic text-emerald-400">{highlightedWord}</span>
+                        {titleText.split(highlightedWord)[1] || ""}
                     </h2>
                     <p className="text-white/60 max-w-xl mx-auto font-light text-lg">
-                        Choose the partnership model that best fits your growth stage. No hidden fees, just results.
+                        {subtitle}
                     </p>
                 </div>
 

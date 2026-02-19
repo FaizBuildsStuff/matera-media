@@ -1,0 +1,84 @@
+import { defineField, defineType } from "sanity";
+
+export const workItem = defineType({
+  name: "workItem",
+  title: "Work Item",
+  type: "object",
+  fields: [
+    defineField({
+      name: "title",
+      title: "Title",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "category",
+      title: "Category",
+      type: "string",
+    }),
+    defineField({
+      name: "tags",
+      title: "Tags",
+      type: "array",
+      of: [{ type: "string" }],
+    }),
+    defineField({
+      name: "image",
+      title: "Image",
+      type: "image",
+      options: { hotspot: true },
+    }),
+    defineField({
+      name: "link",
+      title: "Link",
+      type: "url",
+    }),
+  ],
+  preview: {
+    select: { title: "title" },
+    prepare({ title }) {
+      return { title: title || "Work Item" };
+    },
+  },
+});
+
+export default defineType({
+  name: "workShowcase",
+  title: "Work Showcase",
+  type: "object",
+  fields: [
+    defineField({
+      name: "title",
+      title: "Section Title",
+      type: "string",
+      initialValue: "Selected Works",
+    }),
+    defineField({
+      name: "highlightedWord",
+      title: "Highlighted Word",
+      type: "string",
+      initialValue: "Works",
+    }),
+    defineField({
+      name: "description",
+      title: "Description",
+      type: "text",
+      rows: 2,
+    }),
+    defineField({
+      name: "items",
+      title: "Work Items",
+      type: "array",
+      of: [{ type: "workItem" }],
+    }),
+  ],
+  preview: {
+    select: { title: "title" },
+    prepare({ title }) {
+      return {
+        title: "Work Showcase",
+        subtitle: title,
+      };
+    },
+  },
+});
