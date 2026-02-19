@@ -36,6 +36,7 @@ type WorkShowcaseSection = {
     category?: string;
     tags?: string[];
     image?: string;
+    videoUrl?: string;
     link?: string;
   }>;
 };

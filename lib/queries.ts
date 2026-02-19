@@ -10,7 +10,8 @@ export const pageQuery = `*[_type == "page" && (_id == $slug || slug.current == 
     items[]{
       _key,
       ...,
-      "image": image.asset->url
+      "image": image.asset->url,
+      videoUrl
     },
     steps[]{
       _key,

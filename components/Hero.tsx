@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import Link from "next/link";
 import { Button } from "./ui/button";
@@ -16,6 +16,7 @@ type HeroContent = {
   ctaSecondaryLink?: string;
   videoLabel?: string;
   videoTitle?: string;
+  videoUrl?: string;
 };
 
 const DEFAULT_CONTENT: HeroContent = {
@@ -61,6 +62,25 @@ function renderHeadline(headline: string, highlightedWords: string[] = []) {
   });
 }
 
+function getYouTubeVideoId(url: string): string | null {
+  if (!url) return null;
+  
+  // Handle various YouTube URL formats
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+    /youtube\.com\/watch\?.*v=([^&\n?#]+)/,
+  ];
+  
+  for (const pattern of patterns) {
+    const match = url.match(pattern);
+    if (match && match[1]) {
+      return match[1];
+    }
+  }
+  
+  return null;
+}
+
 export const Hero = ({ content }: { content?: HeroContent }) => {
     const c = { ...DEFAULT_CONTENT, ...content };
     const containerRef = useRef<HTMLDivElement>(null);
@@ -68,6 +88,22 @@ export const Hero = ({ content }: { content?: HeroContent }) => {
     const subheadRef = useRef<HTMLParagraphElement>(null);
     const videoRef = useRef<HTMLDivElement>(null);
     const ctaRef = useRef<HTMLDivElement>(null);
+    const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+    
+    const youtubeVideoId = c.videoUrl ? getYouTubeVideoId(c.videoUrl) : null;
+    
+    const handleVideoClick = () => {
+        if (youtubeVideoId) {
+            setIsVideoPlaying(true);
+        }
+    };
+    
+    const handleOpenYouTube = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (youtubeVideoId) {
+            window.open(`https://www.youtube.com/watch?v=${youtubeVideoId}`, '_blank');
+        }
+    };
 
     useEffect(() => {
         const ctx = gsap.context(() => {
@@ -142,24 +178,84 @@ export const Hero = ({ content }: { content?: HeroContent }) => {
                     </Link>
                 </div>
 
-                {/* Video Placeholder - Glassmorphism */}
+                {/* Video Container */}
                 <div
                     ref={videoRef}
-                    className="relative w-full max-w-5xl aspect-video rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-2xl shadow-emerald-900/20 backdrop-blur-sm group cursor-pointer"
+                    className="relative w-full max-w-5xl aspect-video rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-2xl shadow-emerald-900/20 backdrop-blur-sm"
                 >
-                    <div className="absolute inset-0 flex items-center justify-center group-hover:scale-105 transition-transform duration-700">
-                        <div className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:bg-white/20 transition-all duration-300">
-                            <Play className="w-8 h-8 text-white fill-white ml-1" />
+                    {youtubeVideoId && isVideoPlaying ? (
+                        // YouTube Embed - Using standard domain with minimal params
+                        <div className="absolute inset-0 w-full h-full">
+                            <iframe
+                                className="absolute inset-0 w-full h-full"
+                                src={`https://www.youtube.com/embed/${youtubeVideoId}`}
+                                title={c.videoTitle || "Video"}
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                                frameBorder="0"
+                            />
+                            {/* Fallback link */}
+                            <div className="absolute bottom-4 right-4 z-10">
+                                <button
+                                    onClick={handleOpenYouTube}
+                                    className="px-4 py-2 bg-black/50 hover:bg-black/70 backdrop-blur-sm rounded-lg text-white text-sm transition-colors border border-white/20"
+                                >
+                                    Watch on YouTube
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    ) : youtubeVideoId ? (
+                        // Video Thumbnail with Play Button
+                        <div 
+                            className="absolute inset-0 group cursor-pointer"
+                            onClick={handleVideoClick}
+                        >
+                            {/* YouTube Thumbnail */}
+                            <img
+                                src={`https://img.youtube.com/vi/${youtubeVideoId}/maxresdefault.jpg`}
+                                alt={c.videoTitle || "Video thumbnail"}
+                                className="absolute inset-0 w-full h-full object-cover"
+                                onError={(e) => {
+                                    // Fallback to lower quality thumbnail if maxresdefault doesn't exist
+                                    (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${youtubeVideoId}/hqdefault.jpg`;
+                                }}
+                            />
+                            <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />
+                            <div className="absolute inset-0 flex items-center justify-center group-hover:scale-105 transition-transform duration-700">
+                                <div className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:bg-white/20 transition-all duration-300">
+                                    <Play className="w-8 h-8 text-white fill-white ml-1" />
+                                </div>
+                            </div>
 
-                    {/* Overlay Gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#05180D]/80 via-transparent to-transparent pointer-events-none" />
+                            {/* Overlay Gradient */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#05180D]/80 via-transparent to-transparent pointer-events-none" />
 
-                    <div className="absolute bottom-8 left-8 text-left">
-                        <p className="text-emerald-400 text-xs uppercase tracking-widest font-medium mb-2">{c.videoLabel}</p>
-                        <h3 className="text-white text-2xl font-instrument-serif italic">{c.videoTitle}</h3>
-                    </div>
+                            <div className="absolute bottom-8 left-8 text-left pointer-events-none">
+                                <p className="text-emerald-400 text-xs uppercase tracking-widest font-medium mb-2">{c.videoLabel}</p>
+                                <h3 className="text-white text-2xl font-instrument-serif italic">{c.videoTitle}</h3>
+                            </div>
+                        </div>
+                    ) : (
+                        // Video Placeholder with Play Button
+                        <div 
+                            className="absolute inset-0 group cursor-pointer"
+                            onClick={() => youtubeVideoId && setIsVideoPlaying(true)}
+                        >
+                            <div className="absolute inset-0 flex items-center justify-center group-hover:scale-105 transition-transform duration-700">
+                                <div className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:bg-white/20 transition-all duration-300">
+                                    <Play className="w-8 h-8 text-white fill-white ml-1" />
+                                </div>
+                            </div>
+
+                            {/* Overlay Gradient */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#05180D]/80 via-transparent to-transparent pointer-events-none" />
+
+                            <div className="absolute bottom-8 left-8 text-left pointer-events-none">
+                                <p className="text-emerald-400 text-xs uppercase tracking-widest font-medium mb-2">{c.videoLabel}</p>
+                                <h3 className="text-white text-2xl font-instrument-serif italic">{c.videoTitle}</h3>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </section>
