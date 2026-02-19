@@ -27,11 +27,19 @@ export const workItem = defineType({
       title: "Image",
       type: "image",
       options: { hotspot: true },
+      description: "Upload an image or leave empty if using video",
+    }),
+    defineField({
+      name: "videoUrl",
+      title: "Video URL",
+      type: "url",
+      description: "YouTube video URL (e.g., https://www.youtube.com/watch?v=VIDEO_ID). If provided, video will be shown instead of image.",
     }),
     defineField({
       name: "link",
       title: "Link",
       type: "url",
+      description: "Optional link when clicking the work item",
     }),
   ],
   preview: {
