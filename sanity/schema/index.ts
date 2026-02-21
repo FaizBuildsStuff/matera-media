@@ -6,6 +6,11 @@ import pricing, { pricingPlan } from "./sections/pricing";
 import faq, { faqItem } from "./sections/faq";
 import calendlyWidget from "./sections/calendlyWidget";
 import testimonials from "./sections/testimonials";
+import servicePlan from "./sections/servicePlan";
+import problemSolutionItem from "./sections/problemSolutionItem";
+import resultItem from "./sections/resultItem";
+import servicePage from "./servicePage";
+import legalPage from "./legalPage";
 
 export const schemaTypes = [
   page,
@@ -20,4 +25,9 @@ export const schemaTypes = [
   faq,
   calendlyWidget,
   testimonials,
+  servicePlan,
+  problemSolutionItem,
+  resultItem,
+  servicePage,
+  legalPage,
 ];

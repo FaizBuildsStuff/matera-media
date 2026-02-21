@@ -23,7 +23,7 @@ export const Footer = () => {
                             Let's create something extraordinary together.
                         </p>
                     </div>
-                    <Link href="#schedule" className="mt-8 md:mt-0 group flex items-center gap-3 bg-white text-[#05180D] px-8 py-4 rounded-full font-medium transition-all hover:bg-emerald-400 hover:scale-105">
+                    <Link href="/#schedule" className="mt-8 md:mt-0 group flex items-center gap-3 bg-white text-[#05180D] px-8 py-4 rounded-full font-medium transition-all hover:bg-emerald-400 hover:scale-105">
                         Start a Project
                         <ArrowUpRight className="w-5 h-5 transition-transform group-hover:rotate-45" />
                     </Link>
@@ -52,10 +52,11 @@ export const Footer = () => {
                         <h3 className="text-white font-medium mb-6">Menu</h3>
                         <ul className="flex flex-col gap-4">
                             {[
-                                { name: 'Work', url: '#work' },
-                                { name: 'Process', url: '#process' },
-                                { name: 'Services', url: '#pricing' },
-                                { name: 'FAQ', url: '#faq' },
+                                { name: 'Home', url: '/' },
+                                { name: 'Ad Creatives', url: '/ad-creatives' },
+                                { name: 'Organic Content/YouTube', url: '/organic-content-youtube' },
+                                { name: 'SaaS Videos', url: '/saas-videos' },
+                                { name: 'Privacy Policy', url: '/privacy-policy' },
                             ].map((item) => (
                                 <li key={item.name}>
                                     <Link href={item.url} className="text-white/50 hover:text-emerald-400 transition-colors text-sm font-light">
@@ -93,7 +94,7 @@ export const Footer = () => {
                         © {new Date().getFullYear()} Matera Media. All rights reserved.
                     </p>
                     <div className="flex gap-8">
-                        <Link href="#" className="text-white/30 hover:text-white text-sm font-light transition-colors">Privacy Policy</Link>
+                        <Link href="/privacy-policy" className="text-white/30 hover:text-white text-sm font-light transition-colors">Privacy Policy</Link>
                         <Link href="#" className="text-white/30 hover:text-white text-sm font-light transition-colors">Terms of Service</Link>
                     </div>
                 </div>

@@ -76,7 +76,13 @@ type WorkShowcaseContent = {
   }>;
 };
 
-export const WorkShowcase = ({ content }: { content?: WorkShowcaseContent }) => {
+export const WorkShowcase = ({
+  content,
+  initialCategory,
+}: {
+  content?: WorkShowcaseContent;
+  initialCategory?: CategorySlug;
+}) => {
   const title = content?.title ?? "Selected";
   const highlightedWord = content?.highlightedWord ?? "Works";
   const description = content?.description ?? "Shorts & reels that drive results. Filter by category.";
@@ -95,7 +101,7 @@ export const WorkShowcase = ({ content }: { content?: WorkShowcaseContent }) => 
       : DEFAULT_WORKS
   ).filter((w) => w.title);
 
-  const [activeCategory, setActiveCategory] = useState<CategorySlug>("ad-creatives");
+  const [activeCategory, setActiveCategory] = useState<CategorySlug>(initialCategory ?? "ad-creatives");
   const [isInitialMount, setIsInitialMount] = useState(true);
   const sectionRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
