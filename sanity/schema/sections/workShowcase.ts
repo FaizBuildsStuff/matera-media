@@ -15,6 +15,14 @@ export const workItem = defineType({
       name: "category",
       title: "Category",
       type: "string",
+      options: {
+        list: [
+          { title: "Ad Creatives", value: "Ad Creatives" },
+          { title: "Organic Content / YouTube", value: "Organic Content" },
+          { title: "SaaS Videos", value: "SaaS Videos" },
+          { title: "Motion Graphics", value: "Motion Graphics" },
+        ],
+      },
     }),
     defineField({
       name: "tags",

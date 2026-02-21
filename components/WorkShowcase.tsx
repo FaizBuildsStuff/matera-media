@@ -3,293 +3,310 @@
 import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Badge } from "@/components/ui/badge";
-import { ArrowUpRight, Play } from "lucide-react";
+import { Play, Sparkles } from "lucide-react";
 import Image from "next/image";
 
-// Register ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
+
+const CATEGORIES = [
+  { id: "ad-creatives", label: "Ad Creatives", slug: "ad-creatives" },
+  { id: "organic-content", label: "Organic Content / YouTube", slug: "organic-content" },
+  { id: "saas-videos", label: "SaaS Videos", slug: "saas-videos" },
+  { id: "motion-graphics", label: "Motion Graphics", slug: "motion-graphics" },
+] as const;
+
+type CategorySlug = (typeof CATEGORIES)[number]["slug"];
 
 function getYouTubeVideoId(url: string): string | null {
   if (!url) return null;
-  
-  // Handle various YouTube URL formats
   const patterns = [
     /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
     /youtube\.com\/watch\?.*v=([^&\n?#]+)/,
   ];
-  
   for (const pattern of patterns) {
     const match = url.match(pattern);
-    if (match && match[1]) {
-      return match[1];
-    }
+    if (match?.[1]) return match[1];
   }
-  
   return null;
 }
 
+function mapCategoryToSlug(category: string): CategorySlug {
+  const c = category.toLowerCase();
+  if (c.includes("ad") || c.includes("creative")) return "ad-creatives";
+  if (c.includes("organic") || c.includes("youtube") || c.includes("content")) return "organic-content";
+  if (c.includes("saas") || c.includes("software")) return "saas-videos";
+  if (c.includes("motion") || c.includes("graphic") || c.includes("brand")) return "motion-graphics";
+  return "ad-creatives";
+}
+
 interface WorkItem {
-    id: string;
-    title: string;
-    category: string;
-    tags: string[];
-    image?: string;
-    videoUrl?: string;
-    link?: string;
+  id: string;
+  title: string;
+  category: string;
+  categorySlug: CategorySlug;
+  tags: string[];
+  image?: string;
+  videoUrl?: string;
+  link?: string;
 }
 
 const DEFAULT_WORKS: WorkItem[] = [
-    { id: "1", title: "Luma Interface", category: "Product Design", tags: ["UI/UX", "Motion"] },
-    { id: "2", title: "Apex Finance", category: "Brand Identiy", tags: ["Branding", "Strategy"] },
-    { id: "3", title: "Nvidia Reveal", category: "Commercial", tags: ["3D Animation", "VFX"] },
-    { id: "4", title: "Flow State", category: "Art Direction", tags: ["Concept", "Visuals"] },
+  { id: "1", title: "Meta UGC Ad", category: "Ad Creatives", categorySlug: "ad-creatives", tags: ["UGC", "15s"], videoUrl: "https://www.youtube.com/shorts/dQw4w9WgXcQ" },
+  { id: "2", title: "TikTok Performance", category: "Ad Creatives", categorySlug: "ad-creatives", tags: ["Hook", "6s"] },
+  { id: "3", title: "YouTube Short", category: "Organic Content", categorySlug: "organic-content", tags: ["Vertical", "60s"] },
+  { id: "4", title: "Creator Reel", category: "Organic Content", categorySlug: "organic-content", tags: ["Behind Scenes"] },
+  { id: "5", title: "Product Demo", category: "SaaS Videos", categorySlug: "saas-videos", tags: ["Explainer"] },
+  { id: "6", title: "Feature Launch", category: "SaaS Videos", categorySlug: "saas-videos", tags: ["30s"] },
+  { id: "7", title: "Brand Reveal", category: "Motion Graphics", categorySlug: "motion-graphics", tags: ["3D", "Cinematic"] },
+  { id: "8", title: "Logo Animation", category: "Motion Graphics", categorySlug: "motion-graphics", tags: ["2D"] },
 ];
 
 type WorkShowcaseContent = {
+  title?: string;
+  highlightedWord?: string;
+  description?: string;
+  items?: Array<{
+    _key: string;
     title?: string;
-    highlightedWord?: string;
-    description?: string;
-    items?: Array<{ 
-        _key: string; 
-        title?: string; 
-        category?: string; 
-        tags?: string[]; 
-        image?: string;
-        videoUrl?: string;
-        link?: string;
-    }>;
+    category?: string;
+    tags?: string[];
+    image?: string;
+    videoUrl?: string;
+    link?: string;
+  }>;
 };
 
 export const WorkShowcase = ({ content }: { content?: WorkShowcaseContent }) => {
-    const title = content?.title ?? "Selected";
-    const highlightedWord = content?.highlightedWord ?? "Works";
-    const description = content?.description ?? "A curated selection of projects that define our approach to digital storytelling and visual excellence.";
-    const works: WorkItem[] = (content?.items && content.items.length > 0
-        ? content.items.map((i, idx) => ({
-            id: i._key || String(idx),
-            title: i.title ?? "",
-            category: i.category ?? "",
-            tags: i.tags ?? [],
-            image: i.image,
-            videoUrl: i.videoUrl,
-            link: i.link,
-          }))
-        : DEFAULT_WORKS
-    ).filter((w) => w.title);
-    const sectionRef = useRef<HTMLDivElement>(null);
-    const headerRef = useRef<HTMLDivElement>(null);
-    const gridRef = useRef<HTMLDivElement>(null);
+  const title = content?.title ?? "Selected";
+  const highlightedWord = content?.highlightedWord ?? "Works";
+  const description = content?.description ?? "Shorts & reels that drive results. Filter by category.";
+  const works: WorkItem[] = (
+    content?.items && content.items.length > 0
+      ? content.items.map((i, idx) => ({
+          id: i._key || String(idx),
+          title: i.title ?? "",
+          category: i.category ?? "Ad Creatives",
+          categorySlug: mapCategoryToSlug(i.category ?? "Ad Creatives"),
+          tags: i.tags ?? [],
+          image: i.image,
+          videoUrl: i.videoUrl,
+          link: i.link,
+        }))
+      : DEFAULT_WORKS
+  ).filter((w) => w.title);
 
-    useEffect(() => {
-        const ctx = gsap.context(() => {
-            // Header Animation
-            gsap.fromTo(headerRef.current,
-                { y: 50, opacity: 0 },
-                {
-                    y: 0,
-                    opacity: 1,
-                    duration: 1,
-                    ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: headerRef.current,
-                        start: "top 85%",
-                    }
-                }
-            );
+  const [activeCategory, setActiveCategory] = useState<CategorySlug>("ad-creatives");
+  const [isInitialMount, setIsInitialMount] = useState(true);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const leftRef = useRef<HTMLDivElement>(null);
+  const rightRef = useRef<HTMLDivElement>(null);
+  const reelContainerRef = useRef<HTMLDivElement>(null);
+  const gridWrapperRef = useRef<HTMLDivElement>(null);
 
-            // Grid Items Animation
-            const items = gridRef.current?.querySelectorAll(".work-item");
-            if (items) {
-                gsap.fromTo(items,
-                    { y: 60, opacity: 0, scale: 0.95 },
-                    {
-                        y: 0,
-                        opacity: 1,
-                        scale: 1,
-                        duration: 0.8,
-                        stagger: 0.15,
-                        ease: "power2.out",
-                        scrollTrigger: {
-                            trigger: gridRef.current,
-                            start: "top 80%",
-                        }
-                    }
-                );
-            }
-        }, sectionRef);
+  const filteredWorks = works.filter((w) => w.categorySlug === activeCategory);
 
-        return () => ctx.revert();
-    }, []);
+  const handleCategoryClick = (slug: CategorySlug) => {
+    if (slug === activeCategory) return;
+    setActiveCategory(slug);
+  };
 
-    return (
-        <section ref={sectionRef} id="work" className="py-32 px-6 bg-[#05180D] relative overflow-hidden">
-            {/* Background Elements */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-900/5 rounded-full blur-[120px] pointer-events-none" />
-            <div className="absolute -left-20 top-40 opacity-[0.03] pointer-events-none select-none">
-                <img src="/Logo.png" alt="Matera Media Logo" className="w-[600px] h-auto object-contain" />
-            </div>
+  // Initial scroll-in animations
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(headerRef.current, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: "power3.out", scrollTrigger: { trigger: headerRef.current, start: "top 85%" } });
+      gsap.fromTo(leftRef.current, { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 1, ease: "power3.out", scrollTrigger: { trigger: leftRef.current, start: "top 85%", end: "top 20%" } });
+      gsap.fromTo(rightRef.current, { x: 40, opacity: 0 }, { x: 0, opacity: 1, duration: 1, ease: "power3.out", scrollTrigger: { trigger: rightRef.current, start: "top 85%", end: "top 20%" } });
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
 
-            <div className="max-w-7xl mx-auto">
-                <div ref={headerRef} className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-                    <div>
-                        <h2 className="text-4xl md:text-5xl font-instrument-sans font-medium text-white mb-4">
-                            {title} <span className="font-instrument-serif italic text-emerald-400">{highlightedWord}</span>
-                        </h2>
-                        <p className="text-white/60 max-w-md font-light">
-                            {description}
-                        </p>
-                    </div>
+  // Category-switch: content slides in from left, cards cascade with stagger
+  useEffect(() => {
+    if (!reelContainerRef.current || !gridWrapperRef.current) return;
+
+    const items = reelContainerRef.current.querySelectorAll(".reel-item");
+    const emptyState = reelContainerRef.current.querySelector(".reel-empty-state");
+    const wrapper = gridWrapperRef.current;
+    const targets = items.length > 0 ? items : emptyState;
+    if (!targets || (Array.isArray(targets) && targets.length === 0)) return;
+
+    // On first mount, use scroll-based reveal; on category change, use click-based animation
+    if (isInitialMount) {
+      setIsInitialMount(false);
+      const ctx = gsap.context(() => {
+        gsap.fromTo(targets, { x: -60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.8, stagger: Array.isArray(targets) ? 0.06 : 0, ease: "power3.out", scrollTrigger: { trigger: wrapper, start: "top 88%", end: "top 50%", scrub: 1.5 } });
+      }, reelContainerRef);
+      return () => ctx.revert();
+    }
+
+    // Category change: content opens from left with stagger
+    gsap.set(targets, { x: -80, opacity: 0 });
+
+    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+    tl.to(targets, {
+      x: 0,
+      opacity: 1,
+      duration: 0.65,
+      stagger: items.length > 0 ? { each: 0.07, from: "start" } : 0,
+      overwrite: true,
+    });
+
+    return () => tl.kill();
+  }, [activeCategory, filteredWorks.length, isInitialMount]);
+
+  return (
+    <section ref={sectionRef} id="work" className="py-32 px-6 bg-[#05180D] relative overflow-hidden min-h-screen">
+      {/* Ambient backgrounds */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-emerald-900/10 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute -left-20 top-40 opacity-[0.02] pointer-events-none select-none">
+        <img src="/Logo.png" alt="Matera Media" className="w-[600px] h-auto object-contain" />
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div ref={headerRef} className="mb-20">
+          <p className="text-emerald-400/80 text-xs font-medium tracking-[0.2em] uppercase mb-4 flex items-center gap-2">
+            <Sparkles className="w-3.5 h-3.5" />
+            Portfolio
+          </p>
+          <h2 className="text-4xl md:text-6xl font-instrument-sans font-medium text-white mb-6 tracking-tight">
+            {title} <span className="font-instrument-serif italic text-emerald-400/90">{highlightedWord}</span>
+          </h2>
+          <p className="text-white/50 max-w-xl font-light text-lg leading-relaxed">{description}</p>
+        </div>
+
+        <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
+          {/* Left - Categories */}
+          <aside ref={leftRef} className="lg:w-72 shrink-0">
+            <nav className="sticky top-32 space-y-0.5">
+              <p className="text-white/30 text-xs font-medium tracking-widest uppercase mb-6 pl-1">Filter</p>
+              {CATEGORIES.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => handleCategoryClick(cat.slug)}
+                  className={`relative block w-full text-left px-6 py-4 rounded-2xl text-base font-medium transition-all duration-300 active:scale-[0.98] ${
+                    activeCategory === cat.slug
+                      ? "text-white bg-white/[0.08] border border-white/10 shadow-lg shadow-emerald-950/20"
+                      : "text-white/40 hover:text-white/70 hover:bg-white/[0.04] border border-transparent"
+                  }`}
+                >
+                  {activeCategory === cat.slug && (
+                    <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 rounded-r-full bg-gradient-to-b from-emerald-400 to-emerald-600" />
+                  )}
+                  <span className="relative pl-1">{cat.label}</span>
+                </button>
+              ))}
+            </nav>
+          </aside>
+
+          {/* Right - Reels Grid */}
+          <div ref={rightRef} className="flex-1 min-w-0 overflow-hidden">
+            <div ref={gridWrapperRef} className="relative">
+              <div ref={reelContainerRef} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-8">
+              {filteredWorks.length > 0 ? (
+                filteredWorks.map((work) => (
+                  <ReelCard key={work.id} work={work} />
+                ))
+              ) : (
+                <div className="reel-empty-state col-span-full py-24 text-center">
+                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-white/5 border border-white/10 mb-6">
+                    <Play className="w-8 h-8 text-white/30" />
+                  </div>
+                  <p className="text-white/40 font-light">No reels in this category yet.</p>
+                  <p className="text-white/25 text-sm mt-2">Add content from Sanity Studio</p>
                 </div>
-
-                <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-                    {works.map((work) => {
-                        const youtubeVideoId = work.videoUrl ? getYouTubeVideoId(work.videoUrl) : null;
-                        const hasVideo = !!youtubeVideoId;
-                        const hasImage = !!work.image;
-                        
-                        return (
-                            <WorkItemCard 
-                                key={work.id} 
-                                work={work} 
-                                youtubeVideoId={youtubeVideoId}
-                                hasVideo={hasVideo}
-                                hasImage={hasImage}
-                            />
-                        );
-                    })}
-                </div>
+              )}
+              </div>
             </div>
-        </section>
-    );
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 };
 
-function WorkItemCard({ 
-    work, 
-    youtubeVideoId, 
-    hasVideo, 
-    hasImage 
-}: { 
-    work: WorkItem; 
-    youtubeVideoId: string | null; 
-    hasVideo: boolean; 
-    hasImage: boolean;
-}) {
-    const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-    
-    const handleClick = () => {
-        if (work.link) {
-            window.open(work.link, '_blank');
-        } else if (hasVideo && youtubeVideoId) {
-            setIsVideoPlaying(true);
-        }
-    };
-    
-    const handleOpenYouTube = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        if (youtubeVideoId) {
-            window.open(`https://www.youtube.com/watch?v=${youtubeVideoId}`, '_blank');
-        }
-    };
-    
-    return (
-        <div className="work-item group cursor-pointer">
-            {/* Card Media */}
-            <div 
-                className="relative aspect-[4/3] rounded-xl overflow-hidden bg-white/5 border border-white/10 mb-6 transition-all duration-500 group-hover:border-white/20 group-hover:shadow-2xl group-hover:shadow-emerald-900/20"
-                onClick={handleClick}
-            >
-                {hasVideo && isVideoPlaying ? (
-                    // YouTube Video Embed
-                    <div className="absolute inset-0 w-full h-full">
-                        <iframe
-                            className="absolute inset-0 w-full h-full"
-                            src={`https://www.youtube.com/embed/${youtubeVideoId}`}
-                            title={work.title}
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                            frameBorder="0"
-                        />
-                        <div className="absolute bottom-2 right-2 z-10">
-                            <button
-                                onClick={handleOpenYouTube}
-                                className="px-2 py-1 bg-black/50 hover:bg-black/70 backdrop-blur-sm rounded text-white text-xs transition-colors border border-white/20"
-                            >
-                                YouTube
-                            </button>
-                        </div>
-                    </div>
-                ) : hasVideo && youtubeVideoId ? (
-                    // Video Thumbnail
-                    <>
-                        <img
-                            src={`https://img.youtube.com/vi/${youtubeVideoId}/maxresdefault.jpg`}
-                            alt={work.title}
-                            className="absolute inset-0 w-full h-full object-cover"
-                            onError={(e) => {
-                                (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${youtubeVideoId}/hqdefault.jpg`;
-                            }}
-                        />
-                        <div className="absolute inset-0 bg-[#0A2215]/50 group-hover:bg-[#0A2215]/30 transition-colors duration-500" />
-                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center scale-90 group-hover:scale-100 transition-transform duration-500 delay-100">
-                                <Play className="w-6 h-6 text-white fill-white ml-1" />
-                            </div>
-                        </div>
-                    </>
-                ) : hasImage ? (
-                    // Sanity Image
-                    <>
-                        <Image
-                            src={work.image!}
-                            alt={work.title}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                        />
-                        <div className="absolute inset-0 bg-[#0A2215]/50 group-hover:bg-[#0A2215]/30 transition-colors duration-500" />
-                        {work.link && (
-                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                                <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center scale-90 group-hover:scale-100 transition-transform duration-500 delay-100">
-                                    <ArrowUpRight className="w-6 h-6 text-white" />
-                                </div>
-                            </div>
-                        )}
-                    </>
-                ) : (
-                    // Placeholder
-                    <>
-                        <div className="absolute inset-0 bg-[#0A2215]/50 group-hover:bg-[#0A2215]/30 transition-colors duration-500" />
-                        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/10 to-transparent" />
-                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center scale-90 group-hover:scale-100 transition-transform duration-500 delay-100">
-                                <Play className="w-6 h-6 text-white fill-white ml-1" />
-                            </div>
-                        </div>
-                    </>
-                )}
-            </div>
+function ReelCard({ work }: { work: WorkItem }) {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const youtubeVideoId = work.videoUrl ? getYouTubeVideoId(work.videoUrl) : null;
 
-            {/* Card Content */}
-            <div className="flex items-start justify-between">
-                <div>
-                    <h3 className="text-2xl text-white font-medium mb-2 group-hover:text-emerald-400 transition-colors duration-300">
-                        {work.title}
-                    </h3>
-                    <p className="text-white/50 text-sm mb-3">{work.category}</p>
-                </div>
-                <div className="flex flex-wrap gap-2 justify-end max-w-[50%]">
-                    {work.tags.map((tag) => (
-                        <Badge
-                            key={tag}
-                            variant="secondary"
-                            className="bg-white/5 hover:bg-white/10 text-white/70 hover:text-white border-white/5 transition-all text-[10px] tracking-wide uppercase px-2 py-0.5"
-                        >
-                            {tag}
-                        </Badge>
-                    ))}
-                </div>
+  const handleClick = () => {
+    if (work.link) window.open(work.link, "_blank");
+    else if (youtubeVideoId) setIsPlaying(true);
+  };
+
+  const handleOpenYouTube = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (youtubeVideoId) window.open(`https://www.youtube.com/watch?v=${youtubeVideoId}`, "_blank");
+  };
+
+  return (
+    <div className="reel-item group">
+      <div
+        className="relative aspect-[9/16] rounded-[1.25rem] overflow-hidden bg-white/[0.03] border border-white/[0.06] backdrop-blur-sm cursor-pointer transition-all duration-500 hover:border-emerald-500/20 hover:shadow-[0_0_40px_-10px_rgba(16,185,129,0.15)] hover:scale-[1.02]"
+        onClick={handleClick}
+      >
+        {youtubeVideoId && isPlaying ? (
+          <div className="absolute inset-0">
+            <iframe
+              className="absolute inset-0 w-full h-full"
+              src={`https://www.youtube.com/embed/${youtubeVideoId}`}
+              title={work.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              frameBorder="0"
+            />
+            <button
+              onClick={handleOpenYouTube}
+              className="absolute bottom-3 right-3 px-3 py-1.5 bg-black/70 backdrop-blur-md rounded-lg text-white text-xs font-medium border border-white/10 hover:bg-black/90 transition-colors"
+            >
+              YouTube
+            </button>
+          </div>
+        ) : youtubeVideoId ? (
+          <>
+            <img
+              src={`https://img.youtube.com/vi/${youtubeVideoId}/maxresdefault.jpg`}
+              alt={work.title}
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              onError={(e) => ((e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${youtubeVideoId}/hqdefault.jpg`)}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-70 transition-opacity" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300">
+                <Play className="w-7 h-7 text-white fill-white ml-1" />
+              </div>
             </div>
+          </>
+        ) : work.image ? (
+          <>
+            <Image src={work.image} alt={work.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-70 transition-opacity" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300">
+                <Play className="w-7 h-7 text-white fill-white ml-1" />
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-white/[0.04] to-transparent">
+            <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
+              <Play className="w-7 h-7 text-white/40 fill-white/20 ml-1" />
+            </div>
+          </div>
+        )}
+
+        <div className="absolute bottom-0 left-0 right-0 p-5">
+          <div className="flex flex-wrap gap-1.5 mb-2">
+            {work.tags.slice(0, 3).map((tag) => (
+              <span key={tag} className="px-2 py-0.5 rounded-md bg-white/10 text-[10px] text-white/70 uppercase tracking-wider font-medium">
+                {tag}
+              </span>
+            ))}
+          </div>
+          <h3 className="text-white font-medium text-sm tracking-tight">{work.title}</h3>
         </div>
-    );
+      </div>
+    </div>
+  );
 }
