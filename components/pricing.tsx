@@ -55,7 +55,36 @@ const PLANS = [
     },
 ];
 
-export default function Pricing() {
+export type PricingContent = {
+    label?: string;
+    title?: string;
+    highlightedWord?: string;
+    subtitle?: string;
+    plans?: Array<{
+        _key?: string;
+        name?: string;
+        price?: string;
+        period?: string;
+        description?: string;
+        features?: string[];
+        popular?: boolean;
+    }>;
+};
+
+export default function Pricing({ content }: { content?: PricingContent }) {
+    const label = content?.label ?? "Investment";
+    const title = content?.title ?? "Our offers.";
+    const subtitle = content?.subtitle ?? "Two core disciplines. One goal: measurable growth.";
+    const plans = (content?.plans && content.plans.length > 0
+        ? content.plans.map((p) => ({
+            name: p.name ?? "",
+            description: p.description ?? "",
+            features: p.features ?? [],
+            popular: p.popular ?? false,
+        }))
+        : PLANS
+    ).filter((p) => p.name);
+
     const sectionRef = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLDivElement>(null);
     const cardsRef = useRef<HTMLDivElement>(null);
@@ -77,21 +106,24 @@ export default function Pricing() {
                 }
             );
 
-            gsap.fromTo(
-                cardsRef.current?.children,
-                { y: 80, opacity: 0 },
-                {
-                    y: 0,
-                    opacity: 1,
-                    duration: 1,
-                    stagger: 0.2,
-                    ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: cardsRef.current,
-                        start: "top 80%",
-                    },
-                }
-            );
+            const cards = cardsRef.current?.children;
+            if (cards) {
+                gsap.fromTo(
+                    cards,
+                    { y: 80, opacity: 0 },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        duration: 1,
+                        stagger: 0.2,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: cardsRef.current,
+                            start: "top 80%",
+                        },
+                    }
+                );
+            }
         }, sectionRef);
 
         return () => ctx.revert();
@@ -112,11 +144,12 @@ export default function Pricing() {
             <div className="relative z-10 max-w-7xl mx-auto">
                 {/* Header */}
                 <div ref={headerRef} className="text-center mb-20 space-y-6">
+                    <p className="text-emerald-400 font-medium tracking-widest uppercase text-xs">{label}</p>
                     <h2 className="text-4xl md:text-5xl font-semibold text-white">
-                        Our offers.
+                        {title}
                     </h2>
                     <p className="text-white/60 max-w-2xl mx-auto text-lg">
-                        Two core disciplines. One goal: measurable growth.
+                        {subtitle}
                     </p>
                 </div>
 
@@ -125,9 +158,9 @@ export default function Pricing() {
                     ref={cardsRef}
                     className="grid gap-8 md:grid-cols-3 items-stretch"
                 >
-                    {PLANS.map((plan, index) => (
+                    {plans.map((plan, index) => (
                         <Card
-                            key={index}
+                            key={plan.name ?? index}
                             className={`relative flex flex-col h-full border transition-all duration-500 overflow-hidden group ${plan.popular
                                     ? "bg-white/10 border-emerald-500/30 shadow-2xl shadow-emerald-900/20 scale-105 md:-mt-6 z-10"
                                     : "bg-white/5 border-white/10 hover:border-white/20"
