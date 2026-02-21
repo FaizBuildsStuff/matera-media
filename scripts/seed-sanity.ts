@@ -42,9 +42,7 @@ const homePageDocument = {
     {
       _type: "hero",
       _key: "hero-1",
-      headline: "Scale Revenue\nWith Impact.",
-      highlightedWords: ["Revenue", "Impact"],
-      subheadline:
+      headline:
         "We help B2B Brands and Creators grow with organic content and high-performance motion ad creatives.",
       ctaPrimary: "Book a Strategy Call",
       ctaPrimaryLink: "#schedule",
@@ -52,6 +50,12 @@ const homePageDocument = {
       ctaSecondaryLink: "#work",
       videoLabel: "Showreel 2026",
       videoTitle: "Crafting Digital Excellence",
+    },
+    {
+      _type: "testimonials",
+      _key: "testimonials-1",
+      title: "Trusted by Brands & Creators",
+      subtitle: "See why B2B brands and creators partner with us to grow with organic content and high-performance ad creatives.",
     },
     {
       _type: "workShowcase",

@@ -3,7 +3,6 @@ import { Geist, Geist_Mono, Instrument_Sans, Instrument_Serif } from "next/font/
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { SmoothScroll } from "@/components/SmoothScroll";
-import { Spotlight } from "@/components/Spotlight";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,7 +42,6 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${instrumentSans.variable} ${instrumentSerif.variable} antialiased`}
       >
         <SmoothScroll />
-        <Spotlight />
         <Header />
         {children}
       </body>

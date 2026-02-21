@@ -4,6 +4,12 @@ import { HowItWorks } from "@/components/HowItWorks";
 import { FAQ } from "@/components/FAQ";
 import Pricing from "@/components/pricing";
 import { CalendlyWidget } from "@/components/CalendlyWidget";
+import Testimonials from "./testimonials";
+
+type TestimonialsSection = {
+  title?: string;
+  subtitle?: string;
+};
 
 export type SectionBlock =
   | { _type: "hero"; _key: string } & HeroSection
@@ -11,12 +17,11 @@ export type SectionBlock =
   | { _type: "howItWorks"; _key: string } & HowItWorksSection
   | { _type: "pricing"; _key: string } & PricingSection
   | { _type: "faq"; _key: string } & FAQSection
-  | { _type: "calendlyWidget"; _key: string } & CalendlySection;
+  | { _type: "calendlyWidget"; _key: string } & CalendlySection
+  | { _type: "testimonials"; _key: string } & TestimonialsSection;
 
 type HeroSection = {
   headline?: string;
-  highlightedWords?: string[];
-  subheadline?: string;
   ctaPrimary?: string;
   ctaPrimaryLink?: string;
   ctaSecondary?: string;
@@ -109,6 +114,8 @@ function SectionBlock({ section }: { section: SectionBlock }) {
   switch (section._type) {
     case "hero":
       return <Hero content={section} />;
+    case "testimonials":
+      return <Testimonials content={section} />;
     case "workShowcase":
       return <WorkShowcase content={section} />;
     case "howItWorks":
@@ -128,6 +135,7 @@ function DefaultSections() {
   return (
     <>
       <Hero />
+      <Testimonials />
       <WorkShowcase />
       <HowItWorks />
       <Pricing />
