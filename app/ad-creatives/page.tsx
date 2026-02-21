@@ -63,15 +63,12 @@ export default async function AdCreativesPage() {
   const headlineSubtitle = (content?.headlineSubtitle as string) ?? "We build an always-on creative system: hooks, angles, iterations, and production built around measurable outcomes.";
   const bookACallHeading = (content?.bookACallHeading as string) ?? "{bookACallHeading}";
   const bookACallCta = (content?.bookACallCta as string) ?? "Book Strategy Call";
-  const problems = (content?.problems as { _key?: string; title?: string; description?: string }[] | undefined)?.length
-    ? (content.problems as { _key?: string; title?: string; description?: string }[])
-    : PROBLEMS.map((p, i) => ({ ...p, _key: `p${i}` }));
-  const solutions = (content?.solutions as { _key?: string; title?: string; description?: string }[] | undefined)?.length
-    ? (content.solutions as { _key?: string; title?: string; description?: string }[])
-    : SOLUTIONS.map((s, i) => ({ ...s, _key: `s${i}` }));
-  const results = (content?.results as { _key?: string; label?: string; value?: string }[] | undefined)?.length
-    ? (content.results as { _key?: string; label?: string; value?: string }[])
-    : DEFAULT_RESULTS.map((r, i) => ({ ...r, _key: `r${i}` }));
+  const problemsRaw = content?.problems as { _key?: string; title?: string; description?: string }[] | undefined;
+  const problems = problemsRaw?.length ? problemsRaw : PROBLEMS.map((p, i) => ({ ...p, _key: `p${i}` }));
+  const solutionsRaw = content?.solutions as { _key?: string; title?: string; description?: string }[] | undefined;
+  const solutions = solutionsRaw?.length ? solutionsRaw : SOLUTIONS.map((s, i) => ({ ...s, _key: `s${i}` }));
+  const resultsRaw = content?.results as { _key?: string; label?: string; value?: string }[] | undefined;
+  const results = resultsRaw?.length ? resultsRaw : DEFAULT_RESULTS.map((r, i) => ({ ...r, _key: `r${i}` }));
   const problemsLabel = (content?.problemsLabel as string) ?? "Problems";
   const problemsTitle = (content?.problemsTitle as string) ?? "What clients are usually going through";
   const solutionsLabel = (content?.solutionsLabel as string) ?? "Solutions";
@@ -81,8 +78,8 @@ export default async function AdCreativesPage() {
   const plansLabel = (content?.plansLabel as string) ?? "Plans";
   const plansTitle = (content?.plansTitle as string) ?? "Plans built for performance.";
   const plansSubtitle = (content?.plansSubtitle as string) ?? "Pick a tier that matches your testing velocity. Upgrade anytime.";
-  const plans = (content?.plans as { _key?: string; name?: string; description?: string; features?: string[]; popular?: boolean }[] | undefined)?.length
-    ? (content.plans as { _key?: string; name?: string; description?: string; features?: string[]; popular?: boolean }[])
+  const plansRaw = content?.plans as { _key?: string; name?: string; description?: string; features?: string[]; popular?: boolean }[] | undefined;
+  const plans = plansRaw?.length ? plansRaw
     : [
         { _key: "ad-lite", name: "Creative Starter", description: "A focused monthly drop to get momentum.", features: ["4 short-form ads", "2 angles + variations", "Performance review call", "48â€“72h iterations"], popular: false },
         { _key: "ad-core", name: "Creative Core", description: "Always-on testing for consistent winners.", features: ["8 short-form ads", "Hook testing system", "Weekly creative sync", "Priority turnaround"], popular: true },
@@ -93,8 +90,8 @@ export default async function AdCreativesPage() {
   const faqLabel = (content?.faqLabel as string) ?? "FAQs";
   const faqTitle = (content?.faqTitle as string) ?? "Ad creative questions â€” answered.";
   const faqHighlightedWord = (content?.faqHighlightedWord as string) ?? "answered.";
-  const faqItems = (content?.faqItems as { _key?: string; question?: string; answer?: string }[] | undefined)?.length
-    ? (content.faqItems as { _key?: string; question?: string; answer?: string }[])
+  const faqItemsRaw = content?.faqItems as { _key?: string; question?: string; answer?: string }[] | undefined;
+  const faqItems = faqItemsRaw?.length ? faqItemsRaw
     : [
         { _key: "ac-1", question: "Do you handle strategy or only editing?", answer: "Both. We map angles, hooks, and offers before production, then iterate based on performance feedback." },
         { _key: "ac-2", question: "How fast can we ship iterations?", answer: "Typically 48â€“72 hours for iteration cycles once we're in motion." },
