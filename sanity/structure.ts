@@ -12,8 +12,41 @@ export const structure = (S: StructureBuilder) =>
             .documentId("home")
             .title("Home Page")
         ),
+      S.listItem()
+        .title("Ad Creatives Page")
+        .child(
+          S.document()
+            .schemaType("servicePage")
+            .documentId("service-ad-creatives")
+            .title("Ad Creatives")
+        ),
+      S.listItem()
+        .title("Organic Content / YouTube Page")
+        .child(
+          S.document()
+            .schemaType("servicePage")
+            .documentId("service-organic-content-youtube")
+            .title("Organic Content / YouTube")
+        ),
+      S.listItem()
+        .title("SaaS Videos Page")
+        .child(
+          S.document()
+            .schemaType("servicePage")
+            .documentId("service-saas-videos")
+            .title("SaaS Videos")
+        ),
+      S.listItem()
+        .title("Privacy Policy")
+        .child(
+          S.document()
+            .schemaType("legalPage")
+            .documentId("legal-privacy-policy")
+            .title("Privacy Policy")
+        ),
       S.divider(),
       ...S.documentTypeListItems().filter(
-        (item) => item.getId() !== "page"
+        (item) =>
+          !["page", "servicePage", "legalPage"].includes(item.getId() ?? "")
       ),
     ]);
