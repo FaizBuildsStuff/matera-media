@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { ArrowRight, Play } from "lucide-react";
+import { colors } from "@/theme/colors";
 
 type HeroContent = {
   headline?: string;
@@ -22,8 +23,6 @@ type HeroContent = {
 const DEFAULT_CONTENT: HeroContent = {
   headline: "Scale Revenue\nWith Impact.",
   highlightedWords: ["Revenue", "Impact"],
-  subheadline:
-    "We help B2B Brands and Creators grow with organic content and high-performance motion ad creatives.",
   ctaPrimary: "Book a Strategy Call",
   ctaPrimaryLink: "#schedule",
   ctaSecondary: "View Work",
@@ -141,7 +140,8 @@ export const Hero = ({ content }: { content?: HeroContent }) => {
             className="relative min-h-screen flex flex-col items-center justify-center pt-32 pb-20 px-6 bg-[#05180D] overflow-hidden"
         >
             {/* Ultra-subtle ambient background */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-emerald-900/10 via-[#05180D] to-[#05180D] pointer-events-none" />
+            <div className="absolute inset-0 opacity-40 pointer-events-none"
+     style={{ background: colors.effects.emeraldGlow }} />
 
             <div className="max-w-7xl w-full mx-auto text-center z-10 flex flex-col items-center relative">
 
