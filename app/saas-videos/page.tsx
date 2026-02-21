@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { WorkShowcase } from "@/components/WorkShowcase";
 import Pricing from "@/components/pricing";
-import { CalendlyWidget } from "@/components/CalendlyWidget";
+import { InquiryForm } from "@/components/InquiryForm";
 import { FAQ } from "@/components/FAQ";
 import { Footer } from "@/components/Footer";
 import { SectionMerge } from "@/components/SectionMerge";
@@ -244,14 +244,12 @@ export default function SaasVideosPage() {
           <SectionMerge toColor={BG_SEC} />
         </div>
 
-        {/* Calendly */}
+        {/* Inquiry Form */}
         <div className="relative">
-          <CalendlyWidget
-          content={{
-            title: "Book a Call — SaaS Video Strategy",
-            subtitle:
-              "We’ll map your core narrative, video types, and a production plan aligned to your funnel.",
-          }}
+        <InquiryForm
+            title="Book a Call — SaaS Video Strategy"
+            subtitle="We’ll map your core narrative, video types, and a production plan aligned to your funnel."
+            sourcePage="saas-videos"
           />
           <SectionMerge toColor={BG_BASE} />
         </div>

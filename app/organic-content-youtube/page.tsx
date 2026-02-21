@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { WorkShowcase } from "@/components/WorkShowcase";
 import Pricing from "@/components/pricing";
-import { CalendlyWidget } from "@/components/CalendlyWidget";
+import { InquiryForm } from "@/components/InquiryForm";
 import { FAQ } from "@/components/FAQ";
 import { Footer } from "@/components/Footer";
 import { SectionMerge } from "@/components/SectionMerge";
@@ -244,15 +244,13 @@ export default function OrganicContentYouTubePage() {
           <SectionMerge toColor={BG_SEC} />
         </div>
 
-        {/* Calendly */}
+        {/* Inquiry Form */}
         <div className="relative">
-          <CalendlyWidget
-          content={{
-            title: "Book a Call — Content System Blueprint",
-            subtitle:
-              "We’ll map topics, formats, cadence, and a workflow your team can actually sustain.",
-          }}
-        />
+          <InquiryForm
+            title="Book a Call — Content System Blueprint"
+            subtitle="We'll map topics, formats, cadence, and a workflow your team can actually sustain."
+            sourcePage="organic-content-youtube"
+          />
           <SectionMerge toColor={BG_BASE} />
         </div>
 

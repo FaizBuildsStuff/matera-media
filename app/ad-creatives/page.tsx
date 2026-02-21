@@ -4,7 +4,7 @@ import { servicePageQuery } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { WorkShowcase } from "@/components/WorkShowcase";
 import Pricing from "@/components/pricing";
-import { CalendlyWidget } from "@/components/CalendlyWidget";
+import { InquiryForm } from "@/components/InquiryForm";
 import { FAQ } from "@/components/FAQ";
 import { Footer } from "@/components/Footer";
 import { SectionMerge } from "@/components/SectionMerge";
@@ -265,14 +265,12 @@ export default async function AdCreativesPage() {
           <SectionMerge toColor={BG_SEC} />
         </div>
 
-        {/* Calendly */}
+        {/* Inquiry Form */}
         <div className="relative">
-          <CalendlyWidget
-          content={{
-            title: calendlyTitle,
-            subtitle:
-              "Bring your best-performing ads (and your worst). Weâ€™ll map hooks, angles, and a 30-day iteration plan.",
-          }}
+          <InquiryForm
+            title={calendlyTitle}
+            subtitle="Bring your best-performing ads (and your worst). We'll map hooks, angles, and a 30-day iteration plan."
+            sourcePage="ad-creatives"
           />
           <SectionMerge toColor={BG_BASE} />
         </div>

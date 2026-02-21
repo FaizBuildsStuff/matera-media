@@ -45,8 +45,13 @@ export const structure = (S: StructureBuilder) =>
             .title("Privacy Policy")
         ),
       S.divider(),
+      S.listItem()
+        .title("Inquiries")
+        .icon(() => "📋")
+        .child(S.documentTypeList("inquiry").title("Inquiries")),
+      S.divider(),
       ...S.documentTypeListItems().filter(
         (item) =>
-          !["page", "servicePage", "legalPage"].includes(item.getId() ?? "")
+          !["page", "servicePage", "legalPage", "inquiry"].includes(item.getId() ?? "")
       ),
     ]);

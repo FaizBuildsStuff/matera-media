@@ -11,6 +11,7 @@ import problemSolutionItem from "./sections/problemSolutionItem";
 import resultItem from "./sections/resultItem";
 import servicePage from "./servicePage";
 import legalPage from "./legalPage";
+import inquiry from "./inquiry";
 
 export const schemaTypes = [
   page,
@@ -30,4 +31,5 @@ export const schemaTypes = [
   resultItem,
   servicePage,
   legalPage,
+  inquiry,
 ];
