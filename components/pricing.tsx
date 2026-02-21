@@ -4,51 +4,67 @@ import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check, Zap } from "lucide-react";
+import { colors } from "@/theme/colors";
+import Link from "next/link";
 
-// Register ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
 
-const DEFAULT_PLANS = [
-    { name: "Starter", price: "$2,500", period: "/project", description: "Perfect for emerging brands needing a strong visual foundation.", features: ["Brand Identity System", "Social Media Assets (5)", "Basic Motion Graphics", "2 Rounds of Revisions", "Standard Delivery (3 weeks)"], popular: false },
-    { name: "Growth", price: "$5,000", period: "/month", description: "Comprehensive content production for scaling businesses.", features: ["Full Brand Strategy", "4 High-Performance Video Ads", "Unlimited Static Assets", "Priority Support", "Weekly Strategy Calls", "48h Turnaround"], popular: true },
-    { name: "Enterprise", price: "Custom", period: "", description: "Tailored solutions for large-scale campaigns and organizations.", features: ["Dedicated Creative Team", "Full-Funnel Campaign Production", "TVC & Broadcast Quality", "24/7 Priority Support", "Custom Integrations", "White-glove Onboarding"], popular: false },
+const PLANS = [
+    {
+        name: "Brand Foundation",
+        description:
+            "For brands building a strong visual and strategic base.",
+        features: [
+            "Brand Positioning & Messaging Framework",
+            "Visual Identity System (Logo, Typography, Colors)",
+            "Creative Direction Guide",
+            "5 High-Impact Social Assets",
+            "Launch Strategy Consultation",
+        ],
+        popular: false,
+    },
+    {
+        name: "Growth Engine",
+        description:
+            "Ongoing performance creative for scaling brands.",
+        features: [
+            "Monthly High-Performance Video Ads",
+            "Unlimited Static & Social Creatives",
+            "Ad Creative Strategy & Testing Plan",
+            "Weekly Performance Review Calls",
+            "48–72h Creative Turnaround",
+            "Dedicated Creative Strategist",
+        ],
+        popular: true,
+    },
+    {
+        name: "Full-Funnel Domination",
+        description:
+            "Enterprise-level campaign systems for aggressive growth.",
+        features: [
+            "Full-Funnel Campaign Creative",
+            "Advanced Motion & Broadcast-Level Production",
+            "Landing Page Creative Direction",
+            "Multi-Channel Ad Systems",
+            "Dedicated Creative Team",
+            "Priority 24/7 Support",
+        ],
+        popular: false,
+    },
 ];
 
-type PricingContent = {
-    label?: string;
-    title?: string;
-    highlightedWord?: string;
-    subtitle?: string;
-    plans?: Array<{ _key: string; name?: string; price?: string; period?: string; description?: string; features?: string[]; popular?: boolean }>;
-};
-
-export default function Pricing({ content }: { content?: PricingContent }) {
-    const label = content?.label ?? "Investment";
-    const titleText = content?.title ?? "Transparent Pricing.";
-    const highlightedWord = content?.highlightedWord ?? "Pricing.";
-    const subtitle = content?.subtitle ?? "Choose the partnership model that best fits your growth stage. No hidden fees, just results.";
-    const plans = (content?.plans && content.plans.length > 0
-        ? content.plans.map((p) => ({
-            name: p.name ?? "",
-            price: p.price ?? "",
-            period: p.period ?? "",
-            description: p.description ?? "",
-            features: p.features ?? [],
-            popular: p.popular ?? false,
-          }))
-        : DEFAULT_PLANS
-    ).filter((p) => p.name);
+export default function Pricing() {
     const sectionRef = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLDivElement>(null);
     const cardsRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            // Header Animation
-            gsap.fromTo(headerRef.current,
-                { y: 50, opacity: 0 },
+            gsap.fromTo(
+                headerRef.current,
+                { y: 60, opacity: 0 },
                 {
                     y: 0,
                     opacity: 1,
@@ -57,59 +73,64 @@ export default function Pricing({ content }: { content?: PricingContent }) {
                     scrollTrigger: {
                         trigger: headerRef.current,
                         start: "top 85%",
-                    }
+                    },
                 }
             );
 
-            // Cards Animation
-            const cards = cardsRef.current?.children;
-            if (cards) {
-                gsap.fromTo(cards,
-                    { y: 80, opacity: 0, scale: 0.9 },
-                    {
-                        y: 0,
-                        opacity: 1,
-                        scale: 1,
-                        duration: 0.8,
-                        stagger: 0.2,
-                        ease: "power2.out",
-                        scrollTrigger: {
-                            trigger: cardsRef.current,
-                            start: "top 75%",
-                        }
-                    }
-                );
-            }
+            gsap.fromTo(
+                cardsRef.current?.children,
+                { y: 80, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 1,
+                    stagger: 0.2,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: cardsRef.current,
+                        start: "top 80%",
+                    },
+                }
+            );
         }, sectionRef);
 
         return () => ctx.revert();
     }, []);
 
     return (
-        <section ref={sectionRef} id="pricing" className="py-32 px-6 bg-[#05180D] relative overflow-hidden">
+        <section
+            ref={sectionRef}
+            id="pricing"
+            className="py-32 px-6 bg-[#05180D] relative overflow-hidden"
+        >
+            {/* Subtle emerald glow */}
+            <div
+                className="absolute inset-0 pointer-events-none opacity-40"
+                style={{ background: colors.effects.emeraldGlow }}
+            />
 
-            <div className="max-w-7xl mx-auto">
+            <div className="relative z-10 max-w-7xl mx-auto">
                 {/* Header */}
-                <div ref={headerRef} className="text-center mb-20 space-y-4">
-                    <p className="text-emerald-400 font-medium tracking-widest uppercase text-xs">{label}</p>
-                    <h2 className="text-4xl md:text-5xl font-instrument-sans font-medium text-white">
-                        {titleText.split(highlightedWord)[0]}
-                        <span className="font-instrument-serif italic text-emerald-400">{highlightedWord}</span>
-                        {titleText.split(highlightedWord)[1] || ""}
+                <div ref={headerRef} className="text-center mb-20 space-y-6">
+                    <h2 className="text-4xl md:text-5xl font-semibold text-white">
+                        Our offers.
                     </h2>
-                    <p className="text-white/60 max-w-xl mx-auto font-light text-lg">
-                        {subtitle}
+                    <p className="text-white/60 max-w-2xl mx-auto text-lg">
+                        Two core disciplines. One goal: measurable growth.
                     </p>
                 </div>
 
-                {/* Pricing Cards */}
-                <div ref={cardsRef} className="grid gap-8 md:grid-cols-3 items-start">
-                    {plans.map((plan, index) => (
+                {/* Cards */}
+                <div
+                    ref={cardsRef}
+                    className="grid gap-8 md:grid-cols-3 items-stretch"
+                >
+                    {PLANS.map((plan, index) => (
                         <Card
                             key={index}
-                            className={`relative flex flex-col h-full border-white/10 backdrop-blur-sm transition-all duration-500 overflow-hidden group hover:border-white/20 hover:shadow-2xl hover:shadow-emerald-900/10 ${plan.popular
-                                ? "bg-white/10 border-emerald-500/30 shadow-lg shadow-emerald-900/20 scale-105 md:-mt-4 z-10"
-                                : "bg-white/5"
+                            className={`relative flex flex-col h-full border transition-all duration-500 overflow-hidden group ${plan.popular
+                                    ? "bg-white/10 border-emerald-500/30 shadow-2xl shadow-emerald-900/20 scale-105 md:-mt-6 z-10"
+                                    : "bg-white/5 border-white/10 hover:border-white/20"
                                 }`}
                         >
                             {plan.popular && (
@@ -118,28 +139,27 @@ export default function Pricing({ content }: { content?: PricingContent }) {
 
                             <CardHeader className="pb-8">
                                 {plan.popular && (
-                                    <div className="mb-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-medium w-fit border border-emerald-500/20">
-                                        <Zap className="w-3 h-3 fill-emerald-300" /> Most Popular
+                                    <div className="mb-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs border border-emerald-500/20 w-fit">
+                                        <Zap className="w-3 h-3 fill-emerald-300" />
+                                        Most Popular
                                     </div>
                                 )}
-                                <CardTitle className="text-xl font-instrument-sans font-medium text-white mb-2">
+
+                                <CardTitle className="text-xl font-semibold text-white mb-3">
                                     {plan.name}
                                 </CardTitle>
-                                <div className="flex items-baseline gap-1">
-                                    <span className="text-4xl font-semibold text-white tracking-tight">{plan.price}</span>
-                                    {plan.period && <span className="text-white/50 text-sm font-light">{plan.period}</span>}
-                                </div>
-                                <CardDescription className="text-white/60 font-light mt-4 leading-relaxed">
+
+                                <p className="text-white/60 text-sm leading-relaxed">
                                     {plan.description}
-                                </CardDescription>
+                                </p>
                             </CardHeader>
 
-                            <CardContent className="space-y-6 flex-grow">
+                            <CardContent className="flex-grow space-y-6">
                                 <hr className="border-white/10 border-dashed" />
-                                <ul className="space-y-4 text-sm font-light text-white/80">
+                                <ul className="space-y-4 text-sm text-white/80">
                                     {plan.features.map((feature, i) => (
-                                        <li key={i} className="flex items-start gap-3 group-hover:text-white transition-colors">
-                                            <div className="mt-0.5 rounded-full bg-emerald-500/20 p-0.5">
+                                        <li key={i} className="flex items-start gap-3">
+                                            <div className="mt-1 rounded-full bg-emerald-500/20 p-1">
                                                 <Check className="w-3 h-3 text-emerald-400" />
                                             </div>
                                             {feature}
@@ -149,18 +169,17 @@ export default function Pricing({ content }: { content?: PricingContent }) {
                             </CardContent>
 
                             <CardFooter className="mt-auto pt-8">
-                                <Button
-                                    className={`w-full h-12 rounded-full text-base font-medium transition-all duration-300 ${plan.popular
-                                        ? "bg-white text-black hover:bg-emerald-50 hover:scale-[1.02]"
-                                        : "bg-white/10 text-white hover:bg-white/20 border border-white/5"
-                                        }`}
-                                >
-                                    Get Started
-                                </Button>
+                                <Link href="#schedule" className="w-full">
+                                    <Button
+                                        className={`w-full h-12 rounded-full text-sm font-medium transition-all duration-300 ${plan.popular
+                                                ? "bg-white text-black hover:bg-emerald-50 hover:scale-[1.02]"
+                                                : "bg-white/10 text-white hover:bg-white/20 border border-white/10"
+                                            }`}
+                                    >
+                                        Book Strategy Call
+                                    </Button>
+                                </Link>
                             </CardFooter>
-
-                            {/* Background Gradient on Hover */}
-                            <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                         </Card>
                     ))}
                 </div>

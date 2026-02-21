@@ -1,102 +1,134 @@
-'use client';
+"use client";
 
-import Script from 'next/script';
-import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
+import Script from "next/script";
+import Image from "next/image";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const DEFAULT_CALENDLY_URL = "https://calendly.com/m-faizurrehman-crypto/30min?primary_color=059669&background_color=05180D&text_color=ffffff";
+gsap.registerPlugin(ScrollTrigger);
+
+const DEFAULT_CALENDLY_URL =
+  "https://calendly.com/m-faizurrehman-crypto/30min?primary_color=059669&background_color=05180D&text_color=ffffff";
 
 type CalendlyContent = {
-    title?: string;
-    highlightedWord?: string;
-    subtitle?: string;
-    calendlyUrl?: string;
+  title?: string;
+  subtitle?: string;
+  calendlyUrl?: string;
 };
 
 export const CalendlyWidget = ({ content }: { content?: CalendlyContent }) => {
-    const titleText = content?.title ?? "Let's Build Something Extraordinary";
-    const highlightedWord = content?.highlightedWord ?? "Extraordinary";
-    const subtitle = content?.subtitle ?? "Schedule a 30-minute discovery call. No commitment, just a conversation about your vision and how we can bring it to life.";
-    const calendlyUrl = content?.calendlyUrl || DEFAULT_CALENDLY_URL;
-    const containerRef = useRef<HTMLDivElement>(null);
-    const titleRef = useRef<HTMLDivElement>(null);
-    const widgetRef = useRef<HTMLDivElement>(null);
+  const title =
+    content?.title ?? "Let’s Architect Your Next Phase of Growth.";
+  const subtitle =
+    content?.subtitle ??
+    "Book a strategic discovery call to explore how we can build a performance-driven creative system for your brand.";
+  const calendlyUrl = content?.calendlyUrl || DEFAULT_CALENDLY_URL;
 
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        if (titleRef.current) {
-                            gsap.fromTo(titleRef.current,
-                                { opacity: 0, y: 30 },
-                                { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
-                            );
-                        }
-                        if (widgetRef.current) {
-                            gsap.fromTo(widgetRef.current,
-                                { opacity: 0, scale: 0.95, y: 20 },
-                                { opacity: 1, scale: 1, y: 0, duration: 1, delay: 0.2, ease: 'power3.out' }
-                            );
-                        }
-                        observer.disconnect();
-                    }
-                });
-            },
-            { threshold: 0.1 }
-        );
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const widgetRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
 
-        if (containerRef.current) {
-            observer.observe(containerRef.current);
-        }
+  useEffect(() => {
+    const ctx = gsap.context(() => {
 
-        return () => observer.disconnect();
-    }, []);
+      // Scroll reveal
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+        },
+      });
 
-    return (
-        <section ref={containerRef} className="w-full py-32 relative overflow-hidden bg-[#05180D]" id="schedule">
-            {/* Background Ambience */}
-            <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/5 rounded-full blur-[120px]" />
-            </div>
+      tl.fromTo(
+        headerRef.current,
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
+      ).fromTo(
+        widgetRef.current,
+        { opacity: 0, y: 80 },
+        { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" },
+        "-=0.6"
+      );
 
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
-                <div ref={titleRef} className="text-center mb-16 opacity-0">
-                    <h2 className="text-4xl md:text-5xl font-medium text-white mb-6 font-instrument-sans tracking-tight leading-tight">
-                        {titleText.split(highlightedWord)[0]}
-                        <span className="text-emerald-400 inline-block relative">
-                            {highlightedWord}
-                            <span className="absolute -bottom-2 left-0 w-full h-1 bg-emerald-500/30 rounded-full blur-sm"></span>
-                        </span>
-                        {titleText.split(highlightedWord)[1] || ""}
-                    </h2>
-                    <p className="text-white/40 text-lg max-w-xl mx-auto font-light leading-relaxed">
-                        {subtitle}
-                    </p>
-                </div>
+      // Slow floating glow animation
+      gsap.to(glowRef.current, {
+        y: 40,
+        duration: 6,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
 
-                <div ref={widgetRef} className="relative max-w-4xl mx-auto opacity-0">
-                    {/* Glass Container */}
-                    <div className="rounded-3xl p-1 bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-md shadow-2xl border border-white/5">
-                        <div className="bg-[#05180D]/80 rounded-[22px] overflow-hidden relative">
-                            <div
-                                className="calendly-inline-widget w-full"
-                                data-url={calendlyUrl}
-                                style={{ minWidth: '320px', height: '1100px' }}
-                            />
-                        </div>
-                    </div>
+    }, sectionRef);
 
-                    {/* Decorative Elements */}
-                    <div className="absolute -top-12 -right-12 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl animate-pulse" />
-                    <div className="absolute -bottom-8 -left-8 w-40 h-40 bg-cyan-500/5 rounded-full blur-3xl animate-pulse delay-700" />
-                </div>
+    return () => ctx.revert();
+  }, []);
 
-                <Script
-                    src="https://assets.calendly.com/assets/external/widget.js"
-                    strategy="lazyOnload"
-                />
-            </div>
-        </section>
-    );
+  return (
+    <section
+      ref={sectionRef}
+      id="schedule"
+      className="relative py-40 px-6 bg-[#05180D] overflow-hidden"
+    >
+
+      {/* Animated Grid */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] bg-[size:60px_60px]" />
+
+      {/* Large Emerald Glow */}
+      <div
+        ref={glowRef}
+        className="absolute top-1/2 left-1/2 w-[900px] h-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[160px]"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(16,185,129,0.25) 0%, transparent 70%)",
+        }}
+      />
+
+      {/* Secondary Floating Glow */}
+      <div className="absolute top-20 left-20 w-[300px] h-[300px] bg-emerald-500/10 rounded-full blur-[100px] animate-pulse" />
+      <div className="absolute bottom-20 right-20 w-[350px] h-[350px] bg-teal-400/10 rounded-full blur-[120px] animate-pulse delay-700" />
+
+      <div className="relative z-10 max-w-6xl mx-auto text-center">
+
+        {/* Logo */}
+        <div className="flex justify-center mb-10">
+          <Image
+            src="/Logo.png"
+            alt="Matera Media Logo"
+            width={120}
+            height={120}
+            className="opacity-90"
+            priority
+          />
+        </div>
+
+        {/* Header */}
+        <div ref={headerRef} className="mb-20">
+          <h2 className="text-4xl md:text-6xl font-semibold text-white tracking-tight mb-6 leading-tight">
+            {title}
+          </h2>
+          <p className="text-white/60 text-lg max-w-2xl mx-auto leading-relaxed">
+            {subtitle}
+          </p>
+        </div>
+
+        {/* Calendly */}
+        <div ref={widgetRef} className="max-w-4xl mx-auto">
+          <div
+            className="calendly-inline-widget w-full"
+            data-url={calendlyUrl}
+            style={{ minWidth: "320px", height: "1000px" }}
+          />
+        </div>
+
+      </div>
+
+      <Script
+        src="https://assets.calendly.com/assets/external/widget.js"
+        strategy="lazyOnload"
+      />
+    </section>
+  );
 };
