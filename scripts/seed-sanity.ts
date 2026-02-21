@@ -63,32 +63,16 @@ const homePageDocument = {
       title: "Selected",
       highlightedWord: "Works",
       description:
-        "A curated selection of projects that define our approach to digital storytelling and visual excellence.",
+        "Shorts & reels that drive results. Filter by category.",
       items: [
-        {
-          _key: "work-item-1",
-          title: "Luma Interface",
-          category: "Product Design",
-          tags: ["UI/UX", "Motion"],
-        },
-        {
-          _key: "work-item-2",
-          title: "Apex Finance",
-          category: "Brand Identiy",
-          tags: ["Branding", "Strategy"],
-        },
-        {
-          _key: "work-item-3",
-          title: "Nvidia Reveal",
-          category: "Commercial",
-          tags: ["3D Animation", "VFX"],
-        },
-        {
-          _key: "work-item-4",
-          title: "Flow State",
-          category: "Art Direction",
-          tags: ["Concept", "Visuals"],
-        },
+        { _key: "work-item-1", title: "Meta UGC Ad", category: "Ad Creatives", tags: ["UGC", "15s"] },
+        { _key: "work-item-2", title: "TikTok Performance", category: "Ad Creatives", tags: ["Hook", "6s"] },
+        { _key: "work-item-3", title: "YouTube Short", category: "Organic Content", tags: ["Vertical", "60s"] },
+        { _key: "work-item-4", title: "Creator Reel", category: "Organic Content", tags: ["Behind Scenes"] },
+        { _key: "work-item-5", title: "Product Demo", category: "SaaS Videos", tags: ["Explainer"] },
+        { _key: "work-item-6", title: "Feature Launch", category: "SaaS Videos", tags: ["30s"] },
+        { _key: "work-item-7", title: "Brand Reveal", category: "Motion Graphics", tags: ["3D", "Cinematic"] },
+        { _key: "work-item-8", title: "Logo Animation", category: "Motion Graphics", tags: ["2D"] },
       ],
     },
     {
