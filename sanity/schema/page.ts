@@ -34,6 +34,7 @@ export default defineType({
         { type: "pricing" },
         { type: "faq" },
         { type: "calendlyWidget" },
+        { type: "testimonials" },
       ],
     }),
   ],

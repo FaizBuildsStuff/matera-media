@@ -9,22 +9,9 @@ export default defineType({
       name: "headline",
       title: "Headline",
       type: "text",
-      rows: 3,
-      description: "Main headline text. Use line breaks for multiple lines.",
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "highlightedWords",
-      title: "Highlighted Words",
-      type: "array",
-      of: [{ type: "string" }],
-      description: "Words to style with emerald accent (e.g. Revenue, Impact)",
-    }),
-    defineField({
-      name: "subheadline",
-      title: "Subheadline",
-      type: "text",
       rows: 2,
+      description: "Main tagline — displayed as minimalist headline. Editable from Sanity.",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "ctaPrimary",
@@ -72,13 +59,8 @@ export default defineType({
   preview: {
     select: { headline: "headline" },
     prepare({ headline }) {
-      const preview = headline
-        ? headline.split("\n")[0].slice(0, 50) + "..."
-        : "Hero Section";
-      return {
-        title: "Hero",
-        subtitle: preview,
-      };
+      const preview = headline ? headline.slice(0, 60) + "..." : "Hero Section";
+      return { title: "Hero", subtitle: preview };
     },
   },
 });
