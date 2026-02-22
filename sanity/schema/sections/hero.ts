@@ -8,10 +8,20 @@ export default defineType({
     defineField({
       name: "headline",
       title: "Headline",
-      type: "text",
-      rows: 2,
-      description: "Main tagline — displayed as minimalist headline. Editable from Sanity.",
+      type: "text", // Rows property works here
+      rows: 3,
+      description: "Main tagline — displayed as minimalist headline.",
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "highlightedWords",
+      title: "Words to Highlight",
+      type: "array", // Of property works here
+      of: [{ type: "string" }],
+      description: "Type a word and PRESS ENTER to save it as a tag.",
+      options: {
+        layout: "tags",
+      },
     }),
     defineField({
       name: "ctaPrimary",
@@ -53,7 +63,7 @@ export default defineType({
       name: "videoUrl",
       title: "Video URL",
       type: "url",
-      description: "Optional: Link to video or showreel",
+      description: "Paste a YouTube link here.",
     }),
   ],
   preview: {
