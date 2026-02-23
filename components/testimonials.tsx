@@ -39,48 +39,6 @@ const testimonials: Testimonial[] = [
         image: 'https://randomuser.me/api/portraits/women/3.jpg',
         quote: 'Finally, a partner who gets both creativity and performance. Their organic content doesn\'t just look good—it drives actual pipeline and revenue. Game-changer for our brand.',
     },
-    {
-        name: 'James Okonkwo',
-        role: 'Founder, B2B Brand',
-        image: 'https://randomuser.me/api/portraits/men/3.jpg',
-        quote: 'The motion ad creatives Matera Media produced outperformed everything we had before. Clear ROI, professional process, and a team that truly cares about our growth.',
-    },
-    {
-        name: 'Nina Patel',
-        role: 'Growth Lead',
-        image: 'https://randomuser.me/api/portraits/women/4.jpg',
-        quote: 'Organic content that actually converts. Matera Media helped us build a content engine that feeds our funnel. Our webinar signups doubled within 90 days.',
-    },
-    {
-        name: 'Ryan Mitchell',
-        role: 'Director of Demand Gen',
-        image: 'https://randomuser.me/api/portraits/men/4.jpg',
-        quote: 'Their ad creatives cut through the noise. We\'re in a competitive space and Matera Media\'s motion ads helped us stand out and capture attention. Worth every penny.',
-    },
-    {
-        name: 'Sophie Laurent',
-        role: 'Brand Manager',
-        image: 'https://randomuser.me/api/portraits/women/5.jpg',
-        quote: 'Professional, strategic, and incredibly creative. Matera Media helped us articulate our B2B story in a way that resonates. Our engagement metrics have never been higher.',
-    },
-    {
-        name: 'Michael Torres',
-        role: 'CEO, Creator Agency',
-        image: 'https://randomuser.me/api/portraits/men/5.jpg',
-        quote: 'We partner with Matera Media for our top-tier clients. Their production quality and understanding of the creator economy make them our go-to for high-impact content.',
-    },
-    {
-        name: 'Priya Sharma',
-        role: 'Marketing Director',
-        image: 'https://randomuser.me/api/portraits/women/6.jpg',
-        quote: 'The strategy call alone was valuable. Matera Media doesn\'t just produce—they think. Our content mix is now aligned with our revenue goals. Highly recommend.',
-    },
-    {
-        name: 'Daniel Kim',
-        role: 'VP of Growth',
-        image: 'https://randomuser.me/api/portraits/men/6.jpg',
-        quote: 'Best investment we made in our marketing stack. Matera Media\'s motion creatives and organic content strategy drove measurable pipeline growth. Exceptional work.',
-    },
 ]
 
 const chunkArray = (array: Testimonial[], chunkSize: number): Testimonial[][] => {
