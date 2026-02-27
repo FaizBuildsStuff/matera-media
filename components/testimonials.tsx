@@ -1,3 +1,5 @@
+"use client";
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Card, CardContent } from '@/components/ui/card'
 
@@ -62,23 +64,38 @@ export default function WallOfLoveSection({ content }: { content?: TestimonialsC
 
     return (
         <section className="py-32 px-6 bg-[#05180D] relative overflow-hidden">
-            <div className="mx-auto max-w-6xl">
+            {/* --- IMAGE TEXTURE & GRADIENT OVERLAYS --- */}
+            
+            {/* 1. Grainy Texture Overlay (Matching the uploaded image texture) */}
+            <div className="absolute inset-0 z-0 opacity-[0.04] pointer-events-none" 
+                 style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.60' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}>
+            </div>
+            
+            {/* 2. Main Emerald Light Beam (Matches the image's lighting) */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-radial from-[#157F53]/20 via-transparent to-transparent blur-[120px] pointer-events-none"></div>
+
+            {/* 3. Section Merge Gradients (Ensures seamless flow with up/down green sections) */}
+            <div className="absolute top-0 left-0 right-0 h-40 bg-linear-to-b from-[#05180D] to-transparent z-1"></div>
+            <div className="absolute bottom-0 left-0 right-0 h-40 bg-linear-to-t from-[#05180D] to-transparent z-1"></div>
+
+            <div className="mx-auto max-w-6xl relative z-10">
                 <div className="text-center mb-16">
-                    <h2 className="text-4xl md:text-5xl font-instrument-sans font-medium text-white mb-4">
+                    <h2 className="text-4xl md:text-5xl font-instrument-sans font-medium text-white mb-4 tracking-tight">
                         {title}
                     </h2>
-                    <p className="text-white/60 max-w-xl mx-auto font-light">{subtitle}</p>
+                    <p className="text-white/50 max-w-xl mx-auto font-light leading-relaxed">{subtitle}</p>
                 </div>
-                <div className="grid gap-4 sm:grid-cols-2 md:mt-12 lg:grid-cols-3">
+
+                <div className="grid gap-6 sm:grid-cols-2 md:mt-12 lg:grid-cols-3">
                     {testimonialChunks.map((chunk, chunkIndex) => (
-                        <div key={chunkIndex} className="space-y-4">
+                        <div key={chunkIndex} className="space-y-6">
                             {chunk.map(({ name, role, quote, image }, index) => (
                                 <Card
                                     key={index}
-                                    className="bg-white/5 border border-white/10 backdrop-blur-sm hover:border-white/20 transition-colors duration-300"
+                                    className="bg-white/[0.02] border border-white/5 backdrop-blur-md hover:border-emerald-500/20 hover:bg-white/[0.05] transition-all duration-500"
                                 >
                                     <CardContent className="grid grid-cols-[auto_1fr] gap-4 pt-6 pb-6">
-                                        <Avatar className="size-10 border-2 border-white/10">
+                                        <Avatar className="size-10 border border-white/10">
                                             <AvatarImage
                                                 alt={name}
                                                 src={image}
@@ -86,16 +103,18 @@ export default function WallOfLoveSection({ content }: { content?: TestimonialsC
                                                 width="120"
                                                 height="120"
                                             />
-                                            <AvatarFallback className="bg-white/10 text-white text-sm">
+                                            <AvatarFallback className="bg-white/10 text-white text-xs">
                                                 {name.split(' ').map(n => n[0]).join('').slice(0, 2)}
                                             </AvatarFallback>
                                         </Avatar>
 
                                         <div>
-                                            <h3 className="font-medium text-white font-instrument-sans">{name}</h3>
-                                            <span className="text-white/50 block text-sm font-light">{role}</span>
+                                            <h3 className="font-medium text-white/90 text-sm font-instrument-sans">{name}</h3>
+                                            <span className="text-white/40 block text-xs font-light">{role}</span>
                                             <blockquote className="mt-3">
-                                                <p className="text-white/70 font-light text-sm leading-relaxed">{quote}</p>
+                                                <p className="text-white/60 font-light text-sm leading-relaxed italic">
+                                                    "{quote}"
+                                                </p>
                                             </blockquote>
                                         </div>
                                     </CardContent>
