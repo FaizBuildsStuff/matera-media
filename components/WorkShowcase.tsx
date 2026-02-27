@@ -12,7 +12,6 @@ const CATEGORIES = [
   { id: "ad-creatives", label: "Ad Creatives", slug: "ad-creatives" },
   { id: "organic-content", label: "Organic Content / YouTube", slug: "organic-content" },
   { id: "saas-videos", label: "SaaS Videos", slug: "saas-videos" },
-  { id: "motion-graphics", label: "Motion Graphics", slug: "motion-graphics" },
 ] as const;
 
 type CategorySlug = (typeof CATEGORIES)[number]["slug"];
@@ -35,7 +34,6 @@ function mapCategoryToSlug(category: string): CategorySlug {
   if (c.includes("ad") || c.includes("creative")) return "ad-creatives";
   if (c.includes("organic") || c.includes("youtube") || c.includes("content")) return "organic-content";
   if (c.includes("saas") || c.includes("software")) return "saas-videos";
-  if (c.includes("motion") || c.includes("graphic") || c.includes("brand")) return "motion-graphics";
   return "ad-creatives";
 }
 
@@ -57,8 +55,6 @@ const DEFAULT_WORKS: WorkItem[] = [
   { id: "4", title: "Creator Reel", category: "Organic Content", categorySlug: "organic-content", tags: ["Behind Scenes"] },
   { id: "5", title: "Product Demo", category: "SaaS Videos", categorySlug: "saas-videos", tags: ["Explainer"] },
   { id: "6", title: "Feature Launch", category: "SaaS Videos", categorySlug: "saas-videos", tags: ["30s"] },
-  { id: "7", title: "Brand Reveal", category: "Motion Graphics", categorySlug: "motion-graphics", tags: ["3D", "Cinematic"] },
-  { id: "8", title: "Logo Animation", category: "Motion Graphics", categorySlug: "motion-graphics", tags: ["2D"] },
 ];
 
 type WorkShowcaseContent = {

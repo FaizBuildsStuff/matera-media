@@ -39,7 +39,7 @@ export const Footer = () => {
                         {[
                             { name: 'Home', url: '/' },
                             { name: 'Ad Creatives', url: '/ad-creatives' },
-                            { name: 'YouTube Growth', url: '/organic-content-youtube' },
+                            { name: 'Organic/YouTube Growth', url: '/organic-content-youtube' },
                             { name: 'SaaS Videos', url: '/saas-videos' },
                             { name: 'Privacy', url: '/privacy-policy' },
                         ].map((item) => (
@@ -89,12 +89,6 @@ export const Footer = () => {
                     <div className="flex gap-12">
                         <Link href="/privacy-policy" className="text-white/10 hover:text-white text-[10px] font-bold uppercase tracking-widest transition-colors">Privacy Policy</Link>
                         <Link href="#" className="text-white/10 hover:text-white text-[10px] font-bold uppercase tracking-widest transition-colors">Terms of Service</Link>
-                    </div>
-
-                    {/* Status Marker */}
-                    <div className="flex items-center gap-3 px-4 py-2 rounded-full border border-white/5 bg-white/[0.02]">
-                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
-                        <span className="text-white/20 text-[10px] font-bold uppercase tracking-tighter">Availability: Q1 2026</span>
                     </div>
                 </div>
             </div>
