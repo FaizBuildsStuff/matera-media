@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowRight, Fingerprint, Zap, Target, LucideIcon } from 'lucide-react';
+import { ArrowRight, Fingerprint, Zap, Target, LucideIcon, Plus } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,47 +15,30 @@ interface Step {
 }
 
 const DEFAULT_STEPS: Step[] = [
-    { id: '01', icon: Target, title: 'Strategy & Concept', description: "We dive deep into your brand's core values to craft a unique visual narrative." },
-    { id: '02', icon: Fingerprint, title: 'Production & Design', description: 'Our team brings the concept to life with high-fidelity visuals and motion.' },
-    { id: '03', icon: Zap, title: 'Launch & Optimization', description: 'We deliver assets ready for deployment and analyze performance for impact.' },
+    { id: '01', icon: Target, title: 'Strategy & Concept', description: "Deep-dive brand analysis to craft a high-performance visual narrative." },
+    { id: '02', icon: Fingerprint, title: 'Production & Design', description: 'Bringing concepts to life with high-fidelity visuals and cinematic motion.' },
+    { id: '03', icon: Zap, title: 'Launch & Optimization', description: 'Deploying assets and analyzing data to maximize revenue impact.' },
 ];
 
-type HowItWorksContent = {
-    label?: string;
-    title?: string;
-    highlightedWord?: string;
-    steps?: Array<{ _key: string; id?: string; title?: string; description?: string }>;
-};
-
-export const HowItWorks = ({ content }: { content?: HowItWorksContent }) => {
+export const HowItWorks = ({ content }: { content?: any }) => {
     const label = content?.label ?? "Evolution Protocol";
     const titleText = content?.title ?? "Turning Vision into High-Performance";
     const highlightedWord = content?.highlightedWord ?? "High-Performance";
-    
-    const steps = (content?.steps && content.steps.length > 0
-        ? content.steps.map((s, i) => ({
-            id: s.id ?? `0${i + 1}`,
-            title: s.title ?? "",
-            description: s.description ?? "",
-            icon: DEFAULT_STEPS[i]?.icon || Zap
-          }))
-        : DEFAULT_STEPS
-    ).filter((s) => s.title);
+    const steps = DEFAULT_STEPS;
 
     const sectionRef = useRef<HTMLDivElement>(null);
-    const triggerRef = useRef<HTMLDivElement>(null);
-    const progressRef = useRef<HTMLDivElement>(null);
+    const lineRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            // 1. Progress Bar Logic
-            gsap.fromTo(progressRef.current, 
+            // 1. Central Scanning Line
+            gsap.fromTo(lineRef.current, 
                 { scaleY: 0 }, 
                 { 
                     scaleY: 1, 
                     ease: "none", 
                     scrollTrigger: {
-                        trigger: triggerRef.current,
+                        trigger: sectionRef.current,
                         start: "top 20%",
                         end: "bottom 80%",
                         scrub: true
@@ -63,34 +46,36 @@ export const HowItWorks = ({ content }: { content?: HowItWorksContent }) => {
                 }
             );
 
-            // 2. Individual Step Stagger Reveal
-            const stepItems = gsap.utils.toArray('.step-container');
-            stepItems.forEach((step: any) => {
-                gsap.fromTo(step, 
-                    { opacity: 0, x: 50, filter: 'blur(10px)' },
+            // 2. Kinetic Text Reveal
+            const rows = gsap.utils.toArray('.process-row');
+            rows.forEach((row: any, i: number) => {
+                const isEven = i % 2 === 0;
+                gsap.fromTo(row.querySelector('.row-content'), 
+                    { 
+                        opacity: 0, 
+                        x: isEven ? -100 : 100,
+                        filter: 'blur(10px)'
+                    },
                     {
-                        opacity: 1, x: 0, filter: 'blur(0px)',
+                        opacity: 1, 
+                        x: 0, 
+                        filter: 'blur(0px)',
+                        duration: 1.5,
                         scrollTrigger: {
-                            trigger: step,
-                            start: "top 80%",
-                            end: "top 40%",
-                            scrub: 1,
+                            trigger: row,
+                            start: "top 70%",
+                            toggleActions: "play none none reverse"
                         }
                     }
                 );
             });
 
-            // 3. Title Reveal on Scroll
-            gsap.from(".char-reveal", {
-                opacity: 0,
-                y: 100,
-                rotateX: -90,
-                stagger: 0.02,
-                duration: 1.5,
-                ease: "expo.out",
+            // 3. Parallax Background Text
+            gsap.to(".bg-parallax-text", {
+                y: -150,
                 scrollTrigger: {
                     trigger: sectionRef.current,
-                    start: "top 80%",
+                    scrub: 1
                 }
             });
         }, sectionRef);
@@ -102,82 +87,91 @@ export const HowItWorks = ({ content }: { content?: HowItWorksContent }) => {
         <section
             ref={sectionRef}
             id="process"
-            className="py-32 px-6 bg-[#05180D] relative overflow-hidden"
+            className="py-32 px-6 bg-transparent relative overflow-hidden min-h-screen"
         >
-            {/* --- ARCHITECTURAL BACKGROUND --- */}
-            <div className="absolute inset-0 opacity-[0.02] pointer-events-none" 
-                 style={{ backgroundImage: `url("https://www.transparenttextures.com/patterns/stardust.png")` }} />
+            {/* --- ARCHITECTURAL BACKGROUND (NO CARDS) --- */}
             
-            {/* Kinetic Glow Orbs */}
-            <div className="absolute -top-24 -left-24 w-96 h-96 bg-emerald-500/10 blur-[120px] rounded-full animate-pulse" />
-            <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-emerald-400/5 blur-[120px] rounded-full" />
+            {/* Massive Parallax Text Filling Space */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0">
+                <h2 className="bg-parallax-text text-[30vw] font-black text-white/[0.01] uppercase tracking-tighter">
+                    PROCESS
+                </h2>
+            </div>
 
-            <div className="max-w-7xl mx-auto relative z-10 flex flex-col lg:flex-row gap-20">
+            {/* Kinetic Background Skeleton */}
+            <div className="absolute inset-0 z-0 pointer-events-none opacity-20">
+                <div className="absolute left-[50%] top-0 h-full w-px bg-white/5" />
+                <Plus className="absolute top-20 right-[48%] text-emerald-400/20 w-8 h-8" />
+            </div>
+
+            <div className="max-w-7xl mx-auto relative z-10">
                 
-                {/* --- LEFT: STICKY HEADING --- */}
-                <div className="lg:w-1/2 lg:sticky lg:top-32 h-fit">
-                    <div className="flex items-center gap-4 mb-8">
-                        <div className="h-[1px] w-12 bg-emerald-500/50" />
-                        <p className="text-emerald-400 font-bold tracking-[0.5em] uppercase text-[10px]">
-                            {label}
-                        </p>
+                {/* --- HEADER: ULTRA MINIMAL --- */}
+                <div className="text-center mb-40 space-y-6">
+                    <div className="flex items-center justify-center gap-4">
+                        <div className="h-px w-10 bg-emerald-500" />
+                        <span className="text-emerald-500 text-[10px] font-bold tracking-[0.5em] uppercase">{label}</span>
+                        <div className="h-px w-10 bg-emerald-500" />
                     </div>
-                    
-                    <h2 className="text-6xl md:text-8xl font-instrument-sans font-medium text-white tracking-tighter leading-[0.85] perspective-1000">
+                    <h2 className="text-6xl md:text-9xl font-instrument-sans font-medium text-white tracking-tighter leading-none lowercase">
                         {titleText.split(highlightedWord)[0]}
-                        <span className="block font-instrument-serif italic text-emerald-400/90 lowercase mt-4 char-reveal">
+                        <span className="font-instrument-serif italic text-emerald-400">
                             {highlightedWord}
                         </span>
                     </h2>
-
-                    <div className="mt-20 hidden lg:block opacity-20">
-                        <p className="text-white text-xs tracking-widest uppercase font-black rotate-90 origin-left">
-                            Scroll_To_Explore
-                        </p>
-                    </div>
                 </div>
 
-                {/* --- RIGHT: KINETIC STEPS --- */}
-                <div ref={triggerRef} className="lg:w-1/2 relative">
-                    {/* Vertical Progress Line */}
-                    <div className="absolute left-0 top-0 w-[1px] h-full bg-white/5 hidden md:block">
-                        <div ref={progressRef} className="w-full h-full bg-emerald-500 origin-top scale-y-0" />
-                    </div>
+                {/* --- INTERACTIVE VERTICAL FLOW --- */}
+                <div className="relative">
+                    {/* The Scanning Progress Line */}
+                    <div ref={lineRef} className="absolute left-1/2 -translate-x-1/2 top-0 w-[2px] h-full bg-emerald-500 origin-top shadow-[0_0_20px_rgba(16,185,129,0.5)] z-20 hidden md:block" />
 
-                    <div className="space-y-32 md:pl-16">
-                        {steps.map((step) => (
-                            <div key={step.id} className="step-container group relative">
-                                {/* Large Shadow Number */}
-                                <span className="absolute -left-12 top-0 text-9xl font-black text-white/[0.02] -z-10 select-none hidden md:block group-hover:text-emerald-500/5 transition-colors duration-500">
-                                    {step.id}
-                                </span>
-
-                                <div className="space-y-8">
-                                    <div className="w-14 h-14 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-emerald-500/50 transition-all duration-500 shadow-2xl">
-                                        <step.icon className="w-6 h-6 text-emerald-400" />
-                                    </div>
+                    <div className="space-y-40 md:space-y-0">
+                        {steps.map((step, i) => {
+                            const isEven = i % 2 === 0;
+                            return (
+                                <div key={step.id} className="process-row relative md:h-[400px] flex items-center group">
                                     
-                                    <div className="space-y-4">
-                                        <h3 className="text-4xl font-medium text-white tracking-tight flex items-center gap-4">
+                                    {/* Central Node */}
+                                    <div className="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-emerald-500 border-4 border-black z-30 shadow-[0_0_15px_rgba(16,185,129,1)] scale-0 group-hover:scale-150 transition-transform duration-500 hidden md:block" />
+
+                                    <div className={`row-content w-full md:w-1/2 ${isEven ? 'md:pr-24 md:text-right md:ml-0' : 'md:pl-24 md:text-left md:ml-[50%]'} space-y-6`}>
+                                        
+                                        {/* Step ID */}
+                                        <div className={`flex items-center gap-4 ${isEven ? 'md:justify-end' : 'md:justify-start'}`}>
+                                            <span className="text-emerald-500/30 font-instrument-serif italic text-4xl group-hover:text-emerald-400 transition-colors">
+                                                {step.id}
+                                            </span>
+                                            <div className="h-px w-8 bg-white/10" />
+                                        </div>
+
+                                        <h3 className="text-4xl md:text-6xl font-medium text-white tracking-tight group-hover:translate-x-2 transition-transform duration-500">
                                             {step.title}
-                                            <ArrowRight className="w-6 h-6 text-emerald-500/0 -translate-x-4 group-hover:text-emerald-500 group-hover:translate-x-0 transition-all" />
                                         </h3>
-                                        <p className="text-white/40 text-xl font-light leading-relaxed max-w-md group-hover:text-white/70 transition-colors">
+                                        
+                                        <p className="text-white/40 text-lg md:text-2xl font-light leading-relaxed group-hover:text-white/80 transition-colors duration-500">
                                             {step.description}
                                         </p>
-                                    </div>
 
-                                    <div className="flex gap-4 pt-4">
-                                        <div className="px-4 py-1.5 rounded-full border border-white/5 bg-white/[0.02] text-[10px] uppercase font-bold text-white/40 tracking-widest">
-                                            Phase_{step.id}
+                                        {/* Modern Indicator */}
+                                        <div className={`pt-4 flex items-center ${isEven ? 'md:justify-end' : 'md:justify-start'}`}>
+                                            <div className="group/link flex items-center gap-3 cursor-pointer">
+                                                <span className="text-[10px] uppercase font-bold text-white/20 tracking-widest group-hover/link:text-emerald-400 transition-colors">Launch Protocol</span>
+                                                <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover/link:bg-emerald-500 group-hover/link:border-emerald-500 transition-all">
+                                                    <ArrowRight className="w-4 h-4 text-white group-hover:text-black transition-colors" />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
             </div>
+
+            {/* Bottom Protocol Line */}
+            <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
         </section>
     );
 };
