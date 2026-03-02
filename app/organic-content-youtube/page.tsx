@@ -1,25 +1,24 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "framer-motion";
-import { 
-  ArrowRight, ArrowLeft, Play, 
-  Activity, Check, Zap, ShieldCheck, ArrowUpRight 
+import {
+  ArrowRight, ArrowLeft, Play,
+  Activity, Check, Zap, ShieldCheck, ArrowUpRight
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Footer } from "@/components/Footer";
 import { InquiryForm } from "@/components/InquiryForm";
 import { FAQ } from "@/components/FAQ";
-import { WorkShowcase } from "@/components/WorkShowcase";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// --- Reusable Interfaces ---
+// --- Interfaces ---
 interface HeroProps {
   title: string;
   highlight: string;
@@ -39,15 +38,24 @@ interface FeatureGridProps {
   isSolution?: boolean;
 }
 
-// --- 1. THE 2060 HERO ---
+interface ResultItem {
+  image: string;
+}
+
+interface ResultsProps {
+  items: ResultItem[];
+  title: string;
+}
+
+// --- 1. CENTERED HERO ---
 const HeroCentered = ({ title, highlight, titleAfter, subtitle }: HeroProps) => {
-  const brands = ["TIKTOK", "YOUTUBE", "INSTAGRAM", "LINKEDIN", "META", "TIKTOK", "YOUTUBE", "INSTAGRAM"];
+  const brands = ["SAMSUNG", "ADOBE", "SHOPIFY", "NIKE", "STRIPE", "SAMSUNG", "ADOBE", "SHOPIFY"];
   const endlessBrands = [...brands, ...brands];
 
   return (
     <section className="relative pt-44 pb-16 px-6 overflow-hidden bg-[#05180D] flex flex-col items-center text-center">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.12),transparent_70%)] pointer-events-none" />
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "circOut" }}
@@ -55,19 +63,19 @@ const HeroCentered = ({ title, highlight, titleAfter, subtitle }: HeroProps) => 
       >
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8">
           <Activity className="w-3 h-3 text-emerald-400" />
-          <span className="text-white/50 text-[10px] uppercase tracking-[0.3em] font-bold">Organic Growth Protocol</span>
+          <span className="text-white/50 text-[10px] uppercase tracking-[0.3em] font-bold">Performance Systems</span>
         </div>
         <h1 className="text-6xl md:text-8xl font-instrument-sans font-medium text-white tracking-tighter leading-[0.9] mb-8">
           {title} <span className="font-instrument-serif italic text-emerald-300">{highlight}</span> {titleAfter}
-        </h1> 
+        </h1>
         <p className="text-white/40 text-lg md:text-2xl font-light max-w-2xl mx-auto leading-relaxed mb-12">
           {subtitle}
         </p>
         <Link href="#schedule">
           <Button className="h-14 px-10 rounded-full bg-white text-black text-base font-bold hover:scale-105 transition-all group shadow-[0_0_40px_rgba(255,255,255,0.1)]">
-            Book a Strategy Call 
+            Book a Free Audit
             <div className="ml-3 w-7 h-7 rounded-full bg-black flex items-center justify-center">
-                <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-0.5 transition-transform" />
+              <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-0.5 transition-transform" />
             </div>
           </Button>
         </Link>
@@ -83,16 +91,57 @@ const HeroCentered = ({ title, highlight, titleAfter, subtitle }: HeroProps) => 
   );
 };
 
-// --- 2. FAST ACTION FEATURE GRID ---
+// --- 2. REELS WORK SECTION ---
+const WorkReelsSection = () => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const { scrollLeft, clientWidth } = scrollRef.current;
+      const scrollTo = direction === 'left' ? scrollLeft - clientWidth / 2 : scrollLeft + clientWidth / 2;
+      scrollRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <section className="py-20 px-6 bg-[#062017] border-y border-white/5">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-8">
+          <div className="max-w-2xl">
+            <h2 className="text-5xl md:text-7xl font-instrument-sans text-white tracking-tight mb-4">Our Work</h2>
+            <p className="text-emerald-400 text-xl italic font-instrument-serif opacity-80">Industry-leading performance creative.</p>
+          </div>
+          <div className="flex gap-4">
+            <button onClick={() => scroll('left')} className="p-5 rounded-full border border-white/10 text-white hover:bg-white hover:text-black transition-all"><ArrowLeft className="w-6 h-6" /></button>
+            <button onClick={() => scroll('right')} className="p-5 rounded-full border border-white/10 text-white hover:bg-white hover:text-black transition-all"><ArrowRight className="w-6 h-6" /></button>
+          </div>
+        </div>
+        <div ref={scrollRef} className="flex gap-8 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-4">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div key={i} className="snap-center shrink-0 w-[300px] h-[540px] bg-white/2 rounded-[2.5rem] border border-white/10 relative overflow-hidden group cursor-pointer">
+              <div className="absolute inset-0 bg-linear-to-t from-black/90 via-transparent to-transparent z-10" />
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all z-20"><div className="w-16 h-16 rounded-full bg-white text-black flex items-center justify-center"><Play className="fill-current w-5 h-5 ml-1" /></div></div>
+              <div className="absolute bottom-10 left-10 z-20">
+                <p className="text-emerald-400 text-[10px] font-black uppercase tracking-widest mb-2">Ad Creative</p>
+                <h4 className="text-white text-xl font-medium tracking-tight">Case Study 0{i}</h4>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// --- 3. REIMAGINED 2060 FEATURE GRID (FAST ACTION) ---
 const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: FeatureGridProps) => {
   const container = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo(".feature-card", 
-        { y: 30, opacity: 0, clipPath: "inset(100% 0% 0% 0%)" }, 
+      gsap.fromTo(".feature-card",
+        { y: 30, opacity: 0, clipPath: "inset(100% 0% 0% 0%)" },
         {
-          scrollTrigger: { trigger: container.current, start: "top 85%" },
+          scrollTrigger: { trigger: container.current, start: "top 90%" },
           y: 0, opacity: 1, clipPath: "inset(0% 0% 0% 0%)",
           stagger: 0.05, duration: 0.6, ease: "expo.out"
         }
@@ -103,8 +152,10 @@ const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: Featur
 
   return (
     <section ref={container} className={`relative py-32 px-6 overflow-hidden ${isSolution ? 'bg-[#05180D]' : 'bg-[#031109]'}`}>
-      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" 
-           style={{ backgroundImage: `url("https://www.transparenttextures.com/patterns/stardust.png")` }} />
+      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none"
+        style={{ backgroundImage: `url("https://www.transparenttextures.com/patterns/stardust.png")` }} />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/5 blur-[120px] rounded-full pointer-events-none" />
+
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20">
           <div className="max-w-2xl">
@@ -133,61 +184,14 @@ const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: Featur
                   <h3 className="text-white text-2xl font-medium tracking-tight group-hover:text-emerald-400 transition-colors duration-500">{item.title}</h3>
                   <p className="text-white/30 leading-relaxed font-light text-base group-hover:text-white/60 transition-colors duration-500">{item.description}</p>
                 </div>
+                <div className="mt-12 flex items-center gap-4 opacity-20 group-hover:opacity-50 transition-opacity">
+                  <span className="text-[9px] font-black text-white tracking-[0.3em] uppercase">Module_0{i + 1}</span>
+                  <div className="h-[1px] w-8 bg-white/20" />
+                </div>
               </div>
               <div className="absolute bottom-0 left-0 w-full h-[2px] bg-emerald-500/0 group-hover:bg-emerald-500/50 transition-all duration-700 origin-left scale-x-0 group-hover:scale-x-100" />
             </div>
           ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// --- 3. THE KINETIC SYSTEM ---
-const ProcessSection = () => {
-  const container = useRef<HTMLDivElement>(null);
-  const lineRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(lineRef.current, 
-        { scaleX: 0, scaleY: 0, transformOrigin: "top left" }, 
-        { 
-          scaleX: 1, scaleY: 1, ease: "none",
-          scrollTrigger: { trigger: container.current, start: "top 40%", end: "bottom 60%", scrub: 1 } 
-      });
-    }, container);
-    return () => ctx.revert();
-  }, []);
-
-  const steps = [
-    { name: "Content Audit", desc: "We analyze your audience and niche to find untapped content opportunities." },
-    { name: "Scripting Engine", desc: "Writing hooks and narrative structures that optimize for average watch time." },
-    { name: "Dynamic Editing", desc: "Studio-grade pacing, pattern interrupts, and sound design to keep viewers glued." },
-    { name: "Cross-Platform", desc: "Distribution strategy across TikTok, Reels, and YouTube Shorts for max reach." }
-  ];
-
-  return (
-    <section ref={container} className="py-32 px-6 bg-[#05180D] relative overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-20 md:mb-32 text-center">
-            <p className="text-emerald-500 text-[10px] font-bold tracking-[0.5em] uppercase mb-4">The Workflow</p>
-            <h2 className="text-6xl md:text-9xl text-white font-instrument-sans tracking-tight leading-none italic lowercase">the system</h2>
-        </div>
-
-        <div className="relative">
-          <div ref={lineRef} className="absolute top-0 left-0 md:w-full md:h-[1px] w-[2px] h-full bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.8)] z-10" />
-          <div className="absolute top-0 left-0 md:w-full md:h-[1px] w-[2px] h-full bg-white/5" />
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-16">
-             {steps.map((step, i) => (
-               <div key={i} className="pt-12 md:pt-16 relative group pl-8 md:pl-0">
-                  <div className="absolute top-0 left-[-7px] md:left-0 md:-translate-y-1/2 w-4 h-4 rounded-full bg-emerald-500 border-4 border-[#05180D] z-20 shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
-                  <span className="text-emerald-500 font-bold text-[10px] tracking-widest mb-4 block uppercase opacity-50">Phase 0{i+1}</span>
-                  <h3 className="text-white text-2xl md:text-3xl font-medium mb-5 tracking-tight group-hover:text-emerald-400 transition-colors">{step.name}</h3>
-                  <p className="text-white/40 leading-relaxed font-light text-base md:text-lg group-hover:text-white/60 transition-colors">{step.desc}</p>
-               </div>
-             ))}
-          </div>
         </div>
       </div>
     </section>
@@ -201,30 +205,78 @@ const CenteredPricing = () => {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/3 blur-[150px] rounded-full pointer-events-none" />
       <div className="max-w-5xl mx-auto relative z-10">
         <div className="text-center mb-16">
-          <p className="text-emerald-500 text-xs font-black tracking-[0.4em] uppercase mb-4">Investment</p>
-          <h2 className="text-5xl md:text-7xl font-instrument-sans text-white tracking-tight mb-6">Built for Authority.</h2>
+          <p className="text-emerald-500 text-xs font-black tracking-[0.4em] uppercase mb-4">
+            Investment
+          </p>
+          <h2 className="text-5xl md:text-7xl font-instrument-sans text-white tracking-tight mb-6">
+            Simple plans for YouTube growth.
+          </h2>
         </div>
+
         <div className="grid md:grid-cols-2 gap-8 items-center">
+
+          {/* Starter Plan */}
           <div className="p-10 md:p-14 rounded-[3.5rem] border border-white/5 bg-white/2 backdrop-blur-3xl">
-            <h3 className="text-white/50 text-sm font-bold uppercase tracking-widest mb-2">Momentum</h3>
-            <span className="text-white text-5xl font-medium tracking-tighter mb-8 block">Organic Core</span>
+            <h3 className="text-white/50 text-sm font-bold uppercase tracking-widest mb-2">
+              Starter Plan
+            </h3>
+            <span className="text-white text-5xl font-medium tracking-tighter mb-8 block">
+              Basic Growth
+            </span>
+
             <ul className="space-y-5 mb-12">
-              {["12 Custom Edits / Mo", "SEO Hook Research", "Distribution Support", "48h Turnaround"].map((f, i) => (
-                <li key={i} className="flex items-center gap-3 text-white/70 text-sm font-light"><Check className="w-3 h-3 text-emerald-400" />{f}</li>
+              {[
+                "4 Videos Per Month",
+                "Video Editing",
+                "Title & Description Setup",
+                "Monthly Performance Review"
+              ].map((f, i) => (
+                <li key={i} className="flex items-center gap-3 text-white/70 text-sm font-light">
+                  <Check className="w-3 h-3 text-emerald-400" />
+                  {f}
+                </li>
               ))}
             </ul>
-            <Link href="#schedule" className="block"><Button className="w-full h-14 rounded-full bg-white/5 border border-white/10 text-white font-bold uppercase tracking-widest text-[10px]">Start Growth</Button></Link>
+
+            <Link href="#schedule" className="block">
+              <Button className="w-full h-14 rounded-full bg-white/5 border border-white/10 text-white font-bold uppercase tracking-widest text-[10px]">
+                Book A Call
+              </Button>
+            </Link>
           </div>
+
+          {/* Recommended Plan */}
           <div className="relative p-10 md:p-14 rounded-[3.5rem] border border-emerald-500/30 bg-white/5 backdrop-blur-3xl shadow-[0_0_80px_rgba(16,185,129,0.1)] scale-105 z-20">
-            <div className="absolute top-8 right-10 px-3 py-1 rounded-full bg-emerald-500 text-black text-[9px] font-black uppercase tracking-widest">Recommended</div>
-            <h3 className="text-emerald-400 text-sm font-bold uppercase tracking-widest mb-2">Authority</h3>
-            <span className="text-white text-5xl font-medium tracking-tighter mb-8 block">Growth Suite</span>
+            <div className="absolute top-8 right-10 px-3 py-1 rounded-full bg-emerald-500 text-black text-[9px] font-black uppercase tracking-widest">
+              Recommended
+            </div>
+
+            <h3 className="text-emerald-400 text-sm font-bold uppercase tracking-widest mb-2">
+              Pro Plan
+            </h3>
+            <span className="text-white text-5xl font-medium tracking-tighter mb-8 block">
+              Fast Growth
+            </span>
+
             <ul className="space-y-5 mb-12">
-              {["24+ High-End Edits / Mo", "Scripting & Hook Bank", "Multi-Channel Ops", "24h Priority"].map((f, i) => (
-                <li key={i} className="flex items-center gap-3 text-white text-sm font-medium"><Check className="w-3 h-3 text-emerald-500" />{f}</li>
+              {[
+                "8 Videos Per Month",
+                "Advanced Editing",
+                "Thumbnail Design",
+                "Weekly Performance Review"
+              ].map((f, i) => (
+                <li key={i} className="flex items-center gap-3 text-white text-sm font-medium">
+                  <Check className="w-3 h-3 text-emerald-500" />
+                  {f}
+                </li>
               ))}
             </ul>
-            <Link href="#schedule" className="block"><Button className="w-full h-14 rounded-full bg-white text-black font-bold uppercase tracking-widest text-[10px]">Dominate Feed</Button></Link>
+
+            <Link href="#schedule" className="block">
+              <Button className="w-full h-14 rounded-full bg-white text-black font-bold uppercase tracking-widest text-[10px]">
+                Book A Call
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
@@ -232,58 +284,181 @@ const CenteredPricing = () => {
   );
 };
 
-export default function OrganicContentYouTubePage() {
+// --- 5. RESULTS (STATIC & MODERN) ---
+const ResultsSection = ({ items, title }: ResultsProps) => {
+  return (
+    <section className="py-24 px-6 bg-[#062017] overflow-hidden text-center">
+      <h2 className="text-5xl md:text-9xl font-instrument-sans text-white tracking-tighter opacity-90 mb-20">{title}</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+        {items.map((item, i) => (
+          <div key={i} className="relative aspect-square rounded-[3rem] overflow-hidden border border-white/10 bg-white/5 group">
+            {item.image && (
+              <Image
+                src={item.image}
+                alt="Result Proof"
+                fill
+                className="object-cover opacity-70 transition-all duration-700 group-hover:opacity-100 group-hover:scale-105"
+              />
+            )}
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+// --- 6. OUR PROCESS (RESPONSIVE KINETIC LINE) ---
+const ProcessSection = () => {
+  const container = useRef<HTMLDivElement>(null);
+  const lineRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Progress line: Horizontal on PC, Vertical on Mobile
+      gsap.fromTo(lineRef.current,
+        {
+          scaleX: 0,
+          scaleY: 0,
+          transformOrigin: "top left"
+        },
+        {
+          scaleX: 1,
+          scaleY: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: container.current,
+            start: "top 40%",
+            end: "bottom 60%",
+            scrub: 1
+          }
+        });
+    }, container);
+    return () => ctx.revert();
+  }, []);
+
+  const steps = [
+    {
+      name: "Channel & Audience Deep Dive",
+      desc: "We audit your niche, competitors, and current content to identify positioning gaps, content opportunities, and algorithm advantages."
+    },
+    {
+      name: "Content Strategy & Ideation",
+      desc: "We build a strategic content roadmap with proven video angles, searchable topics, and high-retention formats tailored to your audience."
+    },
+    {
+      name: "Production & Retention Editing",
+      desc: "Every video is structured with strong hooks, storytelling flow, open loops, and pacing optimized to maximize watch time."
+    },
+    {
+      name: "Optimization & Scaling",
+      desc: "We refine titles, thumbnails, and performance data to double down on what works and systematically scale your organic growth."
+    }
+  ];
+
+  return (
+    <section ref={container} className="py-32 px-6 bg-[#05180D] relative overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-20 md:mb-32">
+          <h2 className="text-6xl md:text-9xl text-white font-instrument-sans tracking-tight leading-none italic lowercase">
+            The Workflow
+          </h2>
+        </div>
+
+        <div className="relative">
+          {/* Progress line: Vertical on mobile (left), Horizontal on PC (top) */}
+          <div
+            ref={lineRef}
+            className="absolute 
+              top-0 left-0 
+              md:w-full md:h-[1px] 
+              w-[2px] h-full 
+              bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.8)] 
+              z-10"
+          />
+
+          {/* Static Background Track Line */}
+          <div className="absolute top-0 left-0 md:w-full md:h-[1px] w-[2px] h-full bg-white/5" />
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-16">
+            {steps.map((step, i) => (
+              <div key={i} className="pt-12 md:pt-16 relative group pl-8 md:pl-0">
+                {/* Bullet Dot */}
+                <div className="absolute top-0 left-[-7px] md:left-0 md:-translate-y-1/2 w-4 h-4 rounded-full bg-emerald-500 border-4 border-[#05180D] z-20 group-hover:scale-125 transition-transform shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
+
+                <span className="text-emerald-500 font-bold text-[10px] tracking-widest mb-4 block uppercase opacity-50 group-hover:opacity-100 transition-opacity">
+                  Step 0{i + 1}
+                </span>
+                <h3 className="text-white text-2xl md:text-3xl font-medium mb-5 tracking-tight group-hover:text-emerald-400 transition-colors">
+                  {step.name}
+                </h3>
+                <p className="text-white/40 leading-relaxed font-light text-base md:text-lg group-hover:text-white/60 transition-colors">
+                  {step.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default async function OrganicContentYouTubePage() {
   return (
     <div className="flex flex-col min-h-screen bg-[#05180D] selection:bg-emerald-500/30">
       <main className="grow">
-        <HeroCentered 
-          title="Content that builds"
-          highlight="authority"
-          titleAfter="and inbound demand."
-          subtitle="We engineer a content pipeline that compounds: strategy, scripts, recording workflow, and retention-first editing."
+        <HeroCentered
+          title="Organic YouTube content that"
+          highlight="builds authority"
+          titleAfter="and drives real growth."
+          subtitle="A strategy-first YouTube system focused on storytelling, retention, and long-term audience building — not paid ads."
         />
-        
-        <WorkShowcase initialCategory="organic-content" />
 
-        <AnimatedFeatureGrid 
-          label="The Challenges"
-          title="Why your current content stalls"
+        <WorkReelsSection />
+
+        <AnimatedFeatureGrid
+          label="The Problem"
+          title="What creators usually struggle with"
           items={[
-            { title: "Inconsistent Cadence", description: "Posting when you can, not when the algorithm demands, leading to stalled growth." },
-            { title: "Execution Gaps", description: "Great ideas failing due to weak retention engineering and boring narrative structures." },
-            { title: "No Conversion Path", description: "Views that never turn into trust or revenue because there's no authority-building CTA." }
+            {
+              title: "Uploading Without Strategy",
+              description: "Most creators post consistently but without understanding audience psychology, search intent, or retention structure."
+            },
+            {
+              title: "Low Retention & Watch Time",
+              description: "If viewers drop in the first 30 seconds, YouTube won't push your content — no matter how good it looks."
+            },
+            {
+              title: "Inconsistent Growth",
+              description: "Random topics and no content system lead to slow growth and unpredictable results."
+            }
           ]}
         />
 
-        <AnimatedFeatureGrid 
+        <AnimatedFeatureGrid
           isSolution
-          label="The Matera Framework"
-          title="How we build your authority"
+          label="The Matera Solution"
+          title="How we build organic growth machines"
           items={[
-            { title: "Repeatable Systems", description: "Topic banks and hook frameworks designed specifically for your target ICP." },
-            { title: "Retention Engineering", description: "Pacing and narrative design that ensures viewers watch until the very last second." },
-            { title: "Multiplying Leverage", description: "One recording session turned into multiple assets across Shorts, Reels, and TikTok." }
+            {
+              title: "Retention-Driven Storytelling",
+              description: "We structure every video with powerful hooks, open loops, and pacing designed to maximize watch time."
+            },
+            {
+              title: "Search & Algorithm Optimization",
+              description: "Strategic titles, thumbnails, and metadata crafted to rank and get recommended organically."
+            },
+            {
+              title: "Content Systemization",
+              description: "We build repeatable content frameworks so your channel grows consistently month after month."
+            }
           ]}
         />
-
+        <ResultsSection title="Our Results" items={[{ image: "/results/s1.png" }, { image: "/results/s2.png" }, { image: "/results/s3.png" }, { image: "/results/s4.png" }]} />
         <ProcessSection />
-
         <CenteredPricing />
-
-        <InquiryForm sourcePage="organic-content-youtube" />
-        
-        <FAQ
-          content={{
-            label: "Intelligence",
-            title: "Frequently asked.",
-            highlightedWord: "asked.",
-            items: [
-              { _key: "q1", question: "Do you help with scripting?", answer: "Yes, we handle hooks, outlines, and full scripts based on your niche." },
-              { _key: "q2", question: "What platforms do you cover?", answer: "YouTube Shorts, Instagram Reels, and TikTok are our primary focus for growth." },
-              { _key: "q3", question: "Will this work for B2B?", answer: "Absolutely. We focus on buyer intent and authority over temporary viral trends." }
-            ]
-          }}
-        />
+        <InquiryForm sourcePage="ad-creatives" />
+        <FAQ content={{ items: [] }} />
       </main>
       <Footer />
       <style jsx global>{`
