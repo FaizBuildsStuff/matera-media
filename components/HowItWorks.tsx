@@ -169,6 +169,7 @@ export const HowItWorks = ({ content }: { content?: any }) => {
                     </div>
                 </div>
             </div>
+            
 
             {/* Bottom Protocol Line */}
             <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
