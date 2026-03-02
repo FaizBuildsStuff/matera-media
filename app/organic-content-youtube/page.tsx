@@ -6,9 +6,9 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "framer-motion";
-import { 
-  ArrowRight, ArrowLeft, Play, 
-  Activity, Check, Zap, ShieldCheck, ArrowUpRight 
+import {
+  ArrowRight, ArrowLeft, Play,
+  Activity, Check, Zap, ShieldCheck, ArrowUpRight
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -55,7 +55,7 @@ const HeroCentered = ({ title, highlight, titleAfter, subtitle }: HeroProps) => 
   return (
     <section className="relative pt-44 pb-16 px-6 overflow-hidden bg-[#05180D] flex flex-col items-center text-center">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.12),transparent_70%)] pointer-events-none" />
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "circOut" }}
@@ -67,15 +67,15 @@ const HeroCentered = ({ title, highlight, titleAfter, subtitle }: HeroProps) => 
         </div>
         <h1 className="text-6xl md:text-8xl font-instrument-sans font-medium text-white tracking-tighter leading-[0.9] mb-8">
           {title} <span className="font-instrument-serif italic text-emerald-300">{highlight}</span> {titleAfter}
-        </h1> 
+        </h1>
         <p className="text-white/40 text-lg md:text-2xl font-light max-w-2xl mx-auto leading-relaxed mb-12">
           {subtitle}
         </p>
         <Link href="#schedule">
           <Button className="h-14 px-10 rounded-full bg-white text-black text-base font-bold hover:scale-105 transition-all group shadow-[0_0_40px_rgba(255,255,255,0.1)]">
-            Book a Free Audit 
+            Book a Free Audit
             <div className="ml-3 w-7 h-7 rounded-full bg-black flex items-center justify-center">
-                <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-0.5 transition-transform" />
+              <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-0.5 transition-transform" />
             </div>
           </Button>
         </Link>
@@ -118,12 +118,12 @@ const WorkReelsSection = () => {
         <div ref={scrollRef} className="flex gap-8 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-4">
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <div key={i} className="snap-center shrink-0 w-[300px] h-[540px] bg-white/2 rounded-[2.5rem] border border-white/10 relative overflow-hidden group cursor-pointer">
-               <div className="absolute inset-0 bg-linear-to-t from-black/90 via-transparent to-transparent z-10" />
-               <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all z-20"><div className="w-16 h-16 rounded-full bg-white text-black flex items-center justify-center"><Play className="fill-current w-5 h-5 ml-1" /></div></div>
-               <div className="absolute bottom-10 left-10 z-20">
-                  <p className="text-emerald-400 text-[10px] font-black uppercase tracking-widest mb-2">Ad Creative</p>
-                  <h4 className="text-white text-xl font-medium tracking-tight">Case Study 0{i}</h4>
-               </div>
+              <div className="absolute inset-0 bg-linear-to-t from-black/90 via-transparent to-transparent z-10" />
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all z-20"><div className="w-16 h-16 rounded-full bg-white text-black flex items-center justify-center"><Play className="fill-current w-5 h-5 ml-1" /></div></div>
+              <div className="absolute bottom-10 left-10 z-20">
+                <p className="text-emerald-400 text-[10px] font-black uppercase tracking-widest mb-2">Ad Creative</p>
+                <h4 className="text-white text-xl font-medium tracking-tight">Case Study 0{i}</h4>
+              </div>
             </div>
           ))}
         </div>
@@ -138,8 +138,8 @@ const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: Featur
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo(".feature-card", 
-        { y: 30, opacity: 0, clipPath: "inset(100% 0% 0% 0%)" }, 
+      gsap.fromTo(".feature-card",
+        { y: 30, opacity: 0, clipPath: "inset(100% 0% 0% 0%)" },
         {
           scrollTrigger: { trigger: container.current, start: "top 90%" },
           y: 0, opacity: 1, clipPath: "inset(0% 0% 0% 0%)",
@@ -152,8 +152,8 @@ const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: Featur
 
   return (
     <section ref={container} className={`relative py-32 px-6 overflow-hidden ${isSolution ? 'bg-[#05180D]' : 'bg-[#031109]'}`}>
-      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" 
-           style={{ backgroundImage: `url("https://www.transparenttextures.com/patterns/stardust.png")` }} />
+      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none"
+        style={{ backgroundImage: `url("https://www.transparenttextures.com/patterns/stardust.png")` }} />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/5 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
@@ -185,7 +185,7 @@ const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: Featur
                   <p className="text-white/30 leading-relaxed font-light text-base group-hover:text-white/60 transition-colors duration-500">{item.description}</p>
                 </div>
                 <div className="mt-12 flex items-center gap-4 opacity-20 group-hover:opacity-50 transition-opacity">
-                  <span className="text-[9px] font-black text-white tracking-[0.3em] uppercase">Module_0{i+1}</span>
+                  <span className="text-[9px] font-black text-white tracking-[0.3em] uppercase">Module_0{i + 1}</span>
                   <div className="h-[1px] w-8 bg-white/20" />
                 </div>
               </div>
@@ -205,30 +205,78 @@ const CenteredPricing = () => {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/3 blur-[150px] rounded-full pointer-events-none" />
       <div className="max-w-5xl mx-auto relative z-10">
         <div className="text-center mb-16">
-          <p className="text-emerald-500 text-xs font-black tracking-[0.4em] uppercase mb-4">Investment</p>
-          <h2 className="text-5xl md:text-7xl font-instrument-sans text-white tracking-tight mb-6">Plans built for scale.</h2>
+          <p className="text-emerald-500 text-xs font-black tracking-[0.4em] uppercase mb-4">
+            Investment
+          </p>
+          <h2 className="text-5xl md:text-7xl font-instrument-sans text-white tracking-tight mb-6">
+            Simple plans for YouTube growth.
+          </h2>
         </div>
+
         <div className="grid md:grid-cols-2 gap-8 items-center">
+
+          {/* Starter Plan */}
           <div className="p-10 md:p-14 rounded-[3.5rem] border border-white/5 bg-white/2 backdrop-blur-3xl">
-            <h3 className="text-white/50 text-sm font-bold uppercase tracking-widest mb-2">The Starter</h3>
-            <span className="text-white text-5xl font-medium tracking-tighter mb-8 block">Growth Core</span>
+            <h3 className="text-white/50 text-sm font-bold uppercase tracking-widest mb-2">
+              Starter Plan
+            </h3>
+            <span className="text-white text-5xl font-medium tracking-tighter mb-8 block">
+              Basic Growth
+            </span>
+
             <ul className="space-y-5 mb-12">
-              {["8 Custom Ads / Mo", "Hook Testing Framework", "Monthly Audit", "72h Turnaround"].map((f, i) => (
-                <li key={i} className="flex items-center gap-3 text-white/70 text-sm font-light"><Check className="w-3 h-3 text-emerald-400" />{f}</li>
+              {[
+                "4 Videos Per Month",
+                "Video Editing",
+                "Title & Description Setup",
+                "Monthly Performance Review"
+              ].map((f, i) => (
+                <li key={i} className="flex items-center gap-3 text-white/70 text-sm font-light">
+                  <Check className="w-3 h-3 text-emerald-400" />
+                  {f}
+                </li>
               ))}
             </ul>
-            <Link href="#schedule" className="block"><Button className="w-full h-14 rounded-full bg-white/5 border border-white/10 text-white font-bold uppercase tracking-widest text-[10px]">Book A Call</Button></Link>
+
+            <Link href="#schedule" className="block">
+              <Button className="w-full h-14 rounded-full bg-white/5 border border-white/10 text-white font-bold uppercase tracking-widest text-[10px]">
+                Book A Call
+              </Button>
+            </Link>
           </div>
+
+          {/* Recommended Plan */}
           <div className="relative p-10 md:p-14 rounded-[3.5rem] border border-emerald-500/30 bg-white/5 backdrop-blur-3xl shadow-[0_0_80px_rgba(16,185,129,0.1)] scale-105 z-20">
-            <div className="absolute top-8 right-10 px-3 py-1 rounded-full bg-emerald-500 text-black text-[9px] font-black uppercase tracking-widest">Recommended</div>
-            <h3 className="text-emerald-400 text-sm font-bold uppercase tracking-widest mb-2">The Dominator</h3>
-            <span className="text-white text-5xl font-medium tracking-tighter mb-8 block">Scale Suite</span>
+            <div className="absolute top-8 right-10 px-3 py-1 rounded-full bg-emerald-500 text-black text-[9px] font-black uppercase tracking-widest">
+              Recommended
+            </div>
+
+            <h3 className="text-emerald-400 text-sm font-bold uppercase tracking-widest mb-2">
+              Pro Plan
+            </h3>
+            <span className="text-white text-5xl font-medium tracking-tighter mb-8 block">
+              Fast Growth
+            </span>
+
             <ul className="space-y-5 mb-12">
-              {["16+ Custom Ads / Mo", "Full-Funnel Content", "Weekly Sync", "24h Priority"].map((f, i) => (
-                <li key={i} className="flex items-center gap-3 text-white text-sm font-medium"><Check className="w-3 h-3 text-emerald-500" />{f}</li>
+              {[
+                "8 Videos Per Month",
+                "Advanced Editing",
+                "Thumbnail Design",
+                "Weekly Performance Review"
+              ].map((f, i) => (
+                <li key={i} className="flex items-center gap-3 text-white text-sm font-medium">
+                  <Check className="w-3 h-3 text-emerald-500" />
+                  {f}
+                </li>
               ))}
             </ul>
-            <Link href="#schedule" className="block"><Button className="w-full h-14 rounded-full bg-white text-black font-bold uppercase tracking-widest text-[10px]">Book A Call</Button></Link>
+
+            <Link href="#schedule" className="block">
+              <Button className="w-full h-14 rounded-full bg-white text-black font-bold uppercase tracking-widest text-[10px]">
+                Book A Call
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
@@ -242,18 +290,18 @@ const ResultsSection = ({ items, title }: ResultsProps) => {
     <section className="py-24 px-6 bg-[#062017] overflow-hidden text-center">
       <h2 className="text-5xl md:text-9xl font-instrument-sans text-white tracking-tighter opacity-90 mb-20">{title}</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-         {items.map((item, i) => (
-           <div key={i} className="relative aspect-square rounded-[3rem] overflow-hidden border border-white/10 bg-white/5 group">
-             {item.image && (
-                <Image 
-                    src={item.image} 
-                    alt="Result Proof" 
-                    fill 
-                    className="object-cover opacity-70 transition-all duration-700 group-hover:opacity-100 group-hover:scale-105" 
-                />
-             )}
-           </div>
-         ))}
+        {items.map((item, i) => (
+          <div key={i} className="relative aspect-square rounded-[3rem] overflow-hidden border border-white/10 bg-white/5 group">
+            {item.image && (
+              <Image
+                src={item.image}
+                alt="Result Proof"
+                fill
+                className="object-cover opacity-70 transition-all duration-700 group-hover:opacity-100 group-hover:scale-105"
+              />
+            )}
+          </div>
+        ))}
       </div>
     </section>
   );
@@ -267,76 +315,87 @@ const ProcessSection = () => {
   useEffect(() => {
     const ctx = gsap.context(() => {
       // Progress line: Horizontal on PC, Vertical on Mobile
-      gsap.fromTo(lineRef.current, 
-        { 
-          scaleX: 0, 
-          scaleY: 0, 
-          transformOrigin: "top left" 
-        }, 
-        { 
-          scaleX: 1, 
-          scaleY: 1, 
+      gsap.fromTo(lineRef.current,
+        {
+          scaleX: 0,
+          scaleY: 0,
+          transformOrigin: "top left"
+        },
+        {
+          scaleX: 1,
+          scaleY: 1,
           ease: "none",
-          scrollTrigger: { 
-              trigger: container.current, 
-              start: "top 40%", 
-              end: "bottom 60%", 
-              scrub: 1 
-          } 
-      });
+          scrollTrigger: {
+            trigger: container.current,
+            start: "top 40%",
+            end: "bottom 60%",
+            scrub: 1
+          }
+        });
     }, container);
     return () => ctx.revert();
   }, []);
 
   const steps = [
-    { name: "Creative Audit", desc: "Data-driven analysis of your historical performance to identify hook-leakage." },
-    { name: "Strategy Mapping", desc: "Crafting a 30-day roadmap based on core human desires and direct-response triggers." },
-    { name: "Asset Production", desc: "High-volume delivery of studio-grade videos built specifically for high CTR." },
-    { name: "Performance Scaling", desc: "Rapid iterations of data-backed winners to lower CAC and maximize ROAS." }
+    {
+      name: "Channel & Audience Deep Dive",
+      desc: "We audit your niche, competitors, and current content to identify positioning gaps, content opportunities, and algorithm advantages."
+    },
+    {
+      name: "Content Strategy & Ideation",
+      desc: "We build a strategic content roadmap with proven video angles, searchable topics, and high-retention formats tailored to your audience."
+    },
+    {
+      name: "Production & Retention Editing",
+      desc: "Every video is structured with strong hooks, storytelling flow, open loops, and pacing optimized to maximize watch time."
+    },
+    {
+      name: "Optimization & Scaling",
+      desc: "We refine titles, thumbnails, and performance data to double down on what works and systematically scale your organic growth."
+    }
   ];
 
   return (
     <section ref={container} className="py-32 px-6 bg-[#05180D] relative overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="mb-20 md:mb-32">
-            <p className="text-emerald-500 text-[10px] font-bold tracking-[0.5em] uppercase mb-4">The Workflow</p>
-            <h2 className="text-6xl md:text-9xl text-white font-instrument-sans tracking-tight leading-none italic lowercase">
-              the system
-            </h2>
+          <h2 className="text-6xl md:text-9xl text-white font-instrument-sans tracking-tight leading-none italic lowercase">
+            The Workflow
+          </h2>
         </div>
 
         <div className="relative">
           {/* Progress line: Vertical on mobile (left), Horizontal on PC (top) */}
-          <div 
-            ref={lineRef} 
+          <div
+            ref={lineRef}
             className="absolute 
               top-0 left-0 
               md:w-full md:h-[1px] 
               w-[2px] h-full 
               bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.8)] 
-              z-10" 
+              z-10"
           />
-          
+
           {/* Static Background Track Line */}
           <div className="absolute top-0 left-0 md:w-full md:h-[1px] w-[2px] h-full bg-white/5" />
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-16">
-             {steps.map((step, i) => (
-               <div key={i} className="pt-12 md:pt-16 relative group pl-8 md:pl-0">
-                  {/* Bullet Dot */}
-                  <div className="absolute top-0 left-[-7px] md:left-0 md:-translate-y-1/2 w-4 h-4 rounded-full bg-emerald-500 border-4 border-[#05180D] z-20 group-hover:scale-125 transition-transform shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
-                  
-                  <span className="text-emerald-500 font-bold text-[10px] tracking-widest mb-4 block uppercase opacity-50 group-hover:opacity-100 transition-opacity">
-                    Step 0{i+1}
-                  </span>
-                  <h3 className="text-white text-2xl md:text-3xl font-medium mb-5 tracking-tight group-hover:text-emerald-400 transition-colors">
-                    {step.name}
-                  </h3>
-                  <p className="text-white/40 leading-relaxed font-light text-base md:text-lg group-hover:text-white/60 transition-colors">
-                    {step.desc}
-                  </p>
-               </div>
-             ))}
+            {steps.map((step, i) => (
+              <div key={i} className="pt-12 md:pt-16 relative group pl-8 md:pl-0">
+                {/* Bullet Dot */}
+                <div className="absolute top-0 left-[-7px] md:left-0 md:-translate-y-1/2 w-4 h-4 rounded-full bg-emerald-500 border-4 border-[#05180D] z-20 group-hover:scale-125 transition-transform shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
+
+                <span className="text-emerald-500 font-bold text-[10px] tracking-widest mb-4 block uppercase opacity-50 group-hover:opacity-100 transition-opacity">
+                  Step 0{i + 1}
+                </span>
+                <h3 className="text-white text-2xl md:text-3xl font-medium mb-5 tracking-tight group-hover:text-emerald-400 transition-colors">
+                  {step.name}
+                </h3>
+                <p className="text-white/40 leading-relaxed font-light text-base md:text-lg group-hover:text-white/60 transition-colors">
+                  {step.desc}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -348,30 +407,51 @@ export default async function OrganicContentYouTubePage() {
   return (
     <div className="flex flex-col min-h-screen bg-[#05180D] selection:bg-emerald-500/30">
       <main className="grow">
-        <HeroCentered 
-          title="Performance creative that"
-          highlight="earns attention"
-          titleAfter="and converts."
-          subtitle="An always-on creative system: hooks, angles, and iterations built for measurable revenue growth."
+        <HeroCentered
+          title="Organic YouTube content that"
+          highlight="builds authority"
+          titleAfter="and drives real growth."
+          subtitle="A strategy-first YouTube system focused on storytelling, retention, and long-term audience building — not paid ads."
         />
+
         <WorkReelsSection />
-        <AnimatedFeatureGrid 
+
+        <AnimatedFeatureGrid
           label="The Problem"
-          title="What brands usually go through"
+          title="What creators usually struggle with"
           items={[
-            { title: "Pretty but Passive", description: "Creative is the #1 lever in paid, yet most brands ship videos without a testing framework." },
-            { title: "Retention Leaks", description: "If the first 2 seconds don't stop the scroll, your ad budget is essentially a donation." },
-            { title: "Random Iteration", description: "Guessing what to make next leads to inconsistent ROAS and massive wasted spend." }
+            {
+              title: "Uploading Without Strategy",
+              description: "Most creators post consistently but without understanding audience psychology, search intent, or retention structure."
+            },
+            {
+              title: "Low Retention & Watch Time",
+              description: "If viewers drop in the first 30 seconds, YouTube won't push your content — no matter how good it looks."
+            },
+            {
+              title: "Inconsistent Growth",
+              description: "Random topics and no content system lead to slow growth and unpredictable results."
+            }
           ]}
         />
-        <AnimatedFeatureGrid 
+
+        <AnimatedFeatureGrid
           isSolution
           label="The Matera Solution"
-          title="How we solve for growth"
+          title="How we build organic growth machines"
           items={[
-            { title: "Hook Testing Engine", description: "We produce rapid variations to find the specific hooks that earn the click." },
-            { title: "Direct-Response Edits", description: "Pacing, pattern interrupts, and captions designed specifically for watch time." },
-            { title: "Strategy-First Design", description: "Messaging and offer clarity mapped out before we ever touch a timeline." }
+            {
+              title: "Retention-Driven Storytelling",
+              description: "We structure every video with powerful hooks, open loops, and pacing designed to maximize watch time."
+            },
+            {
+              title: "Search & Algorithm Optimization",
+              description: "Strategic titles, thumbnails, and metadata crafted to rank and get recommended organically."
+            },
+            {
+              title: "Content Systemization",
+              description: "We build repeatable content frameworks so your channel grows consistently month after month."
+            }
           ]}
         />
         <ResultsSection title="Our Results" items={[{ image: "/results/s1.png" }, { image: "/results/s2.png" }, { image: "/results/s3.png" }, { image: "/results/s4.png" }]} />
