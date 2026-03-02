@@ -6,9 +6,9 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "framer-motion";
-import { 
-  ArrowRight, ArrowLeft, Play, 
-  Activity, Check, Zap, ShieldCheck, ArrowUpRight 
+import {
+  ArrowRight, ArrowLeft, Play,
+  Activity, Check, Zap, ShieldCheck, ArrowUpRight
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -41,13 +41,13 @@ interface FeatureGridProps {
 
 // --- 1. THE 2060 HERO ---
 const HeroCentered = ({ title, highlight, titleAfter, subtitle }: HeroProps) => {
-  const brands = ["TIKTOK", "YOUTUBE", "INSTAGRAM", "LINKEDIN", "META", "TIKTOK", "YOUTUBE", "INSTAGRAM"];
+  const brands = ["SAAS", "STARTUPS", "TECH", "SOFTWARE", "B2B", "SAAS", "STARTUPS", "TECH"];
   const endlessBrands = [...brands, ...brands];
 
   return (
     <section className="relative pt-44 pb-16 px-6 overflow-hidden bg-[#05180D] flex flex-col items-center text-center">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.12),transparent_70%)] pointer-events-none" />
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "circOut" }}
@@ -55,19 +55,19 @@ const HeroCentered = ({ title, highlight, titleAfter, subtitle }: HeroProps) => 
       >
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8">
           <Activity className="w-3 h-3 text-emerald-400" />
-          <span className="text-white/50 text-[10px] uppercase tracking-[0.3em] font-bold">Organic Growth Protocol</span>
+          <span className="text-white/50 text-[10px] uppercase tracking-[0.3em] font-bold">SaaS Video Production</span>
         </div>
         <h1 className="text-6xl md:text-8xl font-instrument-sans font-medium text-white tracking-tighter leading-[0.9] mb-8">
           {title} <span className="font-instrument-serif italic text-emerald-300">{highlight}</span> {titleAfter}
-        </h1> 
+        </h1>
         <p className="text-white/40 text-lg md:text-2xl font-light max-w-2xl mx-auto leading-relaxed mb-12">
           {subtitle}
         </p>
         <Link href="#schedule">
           <Button className="h-14 px-10 rounded-full bg-white text-black text-base font-bold hover:scale-105 transition-all group shadow-[0_0_40px_rgba(255,255,255,0.1)]">
-            Book a Strategy Call 
+            Book a Strategy Call
             <div className="ml-3 w-7 h-7 rounded-full bg-black flex items-center justify-center">
-                <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-0.5 transition-transform" />
+              <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-0.5 transition-transform" />
             </div>
           </Button>
         </Link>
@@ -89,8 +89,8 @@ const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: Featur
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo(".feature-card", 
-        { y: 30, opacity: 0, clipPath: "inset(100% 0% 0% 0%)" }, 
+      gsap.fromTo(".feature-card",
+        { y: 30, opacity: 0, clipPath: "inset(100% 0% 0% 0%)" },
         {
           scrollTrigger: { trigger: container.current, start: "top 85%" },
           y: 0, opacity: 1, clipPath: "inset(0% 0% 0% 0%)",
@@ -103,8 +103,8 @@ const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: Featur
 
   return (
     <section ref={container} className={`relative py-32 px-6 overflow-hidden ${isSolution ? 'bg-[#05180D]' : 'bg-[#031109]'}`}>
-      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" 
-           style={{ backgroundImage: `url("https://www.transparenttextures.com/patterns/stardust.png")` }} />
+      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none"
+        style={{ backgroundImage: `url("https://www.transparenttextures.com/patterns/stardust.png")` }} />
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20">
           <div className="max-w-2xl">
@@ -150,43 +150,43 @@ const ProcessSection = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo(lineRef.current, 
-        { scaleX: 0, scaleY: 0, transformOrigin: "top left" }, 
-        { 
+      gsap.fromTo(lineRef.current,
+        { scaleX: 0, scaleY: 0, transformOrigin: "top left" },
+        {
           scaleX: 1, scaleY: 1, ease: "none",
-          scrollTrigger: { trigger: container.current, start: "top 40%", end: "bottom 60%", scrub: 1 } 
-      });
+          scrollTrigger: { trigger: container.current, start: "top 40%", end: "bottom 60%", scrub: 1 }
+        });
     }, container);
     return () => ctx.revert();
   }, []);
 
   const steps = [
-    { name: "Content Audit", desc: "We analyze your audience and niche to find untapped content opportunities." },
-    { name: "Scripting Engine", desc: "Writing hooks and narrative structures that optimize for average watch time." },
-    { name: "Dynamic Editing", desc: "Studio-grade pacing, pattern interrupts, and sound design to keep viewers glued." },
-    { name: "Cross-Platform", desc: "Distribution strategy across TikTok, Reels, and YouTube Shorts for max reach." }
+    { name: "Product Deep-Dive", desc: "We learn your software inside-out to understand your core value loop and ideal customer profile." },
+    { name: "Scripting & Pre-vis", desc: "Crafting the narrative and pre-visualizing the flow to ensure maximum clarity." },
+    { name: "UI & Motion", desc: "Bringing your interface to life with high-end motion graphics and smooth pacing." },
+    { name: "Sound & Polish", desc: "Adding dynamic sound design and final polish to deliver a world-class SaaS video." }
   ];
 
   return (
     <section ref={container} className="py-32 px-6 bg-[#05180D] relative overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="mb-20 md:mb-32 text-center">
-            <p className="text-emerald-500 text-[10px] font-bold tracking-[0.5em] uppercase mb-4">The Workflow</p>
-            <h2 className="text-6xl md:text-9xl text-white font-instrument-sans tracking-tight leading-none italic lowercase">the system</h2>
+          <p className="text-emerald-500 text-[10px] font-bold tracking-[0.5em] uppercase mb-4">The Workflow</p>
+          <h2 className="text-6xl md:text-9xl text-white font-instrument-sans tracking-tight leading-none italic lowercase">the system</h2>
         </div>
 
         <div className="relative">
           <div ref={lineRef} className="absolute top-0 left-0 md:w-full md:h-[1px] w-[2px] h-full bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.8)] z-10" />
           <div className="absolute top-0 left-0 md:w-full md:h-[1px] w-[2px] h-full bg-white/5" />
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-16">
-             {steps.map((step, i) => (
-               <div key={i} className="pt-12 md:pt-16 relative group pl-8 md:pl-0">
-                  <div className="absolute top-0 left-[-7px] md:left-0 md:-translate-y-1/2 w-4 h-4 rounded-full bg-emerald-500 border-4 border-[#05180D] z-20 shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
-                  <span className="text-emerald-500 font-bold text-[10px] tracking-widest mb-4 block uppercase opacity-50">Phase 0{i+1}</span>
-                  <h3 className="text-white text-2xl md:text-3xl font-medium mb-5 tracking-tight group-hover:text-emerald-400 transition-colors">{step.name}</h3>
-                  <p className="text-white/40 leading-relaxed font-light text-base md:text-lg group-hover:text-white/60 transition-colors">{step.desc}</p>
-               </div>
-             ))}
+            {steps.map((step, i) => (
+              <div key={i} className="pt-12 md:pt-16 relative group pl-8 md:pl-0">
+                <div className="absolute top-0 left-[-7px] md:left-0 md:-translate-y-1/2 w-4 h-4 rounded-full bg-emerald-500 border-4 border-[#05180D] z-20 shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
+                <span className="text-emerald-500 font-bold text-[10px] tracking-widest mb-4 block uppercase opacity-50">Phase 0{i + 1}</span>
+                <h3 className="text-white text-2xl md:text-3xl font-medium mb-5 tracking-tight group-hover:text-emerald-400 transition-colors">{step.name}</h3>
+                <p className="text-white/40 leading-relaxed font-light text-base md:text-lg group-hover:text-white/60 transition-colors">{step.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -202,29 +202,29 @@ const CenteredPricing = () => {
       <div className="max-w-5xl mx-auto relative z-10">
         <div className="text-center mb-16">
           <p className="text-emerald-500 text-xs font-black tracking-[0.4em] uppercase mb-4">Investment</p>
-          <h2 className="text-5xl md:text-7xl font-instrument-sans text-white tracking-tight mb-6">Built for Authority.</h2>
+          <h2 className="text-5xl md:text-7xl font-instrument-sans text-white tracking-tight mb-6">Built for SaaS.</h2>
         </div>
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div className="p-10 md:p-14 rounded-[3.5rem] border border-white/5 bg-white/2 backdrop-blur-3xl">
-            <h3 className="text-white/50 text-sm font-bold uppercase tracking-widest mb-2">Momentum</h3>
-            <span className="text-white text-5xl font-medium tracking-tighter mb-8 block">Organic Core</span>
+            <h3 className="text-white/50 text-sm font-bold uppercase tracking-widest mb-2">Essential</h3>
+            <span className="text-white text-5xl font-medium tracking-tighter mb-8 block">Explainer</span>
             <ul className="space-y-5 mb-12">
-              {["12 Custom Edits / Mo", "SEO Hook Research", "Distribution Support", "48h Turnaround"].map((f, i) => (
+              {["60-90 Second Length", "Script & Storyboard", "UI Animation", "14-Day Delivery"].map((f, i) => (
                 <li key={i} className="flex items-center gap-3 text-white/70 text-sm font-light"><Check className="w-3 h-3 text-emerald-400" />{f}</li>
               ))}
             </ul>
-            <Link href="#schedule" className="block"><Button className="w-full h-14 rounded-full bg-white/5 border border-white/10 text-white font-bold uppercase tracking-widest text-[10px]">Start Growth</Button></Link>
+            <Link href="#schedule" className="block"><Button className="w-full h-14 rounded-full bg-white/5 border border-white/10 text-white font-bold uppercase tracking-widest text-[10px]">Get Started</Button></Link>
           </div>
           <div className="relative p-10 md:p-14 rounded-[3.5rem] border border-emerald-500/30 bg-white/5 backdrop-blur-3xl shadow-[0_0_80px_rgba(16,185,129,0.1)] scale-105 z-20">
             <div className="absolute top-8 right-10 px-3 py-1 rounded-full bg-emerald-500 text-black text-[9px] font-black uppercase tracking-widest">Recommended</div>
-            <h3 className="text-emerald-400 text-sm font-bold uppercase tracking-widest mb-2">Authority</h3>
-            <span className="text-white text-5xl font-medium tracking-tighter mb-8 block">Growth Suite</span>
+            <h3 className="text-emerald-400 text-sm font-bold uppercase tracking-widest mb-2">Growth</h3>
+            <span className="text-white text-5xl font-medium tracking-tighter mb-8 block">Launch Suite</span>
             <ul className="space-y-5 mb-12">
-              {["24+ High-End Edits / Mo", "Scripting & Hook Bank", "Multi-Channel Ops", "24h Priority"].map((f, i) => (
+              {["Hero Explainer Video", "3 Short-Form Ads", "App Store Preview", "Priority Revisions"].map((f, i) => (
                 <li key={i} className="flex items-center gap-3 text-white text-sm font-medium"><Check className="w-3 h-3 text-emerald-500" />{f}</li>
               ))}
             </ul>
-            <Link href="#schedule" className="block"><Button className="w-full h-14 rounded-full bg-white text-black font-bold uppercase tracking-widest text-[10px]">Dominate Feed</Button></Link>
+            <Link href="#schedule" className="block"><Button className="w-full h-14 rounded-full bg-white text-black font-bold uppercase tracking-widest text-[10px]">Dominate Launch</Button></Link>
           </div>
         </div>
       </div>
@@ -232,37 +232,37 @@ const CenteredPricing = () => {
   );
 };
 
-export default function OrganicContentYouTubePage() {
+export default function SaaSVideoPage() {
   return (
     <div className="flex flex-col min-h-screen bg-[#05180D] selection:bg-emerald-500/30">
       <main className="grow">
-        <HeroCentered 
-          title="Content that builds"
-          highlight="authority"
-          titleAfter="and inbound demand."
-          subtitle="We engineer a content pipeline that compounds: strategy, scripts, recording workflow, and retention-first editing."
+        <HeroCentered
+          title="SaaS product videos that"
+          highlight="convert"
+          titleAfter="trials into users."
+          subtitle="We craft high-converting product demos, explainers, and onboarding videos designed specifically for software companies."
         />
-        
-        <WorkShowcase initialCategory="organic-content" />
 
-        <AnimatedFeatureGrid 
+        <WorkShowcase initialCategory="saas-videos" />
+
+        <AnimatedFeatureGrid
           label="The Challenges"
-          title="Why your current content stalls"
+          title="Why your software isn't selling itself"
           items={[
-            { title: "Inconsistent Cadence", description: "Posting when you can, not when the algorithm demands, leading to stalled growth." },
-            { title: "Execution Gaps", description: "Great ideas failing due to weak retention engineering and boring narrative structures." },
-            { title: "No Conversion Path", description: "Views that never turn into trust or revenue because there's no authority-building CTA." }
+            { title: "Complex Value Proposition", description: "Users don't instantly understand what your software does, leading to high bounce rates." },
+            { title: "Trial Drop-offs", description: "Poor onboarding leads to users abandoning your app before experiencing the 'aha' moment." },
+            { title: "Boring Demos", description: "Standard screen recordings fail to engage prospects or showcase the true power of your platform." }
           ]}
         />
 
-        <AnimatedFeatureGrid 
+        <AnimatedFeatureGrid
           isSolution
           label="The Matera Framework"
-          title="How we build your authority"
+          title="How we visualize your software"
           items={[
-            { title: "Repeatable Systems", description: "Topic banks and hook frameworks designed specifically for your target ICP." },
-            { title: "Retention Engineering", description: "Pacing and narrative design that ensures viewers watch until the very last second." },
-            { title: "Multiplying Leverage", description: "One recording session turned into multiple assets across Shorts, Reels, and TikTok." }
+            { title: "Clear Storytelling", description: "We translate complex technical features into simple, benefit-driven narratives." },
+            { title: "Sleek Motion Design", description: "Studio-grade UI animations and motion graphics that make your product look premium." },
+            { title: "Conversion-Optimized", description: "Every second is engineered to drive signups, demo requests, and activation." }
           ]}
         />
 
@@ -270,17 +270,17 @@ export default function OrganicContentYouTubePage() {
 
         <CenteredPricing />
 
-        <InquiryForm sourcePage="organic-content-youtube" />
-        
+        <InquiryForm sourcePage="saas-videos" />
+
         <FAQ
           content={{
             label: "Intelligence",
             title: "Frequently asked.",
             highlightedWord: "asked.",
             items: [
-              { _key: "q1", question: "Do you help with scripting?", answer: "Yes, we handle hooks, outlines, and full scripts based on your niche." },
-              { _key: "q2", question: "What platforms do you cover?", answer: "YouTube Shorts, Instagram Reels, and TikTok are our primary focus for growth." },
-              { _key: "q3", question: "Will this work for B2B?", answer: "Absolutely. We focus on buyer intent and authority over temporary viral trends." }
+              { _key: "q1", question: "Do you need access to our app?", answer: "Yes, a demo account helps us capture the best possible UI footage for animation." },
+              { _key: "q2", question: "How long does a promo video take?", answer: "Typically 2-4 weeks depending on complexity, length, and motion graphics requirements." },
+              { _key: "q3", question: "Will this help with paid ads?", answer: "Absolutely. Our videos are designed to be used across landing pages, ads, and investor pitches." }
             ]
           }}
         />
