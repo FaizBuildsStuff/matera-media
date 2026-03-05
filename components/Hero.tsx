@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { ArrowRight, Play, Star, Plus, MousePointer2 } from "lucide-react";
+import { ArrowRight, Play, MousePointer2 } from "lucide-react";
 import { EncryptedText } from "@/components/ui/encrypted-text";
 
 const getYoutubeId = (url: string) => {
@@ -41,7 +41,7 @@ export const Hero = ({ content }: { content?: HeroContent }) => {
   const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : "";
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const wordsRef = useRef<HTMLSpanElement[]>([]);
+  const headingRef = useRef<HTMLHeadingElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const videoWrapperRef = useRef<HTMLDivElement>(null);
   const lightRef = useRef<HTMLDivElement>(null);
@@ -53,16 +53,11 @@ export const Hero = ({ content }: { content?: HeroContent }) => {
       const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
 
       tl.fromTo(lightRef.current, { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1, duration: 2 })
-        .fromTo(wordsRef.current,
-          { y: 40, opacity: 0, rotateX: -30 },
-          { y: 0, opacity: 1, rotateX: 0, duration: 1, stagger: 0.03 }, "-=1.5")
-        .fromTo(".highlight-line", 
-          { scaleX: 0 }, 
-          { scaleX: 1, duration: 1, stagger: 0.2, ease: "expo.out" }, "-=0.5")
-        .fromTo(ctaRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 }, "-=0.8")
+        .fromTo(headingRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9 }, "-=1.2")
+        .fromTo(ctaRef.current, { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, "-=0.5")
         .fromTo(videoWrapperRef.current,
-          { y: 60, opacity: 0, scale: 0.95 },
-          { y: 0, opacity: 1, scale: 1, duration: 1.5 }, "-=1");
+          { y: 40, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1 }, "-=0.5");
 
       const handleMouseMove = (e: MouseEvent) => {
         const xPct = (e.clientX / window.innerWidth - 0.5);
@@ -77,7 +72,7 @@ export const Hero = ({ content }: { content?: HeroContent }) => {
       return () => window.removeEventListener("mousemove", handleMouseMove);
     }, containerRef);
     return () => ctx.revert();
-  }, [isVideoPlaying, headline]);
+  }, [isVideoPlaying]);
 
   const renderHeadline = () => {
     const sortedHighlights = [...hWords].sort((a, b) => b.length - a.length);
@@ -89,67 +84,63 @@ export const Hero = ({ content }: { content?: HeroContent }) => {
       const isMatch = sortedHighlights.some(h => h.toLowerCase() === part.toLowerCase());
       if (isMatch) {
         return (
-          <span key={i} className="relative inline-block mx-[0.1em] will-change-transform">
-             <span className="relative z-10 font-instrument-serif italic text-white px-1">
-                <EncryptedText text={part} />
-             </span>
-             <div className="highlight-line absolute bottom-[10%] left-0 w-full h-[30%] bg-emerald-500/20 blur-sm -z-10 origin-left" />
-             <div className="highlight-line absolute bottom-0 left-0 w-full h-[2px] bg-emerald-500/50 origin-left" />
+          <span key={i} className="relative inline-block">
+            <span className="font-instrument-serif italic text-emerald-200/95">
+              <EncryptedText text={part} />
+            </span>
+            <span className="absolute bottom-0 left-0 w-full h-px bg-emerald-500/40" aria-hidden />
           </span>
         );
       }
-      return part.split(" ").map((word, wordIdx) => word && (
-        <span key={`${i}-${wordIdx}`} ref={(el) => { if (el) wordsRef.current.push(el); }} className="inline-block mx-[0.12em] text-white/90">
-          {word}
-        </span>
-      ));
+      return <span key={i} className="text-white/95">{part}</span>;
     });
   };
 
   return (
     <section ref={containerRef} className="relative min-h-screen w-full flex flex-col items-center justify-start pt-32 md:pt-48 pb-20 px-4 bg-[#05180D] overflow-hidden">
       
-      {/* Dynamic Lighting */}
+      {/* Soft gradient */}
       <div ref={lightRef} className="absolute top-[-5%] left-1/2 -translate-x-1/2 w-[120vw] h-[70vh] pointer-events-none z-10 opacity-50"
         style={{ background: "radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.1) 0%, transparent 70%)" }}
       />
 
-      {/* Decorative Elements */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-20">
-        <div className="absolute top-[20%] left-[15%] w-px h-64 bg-emerald-500/20" />
-        <div className="absolute top-[40%] right-[10%] w-px h-64 bg-emerald-500/20" />
-        <Star className="absolute top-[15%] right-[15%] w-4 h-4 text-emerald-400/40" />
-        <Plus className="absolute bottom-[20%] left-[12%] w-4 h-4 text-emerald-400/40" />
+      {/* Minimal decor */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-15">
+        <div className="absolute top-[20%] left-[12%] w-px h-48 bg-emerald-500/30" />
+        <div className="absolute top-[35%] right-[12%] w-px h-48 bg-emerald-500/30" />
       </div>
 
-      <div className="relative z-20 w-full max-w-5xl mx-auto flex flex-col items-center">
+      <div className="relative z-20 w-full max-w-4xl mx-auto flex flex-col items-center">
         {/* Headline */}
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-instrument-sans font-medium tracking-tight text-white leading-[1.1] text-center mb-10 px-2">
+        <h1
+          ref={headingRef}
+          className="text-4xl md:text-5xl lg:text-6xl font-instrument-sans font-medium tracking-tight text-center leading-[1.2] text-balance mb-12 px-2"
+        >
           {renderHeadline()}
         </h1>
 
-        {/* CTA Section */}
+        {/* CTA */}
         <div ref={ctaRef} className="flex flex-col items-center gap-6 mb-20">
-          <Button asChild className="relative h-14 px-10 rounded-full bg-white text-black hover:bg-emerald-50 transition-all duration-300 font-bold text-base flex items-center gap-3 shadow-xl hover:shadow-emerald-500/20">
+          <Button asChild className="h-12 px-8 rounded-full bg-white text-black hover:bg-emerald-50 transition-colors font-semibold text-sm flex items-center gap-2">
             <Link href={ctaLink}>
               <span>{ctaPrimary}</span>
-              <div className="w-7 h-7 rounded-full bg-black flex items-center justify-center">
-                <ArrowRight className="w-3.5 h-3.5 text-white" />
+              <div className="w-6 h-6 rounded-full bg-black flex items-center justify-center">
+                <ArrowRight className="w-3 h-3 text-white" />
               </div>
             </Link>
           </Button>
 
-          <div className="flex items-center gap-2 text-white/30 text-[9px] uppercase tracking-[0.2em] font-bold">
+          <div className="flex items-center gap-2 text-white/30 text-[10px] uppercase tracking-[0.18em] font-medium">
             <MousePointer2 className="w-3 h-3" />
             <span>{videoTitle}</span>
           </div>
         </div>
 
-        {/* Video Player */}
+        {/* Video */}
         {videoUrl && (
           <div
             ref={videoWrapperRef}
-            className={`relative w-full aspect-video overflow-hidden bg-black border border-white/10 shadow-2xl transition-all duration-700 transform-gpu ${isVideoPlaying ? 'rounded-none' : 'rounded-3xl md:rounded-[3rem]'}`}
+            className={`relative w-full aspect-video overflow-hidden bg-black border border-white/10 shadow-2xl transition-all duration-500 transform-gpu ${isVideoPlaying ? 'rounded-none' : 'rounded-2xl md:rounded-3xl'}`}
           >
             {!isVideoPlaying ? (
               <div className="absolute inset-0 flex items-center justify-center cursor-pointer z-30" onClick={() => setIsVideoPlaying(true)}>
@@ -158,9 +149,9 @@ export const Hero = ({ content }: { content?: HeroContent }) => {
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#05180D] via-transparent to-transparent opacity-60" />
                 <div className="relative group/play">
-                  <div className="absolute inset-0 bg-emerald-500/20 blur-3xl rounded-full group-hover/play:scale-150 transition-transform duration-500" />
-                  <div className="relative w-16 h-16 md:w-24 md:h-24 rounded-full bg-white/5 backdrop-blur-xl border border-white/20 flex items-center justify-center group-hover/play:scale-110 transition-all duration-500">
-                    <Play className="w-6 h-6 md:w-8 md:h-8 text-white fill-white ml-1" />
+                  <div className="absolute inset-0 bg-emerald-500/15 blur-2xl rounded-full group-hover/play:scale-150 transition-transform duration-500" />
+                  <div className="relative w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/5 backdrop-blur-xl border border-white/20 flex items-center justify-center group-hover/play:scale-105 transition-all duration-300">
+                    <Play className="w-5 h-5 md:w-7 md:h-7 text-white fill-white ml-0.5" />
                   </div>
                 </div>
               </div>
@@ -171,7 +162,7 @@ export const Hero = ({ content }: { content?: HeroContent }) => {
         )}
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#05180D] to-transparent z-20 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-[#05180D] to-transparent z-20 pointer-events-none" />
     </section>
   );
 };

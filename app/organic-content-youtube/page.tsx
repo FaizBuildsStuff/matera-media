@@ -1,472 +1,295 @@
-"use client";
-
-import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { motion } from "framer-motion";
-import {
-  ArrowRight, ArrowLeft, Play,
-  Activity, Check, Zap, ShieldCheck, ArrowUpRight
-} from "lucide-react";
-
 import { Button } from "@/components/ui/button";
-import { Footer } from "@/components/Footer";
+import { WorkShowcase } from "@/components/WorkShowcase";
+import Pricing from "@/components/pricing";
 import { InquiryForm } from "@/components/InquiryForm";
 import { FAQ } from "@/components/FAQ";
+import { Footer } from "@/components/Footer";
+import { SectionMerge } from "@/components/SectionMerge";
 
-gsap.registerPlugin(ScrollTrigger);
+const BG_BASE = "#05180D";
+const BG_SEC = "#062017";
 
-// --- Interfaces ---
-interface HeroProps {
-  title: string;
-  highlight: string;
-  titleAfter: string;
-  subtitle: string;
-}
+const PROBLEMS = [
+  {
+    title: "Content is inconsistent",
+    description:
+      "You post when you can, not when the system demands—so growth stalls.",
+  },
+  {
+    title: "Great ideas, weak execution",
+    description:
+      "No repeatable structure, no retention engineering, no scalable editing pipeline.",
+  },
+  {
+    title: "Views don’t turn into pipeline",
+    description:
+      "Without positioning and CTAs, attention never becomes trust (or revenue).",
+  },
+];
 
-interface FeatureItem {
-  title: string;
-  description: string;
-}
+const SOLUTIONS = [
+  {
+    title: "A repeatable content system",
+    description:
+      "Topics, hooks, and formats built around your ICP and the buying journey.",
+  },
+  {
+    title: "Retention-first editing",
+    description:
+      "Pacing, overlays, and narrative structure designed to keep viewers watching.",
+  },
+  {
+    title: "Distribution + repurposing",
+    description:
+      "One recording → multiple outputs across Shorts, Reels, TikTok, and long-form.",
+  },
+];
 
-interface FeatureGridProps {
-  items: FeatureItem[];
-  title: string;
-  label: string;
-  isSolution?: boolean;
-}
+const RESULTS = [
+  { label: "Publishing cadence", value: "3–7/wk" },
+  { label: "Repurposing leverage", value: "1 → 8" },
+  { label: "Authority compounding", value: "Month 2+" },
+];
 
-interface ResultItem {
-  image: string;
-}
-
-interface ResultsProps {
-  items: ResultItem[];
-  title: string;
-}
-
-// --- 1. CENTERED HERO ---
-const HeroCentered = ({ title, highlight, titleAfter, subtitle }: HeroProps) => {
-  const brands = ["SAMSUNG", "ADOBE", "SHOPIFY", "NIKE", "STRIPE", "SAMSUNG", "ADOBE", "SHOPIFY"];
-  const endlessBrands = [...brands, ...brands];
-
+export default function OrganicContentYouTubePage() {
   return (
-    <section className="relative pt-44 pb-16 px-6 overflow-hidden bg-[#05180D] flex flex-col items-center text-center">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.12),transparent_70%)] pointer-events-none" />
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "circOut" }}
-        className="relative z-10 max-w-5xl"
-      >
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8">
-          <Activity className="w-3 h-3 text-emerald-400" />
-          <span className="text-white/50 text-[10px] uppercase tracking-[0.3em] font-bold">Performance Systems</span>
-        </div>
-        <h1 className="text-6xl md:text-8xl font-instrument-sans font-medium text-white tracking-tighter leading-[0.9] mb-8">
-          {title} <span className="font-instrument-serif italic text-emerald-300">{highlight}</span> {titleAfter}
-        </h1>
-        <p className="text-white/40 text-lg md:text-2xl font-light max-w-2xl mx-auto leading-relaxed mb-12">
-          {subtitle}
-        </p>
-        <Link href="#schedule">
-          <Button className="h-14 px-10 rounded-full bg-white text-black text-base font-bold hover:scale-105 transition-all group shadow-[0_0_40px_rgba(255,255,255,0.1)]">
-            Book a Free Audit
-            <div className="ml-3 w-7 h-7 rounded-full bg-black flex items-center justify-center">
-              <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-0.5 transition-transform" />
-            </div>
-          </Button>
-        </Link>
-      </motion.div>
-      <div className="mt-20 w-full overflow-hidden opacity-20 select-none pointer-events-none">
-        <div className="flex animate-scroll whitespace-nowrap gap-24 items-center w-max">
-          {endlessBrands.map((brand, i) => (
-            <span key={i} className="text-white text-4xl font-black tracking-tighter opacity-50">{brand}</span>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// --- 2. REELS WORK SECTION ---
-const WorkReelsSection = () => {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const scroll = (direction: 'left' | 'right') => {
-    if (scrollRef.current) {
-      const { scrollLeft, clientWidth } = scrollRef.current;
-      const scrollTo = direction === 'left' ? scrollLeft - clientWidth / 2 : scrollLeft + clientWidth / 2;
-      scrollRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
-    }
-  };
-
-  return (
-    <section className="py-20 px-6 bg-[#062017] border-y border-white/5">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-8">
-          <div className="max-w-2xl">
-            <h2 className="text-5xl md:text-7xl font-instrument-sans text-white tracking-tight mb-4">Our Work</h2>
-            <p className="text-emerald-400 text-xl italic font-instrument-serif opacity-80">Industry-leading performance creative.</p>
-          </div>
-          <div className="flex gap-4">
-            <button onClick={() => scroll('left')} className="p-5 rounded-full border border-white/10 text-white hover:bg-white hover:text-black transition-all"><ArrowLeft className="w-6 h-6" /></button>
-            <button onClick={() => scroll('right')} className="p-5 rounded-full border border-white/10 text-white hover:bg-white hover:text-black transition-all"><ArrowRight className="w-6 h-6" /></button>
-          </div>
-        </div>
-        <div ref={scrollRef} className="flex gap-8 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-4">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="snap-center shrink-0 w-[300px] h-[540px] bg-white/2 rounded-[2.5rem] border border-white/10 relative overflow-hidden group cursor-pointer">
-              <div className="absolute inset-0 bg-linear-to-t from-black/90 via-transparent to-transparent z-10" />
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all z-20"><div className="w-16 h-16 rounded-full bg-white text-black flex items-center justify-center"><Play className="fill-current w-5 h-5 ml-1" /></div></div>
-              <div className="absolute bottom-10 left-10 z-20">
-                <p className="text-emerald-400 text-[10px] font-black uppercase tracking-widest mb-2">Ad Creative</p>
-                <h4 className="text-white text-xl font-medium tracking-tight">Case Study 0{i}</h4>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// --- 3. REIMAGINED 2060 FEATURE GRID (FAST ACTION) ---
-const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: FeatureGridProps) => {
-  const container = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(".feature-card",
-        { y: 30, opacity: 0, clipPath: "inset(100% 0% 0% 0%)" },
-        {
-          scrollTrigger: { trigger: container.current, start: "top 90%" },
-          y: 0, opacity: 1, clipPath: "inset(0% 0% 0% 0%)",
-          stagger: 0.05, duration: 0.6, ease: "expo.out"
-        }
-      );
-    }, container);
-    return () => ctx.revert();
-  }, []);
-
-  return (
-    <section ref={container} className={`relative py-32 px-6 overflow-hidden ${isSolution ? 'bg-[#05180D]' : 'bg-[#031109]'}`}>
-      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none"
-        style={{ backgroundImage: `url("https://www.transparenttextures.com/patterns/stardust.png")` }} />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/5 blur-[120px] rounded-full pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20">
-          <div className="max-w-2xl">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="h-[1px] w-8 bg-emerald-500/50" />
-              <p className="text-emerald-500 text-[10px] font-bold tracking-[0.5em] uppercase">{label}</p>
-            </div>
-            <h2 className="text-5xl md:text-7xl text-white font-instrument-sans font-medium tracking-tighter leading-none italic lowercase">
-              {title}
-            </h2>
-          </div>
-          <div className="hidden md:block h-px flex-1 bg-white/5 mx-12 mb-4" />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/5 border border-white/5 rounded-[3rem] overflow-hidden shadow-2xl">
-          {items.map((item, i) => (
-            <div key={i} className="feature-card group relative p-10 md:p-14 bg-[#031109] transition-all duration-700 hover:bg-white/[0.02]">
-              <div className="absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-4 group-hover:translate-x-0">
-                <ArrowUpRight className="w-5 h-5 text-emerald-500" />
-              </div>
-              <div className="relative z-10">
-                <div className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-center mb-10 transition-all duration-500 group-hover:border-emerald-500/50 group-hover:bg-emerald-500/10">
-                  {isSolution ? <ShieldCheck className="w-5 h-5 text-emerald-400" /> : <Zap className="w-5 h-5 text-emerald-400" />}
-                </div>
-                <div className="space-y-4">
-                  <h3 className="text-white text-2xl font-medium tracking-tight group-hover:text-emerald-400 transition-colors duration-500">{item.title}</h3>
-                  <p className="text-white/30 leading-relaxed font-light text-base group-hover:text-white/60 transition-colors duration-500">{item.description}</p>
-                </div>
-                <div className="mt-12 flex items-center gap-4 opacity-20 group-hover:opacity-50 transition-opacity">
-                  <span className="text-[9px] font-black text-white tracking-[0.3em] uppercase">Module_0{i + 1}</span>
-                  <div className="h-[1px] w-8 bg-white/20" />
-                </div>
-              </div>
-              <div className="absolute bottom-0 left-0 w-full h-[2px] bg-emerald-500/0 group-hover:bg-emerald-500/50 transition-all duration-700 origin-left scale-x-0 group-hover:scale-x-100" />
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// --- 4. CENTERED PRICING ---
-const CenteredPricing = () => {
-  return (
-    <section className="py-24 px-6 bg-[#05180D] relative overflow-hidden">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/3 blur-[150px] rounded-full pointer-events-none" />
-      <div className="max-w-5xl mx-auto relative z-10">
-        <div className="text-center mb-16">
-          <p className="text-emerald-500 text-xs font-black tracking-[0.4em] uppercase mb-4">
-            Investment
-          </p>
-          <h2 className="text-5xl md:text-7xl font-instrument-sans text-white tracking-tight mb-6">
-            Simple plans for YouTube growth.
-          </h2>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-8 items-center">
-
-          {/* Starter Plan */}
-          <div className="p-10 md:p-14 rounded-[3.5rem] border border-white/5 bg-white/2 backdrop-blur-3xl">
-            <h3 className="text-white/50 text-sm font-bold uppercase tracking-widest mb-2">
-              Starter Plan
-            </h3>
-            <span className="text-white text-5xl font-medium tracking-tighter mb-8 block">
-              Basic Growth
-            </span>
-
-            <ul className="space-y-5 mb-12">
-              {[
-                "4 Videos Per Month",
-                "Video Editing",
-                "Title & Description Setup",
-                "Monthly Performance Review"
-              ].map((f, i) => (
-                <li key={i} className="flex items-center gap-3 text-white/70 text-sm font-light">
-                  <Check className="w-3 h-3 text-emerald-400" />
-                  {f}
-                </li>
-              ))}
-            </ul>
-
-            <Link href="#schedule" className="block">
-              <Button className="w-full h-14 rounded-full bg-white/5 border border-white/10 text-white font-bold uppercase tracking-widest text-[10px]">
-                Book A Call
-              </Button>
-            </Link>
-          </div>
-
-          {/* Recommended Plan */}
-          <div className="relative p-10 md:p-14 rounded-[3.5rem] border border-emerald-500/30 bg-white/5 backdrop-blur-3xl shadow-[0_0_80px_rgba(16,185,129,0.1)] scale-105 z-20">
-            <div className="absolute top-8 right-10 px-3 py-1 rounded-full bg-emerald-500 text-black text-[9px] font-black uppercase tracking-widest">
-              Recommended
-            </div>
-
-            <h3 className="text-emerald-400 text-sm font-bold uppercase tracking-widest mb-2">
-              Pro Plan
-            </h3>
-            <span className="text-white text-5xl font-medium tracking-tighter mb-8 block">
-              Fast Growth
-            </span>
-
-            <ul className="space-y-5 mb-12">
-              {[
-                "8 Videos Per Month",
-                "Advanced Editing",
-                "Thumbnail Design",
-                "Weekly Performance Review"
-              ].map((f, i) => (
-                <li key={i} className="flex items-center gap-3 text-white text-sm font-medium">
-                  <Check className="w-3 h-3 text-emerald-500" />
-                  {f}
-                </li>
-              ))}
-            </ul>
-
-            <Link href="#schedule" className="block">
-              <Button className="w-full h-14 rounded-full bg-white text-black font-bold uppercase tracking-widest text-[10px]">
-                Book A Call
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// --- 5. RESULTS (STATIC & MODERN) ---
-const ResultsSection = ({ items, title }: ResultsProps) => {
-  return (
-    <section className="py-24 px-6 bg-[#062017] overflow-hidden text-center">
-      <h2 className="text-5xl md:text-9xl font-instrument-sans text-white tracking-tighter opacity-90 mb-20">{title}</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-        {items.map((item, i) => (
-          <div key={i} className="relative aspect-square rounded-[3rem] overflow-hidden border border-white/10 bg-white/5 group">
-            {item.image && (
-              <Image
-                src={item.image}
-                alt="Result Proof"
-                fill
-                className="object-cover opacity-70 transition-all duration-700 group-hover:opacity-100 group-hover:scale-105"
-              />
-            )}
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-};
-
-// --- 6. OUR PROCESS (RESPONSIVE KINETIC LINE) ---
-const ProcessSection = () => {
-  const container = useRef<HTMLDivElement>(null);
-  const lineRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Progress line: Horizontal on PC, Vertical on Mobile
-      gsap.fromTo(lineRef.current,
-        {
-          scaleX: 0,
-          scaleY: 0,
-          transformOrigin: "top left"
-        },
-        {
-          scaleX: 1,
-          scaleY: 1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: container.current,
-            start: "top 40%",
-            end: "bottom 60%",
-            scrub: 1
-          }
-        });
-    }, container);
-    return () => ctx.revert();
-  }, []);
-
-  const steps = [
-    {
-      name: "Channel & Audience Deep Dive",
-      desc: "We audit your niche, competitors, and current content to identify positioning gaps, content opportunities, and algorithm advantages."
-    },
-    {
-      name: "Content Strategy & Ideation",
-      desc: "We build a strategic content roadmap with proven video angles, searchable topics, and high-retention formats tailored to your audience."
-    },
-    {
-      name: "Production & Retention Editing",
-      desc: "Every video is structured with strong hooks, storytelling flow, open loops, and pacing optimized to maximize watch time."
-    },
-    {
-      name: "Optimization & Scaling",
-      desc: "We refine titles, thumbnails, and performance data to double down on what works and systematically scale your organic growth."
-    }
-  ];
-
-  return (
-    <section ref={container} className="py-32 px-6 bg-[#05180D] relative overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-20 md:mb-32">
-          <h2 className="text-6xl md:text-9xl text-white font-instrument-sans tracking-tight leading-none italic lowercase">
-            The Workflow
-          </h2>
-        </div>
-
-        <div className="relative">
-          {/* Progress line: Vertical on mobile (left), Horizontal on PC (top) */}
-          <div
-            ref={lineRef}
-            className="absolute 
-              top-0 left-0 
-              md:w-full md:h-[1px] 
-              w-[2px] h-full 
-              bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.8)] 
-              z-10"
-          />
-
-          {/* Static Background Track Line */}
-          <div className="absolute top-0 left-0 md:w-full md:h-[1px] w-[2px] h-full bg-white/5" />
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-16">
-            {steps.map((step, i) => (
-              <div key={i} className="pt-12 md:pt-16 relative group pl-8 md:pl-0">
-                {/* Bullet Dot */}
-                <div className="absolute top-0 left-[-7px] md:left-0 md:-translate-y-1/2 w-4 h-4 rounded-full bg-emerald-500 border-4 border-[#05180D] z-20 group-hover:scale-125 transition-transform shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
-
-                <span className="text-emerald-500 font-bold text-[10px] tracking-widest mb-4 block uppercase opacity-50 group-hover:opacity-100 transition-opacity">
-                  Step 0{i + 1}
-                </span>
-                <h3 className="text-white text-2xl md:text-3xl font-medium mb-5 tracking-tight group-hover:text-emerald-400 transition-colors">
-                  {step.name}
-                </h3>
-                <p className="text-white/40 leading-relaxed font-light text-base md:text-lg group-hover:text-white/60 transition-colors">
-                  {step.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-export default async function OrganicContentYouTubePage() {
-  return (
-    <div className="flex flex-col min-h-screen bg-[#05180D] selection:bg-emerald-500/30">
+    <div className="flex flex-col min-h-screen bg-[#05180D]">
       <main className="grow">
-        <HeroCentered
-          title="Organic YouTube content that"
-          highlight="builds authority"
-          titleAfter="and drives real growth."
-          subtitle="A strategy-first YouTube system focused on storytelling, retention, and long-term audience building — not paid ads."
-        />
+        {/* Headline */}
+        <section className="relative pt-32 pb-20 px-6 overflow-hidden bg-[#05180D]">
+          <div className="absolute inset-0 opacity-40 pointer-events-none bg-[radial-gradient(circle_at_30%_20%,rgba(16,185,129,0.18),transparent_45%)]" />
+          <div className="absolute -left-24 top-24 w-[520px] h-[520px] bg-emerald-500/10 rounded-full blur-[140px] pointer-events-none" />
+          <SectionMerge toColor={BG_SEC} />
 
-        <WorkReelsSection />
+          <div className="relative max-w-7xl mx-auto z-10">
+            <p className="text-emerald-300/80 text-xs font-medium tracking-[0.2em] uppercase mb-6">
+              Organic Content / YouTube
+            </p>
+            <h1 className="text-5xl md:text-7xl font-instrument-sans font-medium text-white tracking-tight leading-[0.95] max-w-4xl">
+              Content that builds{" "}
+              <span className="font-instrument-serif italic text-emerald-300/90">
+                authority
+              </span>{" "}
+              and inbound demand.
+            </h1>
+            <p className="text-white/60 text-lg md:text-xl font-light leading-relaxed mt-8 max-w-2xl">
+              We engineer a content pipeline that compounds: strategy, scripts,
+              recording workflow, editing, and distribution.
+            </p>
 
-        <AnimatedFeatureGrid
-          label="The Problem"
-          title="What creators usually struggle with"
-          items={[
-            {
-              title: "Uploading Without Strategy",
-              description: "Most creators post consistently but without understanding audience psychology, search intent, or retention structure."
-            },
-            {
-              title: "Low Retention & Watch Time",
-              description: "If viewers drop in the first 30 seconds, YouTube won't push your content — no matter how good it looks."
-            },
-            {
-              title: "Inconsistent Growth",
-              description: "Random topics and no content system lead to slow growth and unpredictable results."
-            }
-          ]}
-        />
+            <div className="mt-12 flex flex-col sm:flex-row gap-4">
+              <Link href="#schedule">
+                <Button className="h-12 px-8 rounded-full bg-white text-black hover:bg-emerald-50 transition-colors">
+                  Book a Call
+                </Button>
+              </Link>
+              <Link href="#work">
+                <Button
+                  variant="outline"
+                  className="h-12 px-8 rounded-full border-white/15 bg-white/5 text-white hover:bg-white/10"
+                >
+                  Our Work
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
 
-        <AnimatedFeatureGrid
-          isSolution
-          label="The Matera Solution"
-          title="How we build organic growth machines"
-          items={[
-            {
-              title: "Retention-Driven Storytelling",
-              description: "We structure every video with powerful hooks, open loops, and pacing designed to maximize watch time."
-            },
-            {
-              title: "Search & Algorithm Optimization",
-              description: "Strategic titles, thumbnails, and metadata crafted to rank and get recommended organically."
-            },
-            {
-              title: "Content Systemization",
-              description: "We build repeatable content frameworks so your channel grows consistently month after month."
-            }
-          ]}
-        />
-        <ResultsSection title="Our Results" items={[{ image: "/results/s1.png" }, { image: "/results/s2.png" }, { image: "/results/s3.png" }, { image: "/results/s4.png" }]} />
-        <ProcessSection />
-        <CenteredPricing />
-        <InquiryForm sourcePage="ad-creatives" />
-        <FAQ content={{ items: [] }} />
+        {/* Book a Call */}
+        <section className="relative py-14 px-6 bg-[#062017]">
+          <SectionMerge toColor={BG_BASE} />
+          <div className="relative z-10 max-w-7xl mx-auto rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-sm px-8 py-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div>
+              <p className="text-white/40 text-sm tracking-widest uppercase">
+                Book a Call
+              </p>
+              <h2 className="text-2xl md:text-3xl font-instrument-sans font-medium text-white mt-2">
+                Let’s design a content system you can sustain.
+              </h2>
+            </div>
+            <Link href="#schedule">
+              <Button className="h-12 px-8 rounded-full bg-emerald-400 text-[#05180D] hover:bg-emerald-300 transition-colors">
+                Book Strategy Call
+              </Button>
+            </Link>
+          </div>
+        </section>
+
+        {/* Our Work */}
+        <div className="relative">
+          <WorkShowcase initialCategory="organic-content" />
+          <SectionMerge toColor={BG_SEC} />
+        </div>
+
+        {/* Problems */}
+        <section id="problems" className="relative py-32 px-6 overflow-hidden bg-[#062017]">
+          <SectionMerge toColor={BG_BASE} />
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[520px] h-[520px] bg-emerald-500/5 rounded-full blur-[140px] pointer-events-none" />
+          <div className="relative z-10 max-w-7xl mx-auto">
+            <p className="text-emerald-300/80 text-xs font-medium tracking-[0.2em] uppercase mb-5">
+              Problems
+            </p>
+            <h2 className="text-4xl md:text-5xl font-instrument-sans font-medium text-white mb-10">
+              What clients are usually going through
+            </h2>
+            <div className="grid md:grid-cols-3 gap-6">
+              {PROBLEMS.map((p) => (
+                <div
+                  key={p.title}
+                  className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-sm p-8"
+                >
+                  <h3 className="text-white text-xl font-medium mb-3">
+                    {p.title}
+                  </h3>
+                  <p className="text-white/55 font-light leading-relaxed">
+                    {p.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Solutions */}
+        <section id="solutions" className="relative py-32 px-6 overflow-hidden bg-[#05180D]">
+          <SectionMerge toColor={BG_SEC} />
+          <div className="absolute left-0 top-1/3 w-[560px] h-[560px] bg-emerald-500/5 rounded-full blur-[150px] pointer-events-none" />
+          <div className="relative z-10 max-w-7xl mx-auto">
+            <p className="text-emerald-300/80 text-xs font-medium tracking-[0.2em] uppercase mb-5">
+              Solutions
+            </p>
+            <h2 className="text-4xl md:text-5xl font-instrument-sans font-medium text-white mb-10">
+              How we fix it
+            </h2>
+            <div className="grid md:grid-cols-3 gap-6">
+              {SOLUTIONS.map((s) => (
+                <div
+                  key={s.title}
+                  className="rounded-3xl border border-emerald-500/15 bg-white/[0.03] backdrop-blur-sm p-8"
+                >
+                  <h3 className="text-white text-xl font-medium mb-3">
+                    {s.title}
+                  </h3>
+                  <p className="text-white/55 font-light leading-relaxed">
+                    {s.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Results */}
+        <section id="results" className="relative py-32 px-6 overflow-hidden bg-[#062017]">
+          <SectionMerge toColor={BG_BASE} />
+          <div className="relative z-10 max-w-7xl mx-auto">
+            <p className="text-emerald-300/80 text-xs font-medium tracking-[0.2em] uppercase mb-5">
+              Results
+            </p>
+            <h2 className="text-4xl md:text-5xl font-instrument-sans font-medium text-white mb-10">
+              Growth that compounds over time
+            </h2>
+            <div className="grid md:grid-cols-3 gap-6">
+              {RESULTS.map((r) => (
+                <div
+                  key={r.label}
+                  className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-sm p-8"
+                >
+                  <p className="text-white/50 text-sm tracking-widest uppercase">
+                    {r.label}
+                  </p>
+                  <p className="text-white text-4xl font-semibold tracking-tight mt-4">
+                    {r.value}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Plans */}
+        <div className="relative">
+          <Pricing
+          content={{
+            label: "Plans",
+            title: "Plans for consistent publishing.",
+            subtitle:
+              "Choose the cadence that matches your goals and your capacity to record.",
+            plans: [
+              {
+                _key: "oc-lite",
+                name: "Momentum",
+                description: "Get consistent and start compounding.",
+                features: ["Topic + hook bank", "3 shorts/week", "Editing + captions", "Monthly planning call"],
+                popular: false,
+              },
+              {
+                _key: "oc-core",
+                name: "Authority",
+                description: "Build credibility with a strong weekly rhythm.",
+                features: ["Content system + formats", "5 shorts/week", "Repurposing package", "Weekly sync"],
+                popular: true,
+              },
+              {
+                _key: "oc-scale",
+                name: "Dominate",
+                description: "High output across channels, end-to-end.",
+                features: ["7 shorts/week", "Long-form support", "Multi-platform distribution", "Dedicated editor"],
+                popular: false,
+              },
+            ],
+          }}
+          />
+          <SectionMerge toColor={BG_SEC} />
+        </div>
+
+        {/* Inquiry Form */}
+        <div className="relative">
+          <InquiryForm
+            title="Book a Call — Content System Blueprint"
+            subtitle="We'll map topics, formats, cadence, and a workflow your team can actually sustain."
+            sourcePage="organic-content-youtube"
+          />
+          <SectionMerge toColor={BG_BASE} />
+        </div>
+
+        {/* FAQs */}
+        <div className="relative">
+          <FAQ
+          content={{
+            label: "FAQs",
+            title: "Organic growth questions — answered.",
+            highlightedWord: "answered.",
+            items: [
+              {
+                _key: "oc-1",
+                question: "Do you help with topics and scripting?",
+                answer:
+                  "Yes—topics, hooks, outlines, and repeatable formats are part of the system we build.",
+              },
+              {
+                _key: "oc-2",
+                question: "Can you repurpose long-form into shorts?",
+                answer:
+                  "Absolutely. We can turn long-form recordings into multiple short-form deliverables.",
+              },
+              {
+                _key: "oc-3",
+                question: "Will this work for B2B?",
+                answer:
+                  "Yes. We structure content around buyer intent, credibility, and conversion—not trends.",
+              },
+            ],
+          }}
+          />
+          <SectionMerge toColor={BG_BASE} />
+        </div>
+
       </main>
+
       <Footer />
-      <style jsx global>{`
-        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        .animate-scroll { animation: scroll 25s linear infinite; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-      `}</style>
     </div>
   );
 }
+

@@ -28,7 +28,8 @@ const instrumentSerif = Instrument_Serif({
 
 export const metadata: Metadata = {
   title: "Matera Media | B2B Growth & YouTube Production",
-  description: "We help B2B Brands and Creators to Grow and Hit Revenue with Organic Content and Motion Ad Creatives",
+  description:
+    "We help B2B Brands and Creators to Grow and Hit Revenue with Organic Content and Motion Ad Creatives",
 };
 
 export default function RootLayout({
@@ -38,8 +39,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* Rise of Kingdoms Font */}
+        <link
+          href="https://fonts.cdnfonts.com/css/rise-of-kingdom"
+          rel="stylesheet"
+        />
+      </head>
+
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${instrumentSans.variable} ${instrumentSerif.variable} antialiased`}
+        style={{ fontFamily: "Rise of Kingdom, sans-serif" }}
       >
         <SmoothScroll />
         <Header />
