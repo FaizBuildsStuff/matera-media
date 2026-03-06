@@ -1,7 +1,6 @@
 import { client } from "@/lib/sanity";
 import { pageQuery } from "@/lib/queries";
 import { SectionRenderer, type SectionBlock } from "@/components/SectionRenderer";
-import { Footer } from "@/components/Footer";
 
 export default async function Home() {
   const page = await client.fetch<{ sections?: SectionBlock[] } | null>(
@@ -14,7 +13,6 @@ export default async function Home() {
       <main className="grow">
         <SectionRenderer sections={page?.sections ?? undefined} />
       </main>
-      <Footer />
     </div>
   );
 }

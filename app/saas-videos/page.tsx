@@ -12,7 +12,6 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Footer } from "@/components/Footer";
 import { InquiryForm } from "@/components/InquiryForm";
 import { FAQ } from "@/components/FAQ";
 import { WorkShowcase } from "@/components/WorkShowcase";
@@ -285,7 +284,6 @@ export default function SaaSVideoPage() {
           }}
         />
       </main>
-      <Footer />
       <style jsx global>{`
         @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         .animate-scroll { animation: scroll 25s linear infinite; }

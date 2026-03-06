@@ -70,7 +70,7 @@ export const Header = () => {
                     </nav>
 
                     <div className="flex items-center gap-4">
-                        <Link href="#schedule" className="hidden sm:block group relative">
+                        <Link href="/book" className="hidden sm:block group relative">
                             {/* Subtle Glow */}
                             <div className="absolute -inset-1 bg-white/10 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                             
@@ -110,7 +110,7 @@ export const Header = () => {
                         ))}
                         <div className="h-px w-full bg-white/5 my-2" />
                         <Link 
-                            href="#schedule" 
+                            href="/book" 
                             className="flex items-center justify-center h-12 bg-white text-black text-sm font-bold rounded-xl"
                             onClick={() => setMobileOpen(false)}
                         >

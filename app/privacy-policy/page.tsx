@@ -1,6 +1,5 @@
 import { client } from "@/lib/sanity";
 import { legalPageQuery } from "@/lib/queries";
-import { Footer } from "@/components/Footer";
 import { ShieldCheck, Info, Eye, Lock, RefreshCw } from "lucide-react";
 
 const DEFAULT_SECTIONS = [
@@ -120,7 +119,6 @@ export default async function PrivacyPolicyPage() {
         </section>
       </main>
 
-      <Footer />
     </div>
   );
 }

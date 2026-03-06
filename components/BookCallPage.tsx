@@ -3,8 +3,9 @@
 import { useEffect, useRef } from "react";
 import Script from "next/script";
 import { gsap } from "gsap";
-import { CheckCircle2, Sparkles } from "lucide-react";
+import { CheckCircle2, Sparkles, ShieldCheck, Clock } from "lucide-react";
 import { colors } from "@/theme/colors";
+import { Card } from "@/components/ui/card";
 
 declare global {
   interface Window {
@@ -46,7 +47,7 @@ export function BookCallPage({ content }: { content?: BookingPageContent }) {
     content?.calendlyUrl ??
     "https://calendly.com/m-faizurrehman-crypto/30min";
 
-  // Calendly loader
+  /* Calendly loader */
   useEffect(() => {
     const initCalendly = () => {
       if (!window.Calendly || !calendlyRef.current) return;
@@ -73,39 +74,45 @@ export function BookCallPage({ content }: { content?: BookingPageContent }) {
     }
   }, [calendlyUrl]);
 
-  // GSAP animations
+  /* GSAP animations */
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        leftRef.current,
-        { x: -60, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1, ease: "power3.out" },
-      );
+      const tl = gsap.timeline();
 
-      gsap.fromTo(
+      tl.from(leftRef.current, {
+        x: -80,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out",
+      });
+
+      tl.from(
         rightRef.current,
-        { x: 60, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1, delay: 0.2, ease: "power3.out" },
+        {
+          x: 80,
+          opacity: 0,
+          duration: 1,
+          ease: "power3.out",
+        },
+        "-=0.8",
       );
 
-      gsap.fromTo(
+      tl.from(
         ".benefit-item",
-        { y: 30, opacity: 0 },
         {
-          y: 0,
-          opacity: 1,
+          y: 40,
+          opacity: 0,
           stagger: 0.15,
-          delay: 0.4,
           duration: 0.7,
           ease: "power3.out",
         },
+        "-=0.6",
       );
     }, containerRef);
 
     return () => ctx.revert();
   }, [content]);
 
-  // Safe title highlight
   const words = title.split(" ");
 
   const mainTitle =
@@ -123,47 +130,59 @@ export function BookCallPage({ content }: { content?: BookingPageContent }) {
 
       <main
         ref={containerRef}
-        className="min-h-screen relative px-6 py-24 overflow-hidden"
+        className="min-h-screen relative px-6 py-28 overflow-hidden"
         style={{ background: colors.background.base }}
       >
-        {/* Glow */}
+        {/* Glow Layers */}
         <div
-          className="absolute inset-0 pointer-events-none opacity-50"
+          className="absolute inset-0 opacity-40 pointer-events-none"
           style={{ background: colors.effects.emeraldGlow }}
         />
 
-        <div className="relative z-10 max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-start">
-          {/* LEFT */}
-          <div ref={leftRef} className="space-y-10">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs uppercase tracking-wider text-white/70">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-              Strategy Session
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[900px] bg-emerald-500/10 blur-[200px] rounded-full pointer-events-none" />
+
+        <div className="relative z-10 max-w-7xl mx-auto grid lg:grid-cols-2 gap-24 items-start">
+
+          {/* LEFT SIDE */}
+          <div ref={leftRef} className="space-y-12">
+
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-white/10 bg-white/5 text-xs tracking-wider text-white/70 backdrop-blur-md">
+              <Sparkles className="w-4 h-4 text-emerald-400" />
+              Matera Media
             </div>
 
-            <div className="space-y-6">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-white leading-tight">
+            {/* Title */}
+            <div className="space-y-6 max-w-xl">
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white leading-tight tracking-tight">
+
                 {mainTitle}{" "}
+
                 {highlight && (
                   <span style={{ color: colors.brand.primary }}>
                     {highlight}
                   </span>
                 )}
+
               </h1>
 
               <p
-                className="text-lg max-w-md"
+                className="text-lg leading-relaxed"
                 style={{ color: colors.text.secondary }}
               >
                 {subtitle}
               </p>
             </div>
 
-            <div className="space-y-5">
+            {/* Benefits */}
+            <div className="grid gap-5 max-w-lg">
               {benefits.map((benefit, i) => (
                 <Benefit key={i} text={benefit} />
               ))}
             </div>
 
+            {/* Trust */}
             <div
               className="pt-6 border-t text-sm"
               style={{
@@ -175,18 +194,32 @@ export function BookCallPage({ content }: { content?: BookingPageContent }) {
             </div>
           </div>
 
-          {/* RIGHT */}
-          <div ref={rightRef} className="w-full">
-            <div
-              ref={calendlyRef}
-              className="w-full rounded-3xl border backdrop-blur-sm shadow-2xl"
+          {/* RIGHT SIDE */}
+          <div ref={rightRef} className="relative w-full">
+
+            {/* Glass Card Container */}
+            <Card
+              className="relative rounded-[28px] overflow-hidden border backdrop-blur-xl shadow-[0_0_80px_rgba(16,185,129,0.08)]"
               style={{
-                minWidth: "320px",
-                height: "850px",
                 borderColor: colors.border.subtle,
                 background: colors.background.secondary,
               }}
-            />
+            >
+
+              {/* Top Accent */}
+              <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-400 to-transparent opacity-70" />
+
+              {/* Calendly */}
+              <div
+                ref={calendlyRef}
+                className="w-full"
+                style={{
+                  minWidth: "320px",
+                  height: "850px",
+                }}
+              />
+
+            </Card>
           </div>
         </div>
       </main>
@@ -197,11 +230,15 @@ export function BookCallPage({ content }: { content?: BookingPageContent }) {
 function Benefit({ text }: { text: string }) {
   return (
     <div className="benefit-item flex items-start gap-4">
+
       <div className="p-2 rounded-lg bg-white/5 border border-white/10">
         <CheckCircle2 className="w-5 h-5 text-emerald-400" />
       </div>
-      <p className="text-white/80 leading-relaxed">{text}</p>
+
+      <p className="text-white/80 leading-relaxed">
+        {text}
+      </p>
+
     </div>
   );
 }
-
