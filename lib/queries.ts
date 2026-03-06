@@ -89,3 +89,12 @@ export const legalPageQuery = `*[_type == "legalPage" && slug == $slug][0]{
     body
   }
 }`;
+
+// Booking page (single document)
+export const bookingPageQuery = `*[_type == "bookingPage" && _id == "booking-page"][0]{
+  title,
+  subtitle,
+  benefits,
+  trustText,
+  calendlyUrl
+}`;
