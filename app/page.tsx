@@ -14,7 +14,6 @@ export default async function Home() {
       <main className="grow">
         <SectionRenderer sections={page?.sections ?? undefined} />
       </main>
-      <Footer />
     </div>
   );
 }

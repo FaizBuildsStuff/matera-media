@@ -12,6 +12,7 @@ import resultItem from "./sections/resultItem";
 import servicePage from "./servicePage";
 import legalPage from "./legalPage";
 import inquiry from "./inquiry";
+import bookingPage from "./bookingPage";
 
 export const schemaTypes = [
   page,
@@ -30,6 +31,7 @@ export const schemaTypes = [
   problemSolutionItem,
   resultItem,
   servicePage,
+  bookingPage,
   legalPage,
   inquiry,
 ];

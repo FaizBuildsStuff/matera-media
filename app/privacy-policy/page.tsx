@@ -119,8 +119,6 @@ export default async function PrivacyPolicyPage() {
           </div>
         </section>
       </main>
-
-      <Footer />
     </div>
   );
 }

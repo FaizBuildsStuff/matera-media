@@ -173,8 +173,11 @@ export const WorkShowcase = ({
             Portfolio
           </p>
           <h2 className="text-4xl md:text-6xl font-instrument-sans font-medium text-white mb-6 tracking-tight">
-            {title} <span className="font-instrument-serif italic text-emerald-400/90">{highlightedWord}</span>
-          </h2>
+  {title}{" "}
+  <span className="font-rok text-emerald-400/90 tracking-[0.08em] drop-shadow-[0_0_12px_rgba(16,185,129,0.35)]">
+    {highlightedWord}
+  </span>
+</h2>
           <p className="text-white/50 max-w-xl font-light text-lg leading-relaxed">{description}</p>
         </div>
 

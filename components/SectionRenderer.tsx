@@ -5,6 +5,7 @@ import { FAQ } from "@/components/FAQ";
 import Pricing from "@/components/pricing";
 import { CalendlyWidget } from "@/components/CalendlyWidget";
 import Testimonials from "./testimonials";
+import BookCallPage from "@/app/book/page";
 
 type TestimonialsSection = {
   title?: string;
@@ -18,7 +19,8 @@ export type SectionBlock =
   | { _type: "pricing"; _key: string } & PricingSection
   | { _type: "faq"; _key: string } & FAQSection
   | { _type: "calendlyWidget"; _key: string } & CalendlySection
-  | { _type: "testimonials"; _key: string } & TestimonialsSection;
+  | { _type: "testimonials"; _key: string } & TestimonialsSection
+  | { _type: "bookingPage"; _key: string } & BookingSection;
 
 type HeroSection = {
   headline?: string;
@@ -92,6 +94,14 @@ type CalendlySection = {
   calendlyUrl?: string;
 };
 
+type BookingSection = {
+  title?: string;
+  subtitle?: string;
+  benefits?: string[];
+  trustText?: string;
+  calendlyUrl?: string;
+};
+
 interface SectionRendererProps {
   sections: SectionBlock[] | null | undefined;
 }
@@ -126,6 +136,8 @@ function SectionBlock({ section }: { section: SectionBlock }) {
       return <FAQ content={section} />;
     case "calendlyWidget":
       return <CalendlyWidget content={section} />;
+    case "bookingPage":
+      return <BookCallPage />;
     default:
       return null;
   }

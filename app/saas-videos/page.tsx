@@ -285,7 +285,6 @@ export default function SaaSVideoPage() {
           }}
         />
       </main>
-      <Footer />
       <style jsx global>{`
         @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         .animate-scroll { animation: scroll 25s linear infinite; }
