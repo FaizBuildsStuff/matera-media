@@ -85,15 +85,15 @@ export const WorkShowcase = ({
   const works: WorkItem[] = (
     content?.items && content.items.length > 0
       ? content.items.map((i, idx) => ({
-          id: i._key || String(idx),
-          title: i.title ?? "",
-          category: i.category ?? "Ad Creatives",
-          categorySlug: mapCategoryToSlug(i.category ?? "Ad Creatives"),
-          tags: i.tags ?? [],
-          image: i.image,
-          videoUrl: i.videoUrl,
-          link: i.link,
-        }))
+        id: i._key || String(idx),
+        title: i.title ?? "",
+        category: i.category ?? "Ad Creatives",
+        categorySlug: mapCategoryToSlug(i.category ?? "Ad Creatives"),
+        tags: i.tags ?? [],
+        image: i.image,
+        videoUrl: i.videoUrl,
+        link: i.link,
+      }))
       : DEFAULT_WORKS
   ).filter((w) => w.title);
 
@@ -173,7 +173,10 @@ export const WorkShowcase = ({
             Portfolio
           </p>
           <h2 className="text-4xl md:text-6xl font-instrument-sans font-medium text-white mb-6 tracking-tight">
-            {title} <span className="font-instrument-serif italic text-emerald-400/90">{highlightedWord}</span>
+            {title}{" "}
+            <span className="font-rok text-emerald-400/90 tracking-[0.08em] drop-shadow-[0_0_12px_rgba(16,185,129,0.35)]">
+              {highlightedWord}
+            </span>
           </h2>
           <p className="text-white/50 max-w-xl font-light text-lg leading-relaxed">{description}</p>
         </div>
@@ -187,11 +190,10 @@ export const WorkShowcase = ({
                 <button
                   key={cat.id}
                   onClick={() => handleCategoryClick(cat.slug)}
-                  className={`relative block w-full text-left px-6 py-4 rounded-2xl text-base font-medium transition-all duration-300 active:scale-[0.98] ${
-                    activeCategory === cat.slug
+                  className={`relative block w-full text-left px-6 py-4 rounded-2xl text-base font-medium transition-all duration-300 active:scale-[0.98] ${activeCategory === cat.slug
                       ? "text-white bg-white/[0.08] border border-white/10 shadow-lg shadow-emerald-950/20"
                       : "text-white/40 hover:text-white/70 hover:bg-white/[0.04] border border-transparent"
-                  }`}
+                    }`}
                 >
                   {activeCategory === cat.slug && (
                     <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 rounded-r-full bg-gradient-to-b from-emerald-400 to-emerald-600" />
@@ -206,19 +208,19 @@ export const WorkShowcase = ({
           <div ref={rightRef} className="flex-1 min-w-0 overflow-hidden">
             <div ref={gridWrapperRef} className="relative">
               <div ref={reelContainerRef} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-8">
-              {filteredWorks.length > 0 ? (
-                filteredWorks.map((work) => (
-                  <ReelCard key={work.id} work={work} />
-                ))
-              ) : (
-                <div className="reel-empty-state col-span-full py-24 text-center">
-                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-white/5 border border-white/10 mb-6">
-                    <Play className="w-8 h-8 text-white/30" />
+                {filteredWorks.length > 0 ? (
+                  filteredWorks.map((work) => (
+                    <ReelCard key={work.id} work={work} />
+                  ))
+                ) : (
+                  <div className="reel-empty-state col-span-full py-24 text-center">
+                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-white/5 border border-white/10 mb-6">
+                      <Play className="w-8 h-8 text-white/30" />
+                    </div>
+                    <p className="text-white/40 font-light">No reels in this category yet.</p>
+                    <p className="text-white/25 text-sm mt-2">Add content from Sanity Studio</p>
                   </div>
-                  <p className="text-white/40 font-light">No reels in this category yet.</p>
-                  <p className="text-white/25 text-sm mt-2">Add content from Sanity Studio</p>
-                </div>
-              )}
+                )}
               </div>
             </div>
           </div>
