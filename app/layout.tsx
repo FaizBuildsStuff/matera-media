@@ -39,8 +39,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* Fontshare Satoshi Import */}
+        <link 
+          href="https://api.fontshare.com/v2/css?f[]=satoshi@400&display=swap" 
+          rel="stylesheet" 
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${instrumentSans.variable} ${instrumentSerif.variable} antialiased`}
+        style={{ fontFamily: "'Satoshi', sans-serif" }}
       >
         <SmoothScroll />
         <Header />

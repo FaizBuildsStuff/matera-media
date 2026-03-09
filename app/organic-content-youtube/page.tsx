@@ -12,9 +12,6 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Footer } from "@/components/Footer";
-import { InquiryForm } from "@/components/InquiryForm";
-import { FAQ } from "@/components/FAQ";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -54,7 +51,11 @@ const HeroCentered = ({ title, highlight, titleAfter, subtitle }: HeroProps) => 
 
   return (
     <section className="relative pt-44 pb-16 px-6 overflow-hidden bg-[#05180D] flex flex-col items-center text-center">
+      {/* Fontshare Import for Satoshi Italic */}
+      <link href="https://api.fontshare.com/v2/css?f[]=satoshi@401&display=swap" rel="stylesheet" />
+
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.12),transparent_70%)] pointer-events-none" />
+
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -63,14 +64,24 @@ const HeroCentered = ({ title, highlight, titleAfter, subtitle }: HeroProps) => 
       >
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8">
           <Activity className="w-3 h-3 text-emerald-400" />
-          <span className="text-white/50 text-[10px] uppercase tracking-[0.3em] font-bold">Performance Systems</span>
+          <span className="text-white/50 text-[10px] uppercase tracking-[0.3em] font-bold">Organic Systems</span>
         </div>
+
         <h1 className="text-6xl md:text-8xl font-instrument-sans font-medium text-white tracking-tighter leading-[0.9] mb-8">
-          {title} <span className="font-instrument-serif italic text-emerald-300">{highlight}</span> {titleAfter}
+          {title}{" "}
+          <span
+            className="text-emerald-300 px-1"
+            style={{ fontFamily: "'Satoshi', sans-serif", fontStyle: "italic", fontWeight: 400 }}
+          >
+            {highlight}
+          </span>{" "}
+          {titleAfter}
         </h1>
+
         <p className="text-white/40 text-lg md:text-2xl font-light max-w-2xl mx-auto leading-relaxed mb-12">
           {subtitle}
         </p>
+
         <Link href="#schedule">
           <Button className="h-14 px-10 rounded-full bg-white text-black text-base font-bold hover:scale-105 transition-all group shadow-[0_0_40px_rgba(255,255,255,0.1)]">
             Book a Free Audit
@@ -80,10 +91,20 @@ const HeroCentered = ({ title, highlight, titleAfter, subtitle }: HeroProps) => 
           </Button>
         </Link>
       </motion.div>
+
       <div className="mt-20 w-full overflow-hidden opacity-20 select-none pointer-events-none">
-        <div className="flex animate-scroll whitespace-nowrap gap-24 items-center w-max">
+        <style jsx>{`
+          @keyframes scroll-x {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+          }
+          .brand-scroll {
+            animation: scroll-x 30s linear infinite;
+          }
+        `}</style>
+        <div className="flex brand-scroll whitespace-nowrap gap-24 items-center w-max">
           {endlessBrands.map((brand, i) => (
-            <span key={i} className="text-white text-4xl font-black tracking-tighter opacity-50">{brand}</span>
+            <span key={i} className="text-white text-4xl font-black tracking-tighter opacity-50 uppercase">{brand}</span>
           ))}
         </div>
       </div>
@@ -118,7 +139,7 @@ const WorkReelsSection = () => {
         <div ref={scrollRef} className="flex gap-8 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-4">
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <div key={i} className="snap-center shrink-0 w-[300px] h-[540px] bg-white/2 rounded-[2.5rem] border border-white/10 relative overflow-hidden group cursor-pointer">
-              <div className="absolute inset-0 bg-linear-to-t from-black/90 via-transparent to-transparent z-10" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent z-10" />
               <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all z-20"><div className="w-16 h-16 rounded-full bg-white text-black flex items-center justify-center"><Play className="fill-current w-5 h-5 ml-1" /></div></div>
               <div className="absolute bottom-10 left-10 z-20">
                 <p className="text-emerald-400 text-[10px] font-black uppercase tracking-widest mb-2">Ad Creative</p>
@@ -132,7 +153,7 @@ const WorkReelsSection = () => {
   );
 };
 
-// --- 3. REIMAGINED 2060 FEATURE GRID (FAST ACTION) ---
+// --- 3. REIMAGINED 2060 FEATURE GRID ---
 const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: FeatureGridProps) => {
   const container = useRef<HTMLDivElement>(null);
 
@@ -160,7 +181,7 @@ const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: Featur
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20">
           <div className="max-w-2xl">
             <div className="flex items-center gap-3 mb-6">
-              <div className="h-[1px] w-8 bg-emerald-500/50" />
+              <div className="h-px w-8 bg-emerald-500/50" />
               <p className="text-emerald-500 text-[10px] font-bold tracking-[0.5em] uppercase">{label}</p>
             </div>
             <h2 className="text-5xl md:text-7xl text-white font-instrument-sans font-medium tracking-tighter leading-none italic lowercase">
@@ -171,13 +192,13 @@ const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: Featur
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/5 border border-white/5 rounded-[3rem] overflow-hidden shadow-2xl">
-          {items.map((item, i) => (
-            <div key={i} className="feature-card group relative p-10 md:p-14 bg-[#031109] transition-all duration-700 hover:bg-white/[0.02]">
+          {items.map((item: FeatureItem, i: number) => (
+            <div key={i} className="feature-card group relative p-10 md:p-14 bg-[#031109] transition-all duration-700 hover:bg-white/2">
               <div className="absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-4 group-hover:translate-x-0">
                 <ArrowUpRight className="w-5 h-5 text-emerald-500" />
               </div>
               <div className="relative z-10">
-                <div className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-center mb-10 transition-all duration-500 group-hover:border-emerald-500/50 group-hover:bg-emerald-500/10">
+                <div className="w-12 h-12 rounded-2xl bg-white/3 border border-white/10 flex items-center justify-center mb-10 transition-all duration-500 group-hover:border-emerald-500/50 group-hover:bg-emerald-500/10">
                   {isSolution ? <ShieldCheck className="w-5 h-5 text-emerald-400" /> : <Zap className="w-5 h-5 text-emerald-400" />}
                 </div>
                 <div className="space-y-4">
@@ -186,10 +207,10 @@ const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: Featur
                 </div>
                 <div className="mt-12 flex items-center gap-4 opacity-20 group-hover:opacity-50 transition-opacity">
                   <span className="text-[9px] font-black text-white tracking-[0.3em] uppercase">Module_0{i + 1}</span>
-                  <div className="h-[1px] w-8 bg-white/20" />
+                  <div className="h-px w-8 bg-white/20" />
                 </div>
               </div>
-              <div className="absolute bottom-0 left-0 w-full h-[2px] bg-emerald-500/0 group-hover:bg-emerald-500/50 transition-all duration-700 origin-left scale-x-0 group-hover:scale-x-100" />
+              <div className="absolute bottom-0 left-0 w-full h-px bg-emerald-500/0 group-hover:bg-emerald-500/50 transition-all duration-700 origin-left scale-x-0 group-hover:scale-x-100" />
             </div>
           ))}
         </div>
@@ -214,30 +235,17 @@ const CenteredPricing = () => {
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 items-center">
-
-          {/* Starter Plan */}
           <div className="p-10 md:p-14 rounded-[3.5rem] border border-white/5 bg-white/2 backdrop-blur-3xl">
-            <h3 className="text-white/50 text-sm font-bold uppercase tracking-widest mb-2">
-              Starter Plan
-            </h3>
-            <span className="text-white text-5xl font-medium tracking-tighter mb-8 block">
-              Basic Growth
-            </span>
-
+            <h3 className="text-white/50 text-sm font-bold uppercase tracking-widest mb-2">Starter Plan</h3>
+            <span className="text-white text-5xl font-medium tracking-tighter mb-8 block">Basic Growth</span>
             <ul className="space-y-5 mb-12">
-              {[
-                "4 Videos Per Month",
-                "Video Editing",
-                "Title & Description Setup",
-                "Monthly Performance Review"
-              ].map((f, i) => (
+              {["4 Videos Per Month", "Video Editing", "Title & Description Setup", "Monthly Performance Review"].map((f, i) => (
                 <li key={i} className="flex items-center gap-3 text-white/70 text-sm font-light">
                   <Check className="w-3 h-3 text-emerald-400" />
                   {f}
                 </li>
               ))}
             </ul>
-
             <Link href="#schedule" className="block">
               <Button className="w-full h-14 rounded-full bg-white/5 border border-white/10 text-white font-bold uppercase tracking-widest text-[10px]">
                 Book A Call
@@ -245,33 +253,18 @@ const CenteredPricing = () => {
             </Link>
           </div>
 
-          {/* Recommended Plan */}
           <div className="relative p-10 md:p-14 rounded-[3.5rem] border border-emerald-500/30 bg-white/5 backdrop-blur-3xl shadow-[0_0_80px_rgba(16,185,129,0.1)] scale-105 z-20">
-            <div className="absolute top-8 right-10 px-3 py-1 rounded-full bg-emerald-500 text-black text-[9px] font-black uppercase tracking-widest">
-              Recommended
-            </div>
-
-            <h3 className="text-emerald-400 text-sm font-bold uppercase tracking-widest mb-2">
-              Pro Plan
-            </h3>
-            <span className="text-white text-5xl font-medium tracking-tighter mb-8 block">
-              Fast Growth
-            </span>
-
+            <div className="absolute top-8 right-10 px-3 py-1 rounded-full bg-emerald-500 text-black text-[9px] font-black uppercase tracking-widest">Recommended</div>
+            <h3 className="text-emerald-400 text-sm font-bold uppercase tracking-widest mb-2">Pro Plan</h3>
+            <span className="text-white text-5xl font-medium tracking-tighter mb-8 block">Fast Growth</span>
             <ul className="space-y-5 mb-12">
-              {[
-                "8 Videos Per Month",
-                "Advanced Editing",
-                "Thumbnail Design",
-                "Weekly Performance Review"
-              ].map((f, i) => (
+              {["8 Videos Per Month", "Advanced Editing", "Thumbnail Design", "Weekly Performance Review"].map((f, i) => (
                 <li key={i} className="flex items-center gap-3 text-white text-sm font-medium">
                   <Check className="w-3 h-3 text-emerald-500" />
                   {f}
                 </li>
               ))}
             </ul>
-
             <Link href="#schedule" className="block">
               <Button className="w-full h-14 rounded-full bg-white text-black font-bold uppercase tracking-widest text-[10px]">
                 Book A Call
@@ -284,13 +277,13 @@ const CenteredPricing = () => {
   );
 };
 
-// --- 5. RESULTS (STATIC & MODERN) ---
+// --- 5. RESULTS ---
 const ResultsSection = ({ items, title }: ResultsProps) => {
   return (
     <section className="py-24 px-6 bg-[#062017] overflow-hidden text-center">
       <h2 className="text-5xl md:text-9xl font-instrument-sans text-white tracking-tighter opacity-90 mb-20">{title}</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-        {items.map((item, i) => (
+        {items.map((item: ResultItem, i: number) => (
           <div key={i} className="relative aspect-square rounded-[3rem] overflow-hidden border border-white/10 bg-white/5 group">
             {item.image && (
               <Image
@@ -307,24 +300,17 @@ const ResultsSection = ({ items, title }: ResultsProps) => {
   );
 };
 
-// --- 6. OUR PROCESS (RESPONSIVE KINETIC LINE) ---
+// --- 6. OUR PROCESS ---
 const ProcessSection = () => {
   const container = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Progress line: Horizontal on PC, Vertical on Mobile
       gsap.fromTo(lineRef.current,
+        { scaleX: 0, scaleY: 0, transformOrigin: "top left" },
         {
-          scaleX: 0,
-          scaleY: 0,
-          transformOrigin: "top left"
-        },
-        {
-          scaleX: 1,
-          scaleY: 1,
-          ease: "none",
+          scaleX: 1, scaleY: 1, ease: "none",
           scrollTrigger: {
             trigger: container.current,
             start: "top 40%",
@@ -337,22 +323,10 @@ const ProcessSection = () => {
   }, []);
 
   const steps = [
-    {
-      name: "Channel & Audience Deep Dive",
-      desc: "We audit your niche, competitors, and current content to identify positioning gaps, content opportunities, and algorithm advantages."
-    },
-    {
-      name: "Content Strategy & Ideation",
-      desc: "We build a strategic content roadmap with proven video angles, searchable topics, and high-retention formats tailored to your audience."
-    },
-    {
-      name: "Production & Retention Editing",
-      desc: "Every video is structured with strong hooks, storytelling flow, open loops, and pacing optimized to maximize watch time."
-    },
-    {
-      name: "Optimization & Scaling",
-      desc: "We refine titles, thumbnails, and performance data to double down on what works and systematically scale your organic growth."
-    }
+    { name: "Channel & Audience Deep Dive", desc: "We audit your niche, competitors, and current content to identify positioning gaps and content opportunities." },
+    { name: "Content Strategy & Ideation", desc: "We build a strategic content roadmap with proven video angles and high-retention formats." },
+    { name: "Production & Retention Editing", desc: "Every video is structured with strong hooks, storytelling flow, and pacing optimized for watch time." },
+    { name: "Optimization & Scaling", desc: "We refine titles, thumbnails, and performance data to systematically scale your organic growth." }
   ];
 
   return (
@@ -365,26 +339,16 @@ const ProcessSection = () => {
         </div>
 
         <div className="relative">
-          {/* Progress line: Vertical on mobile (left), Horizontal on PC (top) */}
           <div
             ref={lineRef}
-            className="absolute 
-              top-0 left-0 
-              md:w-full md:h-[1px] 
-              w-[2px] h-full 
-              bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.8)] 
-              z-10"
+            className="absolute top-0 left-0 md:w-full md:h-px w-[2px] h-full bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.8)] z-10"
           />
-
-          {/* Static Background Track Line */}
-          <div className="absolute top-0 left-0 md:w-full md:h-[1px] w-[2px] h-full bg-white/5" />
+          <div className="absolute top-0 left-0 md:w-full md:h-px w-[2px] h-full bg-white/5" />
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-16">
             {steps.map((step, i) => (
               <div key={i} className="pt-12 md:pt-16 relative group pl-8 md:pl-0">
-                {/* Bullet Dot */}
                 <div className="absolute top-0 left-[-7px] md:left-0 md:-translate-y-1/2 w-4 h-4 rounded-full bg-emerald-500 border-4 border-[#05180D] z-20 group-hover:scale-125 transition-transform shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
-
                 <span className="text-emerald-500 font-bold text-[10px] tracking-widest mb-4 block uppercase opacity-50 group-hover:opacity-100 transition-opacity">
                   Step 0{i + 1}
                 </span>
@@ -413,56 +377,31 @@ export default async function OrganicContentYouTubePage() {
           titleAfter="and drives real growth."
           subtitle="A strategy-first YouTube system focused on storytelling, retention, and long-term audience building — not paid ads."
         />
-
         <WorkReelsSection />
-
         <AnimatedFeatureGrid
           label="The Problem"
           title="What creators usually struggle with"
           items={[
-            {
-              title: "Uploading Without Strategy",
-              description: "Most creators post consistently but without understanding audience psychology, search intent, or retention structure."
-            },
-            {
-              title: "Low Retention & Watch Time",
-              description: "If viewers drop in the first 30 seconds, YouTube won't push your content — no matter how good it looks."
-            },
-            {
-              title: "Inconsistent Growth",
-              description: "Random topics and no content system lead to slow growth and unpredictable results."
-            }
+            { title: "Uploading Without Strategy", description: "Most creators post consistently but without understanding audience psychology or retention structure." },
+            { title: "Low Retention & Watch Time", description: "If viewers drop in the first 30 seconds, YouTube won't push your content organically." },
+            { title: "Inconsistent Growth", description: "Random topics and no content system lead to slow growth and unpredictable results." }
           ]}
         />
-
         <AnimatedFeatureGrid
           isSolution
           label="The Matera Solution"
           title="How we build organic growth machines"
           items={[
-            {
-              title: "Retention-Driven Storytelling",
-              description: "We structure every video with powerful hooks, open loops, and pacing designed to maximize watch time."
-            },
-            {
-              title: "Search & Algorithm Optimization",
-              description: "Strategic titles, thumbnails, and metadata crafted to rank and get recommended organically."
-            },
-            {
-              title: "Content Systemization",
-              description: "We build repeatable content frameworks so your channel grows consistently month after month."
-            }
+            { title: "Retention-Driven Storytelling", description: "We structure every video with powerful hooks and pacing designed to maximize watch time." },
+            { title: "Search & Algorithm Optimization", description: "Strategic titles, thumbnails, and metadata crafted to get recommended organically." },
+            { title: "Content Systemization", description: "We build repeatable content frameworks so your channel grows consistently." }
           ]}
         />
         <ResultsSection title="Our Results" items={[{ image: "/results/s1.png" }, { image: "/results/s2.png" }, { image: "/results/s3.png" }, { image: "/results/s4.png" }]} />
         <ProcessSection />
         <CenteredPricing />
-        <InquiryForm sourcePage="ad-creatives" />
-        <FAQ content={{ items: [] }} />
       </main>
       <style jsx global>{`
-        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        .animate-scroll { animation: scroll 25s linear infinite; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>

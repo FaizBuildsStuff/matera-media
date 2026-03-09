@@ -7,8 +7,8 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "framer-motion";
 import {
-  ArrowRight, ArrowLeft, Play,
-  Activity, Check, Zap, ShieldCheck, ArrowUpRight
+  ArrowRight,
+  Activity, Check, Zap, ShieldCheck, ArrowUpRight, Sparkles, ArrowLeft, Play
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,7 @@ import { WorkShowcase } from "@/components/WorkShowcase";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// --- Reusable Interfaces ---
+// --- Interfaces ---
 interface HeroProps {
   title: string;
   highlight: string;
@@ -45,7 +45,11 @@ const HeroCentered = ({ title, highlight, titleAfter, subtitle }: HeroProps) => 
 
   return (
     <section className="relative pt-44 pb-16 px-6 overflow-hidden bg-[#05180D] flex flex-col items-center text-center">
+      {/* Fontshare Import for Satoshi Italic */}
+      <link href="https://api.fontshare.com/v2/css?f[]=satoshi@401&display=swap" rel="stylesheet" />
+
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.12),transparent_70%)] pointer-events-none" />
+
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -56,12 +60,22 @@ const HeroCentered = ({ title, highlight, titleAfter, subtitle }: HeroProps) => 
           <Activity className="w-3 h-3 text-emerald-400" />
           <span className="text-white/50 text-[10px] uppercase tracking-[0.3em] font-bold">SaaS Video Production</span>
         </div>
+
         <h1 className="text-6xl md:text-8xl font-instrument-sans font-medium text-white tracking-tighter leading-[0.9] mb-8">
-          {title} <span className="font-instrument-serif italic text-emerald-300">{highlight}</span> {titleAfter}
+          {title}{" "}
+          <span
+            className="text-emerald-300 px-1"
+            style={{ fontFamily: "'Satoshi', sans-serif", fontStyle: "italic", fontWeight: 400 }}
+          >
+            {highlight}
+          </span>{" "}
+          {titleAfter}
         </h1>
+
         <p className="text-white/40 text-lg md:text-2xl font-light max-w-2xl mx-auto leading-relaxed mb-12">
           {subtitle}
         </p>
+
         <Link href="#schedule">
           <Button className="h-14 px-10 rounded-full bg-white text-black text-base font-bold hover:scale-105 transition-all group shadow-[0_0_40px_rgba(255,255,255,0.1)]">
             Book a Strategy Call
@@ -71,16 +85,70 @@ const HeroCentered = ({ title, highlight, titleAfter, subtitle }: HeroProps) => 
           </Button>
         </Link>
       </motion.div>
+
+      {/* Brand Animation Fixed */}
       <div className="mt-20 w-full overflow-hidden opacity-20 select-none pointer-events-none">
-        <div className="flex animate-scroll whitespace-nowrap gap-24 items-center w-max">
+        <style jsx>{`
+          @keyframes scroll-x {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+          }
+          .brand-scroll {
+            animation: scroll-x 30s linear infinite;
+          }
+        `}</style>
+        <div className="flex brand-scroll whitespace-nowrap gap-24 items-center w-max">
           {endlessBrands.map((brand, i) => (
-            <span key={i} className="text-white text-4xl font-black tracking-tighter opacity-50">{brand}</span>
+            <span key={i} className="text-white text-4xl font-black tracking-tighter opacity-50 uppercase">{brand}</span>
           ))}
         </div>
       </div>
     </section>
   );
 };
+
+// --- 2. REELS WORK SECTION ---
+const WorkReelsSection = () => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const { scrollLeft, clientWidth } = scrollRef.current;
+      const scrollTo = direction === 'left' ? scrollLeft - clientWidth / 2 : scrollLeft + clientWidth / 2;
+      scrollRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <section className="py-20 px-6 bg-[#062017] border-y border-white/5">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-8">
+          <div className="max-w-2xl">
+            <h2 className="text-5xl md:text-7xl font-instrument-sans text-white tracking-tight mb-4">Our Work</h2>
+            <p className="text-emerald-400 text-xl italic font-instrument-serif opacity-80">Industry-leading performance creative.</p>
+          </div>
+          <div className="flex gap-4">
+            <button onClick={() => scroll('left')} className="p-5 rounded-full border border-white/10 text-white hover:bg-white hover:text-black transition-all"><ArrowLeft className="w-6 h-6" /></button>
+            <button onClick={() => scroll('right')} className="p-5 rounded-full border border-white/10 text-white hover:bg-white hover:text-black transition-all"><ArrowRight className="w-6 h-6" /></button>
+          </div>
+        </div>
+        <div ref={scrollRef} className="flex gap-8 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-4">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div key={i} className="snap-center shrink-0 w-[300px] h-[540px] bg-white/2 rounded-[2.5rem] border border-white/10 relative overflow-hidden group cursor-pointer">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent z-10" />
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all z-20"><div className="w-16 h-16 rounded-full bg-white text-black flex items-center justify-center"><Play className="fill-current w-5 h-5 ml-1" /></div></div>
+              <div className="absolute bottom-10 left-10 z-20">
+                <p className="text-emerald-400 text-[10px] font-black uppercase tracking-widest mb-2">Ad Creative</p>
+                <h4 className="text-white text-xl font-medium tracking-tight">Case Study 0{i}</h4>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+
 
 // --- 2. FAST ACTION FEATURE GRID ---
 const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: FeatureGridProps) => {
@@ -108,7 +176,7 @@ const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: Featur
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20">
           <div className="max-w-2xl">
             <div className="flex items-center gap-3 mb-6">
-              <div className="h-[1px] w-8 bg-emerald-500/50" />
+              <div className="h-px w-8 bg-emerald-500/50" />
               <p className="text-emerald-500 text-[10px] font-bold tracking-[0.5em] uppercase">{label}</p>
             </div>
             <h2 className="text-5xl md:text-7xl text-white font-instrument-sans font-medium tracking-tighter leading-none italic lowercase">
@@ -119,13 +187,13 @@ const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: Featur
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/5 border border-white/5 rounded-[3rem] overflow-hidden shadow-2xl">
-          {items.map((item, i) => (
-            <div key={i} className="feature-card group relative p-10 md:p-14 bg-[#031109] transition-all duration-700 hover:bg-white/[0.02]">
+          {items.map((item: FeatureItem, i: number) => (
+            <div key={i} className="feature-card group relative p-10 md:p-14 bg-[#031109] transition-all duration-700 hover:bg-white/2">
               <div className="absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-4 group-hover:translate-x-0">
                 <ArrowUpRight className="w-5 h-5 text-emerald-500" />
               </div>
               <div className="relative z-10">
-                <div className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-center mb-10 transition-all duration-500 group-hover:border-emerald-500/50 group-hover:bg-emerald-500/10">
+                <div className="w-12 h-12 rounded-2xl bg-white/3 border border-white/10 flex items-center justify-center mb-10 transition-all duration-500 group-hover:border-emerald-500/50 group-hover:bg-emerald-500/10">
                   {isSolution ? <ShieldCheck className="w-5 h-5 text-emerald-400" /> : <Zap className="w-5 h-5 text-emerald-400" />}
                 </div>
                 <div className="space-y-4">
@@ -175,8 +243,8 @@ const ProcessSection = () => {
         </div>
 
         <div className="relative">
-          <div ref={lineRef} className="absolute top-0 left-0 md:w-full md:h-[1px] w-[2px] h-full bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.8)] z-10" />
-          <div className="absolute top-0 left-0 md:w-full md:h-[1px] w-[2px] h-full bg-white/5" />
+          <div ref={lineRef} className="absolute top-0 left-0 md:w-full md:h-px w-[2px] h-full bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.8)] z-10" />
+          <div className="absolute top-0 left-0 md:w-full md:h-px w-[2px] h-full bg-white/5" />
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-16">
             {steps.map((step, i) => (
               <div key={i} className="pt-12 md:pt-16 relative group pl-8 md:pl-0">
@@ -242,7 +310,8 @@ export default function SaaSVideoPage() {
           subtitle="We craft high-converting product demos, explainers, and onboarding videos designed specifically for software companies."
         />
 
-        <WorkShowcase initialCategory="saas-videos" />
+        {/* Integrated Work Showcase */}
+        <WorkReelsSection />
 
         <AnimatedFeatureGrid
           label="The Challenges"
@@ -266,9 +335,7 @@ export default function SaaSVideoPage() {
         />
 
         <ProcessSection />
-
         <CenteredPricing />
-
         <InquiryForm sourcePage="saas-videos" />
 
         <FAQ
@@ -284,9 +351,8 @@ export default function SaaSVideoPage() {
           }}
         />
       </main>
+
       <style jsx global>{`
-        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        .animate-scroll { animation: scroll 25s linear infinite; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>

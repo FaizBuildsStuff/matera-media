@@ -115,7 +115,7 @@ function SectionBlock({ section }: { section: SectionBlock }) {
     case "hero":
       return <Hero content={section} />;
     case "testimonials":
-      return <Testimonials content={section} />;
+      return <Testimonials />;
     case "workShowcase":
       return <WorkShowcase content={section} />;
     case "howItWorks":
