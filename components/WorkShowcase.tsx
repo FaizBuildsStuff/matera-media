@@ -113,7 +113,6 @@ export const WorkShowcase = ({
     setActiveCategory(slug);
   };
 
-  // Initial scroll-in animations
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(headerRef.current, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: "power3.out", scrollTrigger: { trigger: headerRef.current, start: "top 85%" } });
@@ -123,7 +122,6 @@ export const WorkShowcase = ({
     return () => ctx.revert();
   }, []);
 
-  // Category-switch: content slides in from left, cards cascade with stagger
   useEffect(() => {
     if (!reelContainerRef.current || !gridWrapperRef.current) return;
 
@@ -133,7 +131,6 @@ export const WorkShowcase = ({
     const targets = items.length > 0 ? items : emptyState;
     if (!targets || (Array.isArray(targets) && targets.length === 0)) return;
 
-    // On first mount, use scroll-based reveal; on category change, use click-based animation
     if (isInitialMount) {
       setIsInitialMount(false);
       const ctx = gsap.context(() => {
@@ -142,7 +139,6 @@ export const WorkShowcase = ({
       return () => ctx.revert();
     }
 
-    // Category change: content opens from left with stagger
     gsap.set(targets, { x: -80, opacity: 0 });
 
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
@@ -174,7 +170,11 @@ export const WorkShowcase = ({
           </p>
           <h2 className="text-4xl md:text-6xl font-instrument-sans font-medium text-white mb-6 tracking-tight">
             {title}{" "}
-            <span className="font-rok text-emerald-400/90 tracking-[0.08em] drop-shadow-[0_0_12px_rgba(16,185,129,0.35)]">
+            {/* Swapped Rise of Kingdoms font for Satoshi Italic */}
+            <span 
+              className="text-emerald-400/90 tracking-[0.08em] drop-shadow-[0_0_12px_rgba(16,185,129,0.35)]"
+              style={{ fontFamily: "'Satoshi', sans-serif", fontStyle: "italic" }}
+            >
               {highlightedWord}
             </span>
           </h2>
@@ -182,7 +182,6 @@ export const WorkShowcase = ({
         </div>
 
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
-          {/* Left - Categories */}
           <aside ref={leftRef} className="lg:w-72 shrink-0">
             <nav className="sticky top-32 space-y-0.5">
               <p className="text-white/30 text-xs font-medium tracking-widest uppercase mb-6 pl-1">Filter</p>
@@ -204,7 +203,6 @@ export const WorkShowcase = ({
             </nav>
           </aside>
 
-          {/* Right - Reels Grid */}
           <div ref={rightRef} className="flex-1 min-w-0 overflow-hidden">
             <div ref={gridWrapperRef} className="relative">
               <div ref={reelContainerRef} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-8">

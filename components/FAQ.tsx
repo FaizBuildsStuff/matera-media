@@ -82,6 +82,9 @@ export const FAQ = ({ content }: { content?: FAQContent }) => {
 
     return (
         <section ref={sectionRef} id="faq" className="py-32 px-6 bg-[#05180D] relative overflow-hidden">
+            {/* Fontshare Import for Satoshi Italic */}
+            <link href="https://api.fontshare.com/v2/css?f[]=satoshi@401&display=swap" rel="stylesheet" />
+            
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] pointer-events-none select-none">
                 <img src="/Logo.png" alt="Matera Media Logo" className="w-[900px] h-auto object-contain" />
             </div>
@@ -92,13 +95,19 @@ export const FAQ = ({ content }: { content?: FAQContent }) => {
                     <p className="text-emerald-400 font-medium tracking-widest uppercase text-xs mb-4">{label}</p>
                     <h2 className="text-4xl md:text-5xl font-instrument-sans font-medium text-white mb-6">
                         {titleText.split(highlightedWord)[0]}
-                        <span className="font-instrument-serif italic text-emerald-400">{highlightedWord}</span>
+                        {/* Swapped to Satoshi Italic */}
+                        <span 
+                            style={{ fontFamily: "'Satoshi', sans-serif", fontStyle: "italic" }}
+                            className="text-emerald-400"
+                        >
+                            {highlightedWord}
+                        </span>
                         {titleText.split(highlightedWord)[1] || ""}
                     </h2>
                 </div>
 
                 {/* FAQ Accordion */}
-                <div ref={accordionRef} className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 backdrop-blur-sm">
+                <div ref={accordionRef} className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 backdrop-blur-sm relative z-10">
                     <Accordion type="single" collapsible className="w-full">
                         {faqs.map((faq) => (
                             <AccordionItem key={faq.id} value={faq.id} className="border-white/10 last:border-b-0">

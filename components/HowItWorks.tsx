@@ -89,8 +89,9 @@ export const HowItWorks = ({ content }: { content?: any }) => {
             id="process"
             className="py-32 px-6 bg-transparent relative overflow-hidden min-h-screen"
         >
-            {/* --- ARCHITECTURAL BACKGROUND (NO CARDS) --- */}
-            
+            {/* Fontshare Import for Satoshi Italic */}
+            <link href="https://api.fontshare.com/v2/css?f[]=satoshi@401&display=swap" rel="stylesheet" />
+
             {/* Massive Parallax Text Filling Space */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0">
                 <h2 className="bg-parallax-text text-[30vw] font-black text-white/[0.01] uppercase tracking-tighter">
@@ -106,7 +107,7 @@ export const HowItWorks = ({ content }: { content?: any }) => {
 
             <div className="max-w-7xl mx-auto relative z-10">
                 
-                {/* --- HEADER: ULTRA MINIMAL --- */}
+                {/* --- HEADER --- */}
                 <div className="text-center mb-40 space-y-6">
                     <div className="flex items-center justify-center gap-4">
                         <div className="h-px w-10 bg-emerald-500" />
@@ -115,9 +116,14 @@ export const HowItWorks = ({ content }: { content?: any }) => {
                     </div>
                     <h2 className="text-6xl md:text-9xl font-instrument-sans font-medium text-white tracking-tighter leading-none lowercase">
                         {titleText.split(highlightedWord)[0]}
-                        <span className="font-instrument-serif italic text-emerald-400">
+                        {/* Swapped to Satoshi Italic */}
+                        <span 
+                            style={{ fontFamily: "'Satoshi', sans-serif", fontStyle: "italic" }}
+                            className="text-emerald-400"
+                        >
                             {highlightedWord}
                         </span>
+                        {titleText.split(highlightedWord)[1]}
                     </h2>
                 </div>
 
@@ -170,7 +176,6 @@ export const HowItWorks = ({ content }: { content?: any }) => {
                 </div>
             </div>
             
-
             {/* Bottom Protocol Line */}
             <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
         </section>

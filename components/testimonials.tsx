@@ -57,6 +57,8 @@ const testimonialChunks = chunkArray(testimonials, Math.ceil(testimonials.length
 export default function WallOfLoveSection() {
     return (
         <section className="py-32 px-6 bg-[#05180D] relative overflow-hidden" style={{ fontFamily: "'Satoshi', sans-serif" }}>
+            {/* Direct Font Import to ensure Italic weight is available */}
+            <link href="https://api.fontshare.com/v2/css?f[]=satoshi@401,700,500&display=swap" rel="stylesheet" />
             
             {/* Grain Texture */}
             <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
@@ -83,7 +85,6 @@ export default function WallOfLoveSection() {
                                     className="bg-white/[0.03] border border-white/[0.1] backdrop-blur-2xl hover:border-emerald-500/40 hover:bg-white/[0.05] transition-all duration-500 rounded-2xl group shadow-2xl"
                                 >
                                     <CardContent className="p-8">
-                                        {/* Star Rating System */}
                                         <div className="flex gap-1 mb-6">
                                             {[...Array(5)].map((_, i) => (
                                                 <Star key={i} className="size-3 fill-emerald-400 text-emerald-400" />
@@ -91,7 +92,11 @@ export default function WallOfLoveSection() {
                                         </div>
 
                                         <div className="mb-8">
-                                            <p className="text-white/90 font-medium text-[15px] leading-relaxed tracking-wide italic">
+                                            {/* Explicitly setting Satoshi Italic here */}
+                                            <p 
+                                                className="text-white/90 text-[15px] leading-relaxed tracking-wide"
+                                                style={{ fontFamily: "'Satoshi', sans-serif", fontStyle: "italic", fontWeight: 400 }}
+                                            >
                                                 "{quote}"
                                             </p>
                                         </div>
@@ -106,7 +111,6 @@ export default function WallOfLoveSection() {
 
                                             <div className="flex flex-col">
                                                 <h3 className="font-bold text-white text-[13px] uppercase tracking-wider">{name}</h3>
-                                                {/* Sharper, non-blurred role text */}
                                                 <span className="text-emerald-400/90 block text-[10px] font-bold uppercase tracking-wider mt-0.5">
                                                     {role}
                                                 </span>
@@ -120,7 +124,6 @@ export default function WallOfLoveSection() {
                 </div>
             </div>
 
-            {/* Subtle Gradient Fade for Section Merging */}
             <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#05180D] to-transparent pointer-events-none" />
         </section>
     )

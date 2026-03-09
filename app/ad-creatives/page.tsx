@@ -203,10 +203,6 @@ const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: Featur
                   <h3 className="text-white text-2xl font-medium tracking-tight group-hover:text-emerald-400 transition-colors duration-500">{item.title}</h3>
                   <p className="text-white/30 leading-relaxed font-light text-base group-hover:text-white/60 transition-colors duration-500">{item.description}</p>
                 </div>
-                <div className="mt-12 flex items-center gap-4 opacity-20 group-hover:opacity-50 transition-opacity">
-                  <span className="text-[9px] font-black text-white tracking-[0.3em] uppercase">Module_0{i+1}</span>
-                  <div className="h-px w-8 bg-white/20" />
-                </div>
               </div>
               <div className="absolute bottom-0 left-0 w-full h-[2px] bg-emerald-500/0 group-hover:bg-emerald-500/50 transition-all duration-700 origin-left scale-x-0 group-hover:scale-x-100" />
             </div>
