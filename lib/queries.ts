@@ -7,6 +7,18 @@ export const pageQuery = `*[_type == "page" && (_id == $slug || slug.current == 
     _type,
     _key,
     ...,
+    _type == "careers" => {
+      label,
+      title,
+      highlightedWord,
+      items[]{
+        title,
+        department,
+        location,
+        type,
+        link
+      }
+    },
     items[]{
       _key,
       ...,

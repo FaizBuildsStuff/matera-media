@@ -35,6 +35,7 @@ export default defineType({
         { type: "faq" },
         { type: "calendlyWidget" },
         { type: "testimonials" },
+        { type: "careers" }, // <--- ADDED THIS LINE
       ],
     }),
   ],

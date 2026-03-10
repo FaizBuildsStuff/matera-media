@@ -155,7 +155,8 @@ export const WorkShowcase = ({
 
   return (
     <section ref={sectionRef} id="work" className="py-32 px-6 bg-[#05180D] relative overflow-hidden min-h-screen">
-      {/* Ambient backgrounds */}
+      <link href="https://api.fontshare.com/v2/css?f[]=satoshi@700,701&display=swap" rel="stylesheet" />
+      
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-emerald-900/10 rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute -left-20 top-40 opacity-[0.02] pointer-events-none select-none">
@@ -170,10 +171,13 @@ export const WorkShowcase = ({
           </p>
           <h2 className="text-4xl md:text-6xl font-instrument-sans font-medium text-white mb-6 tracking-tight">
             {title}{" "}
-            {/* Swapped Rise of Kingdoms font for Satoshi Italic */}
             <span 
-              className="text-emerald-400/90 tracking-[0.08em] drop-shadow-[0_0_12px_rgba(16,185,129,0.35)]"
-              style={{ fontFamily: "'Satoshi', sans-serif", fontStyle: "italic" }}
+              className="text-emerald-400/90 tracking-[0.08em]"
+              style={{ 
+                fontFamily: "'Satoshi', sans-serif", 
+                fontStyle: "italic", 
+                fontWeight: 700 
+              }}
             >
               {highlightedWord}
             </span>
@@ -216,7 +220,6 @@ export const WorkShowcase = ({
                       <Play className="w-8 h-8 text-white/30" />
                     </div>
                     <p className="text-white/40 font-light">No reels in this category yet.</p>
-                    <p className="text-white/25 text-sm mt-2">Add content from Sanity Studio</p>
                   </div>
                 )}
               </div>
@@ -237,11 +240,6 @@ function ReelCard({ work }: { work: WorkItem }) {
     else if (youtubeVideoId) setIsPlaying(true);
   };
 
-  const handleOpenYouTube = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (youtubeVideoId) window.open(`https://www.youtube.com/watch?v=${youtubeVideoId}`, "_blank");
-  };
-
   return (
     <div className="reel-item group">
       <div
@@ -252,18 +250,12 @@ function ReelCard({ work }: { work: WorkItem }) {
           <div className="absolute inset-0">
             <iframe
               className="absolute inset-0 w-full h-full"
-              src={`https://www.youtube.com/embed/${youtubeVideoId}`}
+              src={`https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1`}
               title={work.title}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
               frameBorder="0"
             />
-            <button
-              onClick={handleOpenYouTube}
-              className="absolute bottom-3 right-3 px-3 py-1.5 bg-black/70 backdrop-blur-md rounded-lg text-white text-xs font-medium border border-white/10 hover:bg-black/90 transition-colors"
-            >
-              YouTube
-            </button>
           </div>
         ) : youtubeVideoId ? (
           <>

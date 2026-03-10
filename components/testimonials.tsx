@@ -5,13 +5,14 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Star } from 'lucide-react'
 
 type Testimonial = {
+    _key?: string
     name: string
     role: string
     image: string
     quote: string
 }
 
-const testimonials: Testimonial[] = [
+const DEFAULT_TESTIMONIALS: Testimonial[] = [
     {
         name: 'Sarah Chen',
         role: 'VP Marketing, B2B SaaS',
@@ -52,36 +53,59 @@ const chunkArray = (array: Testimonial[], chunkSize: number): Testimonial[][] =>
     return result
 }
 
-const testimonialChunks = chunkArray(testimonials, Math.ceil(testimonials.length / 3))
+interface WallOfLoveProps {
+    content?: {
+        label?: string;
+        title?: string;
+        description?: string;
+        items?: Testimonial[];
+    }
+}
 
-export default function WallOfLoveSection() {
+export default function WallOfLoveSection({ content }: WallOfLoveProps) {
+    // 1. Dynamic Data from Sanity with Fallbacks
+    const label = content?.label ?? "Client Success";
+    const title = content?.title ?? "Trusted by Brands and Creators";
+    const description = content?.description ?? "Results-driven production for high-growth B2B brands and creators.";
+    
+    // Use Sanity items if they exist, otherwise use defaults
+    const testimonialsData = content?.items && content.items.length > 0 
+        ? content.items 
+        : DEFAULT_TESTIMONIALS;
+
+    const testimonialChunks = chunkArray(testimonialsData, Math.ceil(testimonialsData.length / 3));
+
     return (
         <section className="py-32 px-6 bg-[#05180D] relative overflow-hidden" style={{ fontFamily: "'Satoshi', sans-serif" }}>
-            {/* Direct Font Import to ensure Italic weight is available */}
+            {/* Direct Font Import for Italic Weight */}
             <link href="https://api.fontshare.com/v2/css?f[]=satoshi@401,700,500&display=swap" rel="stylesheet" />
             
             {/* Grain Texture */}
             <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
             
             <div className="mx-auto max-w-6xl relative z-10">
+                {/* --- DYNAMIC HEADER --- */}
                 <div className="text-center mb-20">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-6">
-                        <span className="text-[10px] uppercase tracking-[0.25em] text-emerald-400 font-bold">Client Success</span>
+                        <span className="text-[10px] uppercase tracking-[0.25em] text-emerald-400 font-bold">
+                            {label}
+                        </span>
                     </div>
                     <h2 className="text-4xl md:text-5xl font-medium text-white mb-6 tracking-tight">
-                        Trusted by industry leaders
+                        {title}
                     </h2>
                     <p className="text-white/60 max-w-xl mx-auto font-medium leading-relaxed uppercase text-[11px] tracking-widest">
-                        Results-driven production for high-growth B2B brands and creators.
+                        {description}
                     </p>
                 </div>
 
+                {/* --- DYNAMIC TESTIMONIAL GRID --- */}
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {testimonialChunks.map((chunk, chunkIndex) => (
                         <div key={chunkIndex} className={`space-y-6 ${chunkIndex === 1 ? 'lg:pt-12' : ''}`}>
-                            {chunk.map(({ name, role, quote, image }, index: number) => (
+                            {chunk.map(({ name, role, quote, image, _key }, index: number) => (
                                 <Card
-                                    key={index}
+                                    key={_key || index}
                                     className="bg-white/[0.03] border border-white/[0.1] backdrop-blur-2xl hover:border-emerald-500/40 hover:bg-white/[0.05] transition-all duration-500 rounded-2xl group shadow-2xl"
                                 >
                                     <CardContent className="p-8">
@@ -92,7 +116,7 @@ export default function WallOfLoveSection() {
                                         </div>
 
                                         <div className="mb-8">
-                                            {/* Explicitly setting Satoshi Italic here */}
+                                            {/* Satoshi Italic Quote */}
                                             <p 
                                                 className="text-white/90 text-[15px] leading-relaxed tracking-wide"
                                                 style={{ fontFamily: "'Satoshi', sans-serif", fontStyle: "italic", fontWeight: 400 }}
@@ -105,11 +129,11 @@ export default function WallOfLoveSection() {
                                             <Avatar className="size-11 border border-white/10 transition-all duration-500 group-hover:scale-105">
                                                 <AvatarImage alt={name} src={image} />
                                                 <AvatarFallback className="bg-emerald-500/20 text-emerald-400 text-xs font-bold">
-                                                    {name.split(' ').map(n => n[0]).join('')}
+                                                    {name?.split(' ').map(n => n[0]).join('')}
                                                 </AvatarFallback>
                                             </Avatar>
 
-                                            <div className="flex flex-col">
+                                            <div className="flex flex-col text-left">
                                                 <h3 className="font-bold text-white text-[13px] uppercase tracking-wider">{name}</h3>
                                                 <span className="text-emerald-400/90 block text-[10px] font-bold uppercase tracking-wider mt-0.5">
                                                     {role}

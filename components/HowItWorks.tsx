@@ -159,15 +159,6 @@ export const HowItWorks = ({ content }: { content?: any }) => {
                                             {step.description}
                                         </p>
 
-                                        {/* Modern Indicator */}
-                                        <div className={`pt-4 flex items-center ${isEven ? 'md:justify-end' : 'md:justify-start'}`}>
-                                            <div className="group/link flex items-center gap-3 cursor-pointer">
-                                                <span className="text-[10px] uppercase font-bold text-white/20 tracking-widest group-hover/link:text-emerald-400 transition-colors">Launch Protocol</span>
-                                                <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover/link:bg-emerald-500 group-hover/link:border-emerald-500 transition-all">
-                                                    <ArrowRight className="w-4 h-4 text-white group-hover:text-black transition-colors" />
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             );

@@ -5,7 +5,6 @@ import { gsap } from "gsap";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { ArrowRight, Play, Star } from "lucide-react";
-import { EncryptedText } from "@/components/ui/encrypted-text";
 
 const getYoutubeId = (url: string) => {
   if (!url) return null;
@@ -50,7 +49,8 @@ export const Hero = ({ content }: { content?: HeroContent }) => {
       const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
 
       tl.fromTo(lightRef.current, { opacity: 0, scale: 0.8 }, { opacity: 0.4, scale: 1, duration: 2.5 })
-        .fromTo(wordsRef.current, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 1, stagger: 0.02 }, "-=2")
+        // Staggered fade-up for all headline parts including highlights
+        .fromTo(wordsRef.current, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, stagger: 0.04 }, "-=2")
         .fromTo(ctaRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 1 }, "-=1")
         .fromTo(videoWrapperRef.current, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 1.5 }, "-=1.2");
 
@@ -75,22 +75,37 @@ export const Hero = ({ content }: { content?: HeroContent }) => {
     const regex = new RegExp(`(${escapedHighlights})`, "gi");
     const parts = headline.split(regex);
 
+    // Resetting refs array to ensure correct mapping on re-renders
+    wordsRef.current = [];
+
     return parts.map((part: string, i: number) => {
       const isMatch = sortedHighlights.some((h) => h.toLowerCase() === part.toLowerCase());
+      
       if (isMatch) {
         return (
-          <span key={i} className="relative inline-block">
-            <span className="relative z-10 text-emerald-400 font-medium italic px-1" style={{ fontFamily: "'Satoshi', sans-serif" }}>
-              <EncryptedText text={part} />
-            </span>
+          <span 
+            key={i} 
+            ref={(el) => { if (el) wordsRef.current.push(el); }} 
+            className="relative inline-block text-emerald-400 font-medium italic px-1" 
+            style={{ fontFamily: "'Satoshi', sans-serif" }}
+          >
+            {part}
           </span>
         );
       }
-      return part.split(" ").map((word: string, wordIdx: number) => (
-        <span key={`${i}-${wordIdx}`} ref={(el) => { if (el) wordsRef.current.push(el); }} className="inline-block mx-[0.1em] whitespace-nowrap">
-          {word}
-        </span>
-      ));
+      
+      return part.split(" ").map((word: string, wordIdx: number) => {
+        if (word === "") return null;
+        return (
+          <span 
+            key={`${i}-${wordIdx}`} 
+            ref={(el) => { if (el) wordsRef.current.push(el); }} 
+            className="inline-block mx-[0.1em] whitespace-nowrap"
+          >
+            {word}
+          </span>
+        );
+      });
     });
   };
 
@@ -98,7 +113,7 @@ export const Hero = ({ content }: { content?: HeroContent }) => {
     <section
       ref={containerRef}
       className="relative min-h-screen w-full flex flex-col items-center justify-start pt-32 md:pt-40 pb-40 px-6 bg-[#020a05] overflow-hidden"
-      style={{ 
+      style={{
         fontFamily: "'Satoshi', sans-serif",
         maskImage: 'linear-gradient(to bottom, black 85%, transparent 100%)',
         WebkitMaskImage: 'linear-gradient(to bottom, black 85%, transparent 100%)'
@@ -111,10 +126,6 @@ export const Hero = ({ content }: { content?: HeroContent }) => {
         style={{ background: "radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.2) 0%, transparent 70%)" }} />
 
       <div className="relative z-20 w-full max-w-5xl mx-auto flex flex-col items-center">
-        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/5 border border-emerald-500/10 mb-6 backdrop-blur-sm">
-          <div className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
-          <span className="text-[9px] uppercase tracking-[0.25em] text-emerald-500/80 font-bold">Results-Driven Production</span>
-        </div>
 
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-medium text-white leading-[1.15] text-center mb-10 max-w-4xl tracking-tight">
           {renderHeadline()}
@@ -127,12 +138,11 @@ export const Hero = ({ content }: { content?: HeroContent }) => {
               <ArrowRight className="w-4 h-4" />
             </Link>
           </Button>
-          
+
           <div className="flex items-center gap-3">
             <div className="flex -space-x-2">
               {[1, 2, 3].map((i) => <div key={i} className="w-7 h-7 rounded-full border border-[#020a05] bg-neutral-800" />)}
             </div>
-            {/* Optimized w-[1px] to w-px */}
             <div className="h-4 w-px bg-white/10" />
             <div className="flex items-center gap-1.5">
               <div className="flex">

@@ -5,10 +5,25 @@ import { FAQ } from "@/components/FAQ";
 import Pricing from "@/components/pricing";
 import { CalendlyWidget } from "@/components/CalendlyWidget";
 import Testimonials from "./testimonials";
+import { CareersSection } from "@/components/career";
 
 type TestimonialsSection = {
   title?: string;
   subtitle?: string;
+};
+
+// 1. Added CareersSection Type
+type CareersSectionType = {
+  label?: string;
+  title?: string;
+  highlightedWord?: string;
+  items?: Array<{
+    title: string;
+    department: string;
+    location: string;
+    type: string;
+    link: string;
+  }>;
 };
 
 export type SectionBlock =
@@ -16,6 +31,7 @@ export type SectionBlock =
   | { _type: "workShowcase"; _key: string } & WorkShowcaseSection
   | { _type: "howItWorks"; _key: string } & HowItWorksSection
   | { _type: "pricing"; _key: string } & PricingSection
+  | { _type: "careers"; _key: string } & CareersSectionType // Added to union
   | { _type: "faq"; _key: string } & FAQSection
   | { _type: "calendlyWidget"; _key: string } & CalendlySection
   | { _type: "testimonials"; _key: string } & TestimonialsSection;
@@ -122,6 +138,9 @@ function SectionBlock({ section }: { section: SectionBlock }) {
       return <HowItWorks content={section} />;
     case "pricing":
       return <Pricing content={section} />;
+    case "careers":
+      // PASS CONTENT HERE
+      return <CareersSection content={section} />; 
     case "faq":
       return <FAQ content={section} />;
     case "calendlyWidget":
@@ -139,6 +158,8 @@ function DefaultSections() {
       <WorkShowcase />
       <HowItWorks />
       <Pricing />
+      {/* 3. Added Careers Section on top of FAQ */}
+      <CareersSection /> 
       <FAQ />
       <CalendlyWidget />
     </>
