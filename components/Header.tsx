@@ -15,6 +15,7 @@ export const Header = () => {
             { label: "Ad Creatives", href: "/ad-creatives" },
             { label: "YouTube", href: "/organic-content-youtube" },
             { label: "SaaS Videos", href: "/saas-videos" },
+            { label: "Careers", href: "/careers" }, // Added Careers link
             { label: "Privacy", href: "/privacy-policy" },
         ],
         []
@@ -25,9 +26,6 @@ export const Header = () => {
             {/* High-End Backdrop */}
             <div className="absolute inset-0 bg-[#05180D]/80 backdrop-blur-xl border-b border-white/5" />
 
-            {/* We use max-w-6xl instead of 7xl to bring the logo and nav 
-               closer to the center from left and right. 
-            */}
             <div className="relative max-w-6xl mx-auto px-6 md:px-8 h-20 flex items-center justify-between">
                 
                 {/* LEFT: LOGO */}
@@ -44,7 +42,6 @@ export const Header = () => {
                         className="w-8 h-8 md:w-9 md:h-9 object-contain grayscale brightness-200 group-hover:grayscale-0 transition-all duration-500"
                         priority
                     />
-                    {/* font-semibold instead of font-bold for a cleaner look */}
                     <span className="hidden sm:inline text-white font-instrument-sans font-semibold tracking-tight text-base">
                         Matera Media
                     </span>
@@ -54,7 +51,7 @@ export const Header = () => {
                 <div className="flex items-center gap-8 md:gap-10">
                     <nav className="hidden lg:flex items-center gap-7">
                         {links.map((item) => {
-                            const isActive = pathname?.startsWith(item.href);
+                            const isActive = pathname === item.href;
                             return (
                                 <Link
                                     key={item.href}
@@ -103,7 +100,9 @@ export const Header = () => {
                                 key={item.href}
                                 href={item.href}
                                 onClick={() => setMobileOpen(false)}
-                                className="text-xl font-instrument-sans font-medium text-white/60"
+                                className={`text-xl font-instrument-sans font-medium transition-colors ${
+                                    pathname === item.href ? "text-emerald-400" : "text-white/60"
+                                }`}
                             >
                                 {item.label}
                             </Link>

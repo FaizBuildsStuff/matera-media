@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import Script from "next/script";
 import { gsap } from "gsap";
-import { CheckCircle2, Sparkles, ShieldCheck, Clock } from "lucide-react";
+import { CheckCircle2, Sparkles, ShieldCheck, Clock, ArrowRight } from "lucide-react";
 import { colors } from "@/theme/colors";
 import { Card } from "@/components/ui/card";
 
@@ -28,35 +28,24 @@ export function BookCallPage({ content }: { content?: BookingPageContent }) {
   const rightRef = useRef<HTMLDivElement>(null);
 
   const title = content?.title ?? "Book your strategy call";
+  const subtitle = content?.subtitle ?? "Let's discuss your growth goals and how our high-performance content systems can scale your brand.";
+  const benefits = content?.benefits ?? [
+    "Personalized growth strategy tailored to your brand",
+    "30 minute focused strategy session",
+    "No pressure call — just actionable insights",
+  ];
+  const trustText = content?.trustText ?? "Your information stays private and encrypted.";
+  const calendlyUrl = content?.calendlyUrl ?? "https://calendly.com/m-faizurrehman-crypto/30min";
 
-  const subtitle =
-    content?.subtitle ??
-    "Let's discuss your growth goals and how our high-performance content systems can scale your brand.";
-
-  const benefits =
-    content?.benefits ?? [
-      "Personalized growth strategy tailored to your brand",
-      "30 minute focused strategy session",
-      "No pressure call — just actionable insights",
-    ];
-
-  const trustText =
-    content?.trustText ?? "🔒 Your information stays private.";
-
-  const calendlyUrl =
-    content?.calendlyUrl ??
-    "https://calendly.com/m-faizurrehman-crypto/30min";
-
-  /* Calendly loader */
   useEffect(() => {
     const initCalendly = () => {
       if (!window.Calendly || !calendlyRef.current) return;
-
       calendlyRef.current.innerHTML = "";
-
       window.Calendly.initInlineWidget({
         url: calendlyUrl,
         parentElement: calendlyRef.current,
+        prefill: {},
+        utm: {}
       });
     };
 
@@ -69,60 +58,45 @@ export function BookCallPage({ content }: { content?: BookingPageContent }) {
           clearInterval(interval);
         }
       }, 300);
-
       return () => clearInterval(interval);
     }
   }, [calendlyUrl]);
 
-  /* GSAP animations */
   useEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline();
 
-      tl.from(leftRef.current, {
-        x: -80,
+      // Cinematic Header Reveal
+      tl.fromTo(leftRef.current, 
+        { y: 30, opacity: 0, filter: "blur(10px)" },
+        { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.2, ease: "expo.out" }
+      );
+
+      tl.fromTo(rightRef.current,
+        { scale: 0.95, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 1, ease: "power4.out" },
+        "-=0.8"
+      );
+
+      tl.from(".benefit-item", {
+        x: -20,
         opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-      });
-
-      tl.from(
-        rightRef.current,
-        {
-          x: 80,
-          opacity: 0,
-          duration: 1,
-          ease: "power3.out",
-        },
-        "-=0.8",
-      );
-
-      tl.from(
-        ".benefit-item",
-        {
-          y: 40,
-          opacity: 0,
-          stagger: 0.15,
-          duration: 0.7,
-          ease: "power3.out",
-        },
-        "-=0.6",
-      );
+        stagger: 0.1,
+        duration: 0.8,
+        ease: "power2.out",
+      }, "-=0.5");
     }, containerRef);
 
     return () => ctx.revert();
   }, [content]);
 
   const words = title.split(" ");
-
-  const mainTitle =
-    words.length > 2 ? words.slice(0, -2).join(" ") : title;
-
-  const highlight =
-    words.length > 2 ? words.slice(-2).join(" ") : "";
+  const mainTitle = words.length > 2 ? words.slice(0, -2).join(" ") : title;
+  const highlight = words.length > 2 ? words.slice(-2).join(" ") : "";
 
   return (
     <>
+      <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet" />
       <Script
         src="https://assets.calendly.com/assets/external/widget.js"
         strategy="afterInteractive"
@@ -130,115 +104,86 @@ export function BookCallPage({ content }: { content?: BookingPageContent }) {
 
       <main
         ref={containerRef}
-        className="min-h-screen relative px-6 py-28 overflow-hidden"
-        style={{ background: colors.background.base }}
+        className="min-h-screen relative px-6 py-24 md:py-32 overflow-hidden font-satoshi"
+        style={{ background: "#05180D" }}
       >
-        {/* Glow Layers */}
-        <div
-          className="absolute inset-0 opacity-40 pointer-events-none"
-          style={{ background: colors.effects.emeraldGlow }}
-        />
+        {/* Atmospheric Layers */}
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none" />
+        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-emerald-500/10 blur-[150px] rounded-full pointer-events-none" />
+        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-emerald-900/20 blur-[120px] rounded-full pointer-events-none" />
 
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[900px] bg-emerald-500/10 blur-[200px] rounded-full pointer-events-none" />
+        <div className="relative z-10 max-w-6xl mx-auto grid lg:grid-cols-[1fr,1.2fr] gap-16 lg:gap-24 items-center">
 
-        <div className="relative z-10 max-w-7xl mx-auto grid lg:grid-cols-2 gap-24 items-start">
-
-          {/* LEFT SIDE */}
-          <div ref={leftRef} className="space-y-12">
-
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-white/10 bg-white/5 text-xs tracking-wider text-white/70 backdrop-blur-md">
-              <Sparkles className="w-4 h-4 text-emerald-400" />
-              Matera Media
+          {/* CONTENT SECTION */}
+          <div ref={leftRef} className="space-y-10">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/5 bg-white/[0.03] text-[10px] uppercase font-bold tracking-[0.2em] text-emerald-400 backdrop-blur-md">
+              <Sparkles className="size-3" />
+              Strategic Booking
             </div>
 
-            {/* Title */}
-            <div className="space-y-6 max-w-xl">
-
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white leading-tight tracking-tight">
-
+            <div className="space-y-6">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-medium text-white leading-[1.1] tracking-tighter font-instrument-sans">
                 {mainTitle}{" "}
-
                 {highlight && (
-                  <span style={{ color: colors.brand.primary }}>
+                  <span className="text-emerald-400 italic font-bold" style={{ fontFamily: "Satoshi" }}>
                     {highlight}
                   </span>
                 )}
-
               </h1>
 
-              <p
-                className="text-lg leading-relaxed"
-                style={{ color: colors.text.secondary }}
-              >
+              <p className="text-lg md:text-xl text-white/40 font-light leading-relaxed max-w-lg">
                 {subtitle}
               </p>
             </div>
 
-            {/* Benefits */}
-            <div className="grid gap-5 max-w-lg">
+            <div className="space-y-4 max-w-md">
               {benefits.map((benefit, i) => (
-                <Benefit key={i} text={benefit} />
+                <div key={i} className="benefit-item group flex items-center gap-4 p-4 rounded-2xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-colors duration-500">
+                  <div className="size-8 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 group-hover:scale-110 transition-transform">
+                    <CheckCircle2 className="size-4 text-emerald-400" />
+                  </div>
+                  <span className="text-white/70 text-sm font-medium">{benefit}</span>
+                </div>
               ))}
             </div>
 
-            {/* Trust */}
-            <div
-              className="pt-6 border-t text-sm"
-              style={{
-                borderColor: colors.border.subtle,
-                color: colors.text.muted,
-              }}
-            >
-              {trustText}
-            </div>
           </div>
 
-          {/* RIGHT SIDE */}
-          <div ref={rightRef} className="relative w-full">
-
-            {/* Glass Card Container */}
+          {/* CALENDLY SECTION */}
+          <div ref={rightRef} className="relative group">
+            <div className="absolute -inset-4 bg-emerald-500/5 blur-3xl rounded-[40px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+            
             <Card
-              className="relative rounded-[28px] overflow-hidden border backdrop-blur-xl shadow-[0_0_80px_rgba(16,185,129,0.08)]"
-              style={{
-                borderColor: colors.border.subtle,
-                background: colors.background.secondary,
-              }}
+              className="relative rounded-[32px] overflow-hidden border border-white/10 backdrop-blur-2xl shadow-2xl"
+              style={{ background: "rgba(255, 255, 255, 0.02)" }}
             >
+              {/* Decorative Window Buttons */}
+              <div className="flex items-center gap-1.5 px-6 py-4 border-b border-white/5 bg-white/[0.02]">
+                <div className="size-2 rounded-full bg-white/10" />
+                <div className="size-2 rounded-full bg-white/10" />
+                <div className="size-2 rounded-full bg-white/10" />
+                <span className="ml-4 text-[10px] uppercase tracking-widest text-white/20 font-bold">Secure Booking Portal</span>
+              </div>
 
-              {/* Top Accent */}
-              <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-400 to-transparent opacity-70" />
-
-              {/* Calendly */}
               <div
                 ref={calendlyRef}
-                className="w-full"
-                style={{
-                  minWidth: "320px",
-                  height: "850px",
-                }}
+                className="w-full h-[650px] md:h-[700px] scrollbar-hide"
+                style={{ minWidth: "320px" }}
               />
-
             </Card>
           </div>
         </div>
       </main>
+
+      <style jsx global>{`
+        .calendly-inline-widget iframe {
+          filter: invert(0.9) hue-rotate(120deg) contrast(0.9);
+          border-radius: 0 0 32px 32px;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </>
-  );
-}
-
-function Benefit({ text }: { text: string }) {
-  return (
-    <div className="benefit-item flex items-start gap-4">
-
-      <div className="p-2 rounded-lg bg-white/5 border border-white/10">
-        <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-      </div>
-
-      <p className="text-white/80 leading-relaxed">
-        {text}
-      </p>
-
-    </div>
   );
 }

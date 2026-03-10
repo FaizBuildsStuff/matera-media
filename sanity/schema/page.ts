@@ -19,6 +19,7 @@ export default defineType({
         source: "title",
         maxLength: 96,
       },
+      // Keeps the slug editable for Home but hidden for other 'page' types if needed
       hidden: ({ document }) => document?.title !== "Home",
     }),
     defineField({
@@ -35,7 +36,11 @@ export default defineType({
         { type: "faq" },
         { type: "calendlyWidget" },
         { type: "testimonials" },
-        { type: "careers" }, // <--- ADDED THIS LINE
+        // { type: "careers" }, 
+        /** * REMOVED: Careers is now a standalone document ('careersPage').
+         * Keeping this here would cause an "Unknown type" error because 
+         * we are no longer using the 'careers' object type.
+         */
       ],
     }),
   ],

@@ -12,6 +12,7 @@ import resultItem from "./sections/resultItem";
 import servicePage from "./servicePage";
 import legalPage from "./legalPage";
 import inquiry from "./inquiry";
+import careersPage from "./sections/careersPage";
 // New Imports
 import careers, { careerRole } from "./sections/careers";
 
@@ -34,6 +35,6 @@ export const schemaTypes = [
   servicePage,
   legalPage,
   inquiry,
-  careers,    // Add this
-  careerRole, // Add this
+  careersPage, // Add this
+  careerRole,  // Add this
 ];

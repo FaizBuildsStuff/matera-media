@@ -110,3 +110,17 @@ export const bookingPageQuery = `*[_type == "bookingPage" && _id == "booking-pag
   trustText,
   calendlyUrl
 }`;
+
+export const careersPageQuery = `*[_type == "careersPage" && _id == "careers-page"][0]{
+  label,
+  "title": headline,
+  highlightedWord,
+  description,
+  "items": openRoles[]{
+    title,
+    department,
+    location,
+    type,
+    link
+  }
+}`;
