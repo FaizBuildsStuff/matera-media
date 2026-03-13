@@ -34,7 +34,6 @@ const DEFAULT_SOLUTIONS = [
 ];
 
 export default function Pricing({ content }: { content?: any }) {
-  const label = content?.label ?? "Solutions";
   const title = content?.title ?? "Built for Absolute Velocity.";
   const highlightedWord = content?.highlightedWord ?? "Absolute";
   const subtitle = content?.subtitle ?? "Choose the creative discipline that aligns with your current revenue infrastructure.";
@@ -117,12 +116,6 @@ export default function Pricing({ content }: { content?: any }) {
 
         {/* --- HEADER --- */}
         <div className="mb-28 flex flex-col items-center text-center gap-8">
-          <div className="flex items-center gap-2 px-5 py-2 rounded-full bg-[#10B981]/5 border border-[#10B981]/10 backdrop-blur-md">
-            <MousePointer2 className="size-3 text-[#10B981]" />
-            <span className="text-[9px] font-medium uppercase tracking-[0.5em] text-[#10B981]">
-              {label}
-            </span>
-          </div>
 
           <h2 className="text-5xl md:text-7xl font-medium text-white tracking-tighter leading-[1.1] max-w-5xl">
             {title.split(' ').map((word: string, i: number) => {
