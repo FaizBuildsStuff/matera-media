@@ -32,28 +32,56 @@ export const workItem = defineType({
     }),
     defineField({
       name: "image",
-      title: "Image",
+      title: "Thumbnail / Cover Image",
       type: "image",
       options: { hotspot: true },
-      description: "Upload an image or leave empty if using video",
+      description: "This shows as the preview or if no video is provided.",
+    }),
+    defineField({
+      name: "videoSource",
+      title: "Video Source",
+      type: "string",
+      options: {
+        list: [
+          { title: "Upload Video (Direct from PC)", value: "file" },
+          { title: "YouTube URL", value: "youtube" },
+          { title: "None (Image Only)", value: "none" },
+        ],
+        layout: "radio",
+      },
+      initialValue: "file",
+    }),
+    defineField({
+      name: "videoFile",
+      title: "Video Upload",
+      type: "file",
+      description: "Upload MP4/WebM videos directly from your computer.",
+      options: {
+        accept: "video/*",
+      },
+      hidden: ({ parent }) => parent?.videoSource !== "file",
     }),
     defineField({
       name: "videoUrl",
-      title: "Video URL",
+      title: "YouTube URL",
       type: "url",
-      description: "YouTube video URL (e.g., https://www.youtube.com/watch?v=VIDEO_ID). If provided, video will be shown instead of image.",
+      description: "e.g., https://www.youtube.com/watch?v=...",
+      hidden: ({ parent }) => parent?.videoSource !== "youtube",
     }),
     defineField({
       name: "link",
-      title: "Link",
+      title: "External Link",
       type: "url",
-      description: "Optional link when clicking the work item",
+      description: "Optional link when clicking the item",
     }),
   ],
   preview: {
-    select: { title: "title" },
-    prepare({ title }) {
-      return { title: title || "Work Item" };
+    select: { title: "title", media: "image" },
+    prepare({ title, media }) {
+      return { 
+        title: title || "Work Item",
+        media: media 
+      };
     },
   },
 });

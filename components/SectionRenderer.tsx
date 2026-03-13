@@ -1,3 +1,6 @@
+"use client";
+
+import React from "react";
 import { Hero } from "@/components/Hero";
 import { WorkShowcase } from "@/components/WorkShowcase";
 import { HowItWorks } from "@/components/HowItWorks";
@@ -12,7 +15,6 @@ type TestimonialsSection = {
   subtitle?: string;
 };
 
-// 1. Added CareersSection Type
 type CareersSectionType = {
   label?: string;
   title?: string;
@@ -26,38 +28,20 @@ type CareersSectionType = {
   }>;
 };
 
-export type SectionBlock =
-  | { _type: "hero"; _key: string } & HeroSection
-  | { _type: "workShowcase"; _key: string } & WorkShowcaseSection
-  | { _type: "howItWorks"; _key: string } & HowItWorksSection
-  | { _type: "pricing"; _key: string } & PricingSection
-  | { _type: "careers"; _key: string } & CareersSectionType // Added to union
-  | { _type: "faq"; _key: string } & FAQSection
-  | { _type: "calendlyWidget"; _key: string } & CalendlySection
-  | { _type: "testimonials"; _key: string } & TestimonialsSection;
-
-type HeroSection = {
-  headline?: string;
-  ctaPrimary?: string;
-  ctaPrimaryLink?: string;
-  ctaSecondary?: string;
-  ctaSecondaryLink?: string;
-  videoLabel?: string;
-  videoTitle?: string;
-  videoUrl?: string;
-};
-
+// Fix: Match types to component expectations (Removing optional flags where required)
 type WorkShowcaseSection = {
   title?: string;
   highlightedWord?: string;
   description?: string;
   items?: Array<{
     _key: string;
-    title?: string;
+    title: string; // Required
     category?: string;
     tags?: string[];
     image?: string;
     videoUrl?: string;
+    directVideoUrl?: string; // Added for Sanity PC upload
+    videoSource?: "file" | "youtube" | "none"; // Added
     link?: string;
   }>;
 };
@@ -68,9 +52,9 @@ type HowItWorksSection = {
   highlightedWord?: string;
   steps?: Array<{
     _key: string;
-    id?: string;
-    title?: string;
-    description?: string;
+    id: string;          // Fix: Changed from string | undefined to string
+    title: string;       // Fix: Changed from string | undefined to string
+    description: string; // Fix: Changed from string | undefined to string
   }>;
 };
 
@@ -108,6 +92,27 @@ type CalendlySection = {
   calendlyUrl?: string;
 };
 
+type HeroSection = {
+  headline?: string;
+  ctaPrimary?: string;
+  ctaPrimaryLink?: string;
+  ctaSecondary?: string;
+  ctaSecondaryLink?: string;
+  videoLabel?: string;
+  videoTitle?: string;
+  videoUrl?: string;
+};
+
+export type SectionBlock =
+  | ({ _type: "hero"; _key: string } & HeroSection)
+  | ({ _type: "workShowcase"; _key: string } & WorkShowcaseSection)
+  | ({ _type: "howItWorks"; _key: string } & HowItWorksSection)
+  | ({ _type: "pricing"; _key: string } & PricingSection)
+  | ({ _type: "careers"; _key: string } & CareersSectionType)
+  | ({ _type: "faq"; _key: string } & FAQSection)
+  | ({ _type: "calendlyWidget"; _key: string } & CalendlySection)
+  | ({ _type: "testimonials"; _key: string } & TestimonialsSection);
+
 interface SectionRendererProps {
   sections: SectionBlock[] | null | undefined;
 }
@@ -120,13 +125,14 @@ export function SectionRenderer({ sections }: SectionRendererProps) {
   return (
     <>
       {sections.map((section) => (
-        <SectionBlock key={section._key} section={section} />
+        <RenderBlock key={section._key} section={section} />
       ))}
     </>
   );
 }
 
-function SectionBlock({ section }: { section: SectionBlock }) {
+// Renamed to avoid collision with SectionBlock type
+function RenderBlock({ section }: { section: SectionBlock }) {
   switch (section._type) {
     case "hero":
       return <Hero content={section} />;
@@ -139,8 +145,7 @@ function SectionBlock({ section }: { section: SectionBlock }) {
     case "pricing":
       return <Pricing content={section} />;
     case "careers":
-      // PASS CONTENT HERE
-      return <CareersSection content={section} />; 
+      return <CareersSection content={section} />;
     case "faq":
       return <FAQ content={section} />;
     case "calendlyWidget":
@@ -158,8 +163,7 @@ function DefaultSections() {
       <WorkShowcase />
       <HowItWorks />
       <Pricing />
-      {/* 3. Added Careers Section on top of FAQ */}
-      <CareersSection /> 
+      <CareersSection />
       <FAQ />
       <CalendlyWidget />
     </>

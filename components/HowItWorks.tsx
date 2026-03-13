@@ -3,28 +3,39 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowRight, Fingerprint, Zap, Target, LucideIcon, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
-interface Step {
-    id: string;
-    icon: LucideIcon;
-    title: string;
-    description: string;
-}
+// --- TYPES ---
+export type HowItWorksProps = {
+    content?: {
+        label?: string;
+        title?: string;
+        highlightedWord?: string;
+        steps?: Array<{
+            id: string;
+            title: string;
+            description: string;
+        }>;
+    };
+};
 
-const DEFAULT_STEPS: Step[] = [
-    { id: '01', icon: Target, title: 'Strategy & Concept', description: "Deep-dive brand analysis to craft a high-performance visual narrative." },
-    { id: '02', icon: Fingerprint, title: 'Production & Design', description: 'Bringing concepts to life with high-fidelity visuals and cinematic motion.' },
-    { id: '03', icon: Zap, title: 'Launch & Optimization', description: 'Deploying assets and analyzing data to maximize revenue impact.' },
+const DEFAULT_STEPS = [
+    { id: '01', title: 'Strategy & Concept', description: "We Study your Brand and Offering then we build Winning Scripts and Creative Direction around it." },
+    { id: '02', title: 'Production & Design', description: 'Then we go into Full Production on those Winning Scripts and Creative Direction.' },
+    { id: '03', title: 'Launch & Optimization', description: 'Finally, we Launch it all and Tweak things based on the Results to make it Perform even better.' },
 ];
 
-export const HowItWorks = ({ content }: { content?: any }) => {
+export const HowItWorks = ({ content }: HowItWorksProps) => {
     const label = content?.label ?? "Evolution Protocol";
     const titleText = content?.title ?? "Turning Vision into High-Performance";
     const highlightedWord = content?.highlightedWord ?? "High-Performance";
-    const steps = DEFAULT_STEPS;
+    
+    // Dynamic steps from Sanity or fallback
+    const steps = content?.steps && content.steps.length > 0 
+        ? content.steps 
+        : DEFAULT_STEPS;
 
     const sectionRef = useRef<HTMLDivElement>(null);
     const lineRef = useRef<HTMLDivElement>(null);
@@ -63,7 +74,7 @@ export const HowItWorks = ({ content }: { content?: any }) => {
                         duration: 1.5,
                         scrollTrigger: {
                             trigger: row,
-                            start: "top 70%",
+                            start: "top 75%",
                             toggleActions: "play none none reverse"
                         }
                     }
@@ -81,7 +92,7 @@ export const HowItWorks = ({ content }: { content?: any }) => {
         }, sectionRef);
 
         return () => ctx.revert();
-    }, []);
+    }, [content]);
 
     return (
         <section
@@ -89,10 +100,10 @@ export const HowItWorks = ({ content }: { content?: any }) => {
             id="process"
             className="py-32 px-6 bg-transparent relative overflow-hidden min-h-screen"
         >
-            {/* Fontshare Import for Satoshi Italic */}
-            <link href="https://api.fontshare.com/v2/css?f[]=satoshi@401&display=swap" rel="stylesheet" />
+            {/* Fontshare Import for Satoshi */}
+            <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,401&display=swap" rel="stylesheet" />
 
-            {/* Massive Parallax Text Filling Space */}
+            {/* Massive Parallax Text */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0">
                 <h2 className="bg-parallax-text text-[30vw] font-black text-white/[0.01] uppercase tracking-tighter">
                     PROCESS
@@ -111,19 +122,27 @@ export const HowItWorks = ({ content }: { content?: any }) => {
                 <div className="text-center mb-40 space-y-6">
                     <div className="flex items-center justify-center gap-4">
                         <div className="h-px w-10 bg-emerald-500" />
-                        <span className="text-emerald-500 text-[10px] font-bold tracking-[0.5em] uppercase">{label}</span>
+                        <span className="text-emerald-500 text-[10px] font-bold tracking-[0.5em] uppercase font-satoshi">
+                            {label}
+                        </span>
                         <div className="h-px w-10 bg-emerald-500" />
                     </div>
+                    
                     <h2 className="text-6xl md:text-9xl font-instrument-sans font-medium text-white tracking-tighter leading-none lowercase">
-                        {titleText.split(highlightedWord)[0]}
-                        {/* Swapped to Satoshi Italic */}
-                        <span 
-                            style={{ fontFamily: "'Satoshi', sans-serif", fontStyle: "italic" }}
-                            className="text-emerald-400"
-                        >
-                            {highlightedWord}
-                        </span>
-                        {titleText.split(highlightedWord)[1]}
+                        {titleText.includes(highlightedWord) ? (
+                            <>
+                                {titleText.split(highlightedWord)[0]}
+                                <span 
+                                    style={{ fontFamily: "'Satoshi', sans-serif", fontStyle: "italic", fontWeight: 400 }}
+                                    className="text-emerald-400"
+                                >
+                                    {highlightedWord}
+                                </span>
+                                {titleText.split(highlightedWord)[1]}
+                            </>
+                        ) : (
+                            titleText
+                        )}
                     </h2>
                 </div>
 
@@ -151,11 +170,11 @@ export const HowItWorks = ({ content }: { content?: any }) => {
                                             <div className="h-px w-8 bg-white/10" />
                                         </div>
 
-                                        <h3 className="text-4xl md:text-6xl font-medium text-white tracking-tight group-hover:translate-x-2 transition-transform duration-500">
+                                        <h3 className="text-4xl md:text-6xl font-medium text-white tracking-tight group-hover:translate-x-2 transition-transform duration-500 font-satoshi">
                                             {step.title}
                                         </h3>
                                         
-                                        <p className="text-white/40 text-lg md:text-2xl font-light leading-relaxed group-hover:text-white/80 transition-colors duration-500">
+                                        <p className="text-white/40 text-lg md:text-2xl font-light leading-relaxed group-hover:text-white/80 transition-colors duration-500 font-satoshi">
                                             {step.description}
                                         </p>
 

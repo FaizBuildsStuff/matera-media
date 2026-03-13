@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Play, Sparkles } from "lucide-react";
+import { Play, Sparkles, X } from "lucide-react";
 import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -30,7 +30,7 @@ function getYouTubeVideoId(url: string): string | null {
 }
 
 function mapCategoryToSlug(category: string): CategorySlug {
-  const c = category.toLowerCase();
+  const c = category?.toLowerCase() || "";
   if (c.includes("ad") || c.includes("creative")) return "ad-creatives";
   if (c.includes("organic") || c.includes("youtube") || c.includes("content")) return "organic-content";
   if (c.includes("saas") || c.includes("software")) return "saas-videos";
@@ -45,17 +45,10 @@ interface WorkItem {
   tags: string[];
   image?: string;
   videoUrl?: string;
+  directVideoUrl?: string;
+  videoSource?: "file" | "youtube" | "none";
   link?: string;
 }
-
-const DEFAULT_WORKS: WorkItem[] = [
-  { id: "1", title: "Meta UGC Ad", category: "Ad Creatives", categorySlug: "ad-creatives", tags: ["UGC", "15s"], videoUrl: "https://www.youtube.com/shorts/dQw4w9WgXcQ" },
-  { id: "2", title: "TikTok Performance", category: "Ad Creatives", categorySlug: "ad-creatives", tags: ["Hook", "6s"] },
-  { id: "3", title: "YouTube Short", category: "Organic Content", categorySlug: "organic-content", tags: ["Vertical", "60s"] },
-  { id: "4", title: "Creator Reel", category: "Organic Content", categorySlug: "organic-content", tags: ["Behind Scenes"] },
-  { id: "5", title: "Product Demo", category: "SaaS Videos", categorySlug: "saas-videos", tags: ["Explainer"] },
-  { id: "6", title: "Feature Launch", category: "SaaS Videos", categorySlug: "saas-videos", tags: ["30s"] },
-];
 
 type WorkShowcaseContent = {
   title?: string;
@@ -68,6 +61,8 @@ type WorkShowcaseContent = {
     tags?: string[];
     image?: string;
     videoUrl?: string;
+    directVideoUrl?: string;
+    videoSource?: "file" | "youtube" | "none";
     link?: string;
   }>;
 };
@@ -79,22 +74,23 @@ export const WorkShowcase = ({
   content?: WorkShowcaseContent;
   initialCategory?: CategorySlug;
 }) => {
-  const title = content?.title ?? "Selected";
-  const highlightedWord = content?.highlightedWord ?? "Works";
   const description = content?.description ?? "Shorts & reels that drive results. Filter by category.";
+  
   const works: WorkItem[] = (
     content?.items && content.items.length > 0
       ? content.items.map((i, idx) => ({
-        id: i._key || String(idx),
-        title: i.title ?? "",
-        category: i.category ?? "Ad Creatives",
-        categorySlug: mapCategoryToSlug(i.category ?? "Ad Creatives"),
-        tags: i.tags ?? [],
-        image: i.image,
-        videoUrl: i.videoUrl,
-        link: i.link,
-      }))
-      : DEFAULT_WORKS
+          id: i._key || String(idx),
+          title: i.title ?? "",
+          category: i.category ?? "Ad Creatives",
+          categorySlug: mapCategoryToSlug(i.category ?? "Ad Creatives"),
+          tags: i.tags ?? [],
+          image: i.image,
+          videoUrl: i.videoUrl,
+          directVideoUrl: i.directVideoUrl,
+          videoSource: i.videoSource,
+          link: i.link,
+        }))
+      : []
   ).filter((w) => w.title);
 
   const [activeCategory, setActiveCategory] = useState<CategorySlug>(initialCategory ?? "ad-creatives");
@@ -104,7 +100,6 @@ export const WorkShowcase = ({
   const leftRef = useRef<HTMLDivElement>(null);
   const rightRef = useRef<HTMLDivElement>(null);
   const reelContainerRef = useRef<HTMLDivElement>(null);
-  const gridWrapperRef = useRef<HTMLDivElement>(null);
 
   const filteredWorks = works.filter((w) => w.categorySlug === activeCategory);
 
@@ -116,113 +111,65 @@ export const WorkShowcase = ({
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(headerRef.current, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: "power3.out", scrollTrigger: { trigger: headerRef.current, start: "top 85%" } });
-      gsap.fromTo(leftRef.current, { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 1, ease: "power3.out", scrollTrigger: { trigger: leftRef.current, start: "top 85%", end: "top 20%" } });
-      gsap.fromTo(rightRef.current, { x: 40, opacity: 0 }, { x: 0, opacity: 1, duration: 1, ease: "power3.out", scrollTrigger: { trigger: rightRef.current, start: "top 85%", end: "top 20%" } });
+      gsap.fromTo(leftRef.current, { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 1, ease: "power3.out", scrollTrigger: { trigger: leftRef.current, start: "top 85%" } });
+      gsap.fromTo(rightRef.current, { x: 40, opacity: 0 }, { x: 0, opacity: 1, duration: 1, ease: "power3.out", scrollTrigger: { trigger: rightRef.current, start: "top 85%" } });
     }, sectionRef);
     return () => ctx.revert();
   }, []);
 
   useEffect(() => {
-    if (!reelContainerRef.current || !gridWrapperRef.current) return;
-
+    if (!reelContainerRef.current) return;
     const items = reelContainerRef.current.querySelectorAll(".reel-item");
-    const emptyState = reelContainerRef.current.querySelector(".reel-empty-state");
-    const wrapper = gridWrapperRef.current;
-    const targets = items.length > 0 ? items : emptyState;
-    if (!targets || (Array.isArray(targets) && targets.length === 0)) return;
+    if (items.length === 0) return;
 
     if (isInitialMount) {
       setIsInitialMount(false);
       const ctx = gsap.context(() => {
-        gsap.fromTo(targets, { x: -60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.8, stagger: Array.isArray(targets) ? 0.06 : 0, ease: "power3.out", scrollTrigger: { trigger: wrapper, start: "top 88%", end: "top 50%", scrub: 1.5 } });
+        gsap.fromTo(items, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, stagger: 0.06, ease: "power3.out", scrollTrigger: { trigger: reelContainerRef.current, start: "top 88%" } });
       }, reelContainerRef);
       return () => ctx.revert();
     }
 
-    gsap.set(targets, { x: -80, opacity: 0 });
-
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-    tl.to(targets, {
-      x: 0,
-      opacity: 1,
-      duration: 0.65,
-      stagger: items.length > 0 ? { each: 0.07, from: "start" } : 0,
-      overwrite: true,
-    });
-
-    return () => tl.kill();
+    gsap.fromTo(items, { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, stagger: 0.05, ease: "power2.out", overwrite: true });
   }, [activeCategory, filteredWorks.length, isInitialMount]);
 
   return (
-    <section ref={sectionRef} id="work" className="py-32 px-6 bg-[#05180D] relative overflow-hidden min-h-screen">
+    <section ref={sectionRef} id="work" className="min-h-screen relative overflow-hidden bg-[#05180D] px-6 py-32 font-satoshi">
       <link href="https://api.fontshare.com/v2/css?f[]=satoshi@700,701&display=swap" rel="stylesheet" />
       
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-emerald-900/10 rounded-full blur-[150px] pointer-events-none" />
-      <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute -left-20 top-40 opacity-[0.02] pointer-events-none select-none">
-        <img src="/Logo.png" alt="Matera Media" className="w-[600px] h-auto object-contain" />
-      </div>
-
       <div className="max-w-7xl mx-auto relative z-10">
         <div ref={headerRef} className="mb-20">
-          <p className="text-emerald-400/80 text-xs font-medium tracking-[0.2em] uppercase mb-4 flex items-center gap-2">
-            <Sparkles className="w-3.5 h-3.5" />
+          <p className="mb-4 flex items-center gap-2 text-xs font-medium tracking-[0.2em] uppercase text-emerald-400/80">
+            <Sparkles className="size-3.5" />
             Portfolio
           </p>
-          <h2 className="text-4xl md:text-6xl font-instrument-sans font-medium text-white mb-6 tracking-tight">
-            {title}{" "}
-            <span 
-              className="text-emerald-400/90 tracking-[0.08em]"
-              style={{ 
-                fontFamily: "'Satoshi', sans-serif", 
-                fontStyle: "italic", 
-                fontWeight: 700 
-              }}
-            >
-              {highlightedWord}
-            </span>
-          </h2>
-          <p className="text-white/50 max-w-xl font-light text-lg leading-relaxed">{description}</p>
+          <p className="max-w-xl text-lg font-light leading-relaxed text-white/50">{description}</p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
           <aside ref={leftRef} className="lg:w-72 shrink-0">
             <nav className="sticky top-32 space-y-0.5">
-              <p className="text-white/30 text-xs font-medium tracking-widest uppercase mb-6 pl-1">Filter</p>
+              <p className="mb-6 pl-1 text-xs font-medium tracking-widest uppercase text-white/30">Filter</p>
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat.id}
                   onClick={() => handleCategoryClick(cat.slug)}
-                  className={`relative block w-full text-left px-6 py-4 rounded-2xl text-base font-medium transition-all duration-300 active:scale-[0.98] ${activeCategory === cat.slug
-                      ? "text-white bg-white/[0.08] border border-white/10 shadow-lg shadow-emerald-950/20"
-                      : "text-white/40 hover:text-white/70 hover:bg-white/[0.04] border border-transparent"
+                  className={`relative block w-full rounded-2xl border px-6 py-4 text-left text-base font-medium transition-all duration-300 ${activeCategory === cat.slug
+                      ? "border-white/10 bg-white/8 text-white"
+                      : "border-transparent text-white/40 hover:bg-white/4 hover:text-white/70"
                     }`}
                 >
-                  {activeCategory === cat.slug && (
-                    <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 rounded-r-full bg-gradient-to-b from-emerald-400 to-emerald-600" />
-                  )}
-                  <span className="relative pl-1">{cat.label}</span>
+                  {cat.label}
                 </button>
               ))}
             </nav>
           </aside>
 
-          <div ref={rightRef} className="flex-1 min-w-0 overflow-hidden">
-            <div ref={gridWrapperRef} className="relative">
-              <div ref={reelContainerRef} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-8">
-                {filteredWorks.length > 0 ? (
-                  filteredWorks.map((work) => (
-                    <ReelCard key={work.id} work={work} />
-                  ))
-                ) : (
-                  <div className="reel-empty-state col-span-full py-24 text-center">
-                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-white/5 border border-white/10 mb-6">
-                      <Play className="w-8 h-8 text-white/30" />
-                    </div>
-                    <p className="text-white/40 font-light">No reels in this category yet.</p>
-                  </div>
-                )}
-              </div>
+          <div ref={rightRef} className="flex-1">
+            <div ref={reelContainerRef} className="grid grid-cols-2 md:grid-cols-3 gap-5 md:gap-8">
+              {filteredWorks.map((work) => (
+                <ReelCard key={work.id} work={work} />
+              ))}
             </div>
           </div>
         </div>
@@ -232,75 +179,119 @@ export const WorkShowcase = ({
 };
 
 function ReelCard({ work }: { work: WorkItem }) {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const youtubeVideoId = work.videoUrl ? getYouTubeVideoId(work.videoUrl) : null;
 
-  const handleClick = () => {
-    if (work.link) window.open(work.link, "_blank");
-    else if (youtubeVideoId) setIsPlaying(true);
+  // Modern Hover-to-Play logic for the card preview
+  const handleMouseEnter = () => {
+    if (videoRef.current && work.videoSource === "file") {
+      videoRef.current.play().catch(() => {});
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (videoRef.current && work.videoSource === "file") {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
   };
 
   return (
-    <div className="reel-item group">
-      <div
-        className="relative aspect-[9/16] rounded-[1.25rem] overflow-hidden bg-white/[0.03] border border-white/[0.06] backdrop-blur-sm cursor-pointer transition-all duration-500 hover:border-emerald-500/20 hover:shadow-[0_0_40px_-10px_rgba(16,185,129,0.15)] hover:scale-[1.02]"
-        onClick={handleClick}
+    <>
+      <div 
+        className="reel-item group relative" 
+        onClick={() => setIsOverlayOpen(true)}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
-        {youtubeVideoId && isPlaying ? (
-          <div className="absolute inset-0">
-            <iframe
-              className="absolute inset-0 w-full h-full"
-              src={`https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1`}
-              title={work.title}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              frameBorder="0"
-            />
-          </div>
-        ) : youtubeVideoId ? (
-          <>
-            <img
-              src={`https://img.youtube.com/vi/${youtubeVideoId}/maxresdefault.jpg`}
-              alt={work.title}
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              onError={(e) => ((e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${youtubeVideoId}/hqdefault.jpg`)}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-70 transition-opacity" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300">
-                <Play className="w-7 h-7 text-white fill-white ml-1" />
-              </div>
+        <div className="aspect-9/16 relative cursor-pointer overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/5 transition-all duration-500 group-hover:border-emerald-500/40 group-hover:shadow-[0_0_40px_-10px_rgba(16,185,129,0.2)]">
+          
+          {/* --- MEDIA LAYER --- */}
+          {work.videoSource === "file" && work.directVideoUrl ? (
+            <div className="absolute inset-0 size-full">
+              <video 
+                ref={videoRef}
+                src={`${work.directVideoUrl}#t=0.1`}
+                preload="metadata"
+                muted
+                loop
+                playsInline
+                className="size-full object-cover transition-transform duration-1000 group-hover:scale-110"
+              />
             </div>
-          </>
-        ) : work.image ? (
-          <>
-            <Image src={work.image} alt={work.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-70 transition-opacity" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300">
-                <Play className="w-7 h-7 text-white fill-white ml-1" />
-              </div>
-            </div>
-          </>
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-white/[0.04] to-transparent">
-            <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
-              <Play className="w-7 h-7 text-white/40 fill-white/20 ml-1" />
-            </div>
-          </div>
-        )}
+          ) : work.image ? (
+            <Image src={work.image} alt={work.title} fill className="object-cover transition-transform duration-1000 group-hover:scale-110" />
+          ) : youtubeVideoId ? (
+            <img src={`https://img.youtube.com/vi/${youtubeVideoId}/hqdefault.jpg`} className="size-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="" />
+          ) : (
+            <div className="absolute inset-0 bg-emerald-950/20" />
+          )}
 
-        <div className="absolute bottom-0 left-0 right-0 p-5">
-          <div className="flex flex-wrap gap-1.5 mb-2">
-            {work.tags.slice(0, 3).map((tag) => (
-              <span key={tag} className="px-2 py-0.5 rounded-md bg-white/10 text-[10px] text-white/70 uppercase tracking-wider font-medium">
-                {tag}
-              </span>
-            ))}
+          {/* --- GLASS OVERLAY --- */}
+          <div className="absolute inset-0 bg-linear-to-t from-[#05180D] via-transparent to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-70" />
+          
+          {/* --- CENTER PLAY ACTION --- */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="flex size-16 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-2xl opacity-0 scale-50 transition-all duration-500 group-hover:opacity-100 group-hover:scale-100">
+              <Play className="ml-1 size-7 fill-emerald-400 text-emerald-400" />
+            </div>
           </div>
-          <h3 className="text-white font-medium text-sm tracking-tight">{work.title}</h3>
+
+          {/* --- FOOTER INFO --- */}
+          <div className="absolute bottom-8 left-8 right-8 space-y-2">
+            <div className="flex items-center gap-2">
+                <div className="h-px w-4 bg-emerald-500" />
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-400">
+                   {work.category}
+                </span>
+            </div>
+            <h3 className="text-xl font-bold tracking-tight text-white font-satoshi leading-tight">
+              {work.title}
+            </h3>
+          </div>
         </div>
       </div>
-    </div>
+
+      {/* --- PREMIUM FULLSCREEN DIALOG --- */}
+      {isOverlayOpen && (
+        <div className="z-100 fixed inset-0 flex items-center justify-center bg-[#05180D]/95 p-6 backdrop-blur-3xl animate-in fade-in duration-300">
+          
+          {/* Backplate to close */}
+          <div className="absolute inset-0" onClick={() => setIsOverlayOpen(false)} />
+
+          {/* Magnetic Close Button */}
+          <button 
+            onClick={() => setIsOverlayOpen(false)} 
+            className="absolute top-10 right-10 z-110 flex size-14 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-all hover:bg-white hover:text-black hover:scale-110 active:scale-95"
+          >
+            <X className="size-6" />
+          </button>
+          
+          {/* Video Container */}
+          <div className="aspect-9/16 relative w-full max-w-[420px] overflow-hidden rounded-[3rem] border border-white/10 bg-black shadow-[0_0_100px_-20px_rgba(16,185,129,0.3)] animate-in zoom-in-95 duration-500">
+            {work.videoSource === "file" && work.directVideoUrl ? (
+              <video 
+                src={work.directVideoUrl} 
+                className="size-full object-contain" 
+                controls 
+                autoPlay 
+                loop 
+                playsInline
+              />
+            ) : youtubeVideoId ? (
+              <iframe 
+                className="size-full" 
+                src={`https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&rel=0&modestbranding=1`} 
+                allow="autoplay; encrypted-media" 
+                allowFullScreen 
+              />
+            ) : (
+                <div className="flex items-center justify-center size-full text-white/20">Source Not Found</div>
+            )}
+          </div>
+        </div>
+      )}
+    </>
   );
 }

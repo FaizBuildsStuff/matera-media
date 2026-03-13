@@ -372,7 +372,7 @@ export default async function AdCreativesPage() {
             { title: "Strategy-First Design", description: "Messaging and offer clarity mapped out before we ever touch a timeline." }
           ]}
         />
-        <ResultsSection title="Our Results" items={[{ image: "/results/s1.png" }, { image: "/results/s2.png" }, { image: "/results/s3.png" }, { image: "/results/s4.png" }]} />
+        <ResultsSection title="Our Results" items={[{ image: "/" }, { image: "/results/s2.png" }, { image: "/results/s3.png" }, { image: "/results/s4.png" }]} />
         <ProcessSection />
         <CenteredPricing />
       </main>

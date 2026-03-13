@@ -50,10 +50,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${instrumentSans.variable} ${instrumentSerif.variable} antialiased`}
         style={{ fontFamily: "'Satoshi', sans-serif" }}
       >
-        <SmoothScroll />
-        <Header />
         {children}
-        <Footer />
       </body>
     </html>
   );

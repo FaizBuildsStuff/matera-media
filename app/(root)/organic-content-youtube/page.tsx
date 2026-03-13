@@ -393,7 +393,7 @@ export default async function OrganicContentYouTubePage() {
             { title: "Content Systemization", description: "We build repeatable content frameworks so your channel grows consistently." }
           ]}
         />
-        <ResultsSection title="Our Results" items={[{ image: "/results/s1.png" }, { image: "/results/s2.png" }, { image: "/results/s3.png" }, { image: "/results/s4.png" }]} />
+        <ResultsSection title="Our Results" items={[{ image: "/" }, { image: "/" }, { image: "/" }, { image: "/" }]} />
         <ProcessSection />
         <CenteredPricing />
       </main>

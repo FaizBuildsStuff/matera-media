@@ -19,20 +19,24 @@ export const pageQuery = `*[_type == "page" && (_id == $slug || slug.current == 
         link
       }
     },
-    items[]{
-      _key,
-      ...,
-      "image": image.asset->url,
-      videoUrl
+    _type == "workShowcase" => {
+      title,
+      highlightedWord,
+      description,
+      items[]{
+        _key,
+        title,
+        category,
+        tags,
+        "image": image.asset->url,
+        videoSource,
+        videoUrl,
+        "directVideoUrl": videoFile.asset->url, // Resolves the PC upload path
+        link
+      }
     },
-    steps[]{
-      _key,
-      ...
-    },
-    plans[]{
-      _key,
-      ...
-    }
+    steps[]{ _key, ... },
+    plans[]{ _key, ... }
   }
 }`;
 
