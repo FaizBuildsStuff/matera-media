@@ -10,9 +10,19 @@ import { CalendlyWidget } from "@/components/CalendlyWidget";
 import Testimonials from "./testimonials";
 import { CareersSection } from "@/components/career";
 
+// --- TYPES ---
+
 type TestimonialsSection = {
+  label?: string;
   title?: string;
-  subtitle?: string;
+  description?: string;
+  items?: Array<{
+    _key: string;
+    name: string;
+    role: string;
+    quote: string;
+    image?: string;
+  }>;
 };
 
 type CareersSectionType = {
@@ -28,20 +38,19 @@ type CareersSectionType = {
   }>;
 };
 
-// Fix: Match types to component expectations (Removing optional flags where required)
 type WorkShowcaseSection = {
   title?: string;
   highlightedWord?: string;
   description?: string;
   items?: Array<{
     _key: string;
-    title: string; // Required
+    title: string;
     category?: string;
     tags?: string[];
     image?: string;
     videoUrl?: string;
-    directVideoUrl?: string; // Added for Sanity PC upload
-    videoSource?: "file" | "youtube" | "none"; // Added
+    directVideoUrl?: string;
+    videoSource?: "file" | "youtube" | "none";
     link?: string;
   }>;
 };
@@ -52,9 +61,9 @@ type HowItWorksSection = {
   highlightedWord?: string;
   steps?: Array<{
     _key: string;
-    id: string;          // Fix: Changed from string | undefined to string
-    title: string;       // Fix: Changed from string | undefined to string
-    description: string; // Fix: Changed from string | undefined to string
+    id: string;
+    title: string;
+    description: string;
   }>;
 };
 
@@ -117,27 +126,29 @@ interface SectionRendererProps {
   sections: SectionBlock[] | null | undefined;
 }
 
-export function SectionRenderer({ sections }: SectionRendererProps) {
-  if (!sections || sections.length === 0) {
-    return <DefaultSections />;
-  }
+// --- MAIN RENDERER ---
 
+export function SectionRenderer({ sections }: SectionRendererProps) {
   return (
-    <>
-      {sections.map((section) => (
-        <RenderBlock key={section._key} section={section} />
-      ))}
-    </>
+    <main className="bg-[#05180D] min-h-screen flex flex-col">
+      {!sections || sections.length === 0 ? (
+        <DefaultSections />
+      ) : (
+        sections.map((section) => (
+          <RenderBlock key={section._key} section={section} />
+        ))
+      )}
+    </main>
   );
 }
 
-// Renamed to avoid collision with SectionBlock type
 function RenderBlock({ section }: { section: SectionBlock }) {
+  // We return the components directly without wrapping divs to avoid extra spacing
   switch (section._type) {
     case "hero":
       return <Hero content={section} />;
     case "testimonials":
-      return <Testimonials />;
+      return <Testimonials content={section} />;
     case "workShowcase":
       return <WorkShowcase content={section} />;
     case "howItWorks":
@@ -159,7 +170,7 @@ function DefaultSections() {
   return (
     <>
       <Hero />
-      <Testimonials />
+      <Testimonials content={undefined} />
       <WorkShowcase />
       <HowItWorks />
       <Pricing />

@@ -88,7 +88,6 @@ export const Footer = () => {
                     {/* Legal Links */}
                     <div className="flex gap-12">
                         <Link href="/privacy-policy" className="text-white/10 hover:text-white text-[10px] font-bold uppercase tracking-widest transition-colors">Privacy Policy</Link>
-                        <Link href="#" className="text-white/10 hover:text-white text-[10px] font-bold uppercase tracking-widest transition-colors">Terms of Service</Link>
                     </div>
                 </div>
             </div>

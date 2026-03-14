@@ -5,7 +5,7 @@ import howItWorks, { processStep } from "./sections/howItWorks";
 import pricing, { pricingPlan } from "./sections/pricing";
 import faq, { faqItem } from "./sections/faq";
 import calendlyWidget from "./sections/calendlyWidget";
-import testimonials from "./sections/testimonials";
+import testimonials, { testimonialItem } from "./sections/testimonials";
 import servicePlan from "./sections/servicePlan";
 import problemSolutionItem from "./sections/problemSolutionItem";
 import resultItem from "./sections/resultItem";
@@ -28,6 +28,7 @@ export const schemaTypes = [
   faqItem,
   faq,
   calendlyWidget,
+  testimonialItem,
   testimonials,
   servicePlan,
   problemSolutionItem,

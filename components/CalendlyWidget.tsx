@@ -1,15 +1,15 @@
 "use client";
 
 import Script from "next/script";
-import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const DEFAULT_CALENDLY_URL =
-  "https://calendly.com/m-faizurrehman-crypto/30min?primary_color=059669&background_color=05180D&text_color=ffffff";
+  "https://calendly.com/m-faizurrehman-crypto/30min?primary_color=10b981&background_color=05180D&text_color=ffffff&hide_landing_page_details=1&hide_gdpr_banner=1";
 
 type CalendlyContent = {
   title?: string;
@@ -18,49 +18,45 @@ type CalendlyContent = {
 };
 
 export const CalendlyWidget = ({ content }: { content?: CalendlyContent }) => {
-  const title =
-    content?.title ?? "Let’s Architect Your Next Phase of Growth.";
-  const subtitle =
-    content?.subtitle ??
-    "Book a strategic discovery call to explore how we can build a performance-driven creative system for your brand.";
+  const title = content?.title ?? "Architect Your Next Phase.";
+  const subtitle = content?.subtitle ?? "Book a strategic discovery call to explore our performance systems.";
   const calendlyUrl = content?.calendlyUrl || DEFAULT_CALENDLY_URL;
 
   const sectionRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const widgetRef = useRef<HTMLDivElement>(null);
-  const glowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-
-      // Scroll reveal
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-        },
-      });
-
-      tl.fromTo(
+      gsap.fromTo(
         headerRef.current,
-        { opacity: 0, y: 40 },
-        { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
-      ).fromTo(
-        widgetRef.current,
-        { opacity: 0, y: 80 },
-        { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" },
-        "-=0.6"
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+          },
+        }
       );
 
-      // Slow floating glow animation
-      gsap.to(glowRef.current, {
-        y: 40,
-        duration: 6,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
-
+      gsap.fromTo(
+        widgetRef.current,
+        { opacity: 0, scale: 0.98 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 1.2,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: widgetRef.current,
+            start: "top 85%",
+          },
+        }
+      );
     }, sectionRef);
 
     return () => ctx.revert();
@@ -70,59 +66,61 @@ export const CalendlyWidget = ({ content }: { content?: CalendlyContent }) => {
     <section
       ref={sectionRef}
       id="schedule"
-      className="relative py-40 px-6 bg-[#05180D] overflow-hidden"
+      className="relative py-32 px-6 bg-[#05180D] overflow-hidden font-satoshi"
     >
-
-      {/* Animated Grid */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] bg-[size:60px_60px]" />
-
-      {/* Large Emerald Glow */}
-      <div
-        ref={glowRef}
-        className="absolute top-1/2 left-1/2 w-[900px] h-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[160px]"
+      {/* --- THE GRID WITH FADED EDGES --- */}
+      <div 
+        className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] bg-[size:60px_60px]" 
         style={{
-          background:
-            "radial-gradient(circle, rgba(16,185,129,0.25) 0%, transparent 70%)",
+          maskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)',
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)'
         }}
       />
 
-      {/* Secondary Floating Glow */}
-      <div className="absolute top-20 left-20 w-[300px] h-[300px] bg-emerald-500/10 rounded-full blur-[100px] animate-pulse" />
-      <div className="absolute bottom-20 right-20 w-[350px] h-[350px] bg-teal-400/10 rounded-full blur-[120px] animate-pulse delay-700" />
+      {/* --- SMOOTH SECTION BLENDING --- */}
+      <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-[#05180D] to-transparent z-10 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-[#05180D] to-transparent z-10 pointer-events-none" />
+      
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/[0.04] blur-[140px] rounded-full pointer-events-none" />
 
-      <div className="relative z-10 max-w-6xl mx-auto text-center">
+      <div className="relative z-20 max-w-7xl mx-auto">
 
-        {/* Logo */}
-        <div className="flex justify-center mb-10">
+        {/* --- LOGO --- */}
+        <div className="flex justify-center mb-12">
           <Image
             src="/Logo.png"
-            alt="Matera Media Logo"
-            width={120}
-            height={120}
-            className="opacity-90"
+            alt="Logo"
+            width={100}
+            height={100}
+            className="opacity-70 grayscale brightness-200"
             priority
           />
         </div>
-
-        {/* Header */}
-        <div ref={headerRef} className="mb-20">
-          <h2 className="text-4xl md:text-6xl font-semibold text-white tracking-tight mb-6 leading-tight">
+        
+        {/* Header - Forced 1 Line on Desktop */}
+        <div ref={headerRef} className="text-center mb-16 px-4">
+          <h2 className="text-3xl sm:text-4xl md:text-6xl font-black text-white tracking-tighter uppercase mb-4 leading-tight md:whitespace-nowrap">
             {title}
           </h2>
-          <p className="text-white/60 text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-white/40 text-sm md:text-base max-w-lg mx-auto leading-relaxed">
             {subtitle}
           </p>
         </div>
 
-        {/* Calendly */}
-        <div ref={widgetRef} className="max-w-4xl mx-auto">
+        {/* Calendly Widget with Loader */}
+        <div ref={widgetRef} className="w-full relative min-h-[700px]">
+          {/* Professional Minimalist Loader */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center z-0 pointer-events-none">
+             <div className="w-8 h-8 border-2 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin mb-4" />
+             <span className="text-[10px] uppercase tracking-[0.3em] text-emerald-500/40 font-bold">Loading System</span>
+          </div>
+
           <div
-            className="calendly-inline-widget w-full"
+            className="calendly-inline-widget w-full relative z-10"
             data-url={calendlyUrl}
-            style={{ minWidth: "320px", height: "1000px" }}
+            style={{ minWidth: "320px", height: "950px" }}
           />
         </div>
-
       </div>
 
       <Script

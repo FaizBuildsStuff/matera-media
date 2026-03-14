@@ -157,6 +157,10 @@ export const WorkShowcase = ({
 
   return (
     <section ref={sectionRef} id="work" className="py-32 px-6 bg-[#05180D] relative overflow-hidden min-h-screen font-satoshi">
+
+      {/* --- SEAMLESS MASK OVERLAYS --- */}
+      <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#05180D] to-transparent z-20 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-[#05180D] to-transparent z-20 pointer-events-none" />
       <link href="https://api.fontshare.com/v2/css?f[]=satoshi@700,701&display=swap" rel="stylesheet" />
 
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-emerald-900/10 rounded-full blur-[150px] pointer-events-none" />
@@ -167,11 +171,16 @@ export const WorkShowcase = ({
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div ref={headerRef} className="mb-20">
-          <h2 className="text-4xl md:text-6xl font-medium text-white mb-6 tracking-tight font-instrument-sans uppercase">
-            {title}{" "}
-            <span
-              className="text-emerald-400/90 tracking-[0.08em] italic font-bold font-satoshi"
-            >
+          <h2 className="text-4xl md:text-6xl font-black text-emerald-500 mb-6 tracking-tighter font-satoshi uppercase flex items-center gap-4">
+            {/* Emerald Sparkle with a premium breathing animation */}
+            <Sparkles className="w-10 h-10 md:w-12 md:h-12 text-emerald-500 animate-[pulse_3s_ease-in-out_infinite] opacity-80" />
+
+            <span className="relative">
+              {title}
+            </span>
+
+            <span className="text-emerald-500/20 tracking-[0.08em] italic font-medium font-satoshi ml-2">
+              {/* Extra CMS text here if needed */}
             </span>
           </h2>
           <p className="text-white/50 max-w-xl font-light text-lg leading-relaxed">{description}</p>

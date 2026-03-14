@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
-import { Check, Zap, ArrowRight, MousePointer2 } from "lucide-react";
+import { Check, Zap, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -36,7 +36,7 @@ const DEFAULT_SOLUTIONS = [
 export default function Pricing({ content }: { content?: any }) {
   const title = content?.title ?? "Built for Absolute Velocity.";
   const highlightedWord = content?.highlightedWord ?? "Absolute";
-  const subtitle = content?.subtitle ?? "Choose the creative discipline that aligns with your current revenue infrastructure.";
+  const subtitle = content?.subtitle ?? "Choose the creative discipline that aligns with your revenue infrastructure.";
   const plans = content?.plans?.length > 0 ? content.plans : DEFAULT_SOLUTIONS;
 
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -66,7 +66,6 @@ export default function Pricing({ content }: { content?: any }) {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Parallax for Background Orbs
       gsap.to(".bg-orb", {
         yPercent: 15,
         scrollTrigger: {
@@ -75,13 +74,8 @@ export default function Pricing({ content }: { content?: any }) {
         },
       });
 
-      // Cinematic Reveal - FIXED: Added clearProps to prevent permanent blur
       gsap.fromTo(".pricing-card", 
-        { 
-          y: 60, 
-          opacity: 0, 
-          filter: "blur(10px)" 
-        },
+        { y: 60, opacity: 0, filter: "blur(10px)" },
         {
           y: 0,
           opacity: 1,
@@ -89,7 +83,7 @@ export default function Pricing({ content }: { content?: any }) {
           duration: 1.2,
           stagger: 0.1,
           ease: "expo.out",
-          clearProps: "filter", // This removes the filter property after animation
+          clearProps: "filter",
           scrollTrigger: {
             trigger: cardsRef.current,
             start: "top 85%",
@@ -103,20 +97,26 @@ export default function Pricing({ content }: { content?: any }) {
   return (
     <section
       ref={sectionRef}
-      className="py-32 px-6 bg-[#05180D] relative overflow-hidden font-satoshi"
+      className="py-40 px-6 bg-[#05180D] relative overflow-hidden font-satoshi"
     >
       <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400&display=swap" rel="stylesheet" />
 
-      {/* --- BACKGROUND FX --- */}
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none" />
-      <div className="bg-orb absolute top-[-10%] right-[10%] w-[50%] h-[50%] bg-[#10B981]/5 blur-[120px] rounded-full pointer-events-none" />
-      <div className="bg-orb absolute bottom-[-5%] left-[5%] w-[40%] h-[40%] bg-[#10B981]/10 blur-[140px] rounded-full pointer-events-none" />
+      {/* --- SEAMLESS MASK OVERLAYS --- */}
+      {/* These fade the noise and orbs to 0% at the top and bottom */}
+      <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-[#05180D] to-transparent z-20 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-[#05180D] to-transparent z-20 pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto relative z-10">
+      {/* --- BACKGROUND FX --- */}
+      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none z-0" />
+      
+      {/* Background Orbs restricted to not hit hard edges */}
+      <div className="bg-orb absolute top-[5%] right-[10%] w-[50%] h-[50%] bg-[#10B981]/5 blur-[120px] rounded-full pointer-events-none z-0" />
+      <div className="bg-orb absolute bottom-[5%] left-[5%] w-[40%] h-[40%] bg-[#10B981]/10 blur-[140px] rounded-full pointer-events-none z-0" />
+
+      <div className="max-w-7xl mx-auto relative z-30">
 
         {/* --- HEADER --- */}
         <div className="mb-28 flex flex-col items-center text-center gap-8">
-
           <h2 className="text-5xl md:text-7xl font-medium text-white tracking-tighter leading-[1.1] max-w-5xl">
             {title.split(' ').map((word: string, i: number) => {
               const cleanWord = word.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, "");
@@ -133,14 +133,13 @@ export default function Pricing({ content }: { content?: any }) {
           </p>
         </div>
 
-        {/* --- GRID --- */}
+        {/* --- PRICING GRID --- */}
         <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {plans.map((plan: any, idx: number) => (
             <div
               key={idx}
               onMouseMove={(e) => handleMouseMove(e, idx)}
               onMouseLeave={() => handleMouseLeave(idx)}
-              style={{ willChange: 'transform, opacity' }}
               className={`pricing-card group relative flex flex-col p-10 rounded-[3rem] border transition-all duration-500 backdrop-blur-3xl overflow-hidden ${
                 plan.popular 
                   ? "bg-white/4 border-[#10B981]/30 shadow-[0_40px_120px_-20px_rgba(16,185,129,0.2)]" 
@@ -189,14 +188,6 @@ export default function Pricing({ content }: { content?: any }) {
               </div>
             </div>
           ))}
-        </div>
-
-        {/* --- FOOTER --- */}
-        <div className="mt-28 flex flex-col items-center gap-4 opacity-10">
-            <div className="h-px w-20 bg-white" />
-            <div className="text-[8px] font-medium uppercase tracking-[1em] text-white">
-              Encryption Level: Elite
-            </div>
         </div>
       </div>
     </section>

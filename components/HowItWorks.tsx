@@ -3,16 +3,13 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Plus } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// --- TYPES ---
 export type HowItWorksProps = {
     content?: {
         label?: string;
         title?: string;
-        highlightedWord?: string;
         steps?: Array<{
             id: string;
             title: string;
@@ -22,27 +19,21 @@ export type HowItWorksProps = {
 };
 
 const DEFAULT_STEPS = [
-    { id: '01', title: 'Strategy & Concept', description: "We Study your Brand and Offering then we build Winning Scripts and Creative Direction around it." },
-    { id: '02', title: 'Production & Design', description: 'Then we go into Full Production on those Winning Scripts and Creative Direction.' },
-    { id: '03', title: 'Launch & Optimization', description: 'Finally, we Launch it all and Tweak things based on the Results to make it Perform even better.' },
+    { id: '01', title: 'Strategy & Concept', description: "We study your brand to build winning scripts and creative direction." },
+    { id: '02', title: 'Production & Design', description: 'Full-scale production focused on high-conversion visual assets.' },
+    { id: '03', title: 'Launch & Optimization', description: 'We launch and tweak results based on real-time performance data.' },
 ];
 
 export const HowItWorks = ({ content }: HowItWorksProps) => {
     const label = content?.label ?? "Evolution Protocol";
-    const titleText = content?.title ?? "Turning Vision into High-Performance";
-    const highlightedWord = content?.highlightedWord ?? "High-Performance";
-    
-    // Dynamic steps from Sanity or fallback
-    const steps = content?.steps && content.steps.length > 0 
-        ? content.steps 
-        : DEFAULT_STEPS;
+    const titleText = content?.title ?? "How it works";
+    const steps = content?.steps?.length ? content.steps : DEFAULT_STEPS;
 
     const sectionRef = useRef<HTMLDivElement>(null);
     const lineRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            // 1. Central Scanning Line
             gsap.fromTo(lineRef.current, 
                 { scaleY: 0 }, 
                 { 
@@ -50,44 +41,52 @@ export const HowItWorks = ({ content }: HowItWorksProps) => {
                     ease: "none", 
                     scrollTrigger: {
                         trigger: sectionRef.current,
-                        start: "top 20%",
-                        end: "bottom 80%",
+                        start: "top 30%",
+                        end: "bottom 70%",
                         scrub: true
                     } 
                 }
             );
 
-            // 2. Kinetic Text Reveal
+            gsap.to(".ambient-glow", {
+                y: (i) => i === 0 ? -100 : 100,
+                opacity: 0.4,
+                duration: 3,
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: 1.5
+                }
+            });
+
             const rows = gsap.utils.toArray('.process-row');
             rows.forEach((row: any, i: number) => {
                 const isEven = i % 2 === 0;
+                const xVal = window.innerWidth > 768 ? (isEven ? -50 : 50) : 0;
+                const yVal = window.innerWidth > 768 ? 0 : 30;
+
                 gsap.fromTo(row.querySelector('.row-content'), 
                     { 
                         opacity: 0, 
-                        x: isEven ? -100 : 100,
+                        x: xVal,
+                        y: yVal,
                         filter: 'blur(10px)'
                     },
                     {
                         opacity: 1, 
                         x: 0, 
+                        y: 0,
                         filter: 'blur(0px)',
-                        duration: 1.5,
+                        duration: 1.2,
+                        ease: "power3.out",
                         scrollTrigger: {
                             trigger: row,
-                            start: "top 75%",
+                            start: "top 85%",
                             toggleActions: "play none none reverse"
                         }
                     }
                 );
-            });
-
-            // 3. Parallax Background Text
-            gsap.to(".bg-parallax-text", {
-                y: -150,
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    scrub: 1
-                }
             });
         }, sectionRef);
 
@@ -95,89 +94,69 @@ export const HowItWorks = ({ content }: HowItWorksProps) => {
     }, [content]);
 
     return (
-        <section
-            ref={sectionRef}
-            id="process"
-            className="py-32 px-6 bg-transparent relative overflow-hidden min-h-screen"
-        >
-            {/* Fontshare Import for Satoshi */}
-            <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,401&display=swap" rel="stylesheet" />
+        <section ref={sectionRef} id="process" className="py-20 px-6 bg-[#05180D] relative overflow-hidden font-satoshi">
+            
+            {/* --- SEAMLESS MASK OVERLAYS (Tightened) --- */}
+            <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-[#05180D] to-transparent z-20 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-[#05180D] to-transparent z-20 pointer-events-none" />
 
-            {/* Massive Parallax Text */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0">
-                <h2 className="bg-parallax-text text-[30vw] font-black text-white/[0.01] uppercase tracking-tighter">
-                    PROCESS
-                </h2>
-            </div>
-
-            {/* Kinetic Background Skeleton */}
-            <div className="absolute inset-0 z-0 pointer-events-none opacity-20">
-                <div className="absolute left-[50%] top-0 h-full w-px bg-white/5" />
-                <Plus className="absolute top-20 right-[48%] text-emerald-400/20 w-8 h-8" />
-            </div>
-
-            <div className="max-w-7xl mx-auto relative z-10">
+            {/* --- BACKGROUND FX --- */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+                <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
                 
-                {/* --- HEADER --- */}
-                <div className="text-center mb-40 space-y-6">
-                    <div className="flex items-center justify-center gap-4">
-                        <div className="h-px w-10 bg-emerald-500" />
-                        <span className="text-emerald-500 text-[10px] font-bold tracking-[0.5em] uppercase font-satoshi">
+                <div className="absolute inset-0 overflow-hidden">
+                    <div className="ambient-glow absolute top-[10%] -right-[5%] w-[50vw] h-[50vw] bg-emerald-500/10 blur-[120px] rounded-full" />
+                    <div className="ambient-glow absolute bottom-[10%] -left-[5%] w-[40vw] h-[40vw] bg-emerald-900/20 blur-[100px] rounded-full" />
+                    <div className="absolute left-1/2 -translate-x-1/2 top-0 w-px h-full bg-gradient-to-b from-transparent via-emerald-500/10 to-transparent" />
+                </div>
+            </div>
+
+            <div className="max-w-5xl mx-auto relative z-30">
+                
+                <div className="text-center mb-16">
+                    <div className="flex items-center justify-center gap-3 mb-4">
+                        <div className="h-[1px] w-4 bg-emerald-500/50 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+                        <span className="text-emerald-500 text-[9px] font-black tracking-[0.4em] uppercase">
                             {label}
                         </span>
-                        <div className="h-px w-10 bg-emerald-500" />
+                        <div className="h-[1px] w-4 bg-emerald-500/50 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
                     </div>
-                    
-                    <h2 className="text-6xl md:text-9xl font-instrument-sans font-medium text-white tracking-tighter leading-none lowercase">
-                        {titleText.includes(highlightedWord) ? (
-                            <>
-                                {titleText.split(highlightedWord)[0]}
-                                <span 
-                                    style={{ fontFamily: "'Satoshi', sans-serif", fontStyle: "italic", fontWeight: 400 }}
-                                    className="text-emerald-400"
-                                >
-                                    {highlightedWord}
-                                </span>
-                                {titleText.split(highlightedWord)[1]}
-                            </>
-                        ) : (
-                            titleText
-                        )}
+                    <h2 className="text-4xl md:text-5xl font-medium text-white tracking-tighter uppercase leading-none drop-shadow-sm">
+                        {titleText}<span className="text-emerald-400">.</span>
                     </h2>
                 </div>
 
-                {/* --- INTERACTIVE VERTICAL FLOW --- */}
                 <div className="relative">
-                    {/* The Scanning Progress Line */}
-                    <div ref={lineRef} className="absolute left-1/2 -translate-x-1/2 top-0 w-[2px] h-full bg-emerald-500 origin-top shadow-[0_0_20px_rgba(16,185,129,0.5)] z-20 hidden md:block" />
+                    <div 
+                        ref={lineRef} 
+                        className="absolute left-1/2 -translate-x-1/2 top-0 w-[1px] h-full bg-emerald-500/30 origin-top z-20 hidden md:block" 
+                        style={{
+                            maskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)',
+                            WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)'
+                        }}
+                    />
 
-                    <div className="space-y-40 md:space-y-0">
+                    <div className="space-y-16 md:space-y-0">
                         {steps.map((step, i) => {
                             const isEven = i % 2 === 0;
                             return (
-                                <div key={step.id} className="process-row relative md:h-[400px] flex items-center group">
-                                    
-                                    {/* Central Node */}
-                                    <div className="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-emerald-500 border-4 border-black z-30 shadow-[0_0_15px_rgba(16,185,129,1)] scale-0 group-hover:scale-150 transition-transform duration-500 hidden md:block" />
+                                <div key={step.id} className="process-row relative md:h-[250px] flex items-center">
+                                    <div className="absolute left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-emerald-400 z-30 hidden md:block shadow-[0_0_12px_rgba(52,211,153,0.8)]" />
 
-                                    <div className={`row-content w-full md:w-1/2 ${isEven ? 'md:pr-24 md:text-right md:ml-0' : 'md:pl-24 md:text-left md:ml-[50%]'} space-y-6`}>
-                                        
-                                        {/* Step ID */}
-                                        <div className={`flex items-center gap-4 ${isEven ? 'md:justify-end' : 'md:justify-start'}`}>
-                                            <span className="text-emerald-500/30 font-instrument-serif italic text-4xl group-hover:text-emerald-400 transition-colors">
-                                                {step.id}
+                                    <div className={`row-content w-full md:w-[45%] ${isEven ? 'md:pr-12 md:text-right' : 'md:pl-12 md:text-left md:ml-[55%]'} space-y-3`}>
+                                        <div className={`flex items-center gap-3 ${isEven ? 'md:justify-end' : 'md:justify-start'}`}>
+                                            <span className="text-emerald-500 font-black text-[10px] tracking-[0.3em] uppercase">
+                                                Phase {step.id}
                                             </span>
-                                            <div className="h-px w-8 bg-white/10" />
                                         </div>
 
-                                        <h3 className="text-4xl md:text-6xl font-medium text-white tracking-tight group-hover:translate-x-2 transition-transform duration-500 font-satoshi">
+                                        <h3 className="text-xl md:text-2xl font-bold text-white tracking-tight uppercase">
                                             {step.title}
                                         </h3>
                                         
-                                        <p className="text-white/40 text-lg md:text-2xl font-light leading-relaxed group-hover:text-white/80 transition-colors duration-500 font-satoshi">
+                                        <p className="text-white/40 text-sm md:text-base leading-relaxed group-hover:text-white/60 transition-colors duration-500">
                                             {step.description}
                                         </p>
-
                                     </div>
                                 </div>
                             );
@@ -185,9 +164,6 @@ export const HowItWorks = ({ content }: HowItWorksProps) => {
                     </div>
                 </div>
             </div>
-            
-            {/* Bottom Protocol Line */}
-            <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
         </section>
     );
 };

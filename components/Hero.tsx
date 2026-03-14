@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { ArrowRight, Play, Star } from "lucide-react";
+import { Play } from "lucide-react";
 
 const getYoutubeId = (url: string) => {
   if (!url) return null;
@@ -13,167 +13,100 @@ const getYoutubeId = (url: string) => {
   return match && match[2].length === 11 ? match[2] : null;
 };
 
-const formatVideoUrl = (url: string) => {
-  const id = getYoutubeId(url);
-  return id ? `https://www.youtube.com/embed/${id}?autoplay=1&modestbranding=1&rel=0` : url;
-};
-
-type HeroContent = {
-  headline?: string;
-  highlightedWords?: string[];
-  ctaPrimary?: string;
-  ctaPrimaryLink?: string;
-  videoUrl?: string;
-};
-
-export const Hero = ({ content }: { content?: HeroContent }) => {
-  const headline = content?.headline || "Growth Systems that turn Attention into Revenue.";
-  const hWords = content?.highlightedWords || ["Growth Systems", "Revenue"];
-  const ctaPrimary = content?.ctaPrimary || "Book a Strategy Call";
+export const Hero = ({ content }: { content?: any }) => {
+  const headline = content?.headline || "We build you a YouTube organic + Paid funnel that books you 20+ calls per month.";
+  const hWords = content?.highlightedWords || ["YouTube organic + Paid funnel", "20+ calls per month."];
+  const ctaPrimary = content?.ctaPrimary || "Book a Call";
   const ctaLink = content?.ctaPrimaryLink || "#";
 
   const videoId = getYoutubeId(content?.videoUrl || "");
-  const videoUrl = formatVideoUrl(content?.videoUrl || "");
+  const videoUrl = videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1&modestbranding=1` : "";
   const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : "";
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const wordsRef = useRef<HTMLSpanElement[]>([]);
-  const ctaRef = useRef<HTMLDivElement>(null);
-  const videoWrapperRef = useRef<HTMLDivElement>(null);
-  const lightRef = useRef<HTMLDivElement>(null);
-
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
-
-      tl.fromTo(lightRef.current, { opacity: 0, scale: 0.8 }, { opacity: 0.4, scale: 1, duration: 2.5 })
-        // Staggered fade-up for all headline parts including highlights
-        .fromTo(wordsRef.current, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, stagger: 0.04 }, "-=2")
-        .fromTo(ctaRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 1 }, "-=1")
-        .fromTo(videoWrapperRef.current, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 1.5 }, "-=1.2");
-
-      const handleMouseMove = (e: MouseEvent) => {
-        const { clientX, clientY } = e;
-        const xPct = (clientX / window.innerWidth - 0.5);
-        const yPct = (clientY / window.innerHeight - 0.5);
-        gsap.to(lightRef.current, { x: xPct * 100, y: yPct * 50, duration: 2 });
-        if (!isVideoPlaying) {
-          gsap.to(videoWrapperRef.current, { rotateY: xPct * 4, rotateX: yPct * -4, duration: 1.5 });
-        }
-      };
-      window.addEventListener("mousemove", handleMouseMove);
-      return () => window.removeEventListener("mousemove", handleMouseMove);
+      const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
+      tl.fromTo(".reveal", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 1, stagger: 0.1 });
     }, containerRef);
     return () => ctx.revert();
-  }, [headline, isVideoPlaying]);
+  }, []);
 
   const renderHeadline = () => {
     const sortedHighlights = [...hWords].sort((a, b) => b.length - a.length);
-    const escapedHighlights = sortedHighlights.map((h) => h.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
-    const regex = new RegExp(`(${escapedHighlights})`, "gi");
+    const escaped = sortedHighlights.map(h => h.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
+    const regex = new RegExp(`(${escaped})`, "gi");
     const parts = headline.split(regex);
 
-    // Resetting refs array to ensure correct mapping on re-renders
-    wordsRef.current = [];
-
     return parts.map((part: string, i: number) => {
-      const isMatch = sortedHighlights.some((h) => h.toLowerCase() === part.toLowerCase());
-      
-      if (isMatch) {
-        return (
-          <span 
-            key={i} 
-            ref={(el) => { if (el) wordsRef.current.push(el); }} 
-            className="relative inline-block text-emerald-400 font-medium italic px-1" 
-            style={{ fontFamily: "'Satoshi', sans-serif" }}
-          >
-            {part}
-          </span>
-        );
-      }
-      
-      return part.split(" ").map((word: string, wordIdx: number) => {
-        if (word === "") return null;
-        return (
-          <span 
-            key={`${i}-${wordIdx}`} 
-            ref={(el) => { if (el) wordsRef.current.push(el); }} 
-            className="inline-block mx-[0.1em] whitespace-nowrap"
-          >
-            {word}
-          </span>
-        );
-      });
+      const isMatch = sortedHighlights.some(h => h.toLowerCase() === part.toLowerCase());
+      return (
+        <span key={i} className={isMatch ? "text-emerald-400 font-bold" : "text-white"}>
+          {part}
+        </span>
+      );
     });
   };
 
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen w-full flex flex-col items-center justify-start pt-32 md:pt-40 pb-40 px-6 bg-[#020a05] overflow-hidden"
-      style={{
-        fontFamily: "'Satoshi', sans-serif",
-        maskImage: 'linear-gradient(to bottom, black 85%, transparent 100%)',
-        WebkitMaskImage: 'linear-gradient(to bottom, black 85%, transparent 100%)'
-      }}
+      className="relative w-full flex flex-col items-center justify-start pt-16 md:pt-20 pb-12 px-6 bg-[#05180D] overflow-hidden font-satoshi"
     >
-      <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,401&display=swap" rel="stylesheet" />
+      {/* 1. Top Glow Atmosphere */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[50%] bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.15)_0%,transparent_70%)] pointer-events-none" />
 
-      {/* Atmospheric Lighting */}
-      <div ref={lightRef} className="absolute top-[-10%] left-[-5%] w-[110vw] h-[80vh] pointer-events-none z-0 opacity-30 blur-[100px]"
-        style={{ background: "radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.2) 0%, transparent 70%)" }} />
+      {/* --- BOTTOM SEAMLESS BLENDING (Tightened) --- */}
+      <div className="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-[#05180D] via-[#05180D]/80 to-transparent z-10 pointer-events-none" />
 
-      <div className="relative z-20 w-full max-w-5xl mx-auto flex flex-col items-center">
-
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-medium text-white leading-[1.15] text-center mb-10 max-w-4xl tracking-tight">
+      <div className="relative z-20 w-full max-w-4xl mx-auto flex flex-col items-center mt-6 md:mt-10 mb-8 md:mb-12">
+        
+        <h1 className="reveal text-4xl md:text-6xl font-black leading-[1.1] tracking-tighter text-center mb-10 text-white max-w-3xl">
           {renderHeadline()}
         </h1>
 
-        <div ref={ctaRef} className="flex flex-col items-center gap-6 mb-20">
-          <Button asChild className="h-12 px-8 rounded-full bg-white text-black hover:bg-emerald-400 hover:text-black transition-all duration-300 font-bold text-sm shadow-xl">
-            <Link href={ctaLink} className="flex items-center gap-2">
-              <span>{ctaPrimary}</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </Button>
-
-          <div className="flex items-center gap-3">
-            <div className="flex -space-x-2">
-              {[1, 2, 3].map((i) => <div key={i} className="w-7 h-7 rounded-full border border-[#020a05] bg-neutral-800" />)}
-            </div>
-            <div className="h-4 w-px bg-white/10" />
-            <div className="flex items-center gap-1.5">
-              <div className="flex">
-                {[1, 2, 3, 4, 5].map((s) => <Star key={s} className="w-2.5 h-2.5 fill-emerald-500 text-emerald-500" />)}
-              </div>
-              <span className="text-[10px] text-white/40 uppercase tracking-wider font-bold">50+ Happy Clients</span>
-            </div>
-          </div>
-        </div>
-
+        {/* Video Player Card */}
         {videoUrl && (
-          <div ref={videoWrapperRef} className={`relative w-full max-w-4xl aspect-video group transition-all duration-700 ease-out shadow-2xl z-30 ${isVideoPlaying ? "scale-105" : "rounded-xl overflow-hidden border border-white/5"}`}>
-            <div className="relative w-full h-full bg-neutral-950">
-              {!isVideoPlaying ? (
-                <div className="absolute inset-0 flex items-center justify-center cursor-pointer z-30" onClick={() => setIsVideoPlaying(true)}>
-                  {thumbnailUrl && <img src={thumbnailUrl} alt="Work Preview" className="absolute inset-0 w-full h-full object-cover opacity-50 grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:opacity-70 group-hover:scale-105" />}
-                  <div className="relative z-40">
-                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:bg-emerald-500 group-hover:border-emerald-500">
-                      <Play className="w-6 h-6 md:w-8 md:h-8 text-white fill-current" />
-                    </div>
-                  </div>
+          <div className="reveal relative w-full aspect-video rounded-2xl md:rounded-[2.5rem] overflow-hidden border border-white/5 shadow-2xl bg-black group mb-10">
+            {!isVideoPlaying ? (
+              <div className="absolute inset-0 flex items-center justify-center cursor-pointer z-10" onClick={() => setIsVideoPlaying(true)}>
+                {thumbnailUrl && (
+                  <img
+                    src={thumbnailUrl}
+                    alt="Preview"
+                    className="absolute inset-0 w-full h-full object-cover opacity-40 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+                  />
+                )}
+                <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/5 backdrop-blur-3xl border border-white/10 flex items-center justify-center group-hover:bg-emerald-500 group-hover:border-emerald-500 transition-all duration-500">
+                  <Play className="w-6 h-6 text-white fill-current ml-1" />
                 </div>
-              ) : (
-                <iframe className="absolute inset-0 w-full h-full" src={videoUrl} allow="autoplay; fullscreen" allowFullScreen />
-              )}
-            </div>
+              </div>
+            ) : (
+              <iframe className="absolute inset-0 w-full h-full" src={videoUrl} allow="autoplay; fullscreen" allowFullScreen />
+            )}
           </div>
         )}
+
+        {/* CTA Section */}
+        <div className="reveal flex flex-col items-center gap-4">
+          <Button asChild className="h-14 md:h-16 px-10 md:px-12 rounded-2xl bg-emerald-400 text-black hover:bg-white transition-all duration-500 font-black text-base md:text-lg uppercase tracking-tight">
+            <Link href={ctaLink}>
+              {ctaPrimary}
+            </Link>
+          </Button>
+        </div>
       </div>
 
-      <div className="absolute inset-0 z-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02] pointer-events-none" />
+      {/* Grainy Noise Overlay with Masked Bottom */}
+      <div 
+        className="absolute inset-0 z-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none" 
+        style={{
+          maskImage: 'linear-gradient(to bottom, black 90%, transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, black 90%, transparent 100%)'
+        }}
+      />
     </section>
   );
 };

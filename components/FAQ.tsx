@@ -40,15 +40,15 @@ export const FAQ = ({ content }: { content?: FAQContent }) => {
           }))
         : DEFAULT_FAQS
     ).filter((f) => f.question);
+    
     const sectionRef = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLDivElement>(null);
     const accordionRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            // Header Animation
             gsap.fromTo(headerRef.current,
-                { y: 50, opacity: 0 },
+                { y: 30, opacity: 0 },
                 {
                     y: 0,
                     opacity: 1,
@@ -61,9 +61,8 @@ export const FAQ = ({ content }: { content?: FAQContent }) => {
                 }
             );
 
-            // Accordion Animation
             gsap.fromTo(accordionRef.current,
-                { y: 40, opacity: 0 },
+                { y: 30, opacity: 0 },
                 {
                     y: 0,
                     opacity: 1,
@@ -81,25 +80,32 @@ export const FAQ = ({ content }: { content?: FAQContent }) => {
     }, []);
 
     return (
-        <section ref={sectionRef} id="faq" className="py-32 px-6 bg-[#05180D] relative overflow-hidden">
-            {/* Fontshare Import for Satoshi Italic */}
+        <section ref={sectionRef} id="faq" className="py-20 px-6 bg-[#05180D] relative overflow-hidden font-satoshi">
+            {/* Fontshare Import */}
             <link href="https://api.fontshare.com/v2/css?f[]=satoshi@401&display=swap" rel="stylesheet" />
             
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] pointer-events-none select-none">
+            {/* --- SEAMLESS MASK OVERLAYS (Tightened) --- */}
+            <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-[#05180D] to-transparent z-20 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-[#05180D] to-transparent z-20 pointer-events-none" />
+
+            {/* Background Logo Overlay with Masked Bottom */}
+            <div 
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] pointer-events-none select-none z-0"
+                style={{
+                  maskImage: 'radial-gradient(circle at center, black, transparent 80%)',
+                  WebkitMaskImage: 'radial-gradient(circle at center, black, transparent 80%)'
+                }}
+            >
                 <img src="/Logo.png" alt="Matera Media Logo" className="w-[900px] h-auto object-contain" />
             </div>
 
-            <div className="max-w-3xl mx-auto">
+            <div className="max-w-3xl mx-auto relative z-30">
                 {/* Header */}
-                <div ref={headerRef} className="text-center mb-16">
-                    <p className="text-emerald-400 font-medium tracking-widest uppercase text-xs mb-4">{label}</p>
-                    <h2 className="text-4xl md:text-5xl font-instrument-sans font-medium text-white mb-6">
+                <div ref={headerRef} className="text-center mb-12">
+                    <p className="text-emerald-400 font-medium tracking-widest uppercase text-[10px] mb-4">{label}</p>
+                    <h2 className="text-4xl md:text-5xl font-medium text-white mb-6 tracking-tighter uppercase leading-none">
                         {titleText.split(highlightedWord)[0]}
-                        {/* Swapped to Satoshi Italic */}
-                        <span 
-                            style={{ fontFamily: "'Satoshi', sans-serif", fontStyle: "italic" }}
-                            className="text-emerald-400"
-                        >
+                        <span className="text-emerald-400 italic font-normal">
                             {highlightedWord}
                         </span>
                         {titleText.split(highlightedWord)[1] || ""}
@@ -107,14 +113,14 @@ export const FAQ = ({ content }: { content?: FAQContent }) => {
                 </div>
 
                 {/* FAQ Accordion */}
-                <div ref={accordionRef} className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 backdrop-blur-sm relative z-10">
+                <div ref={accordionRef} className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 md:p-8 backdrop-blur-sm">
                     <Accordion type="single" collapsible className="w-full">
                         {faqs.map((faq) => (
                             <AccordionItem key={faq.id} value={faq.id} className="border-white/10 last:border-b-0">
-                                <AccordionTrigger className="text-white hover:text-emerald-400 hover:no-underline text-lg font-instrument-sans font-medium text-left">
+                                <AccordionTrigger className="text-white hover:text-emerald-400 hover:no-underline text-lg font-medium text-left py-5">
                                     {faq.question}
                                 </AccordionTrigger>
-                                <AccordionContent className="text-white/60 font-light leading-relaxed text-base">
+                                <AccordionContent className="text-white/40 font-normal leading-relaxed text-base pb-6">
                                     {faq.answer}
                                 </AccordionContent>
                             </AccordionItem>

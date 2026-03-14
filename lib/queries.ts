@@ -35,6 +35,18 @@ export const pageQuery = `*[_type == "page" && (_id == $slug || slug.current == 
         link
       }
     },
+    _type == "testimonials" => {
+      label,
+      title,
+      description,
+      items[]{
+        _key,
+        name,
+        role,
+        quote,
+        "image": image.asset->url
+      }
+    },
     steps[]{ _key, ... },
     plans[]{ _key, ... }
   }

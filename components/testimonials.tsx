@@ -1,69 +1,71 @@
 "use client";
 
+
+
+import React from "react";
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+
 import { Card, CardContent } from '@/components/ui/card'
+
 import { Star } from 'lucide-react'
 
+
+
 type Testimonial = {
+
     _key?: string
+
     name: string
+
     role: string
+
     image: string
+
     quote: string
+
 }
+
+
 
 const DEFAULT_TESTIMONIALS: Testimonial[] = [
-    {
-        name: 'Sarah Chen',
-        role: 'VP Marketing, B2B SaaS',
-        image: 'https://randomuser.me/api/portraits/women/1.jpg',
-        quote: 'Matera Media transformed our ad creative. Our motion ads drove 3x higher CTR and we saw real revenue impact in the first quarter. Their strategic approach to B2B content is unmatched.',
-    },
-    {
-        name: 'Marcus Webb',
-        role: 'Head of Brand, Tech Startup',
-        image: 'https://randomuser.me/api/portraits/men/1.jpg',
-        quote: 'From concept to launch, the team understood our vision. The organic content strategy they built helped us grow our audience by 40% in six months. Highly recommend.',
-    },
-    {
-        name: 'Elena Rodriguez',
-        role: 'Creator & YouTuber',
-        image: 'https://randomuser.me/api/portraits/women/2.jpg',
-        quote: 'Matera Media helped me level up my YouTube presence. Their production quality and understanding of what converts made all the difference. My channel has never looked better.',
-    },
-    {
-        name: 'David Park',
-        role: 'CMO, Enterprise',
-        image: 'https://randomuser.me/api/portraits/men/2.jpg',
-        quote: 'We\'ve worked with many agencies. Matera Media stands out for their motion ad creatives—they convert. Our CAC dropped 25% after we switched to their ad formats.',
-    },
-    {
-        name: 'Alexandra Foster',
-        role: 'Content Director',
-        image: 'https://randomuser.me/api/portraits/women/3.jpg',
-        quote: 'Finally, a partner who gets both creativity and performance. Their organic content doesn\'t just look good—it drives actual pipeline and revenue. Game-changer for our brand.',
-    },
+
+    { name: 'Sarah Chen', role: 'VP Marketing', image: 'https://randomuser.me/api/portraits/women/1.jpg', quote: 'Matera Media transformed our ad creative. Our motion ads drove 3x higher CTR.' },
+
+    { name: 'Marcus Webb', role: 'Head of Brand', image: 'https://randomuser.me/api/portraits/men/1.jpg', quote: 'From concept to launch, the team understood our vision perfectly.' },
+
+    { name: 'Elena Rodriguez', role: 'Creator', image: 'https://randomuser.me/api/portraits/women/2.jpg', quote: 'Their production quality and understanding of what converts made the difference.' },
+
+    { name: 'David Park', role: 'CMO, Enterprise', image: 'https://randomuser.me/api/portraits/men/2.jpg', quote: 'Our CAC dropped 25% after we switched to their formats. Unmatched performance.' },
+
+    { name: 'Alexandra Foster', role: 'Director', image: 'https://randomuser.me/api/portraits/women/3.jpg', quote: 'Finally, a partner who gets both creativity and performance. Game-changer.' },
+
+    { name: 'Sebastian G.', role: 'Entrepreneur', image: 'https://randomuser.me/api/portraits/men/3.jpg', quote: 'Worked with the squad a few times—never missed. Every drop felt bespoke.' },
+
 ]
 
+
+
 const chunkArray = (array: Testimonial[], chunkSize: number): Testimonial[][] => {
+
     const result: Testimonial[][] = []
+
+    if (!array || !array.length) return result;
+
     for (let i = 0; i < array.length; i += chunkSize) {
+
         result.push(array.slice(i, i + chunkSize))
+
     }
+
     return result
+
 }
 
-interface WallOfLoveProps {
-    content?: {
-        label?: string;
-        title?: string;
-        description?: string;
-        items?: Testimonial[];
-    }
-}
 
-export default function WallOfLoveSection({ content }: WallOfLoveProps) {
-    // 1. Dynamic Data from Sanity with Fallbacks
+
+export default function WallOfLoveSection({ content }: { content?: any }) {
+// 1. Dynamic Data from Sanity with Fallbacks
     const label = content?.label ?? "Client Success";
     const title = content?.title ?? "Trusted by Brands and Creators";
     const description = content?.description ?? "Results-driven production for high-growth B2B brands and creators.";
@@ -75,80 +77,135 @@ export default function WallOfLoveSection({ content }: WallOfLoveProps) {
 
     const testimonialChunks = chunkArray(testimonialsData, Math.ceil(testimonialsData.length / 3));
 
+
+
+
     return (
-        <section className="py-32 px-6 bg-[#05180D] relative overflow-hidden" style={{ fontFamily: "'Satoshi', sans-serif" }}>
-            {/* Direct Font Import for Italic Weight */}
-            <link href="https://api.fontshare.com/v2/css?f[]=satoshi@401,700,500&display=swap" rel="stylesheet" />
-            
-            {/* Grain Texture */}
-            <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-            
-            <div className="mx-auto max-w-6xl relative z-10">
-                {/* --- DYNAMIC HEADER --- */}
-                <div className="text-center mb-20">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-6">
-                        <span className="text-[10px] uppercase tracking-[0.25em] text-emerald-400 font-bold">
-                            {label}
+
+        <section className="relative w-full py-24 px-6 bg-[#05180D] overflow-hidden font-satoshi">
+
+            <div className="mx-auto max-w-5xl relative z-10">
+
+                
+
+                {/* --- MINIMALIST HEADER --- */}
+
+                <div className="text-center mb-16">
+
+                    <div className="inline-flex items-center px-2 py-0.5 rounded-full border border-white/10 bg-white/5 mb-4">
+
+                        <span className="text-[8px] uppercase tracking-[0.4em] text-white/30 font-black">
+
+                            Client Success
+
                         </span>
+
                     </div>
-                    <h2 className="text-4xl md:text-5xl font-medium text-white mb-6 tracking-tight">
+
+                    
+
+                    <h2 className="text-3xl md:text-5xl font-black text-white mb-3 tracking-tighter">
+
                         {title}
+
                     </h2>
-                    <p className="text-white/60 max-w-xl mx-auto font-medium leading-relaxed uppercase text-[11px] tracking-widest">
+
+                    
+
+                    <p className="text-white/20 text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] italic max-w-2xl mx-auto">
+
                         {description}
+
                     </p>
+
                 </div>
 
-                {/* --- DYNAMIC TESTIMONIAL GRID --- */}
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+
+                {/* --- CLEAN GRID --- */}
+
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+
                     {testimonialChunks.map((chunk, chunkIndex) => (
-                        <div key={chunkIndex} className={`space-y-6 ${chunkIndex === 1 ? 'lg:pt-12' : ''}`}>
+
+                        <div key={chunkIndex} className={`space-y-3 ${chunkIndex === 1 ? 'lg:pt-6' : ''}`}>
+
                             {chunk.map(({ name, role, quote, image, _key }, index: number) => (
+
                                 <Card
-                                    key={_key || index}
-                                    className="bg-white/[0.03] border border-white/[0.1] backdrop-blur-2xl hover:border-emerald-500/40 hover:bg-white/[0.05] transition-all duration-500 rounded-2xl group shadow-2xl"
+
+                                    key={_key || `${chunkIndex}-${index}`}
+
+                                    className="bg-white/[0.01] border border-white/[0.04] backdrop-blur-md hover:border-white/20 transition-all duration-700 rounded-xl group shadow-none overflow-hidden relative"
+
                                 >
-                                    <CardContent className="p-8">
-                                        <div className="flex gap-1 mb-6">
+
+                                    <CardContent className="p-6 relative z-10">
+
+                                        <div className="flex gap-1 mb-4">
+
                                             {[...Array(5)].map((_, i) => (
-                                                <Star key={i} className="size-3 fill-emerald-400 text-emerald-400" />
+
+                                                <Star key={i} className="size-3 text-white fill-white opacity-40 group-hover:opacity-80 transition-opacity" />
+
                                             ))}
+
                                         </div>
 
-                                        <div className="mb-8">
-                                            {/* Satoshi Italic Quote */}
-                                            <p 
-                                                className="text-white/90 text-[15px] leading-relaxed tracking-wide"
-                                                style={{ fontFamily: "'Satoshi', sans-serif", fontStyle: "italic", fontWeight: 400 }}
-                                            >
-                                                "{quote}"
-                                            </p>
-                                        </div>
+
+
+                                        <p className="text-white/60 text-[13px] leading-relaxed mb-6 font-medium tracking-tight">
+
+                                            "{quote}"
+
+                                        </p>
+
                                         
-                                        <div className="flex items-center gap-4 border-t border-white/[0.08] pt-6">
-                                            <Avatar className="size-11 border border-white/10 transition-all duration-500 group-hover:scale-105">
-                                                <AvatarImage alt={name} src={image} />
-                                                <AvatarFallback className="bg-emerald-500/20 text-emerald-400 text-xs font-bold">
-                                                    {name?.split(' ').map(n => n[0]).join('')}
-                                                </AvatarFallback>
+
+                                        <div className="flex items-center gap-2 pt-4 border-t border-white/[0.03]">
+
+                                            <Avatar className="size-7 grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700">
+
+                                                <AvatarImage src={image} alt={name} />
+
+                                                <AvatarFallback className="text-[8px] font-bold">{name ? name[0] : '?'}</AvatarFallback>
+
                                             </Avatar>
 
-                                            <div className="flex flex-col text-left">
-                                                <h3 className="font-bold text-white text-[13px] uppercase tracking-wider">{name}</h3>
-                                                <span className="text-emerald-400/90 block text-[10px] font-bold uppercase tracking-wider mt-0.5">
+
+
+                                            <div className="flex flex-col">
+
+                                                <h3 className="font-black text-white text-[10px] tracking-tight uppercase">{name}</h3>
+
+                                                <span className="text-emerald-400/40 text-[8px] font-bold uppercase tracking-widest mt-0.5">
+
                                                     {role}
+
                                                 </span>
+
                                             </div>
+
                                         </div>
+
                                     </CardContent>
+
                                 </Card>
+
                             ))}
+
                         </div>
+
                     ))}
+
                 </div>
+
             </div>
 
-            <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#05180D] to-transparent pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#05180D] to-transparent pointer-events-none z-20" />
+
         </section>
-    )
+
+    );
+
 }
