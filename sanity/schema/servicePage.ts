@@ -12,7 +12,7 @@ export default defineType({
     { name: "results", title: "Results" },
     { name: "plans", title: "Plans" },
     { name: "calendly", title: "Calendly" },
-    { name: "faq", title: "FAQ" },
+    { name: "work", title: "Work / Case Studies" },
   ],
   fields: [
     defineField({
@@ -179,30 +179,10 @@ export default defineType({
       group: "calendly",
     }),
     defineField({
-      name: "faqLabel",
-      title: "FAQ Section Label",
-      type: "string",
-      initialValue: "FAQs",
-      group: "faq",
-    }),
-    defineField({
-      name: "faqTitle",
-      title: "FAQ Section Title",
-      type: "string",
-      group: "faq",
-    }),
-    defineField({
-      name: "faqHighlightedWord",
-      title: "FAQ Highlighted Word",
-      type: "string",
-      group: "faq",
-    }),
-    defineField({
-      name: "faqItems",
-      title: "FAQ Items",
-      type: "array",
-      of: [{ type: "faqItem" }],
-      group: "faq",
+      name: "work",
+      title: "Work Showcase",
+      type: "workShowcase",
+      group: "work",
     }),
   ],
   preview: {

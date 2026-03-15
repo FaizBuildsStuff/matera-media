@@ -15,41 +15,43 @@ export const Header = () => {
             { label: "Ad Creatives", href: "/ad-creatives" },
             { label: "YouTube", href: "/organic-content-youtube" },
             { label: "SaaS Videos", href: "/saas-videos" },
-            { label: "Careers", href: "/careers" }, // Added Careers link
+            { label: "Careers", href: "/careers" },
             { label: "Privacy", href: "/privacy-policy" },
         ],
         []
     );
 
     return (
-        <header className="fixed top-0 left-0 right-0 z-50">
-            {/* High-End Backdrop */}
-            <div className="absolute inset-0 bg-[#05180D]/80 backdrop-blur-xl border-b border-white/5" />
-
-            <div className="relative max-w-6xl mx-auto px-6 md:px-8 h-20 flex items-center justify-between">
+        /* The root header is transparent and absolute */
+        <header className="absolute top-0 left-0 right-0 z-50 font-satoshi bg-transparent pt-4">
+            
+            {/* This inner DIV is the actual header bar. 
+               It has the background, the border, and the 'cut' look on the sides.
+            */}
+            <div className="max-w-6xl mx-auto h-18 bg-[#05180D] border border-white/10 rounded-2xl px-6 md:px-10 flex items-center justify-between shadow-2xl">
                 
                 {/* LEFT: LOGO */}
                 <Link
                     href="/"
-                    className="flex items-center gap-3 group"
+                    className="flex items-center gap-2.5 group"
                     onClick={() => setMobileOpen(false)}
                 >
                     <Image
                         src="/Logo.png"
                         alt="Matera Media"
-                        width={42}
-                        height={42}
-                        className="w-8 h-8 md:w-9 md:h-9 object-contain grayscale brightness-200 group-hover:grayscale-0 transition-all duration-500"
+                        width={30}
+                        height={30}
+                        className="w-7 h-7 object-contain grayscale brightness-200 transition-all duration-500"
                         priority
                     />
-                    <span className="hidden sm:inline text-white font-instrument-sans font-semibold tracking-tight text-base">
+                    <span className="text-white font-black tracking-tighter text-sm uppercase">
                         Matera Media
                     </span>
                 </Link>
 
-                {/* RIGHT CLUSTER: NAV & BUTTON */}
-                <div className="flex items-center gap-8 md:gap-10">
-                    <nav className="hidden lg:flex items-center gap-7">
+                {/* RIGHT CLUSTER */}
+                <div className="flex items-center gap-8">
+                    <nav className="hidden lg:flex items-center gap-6">
                         {links.map((item) => {
                             const isActive = pathname === item.href;
                             return (
@@ -57,7 +59,7 @@ export const Header = () => {
                                     key={item.href}
                                     href={item.href}
                                     className={`text-[10px] uppercase font-bold tracking-[0.15em] transition-all duration-300 hover:text-white ${
-                                        isActive ? "text-emerald-400" : "text-white/40"
+                                        isActive ? "text-emerald-500" : "text-white/40"
                                     }`}
                                 >
                                     {item.label}
@@ -68,10 +70,7 @@ export const Header = () => {
 
                     <div className="flex items-center gap-4">
                         <Link href="/book" className="hidden sm:block group relative">
-                            {/* Subtle Glow */}
-                            <div className="absolute -inset-1 bg-white/10 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                            
-                            <button className="relative flex items-center gap-3 px-5 py-2 bg-white text-black text-[10px] font-bold uppercase tracking-[0.1em] rounded-full transition-all active:scale-95 group-hover:bg-emerald-50">
+                            <button className="relative flex items-center gap-3 px-5 py-2 bg-white text-black text-[9px] font-black uppercase tracking-[0.1em] rounded-full transition-all active:scale-95 hover:bg-emerald-50">
                                 Book A Call
                                 <div className="w-4 h-4 rounded-full bg-black flex items-center justify-center transition-transform group-hover:rotate-45">
                                     <ArrowRight className="w-2.5 h-2.5 text-white" />
@@ -79,10 +78,9 @@ export const Header = () => {
                             </button>
                         </Link>
 
-                        {/* Mobile Menu Icon */}
                         <button
                             type="button"
-                            className="lg:hidden flex items-center justify-center w-9 h-9 rounded-full border border-white/10 bg-white/5 text-white"
+                            className="lg:hidden flex items-center justify-center w-8 h-8 rounded-full border border-white/10 text-white"
                             onClick={() => setMobileOpen((v) => !v)}
                         >
                             {mobileOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
@@ -93,28 +91,20 @@ export const Header = () => {
 
             {/* MOBILE OVERLAY */}
             {mobileOpen && (
-                <div className="lg:hidden relative border-b border-white/5 bg-[#05180D]/98 backdrop-blur-2xl">
-                    <div className="max-w-7xl mx-auto px-8 py-10 flex flex-col gap-6">
+                <div className="lg:hidden max-w-6xl mx-auto mt-2 rounded-2xl bg-[#05180D] border border-white/10 overflow-hidden">
+                    <div className="px-8 py-10 flex flex-col gap-6 text-center">
                         {links.map((item) => (
                             <Link
                                 key={item.href}
                                 href={item.href}
                                 onClick={() => setMobileOpen(false)}
-                                className={`text-xl font-instrument-sans font-medium transition-colors ${
-                                    pathname === item.href ? "text-emerald-400" : "text-white/60"
+                                className={`text-xl font-black uppercase tracking-tighter transition-colors ${
+                                    pathname === item.href ? "text-emerald-500" : "text-white/60"
                                 }`}
                             >
                                 {item.label}
                             </Link>
                         ))}
-                        <div className="h-px w-full bg-white/5 my-2" />
-                        <Link 
-                            href="/book" 
-                            className="flex items-center justify-center h-12 bg-white text-black text-sm font-bold rounded-xl"
-                            onClick={() => setMobileOpen(false)}
-                        >
-                            Get Started
-                        </Link>
                     </div>
                 </div>
             )}

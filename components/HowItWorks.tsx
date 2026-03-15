@@ -121,9 +121,9 @@ export const HowItWorks = ({ content }: HowItWorksProps) => {
                         </span>
                         <div className="h-[1px] w-4 bg-emerald-500/50 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
                     </div>
-                    <h2 className="text-4xl md:text-5xl font-medium text-white tracking-tighter uppercase leading-none drop-shadow-sm">
-                        {titleText}<span className="text-emerald-400">.</span>
-                    </h2>
+                    <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter uppercase leading-none drop-shadow-sm">
+    {titleText}
+</h2>
                 </div>
 
                 <div className="relative">

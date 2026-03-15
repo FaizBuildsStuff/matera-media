@@ -17,6 +17,12 @@ export default defineType({
       type: "string",
       validation: (Rule) => Rule.required(),
     }),
+    defineField({
+      name: "image",
+      title: "Result Proof / Image",
+      type: "image",
+      options: { hotspot: true },
+    }),
   ],
   preview: {
     select: { label: "label", value: "value" },

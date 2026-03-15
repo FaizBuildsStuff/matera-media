@@ -103,13 +103,13 @@ export const FAQ = ({ content }: { content?: FAQContent }) => {
                 {/* Header */}
                 <div ref={headerRef} className="text-center mb-12">
                     <p className="text-emerald-400 font-medium tracking-widest uppercase text-[10px] mb-4">{label}</p>
-                    <h2 className="text-4xl md:text-5xl font-medium text-white mb-6 tracking-tighter uppercase leading-none">
-                        {titleText.split(highlightedWord)[0]}
-                        <span className="text-emerald-400 italic font-normal">
-                            {highlightedWord}
-                        </span>
-                        {titleText.split(highlightedWord)[1] || ""}
-                    </h2>
+                    <h2 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tighter uppercase leading-none">
+    {titleText.split(highlightedWord)[0]}
+    <span className="text-emerald-400 italic font-normal">
+        {highlightedWord}
+    </span>
+    {titleText.split(highlightedWord)[1] || ""}
+</h2>
                 </div>
 
                 {/* FAQ Accordion */}

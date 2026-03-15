@@ -81,7 +81,8 @@ export const servicePageQuery = `*[_type == "servicePage" && slug == $slug][0]{
   results[]{
     _key,
     label,
-    value
+    value,
+    "image": image.asset->url
   },
   plansLabel,
   plansTitle,
@@ -92,6 +93,22 @@ export const servicePageQuery = `*[_type == "servicePage" && slug == $slug][0]{
     description,
     features,
     popular
+  },
+  work{
+    title,
+    highlightedWord,
+    description,
+    items[]{
+      _key,
+      title,
+      category,
+      tags,
+      "image": image.asset->url,
+      videoSource,
+      videoUrl,
+      "directVideoUrl": videoFile.asset->url,
+      link
+    }
   },
   calendlyTitle,
   calendlySubtitle,

@@ -5,22 +5,26 @@ import Link from "next/link";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
-  ArrowRight, ArrowLeft, Play,
+  ArrowRight, ArrowLeft, Play, X, Volume2, VolumeX,
   Activity, Check, Zap, ShieldCheck, ArrowUpRight
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { InquiryForm } from "@/components/InquiryForm";
+import { client } from "@/lib/sanity";
+import { servicePageQuery } from "@/lib/queries";
 
 gsap.registerPlugin(ScrollTrigger);
 
 // --- Interfaces ---
 interface HeroProps {
-  title: string;
-  highlight: string;
-  titleAfter: string;
-  subtitle: string;
+  title?: string;
+  highlight?: string;
+  titleAfter?: string;
+  subtitle?: string;
+  sectionLabel?: string;
 }
 
 interface FeatureItem {
@@ -37,6 +41,8 @@ interface FeatureGridProps {
 
 interface ResultItem {
   image: string;
+  label?: string;
+  value?: string;
 }
 
 interface ResultsProps {
@@ -45,76 +51,132 @@ interface ResultsProps {
 }
 
 // --- 1. CENTERED HERO ---
-const HeroCentered = ({ title, highlight, titleAfter, subtitle }: HeroProps) => {
+const HeroCentered = ({ title, highlight, titleAfter, subtitle, sectionLabel }: HeroProps) => {
   const brands = ["SAMSUNG", "ADOBE", "SHOPIFY", "NIKE", "STRIPE", "SAMSUNG", "ADOBE", "SHOPIFY"];
   const endlessBrands = [...brands, ...brands];
 
   return (
-    <section className="relative pt-44 pb-16 px-6 overflow-hidden bg-[#05180D] flex flex-col items-center text-center">
-      {/* Fontshare Import for Satoshi Italic */}
+    <section className="relative pt-32 pb-10 px-6 overflow-hidden bg-[#05180D] flex flex-col items-center text-center">
       <link href="https://api.fontshare.com/v2/css?f[]=satoshi@401&display=swap" rel="stylesheet" />
-
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.12),transparent_70%)] pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.15),transparent_70%)] pointer-events-none" />
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "circOut" }}
-        className="relative z-10 max-w-5xl"
+        className="relative z-10 max-w-4xl mt-12 md:mt-20"
       >
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8">
-          <Activity className="w-3 h-3 text-emerald-400" />
-          <span className="text-white/50 text-[10px] uppercase tracking-[0.3em] font-bold">Organic Systems</span>
-        </div>
-
-        <h1 className="text-6xl md:text-8xl font-instrument-sans font-medium text-white tracking-tighter leading-[0.9] mb-8">
+        <h1 className="text-5xl md:text-6xl font-black text-white tracking-tighter leading-[0.9] mb-8">
           {title}{" "}
           <span
-            className="text-emerald-300 px-1"
+            className="text-emerald-500 px-1"
             style={{ fontFamily: "'Satoshi', sans-serif", fontStyle: "italic", fontWeight: 400 }}
           >
             {highlight}
           </span>{" "}
           {titleAfter}
         </h1>
-
-        <p className="text-white/40 text-lg md:text-2xl font-light max-w-2xl mx-auto leading-relaxed mb-12">
+        <p className="text-white/40 text-base md:text-lg font-normal max-w-2xl mx-auto leading-relaxed mb-12">
           {subtitle}
         </p>
-
         <Link href="#schedule">
-          <Button className="h-14 px-10 rounded-full bg-white text-black text-base font-bold hover:scale-105 transition-all group shadow-[0_0_40px_rgba(255,255,255,0.1)]">
+          <Button className="h-12 px-8 rounded-full bg-white text-black text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all group shadow-[0_0_40px_rgba(255,255,255,0.1)]">
             Book a Free Audit
-            <div className="ml-3 w-7 h-7 rounded-full bg-black flex items-center justify-center">
-              <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-0.5 transition-transform" />
+            <div className="ml-3 w-6 h-6 rounded-full bg-black flex items-center justify-center">
+              <ArrowRight className="w-3.5 h-3.5 text-white group-hover:translate-x-0.5 transition-transform" />
             </div>
           </Button>
         </Link>
       </motion.div>
 
-      <div className="mt-20 w-full overflow-hidden opacity-20 select-none pointer-events-none">
-        <style jsx>{`
-          @keyframes scroll-x {
-            from { transform: translateX(0); }
-            to { transform: translateX(-50%); }
-          }
-          .brand-scroll {
-            animation: scroll-x 30s linear infinite;
-          }
-        `}</style>
-        <div className="flex brand-scroll whitespace-nowrap gap-24 items-center w-max">
-          {endlessBrands.map((brand, i) => (
-            <span key={i} className="text-white text-4xl font-black tracking-tighter opacity-50 uppercase">{brand}</span>
-          ))}
-        </div>
-      </div>
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#05180D] to-transparent pointer-events-none" />
     </section>
   );
 };
 
+// --- Reel Card Component ---
+const ReelCard = ({ item, isPlaying, onToggle }: { item: any; isPlaying: boolean; onToggle: () => void }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.play();
+        videoRef.current.muted = false;
+      } else {
+        videoRef.current.pause();
+        videoRef.current.muted = true;
+      }
+    }
+  }, [isPlaying]);
+
+  return (
+    <div
+      onClick={onToggle}
+      className="snap-center shrink-0 w-[240px] md:w-[280px] h-[440px] md:h-[500px] bg-white/2 rounded-[2rem] border border-white/10 relative overflow-hidden group cursor-pointer"
+    >
+      <div className="absolute inset-0 z-0">
+        {item.videoSource === "file" && item.directVideoUrl ? (
+          <video
+            ref={videoRef}
+            src={item.directVideoUrl + "#t=0.1"}
+            className={`w-full h-full object-cover transition-opacity duration-500 ${isPlaying ? 'opacity-100' : 'opacity-50 group-hover:opacity-70'}`}
+            preload="metadata"
+            loop
+            playsInline
+          />
+        ) : item.image ? (
+          <Image src={item.image} alt={item.title} fill className="object-cover opacity-50 group-hover:opacity-70 transition-opacity" />
+        ) : (
+          <div className="w-full h-full bg-emerald-950/50" />
+        )}
+      </div>
+
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent z-10" />
+
+      <div className="absolute inset-0 flex items-center justify-center z-20">
+        {!isPlaying && (
+          <div className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
+            <Play className="fill-current w-4 h-4 ml-1" />
+          </div>
+        )}
+      </div>
+
+      <div className="absolute bottom-8 left-8 z-20">
+        <p className="text-emerald-400 text-[9px] font-black uppercase tracking-widest mb-1.5">{item.category}</p>
+        <h4 className="text-white text-lg font-bold tracking-tight mb-2">{item.title}</h4>
+        {isPlaying && (
+          <div className="flex items-center gap-2 text-white/50 text-[8px] uppercase tracking-widest font-bold">
+            <Volume2 className="w-2.5 h-2.5 text-emerald-400" />
+            Playing
+          </div>
+        )}
+      </div>
+
+      {item.videoSource === "youtube" && !isPlaying && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-30 group-hover:bg-black/20 transition-all pointer-events-none">
+          <p className="text-white/60 text-[9px] font-bold tracking-widest uppercase">YouTube Reel</p>
+        </div>
+      )}
+
+      {isPlaying && item.videoSource === "youtube" && (
+        <div className="absolute inset-0 z-40 bg-black">
+          <iframe
+            src={`https://www.youtube.com/embed/${item.videoUrl?.split('v=')[1]?.split('&')[0]}?autoplay=1&mute=0&controls=0&loop=1&playlist=${item.videoUrl?.split('v=')[1]?.split('&')[0]}`}
+            className="w-full h-full"
+            allow="autoplay"
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+
 // --- 2. REELS WORK SECTION ---
-const WorkReelsSection = () => {
+const WorkReelsSection = ({ workData }: { workData?: any }) => {
+  const [playingId, setPlayingId] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
       const { scrollLeft, clientWidth } = scrollRef.current;
@@ -123,152 +185,146 @@ const WorkReelsSection = () => {
     }
   };
 
+  const title = workData?.title || "Our Work";
+  const label = workData?.description || "Industry-leading organic content.";
+  const items = workData?.items || [];
+
   return (
-    <section className="py-20 px-6 bg-[#062017] border-y border-white/5">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-8">
+    <section className="relative -mt-[1px] pt-0 pb-20 px-6 bg-[#05180D] overflow-hidden border-none">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.08),transparent_70%)] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-10 gap-6">
           <div className="max-w-2xl">
-            <h2 className="text-5xl md:text-7xl font-instrument-sans text-white tracking-tight mb-4">Our Work</h2>
-            <p className="text-emerald-400 text-xl italic font-instrument-serif opacity-80">Industry-leading performance creative.</p>
+            <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-3">{title}</h2>
+            <p className="text-emerald-400 text-lg italic font-medium opacity-80">{label}</p>
           </div>
-          <div className="flex gap-4">
-            <button onClick={() => scroll('left')} className="p-5 rounded-full border border-white/10 text-white hover:bg-white hover:text-black transition-all"><ArrowLeft className="w-6 h-6" /></button>
-            <button onClick={() => scroll('right')} className="p-5 rounded-full border border-white/10 text-white hover:bg-white hover:text-black transition-all"><ArrowRight className="w-6 h-6" /></button>
+          <div className="flex gap-3">
+            <button onClick={() => scroll('left')} className="p-4 rounded-full border border-white/10 text-white hover:bg-white hover:text-black transition-all"><ArrowLeft className="w-5 h-5" /></button>
+            <button onClick={() => scroll('right')} className="p-4 rounded-full border border-white/10 text-white hover:bg-white hover:text-black transition-all"><ArrowRight className="w-5 h-5" /></button>
           </div>
         </div>
-        <div ref={scrollRef} className="flex gap-8 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-4">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="snap-center shrink-0 w-[300px] h-[540px] bg-white/2 rounded-[2.5rem] border border-white/10 relative overflow-hidden group cursor-pointer">
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent z-10" />
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all z-20"><div className="w-16 h-16 rounded-full bg-white text-black flex items-center justify-center"><Play className="fill-current w-5 h-5 ml-1" /></div></div>
-              <div className="absolute bottom-10 left-10 z-20">
-                <p className="text-emerald-400 text-[10px] font-black uppercase tracking-widest mb-2">Ad Creative</p>
-                <h4 className="text-white text-xl font-medium tracking-tight">Case Study 0{i}</h4>
-              </div>
-            </div>
+        <div ref={scrollRef} className="flex gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-4">
+          {items.map((item: any, i: number) => (
+            <ReelCard
+              key={item._key || i}
+              item={item}
+              isPlaying={playingId === (item._key || String(i))}
+              onToggle={() => setPlayingId(playingId === (item._key || String(i)) ? null : (item._key || String(i)))}
+            />
           ))}
         </div>
       </div>
+
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#05180D] to-transparent pointer-events-none" />
     </section>
   );
 };
 
 // --- 3. REIMAGINED 2060 FEATURE GRID ---
 const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: FeatureGridProps) => {
-  const container = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(".feature-card",
-        { y: 30, opacity: 0, clipPath: "inset(100% 0% 0% 0%)" },
-        {
-          scrollTrigger: { trigger: container.current, start: "top 90%" },
-          y: 0, opacity: 1, clipPath: "inset(0% 0% 0% 0%)",
-          stagger: 0.05, duration: 0.6, ease: "expo.out"
-        }
-      );
-    }, container);
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <section ref={container} className={`relative py-32 px-6 overflow-hidden ${isSolution ? 'bg-[#05180D]' : 'bg-[#031109]'}`}>
+    <section className="relative py-24 px-6 overflow-hidden bg-[#05180D]">
       <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none"
         style={{ backgroundImage: `url("https://www.transparenttextures.com/patterns/stardust.png")` }} />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/5 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-500/5 blur-[100px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
           <div className="max-w-2xl">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="h-px w-8 bg-emerald-500/50" />
-              <p className="text-emerald-500 text-[10px] font-bold tracking-[0.5em] uppercase">{label}</p>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="h-px w-6 bg-emerald-500/50" />
+              <p className="text-emerald-500 text-[9px] font-black tracking-[0.4em] uppercase">{label}</p>
             </div>
-            <h2 className="text-5xl md:text-7xl text-white font-instrument-sans font-medium tracking-tighter leading-none italic lowercase">
+            <h2 className="text-4xl md:text-5xl text-white font-black tracking-tighter leading-none italic lowercase">
               {title}
             </h2>
           </div>
-          <div className="hidden md:block h-px flex-1 bg-white/5 mx-12 mb-4" />
+          <div className="hidden md:block h-px flex-1 bg-white/5 mx-10 mb-4" />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/5 border border-white/5 rounded-[3rem] overflow-hidden shadow-2xl">
-          {items.map((item: FeatureItem, i: number) => (
-            <div key={i} className="feature-card group relative p-10 md:p-14 bg-[#031109] transition-all duration-700 hover:bg-white/2">
-              <div className="absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-4 group-hover:translate-x-0">
-                <ArrowUpRight className="w-5 h-5 text-emerald-500" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/5 border border-white/5 rounded-[2.5rem] overflow-hidden shadow-2xl">
+          {items?.map((item: FeatureItem, i: number) => (
+            <div key={i} className="feature-card group relative p-8 md:p-10 bg-[#05180D] transition-all duration-700 hover:bg-white/2">
+              <div className="absolute top-0 right-0 p-5 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-3 group-hover:translate-x-0">
+                <ArrowUpRight className="w-4 h-4 text-emerald-500" />
               </div>
               <div className="relative z-10">
-                <div className="w-12 h-12 rounded-2xl bg-white/3 border border-white/10 flex items-center justify-center mb-10 transition-all duration-500 group-hover:border-emerald-500/50 group-hover:bg-emerald-500/10">
-                  {isSolution ? <ShieldCheck className="w-5 h-5 text-emerald-400" /> : <Zap className="w-5 h-5 text-emerald-400" />}
+                <div className="w-10 h-10 rounded-xl bg-white/3 border border-white/10 flex items-center justify-center mb-8 transition-all duration-500 group-hover:border-emerald-500/50 group-hover:bg-emerald-500/10">
+                  {isSolution ? <ShieldCheck className="w-4 h-4 text-emerald-400" /> : <Zap className="w-4 h-4 text-emerald-400" />}
                 </div>
-                <div className="space-y-4">
-                  <h3 className="text-white text-2xl font-medium tracking-tight group-hover:text-emerald-400 transition-colors duration-500">{item.title}</h3>
-                  <p className="text-white/30 leading-relaxed font-light text-base group-hover:text-white/60 transition-colors duration-500">{item.description}</p>
+                <div className="space-y-3">
+                  <h3 className="text-white text-xl font-bold tracking-tight group-hover:text-emerald-400 transition-colors duration-500">{item.title}</h3>
+                  <p className="text-white/30 leading-relaxed font-normal text-sm md:text-base group-hover:text-white/60 transition-colors duration-500">{item.description}</p>
                 </div>
               </div>
-              <div className="absolute bottom-0 left-0 w-full h-px bg-emerald-500/0 group-hover:bg-emerald-500/50 transition-all duration-700 origin-left scale-x-0 group-hover:scale-x-100" />
+              <div className="absolute bottom-0 left-0 w-full h-[2px] bg-emerald-500/0 group-hover:bg-emerald-500/50 transition-all duration-700 origin-left scale-x-0 group-hover:scale-x-100" />
             </div>
           ))}
         </div>
       </div>
+
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#05180D] to-transparent pointer-events-none" />
     </section>
   );
 };
 
 // --- 4. CENTERED PRICING ---
-const CenteredPricing = () => {
+const CenteredPricing = ({ data }: { data?: any }) => {
+  const label = data?.plansLabel || "Investment";
+  const title = data?.plansTitle || "Simple plans for YouTube growth.";
+  const plans = data?.plans || [
+    {
+      name: "Basic Growth",
+      popular: false,
+      description: "Starter Plan",
+      features: ["4 Videos Per Month", "Video Editing", "Title & Description Setup", "Monthly Performance Review"]
+    },
+    {
+      name: "Fast Growth",
+      popular: true,
+      description: "Pro Plan",
+      features: ["8 Videos Per Month", "Advanced Editing", "Thumbnail Design", "Weekly Performance Review"]
+    }
+  ];
+
   return (
     <section className="py-24 px-6 bg-[#05180D] relative overflow-hidden">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/3 blur-[150px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-500/3 blur-[120px] rounded-full pointer-events-none" />
       <div className="max-w-5xl mx-auto relative z-10">
-        <div className="text-center mb-16">
-          <p className="text-emerald-500 text-xs font-black tracking-[0.4em] uppercase mb-4">
-            Investment
-          </p>
-          <h2 className="text-5xl md:text-7xl font-instrument-sans text-white tracking-tight mb-6">
-            Simple plans for YouTube growth.
-          </h2>
+        <div className="text-center mb-12">
+          <p className="text-emerald-500 text-[10px] font-black tracking-[0.4em] uppercase mb-4">{label}</p>
+          <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-5">{title}</h2>
         </div>
-
-        <div className="grid md:grid-cols-2 gap-8 items-center">
-          <div className="p-10 md:p-14 rounded-[3.5rem] border border-white/5 bg-white/2 backdrop-blur-3xl">
-            <h3 className="text-white/50 text-sm font-bold uppercase tracking-widest mb-2">Starter Plan</h3>
-            <span className="text-white text-5xl font-medium tracking-tighter mb-8 block">Basic Growth</span>
-            <ul className="space-y-5 mb-12">
-              {["4 Videos Per Month", "Video Editing", "Title & Description Setup", "Monthly Performance Review"].map((f, i) => (
-                <li key={i} className="flex items-center gap-3 text-white/70 text-sm font-light">
-                  <Check className="w-3 h-3 text-emerald-400" />
-                  {f}
-                </li>
-              ))}
-            </ul>
-            <Link href="#schedule" className="block">
-              <Button className="w-full h-14 rounded-full bg-white/5 border border-white/10 text-white font-bold uppercase tracking-widest text-[10px]">
-                Book A Call
-              </Button>
-            </Link>
-          </div>
-
-          <div className="relative p-10 md:p-14 rounded-[3.5rem] border border-emerald-500/30 bg-white/5 backdrop-blur-3xl shadow-[0_0_80px_rgba(16,185,129,0.1)] scale-105 z-20">
-            <div className="absolute top-8 right-10 px-3 py-1 rounded-full bg-emerald-500 text-black text-[9px] font-black uppercase tracking-widest">Recommended</div>
-            <h3 className="text-emerald-400 text-sm font-bold uppercase tracking-widest mb-2">Pro Plan</h3>
-            <span className="text-white text-5xl font-medium tracking-tighter mb-8 block">Fast Growth</span>
-            <ul className="space-y-5 mb-12">
-              {["8 Videos Per Month", "Advanced Editing", "Thumbnail Design", "Weekly Performance Review"].map((f, i) => (
-                <li key={i} className="flex items-center gap-3 text-white text-sm font-medium">
-                  <Check className="w-3 h-3 text-emerald-500" />
-                  {f}
-                </li>
-              ))}
-            </ul>
-            <Link href="#schedule" className="block">
-              <Button className="w-full h-14 rounded-full bg-white text-black font-bold uppercase tracking-widest text-[10px]">
-                Book A Call
-              </Button>
-            </Link>
-          </div>
+        <div className="grid md:grid-cols-2 gap-6 items-center">
+          {plans.map((plan: any, i: number) => (
+            <div
+              key={i}
+              className={`p-8 md:p-10 rounded-[2.5rem] border backdrop-blur-3xl transition-all duration-500 ${plan.popular
+                ? "relative border-emerald-500/30 bg-white/5 shadow-[0_0_60px_rgba(16,185,129,0.08)] scale-102 z-20"
+                : "border-white/5 bg-white/2"
+                }`}
+            >
+              {plan.popular && <div className="absolute top-6 right-8 px-2.5 py-1 rounded-full bg-emerald-500 text-black text-[8px] font-black uppercase tracking-widest">Recommended</div>}
+              <h3 className={`${plan.popular ? 'text-emerald-400' : 'text-white/50'} text-[10px] font-bold uppercase tracking-widest mb-1.5`}>{plan.description}</h3>
+              <span className="text-white text-4xl font-bold tracking-tighter mb-8 block">{plan.name}</span>
+              <ul className="space-y-4 mb-10">
+                {plan.features?.map((f: string, idx: number) => (
+                  <li key={idx} className={`flex items-center gap-2.5 text-sm ${plan.popular ? 'text-white font-medium' : 'text-white/70 font-normal'}`}>
+                    <Check className={`w-3 h-3 ${plan.popular ? 'text-emerald-500' : 'text-emerald-400'}`} />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <Link href="#schedule" className="block">
+                <Button className={`w-full h-12 rounded-full font-bold uppercase tracking-widest text-[9px] ${plan.popular ? 'bg-white text-black' : 'bg-white/5 border border-white/10 text-white'}`}>Book A Call</Button>
+              </Link>
+            </div>
+          ))}
         </div>
       </div>
+
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#05180D] to-transparent pointer-events-none" />
     </section>
   );
 };
@@ -276,22 +332,19 @@ const CenteredPricing = () => {
 // --- 5. RESULTS ---
 const ResultsSection = ({ items, title }: ResultsProps) => {
   return (
-    <section className="py-24 px-6 bg-[#062017] overflow-hidden text-center">
-      <h2 className="text-5xl md:text-9xl font-instrument-sans text-white tracking-tighter opacity-90 mb-20">{title}</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-        {items.map((item: ResultItem, i: number) => (
-          <div key={i} className="relative aspect-square rounded-[3rem] overflow-hidden border border-white/10 bg-white/5 group">
-            {item.image && (
-              <Image
-                src={item.image}
-                alt="Result Proof"
-                fill
-                className="object-cover opacity-70 transition-all duration-700 group-hover:opacity-100 group-hover:scale-105"
-              />
-            )}
+    <section className="py-24 px-6 bg-[#05180D] overflow-hidden text-center relative">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.1),transparent_70%)] pointer-events-none" />
+
+      <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter opacity-90 mb-16 relative z-10">{title}</h2>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl mx-auto relative z-10">
+        {items?.map((item: ResultItem, i: number) => (
+          <div key={i} className="relative aspect-square rounded-[2rem] overflow-hidden border border-white/10 bg-white/5 group">
+            {item.image && <Image src={item.image} alt={item.label || "Result Proof"} fill className="object-cover opacity-70 transition-all duration-700 group-hover:opacity-100 group-hover:scale-105" />}
           </div>
         ))}
       </div>
+
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#05180D] to-transparent pointer-events-none" />
     </section>
   );
 };
@@ -307,53 +360,36 @@ const ProcessSection = () => {
         { scaleX: 0, scaleY: 0, transformOrigin: "top left" },
         {
           scaleX: 1, scaleY: 1, ease: "none",
-          scrollTrigger: {
-            trigger: container.current,
-            start: "top 40%",
-            end: "bottom 60%",
-            scrub: 1
-          }
+          scrollTrigger: { trigger: container.current, start: "top 40%", end: "bottom 60%", scrub: 1 }
         });
     }, container);
     return () => ctx.revert();
   }, []);
 
   const steps = [
-    { name: "Channel & Audience Deep Dive", desc: "We audit your niche, competitors, and current content to identify positioning gaps and content opportunities." },
-    { name: "Content Strategy & Ideation", desc: "We build a strategic content roadmap with proven video angles and high-retention formats." },
-    { name: "Production & Retention Editing", desc: "Every video is structured with strong hooks, storytelling flow, and pacing optimized for watch time." },
-    { name: "Optimization & Scaling", desc: "We refine titles, thumbnails, and performance data to systematically scale your organic growth." }
+    { name: "Channel & Audience Deep Dive", desc: "We audit your niche, competitors, and current content to identify positioning gaps." },
+    { name: "Content Strategy & Ideation", desc: "We build a strategic content roadmap with proven video angles." },
+    { name: "Production & Retention Editing", desc: "Every video is structured with strong hooks and pacing optimized for watch time." },
+    { name: "Optimization & Scaling", desc: "We refine titles, thumbnails, and performance data systematically." }
   ];
 
   return (
     <section ref={container} className="py-32 px-6 bg-[#05180D] relative overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-20 md:mb-32">
-          <h2 className="text-6xl md:text-9xl text-white font-instrument-sans tracking-tight leading-none italic lowercase">
-            The Workflow
-          </h2>
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="mb-16 md:mb-20">
+          <p className="text-emerald-500 text-[9px] font-black tracking-[0.4em] uppercase mb-3">The Workflow</p>
+          <h2 className="text-5xl md:text-7xl text-white font-black tracking-tighter leading-none italic lowercase">The Workflow</h2>
         </div>
-
         <div className="relative">
-          <div
-            ref={lineRef}
-            className="absolute top-0 left-0 md:w-full md:h-px w-[2px] h-full bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.8)] z-10"
-          />
+          <div ref={lineRef} className="absolute top-0 left-0 md:w-full md:h-px w-[2px] h-full bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.8)] z-10" />
           <div className="absolute top-0 left-0 md:w-full md:h-px w-[2px] h-full bg-white/5" />
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-16">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-12">
             {steps.map((step, i) => (
-              <div key={i} className="pt-12 md:pt-16 relative group pl-8 md:pl-0">
-                <div className="absolute top-0 left-[-7px] md:left-0 md:-translate-y-1/2 w-4 h-4 rounded-full bg-emerald-500 border-4 border-[#05180D] z-20 group-hover:scale-125 transition-transform shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
-                <span className="text-emerald-500 font-bold text-[10px] tracking-widest mb-4 block uppercase opacity-50 group-hover:opacity-100 transition-opacity">
-                  Step 0{i + 1}
-                </span>
-                <h3 className="text-white text-2xl md:text-3xl font-medium mb-5 tracking-tight group-hover:text-emerald-400 transition-colors">
-                  {step.name}
-                </h3>
-                <p className="text-white/40 leading-relaxed font-light text-base md:text-lg group-hover:text-white/60 transition-colors">
-                  {step.desc}
-                </p>
+              <div key={i} className="pt-10 md:pt-14 relative group pl-8 md:pl-0">
+                <div className="absolute top-0 left-[-7px] md:left-0 md:-translate-y-1/2 w-3.5 h-3.5 rounded-full bg-emerald-500 border-4 border-[#05180D] z-20 group-hover:scale-125 transition-transform shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
+                <span className="text-emerald-500 font-bold text-[9px] tracking-widest mb-3 block uppercase opacity-50 group-hover:opacity-100 transition-opacity">Step 0{i + 1}</span>
+                <h3 className="text-white text-xl md:text-2xl font-bold mb-4 tracking-tight group-hover:text-emerald-400 transition-colors">{step.name}</h3>
+                <p className="text-white/40 leading-relaxed font-normal text-sm md:text-base group-hover:text-white/60 transition-colors">{step.desc}</p>
               </div>
             ))}
           </div>
@@ -363,21 +399,28 @@ const ProcessSection = () => {
   );
 };
 
-export default async function OrganicContentYouTubePage() {
+export default function OrganicContentYouTubePage() {
+  const [data, setData] = useState<any>(null);
+
+  useEffect(() => {
+    client.fetch(servicePageQuery, { slug: "organic-content-youtube" }).then(setData);
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen bg-[#05180D] selection:bg-emerald-500/30">
       <main className="grow">
         <HeroCentered
-          title="Organic YouTube content that"
-          highlight="builds authority"
-          titleAfter="and drives real growth."
-          subtitle="A strategy-first YouTube system focused on storytelling, retention, and long-term audience building — not paid ads."
+          sectionLabel={data?.sectionLabel}
+          title={data?.headlineTitle || "Organic YouTube content that"}
+          highlight={data?.headlineHighlight || "builds authority"}
+          titleAfter={data?.headlineTitleAfter || "and drives real growth."}
+          subtitle={data?.headlineSubtitle || "A strategy-first YouTube system focused on storytelling, retention, and long-term audience building — not paid ads."}
         />
-        <WorkReelsSection />
+        <WorkReelsSection workData={data?.work} />
         <AnimatedFeatureGrid
-          label="The Problem"
-          title="What creators usually struggle with"
-          items={[
+          label={data?.problemsLabel || "The Problem"}
+          title={data?.problemsTitle || "What creators usually struggle with"}
+          items={data?.problems || [
             { title: "Uploading Without Strategy", description: "Most creators post consistently but without understanding audience psychology or retention structure." },
             { title: "Low Retention & Watch Time", description: "If viewers drop in the first 30 seconds, YouTube won't push your content organically." },
             { title: "Inconsistent Growth", description: "Random topics and no content system lead to slow growth and unpredictable results." }
@@ -385,17 +428,21 @@ export default async function OrganicContentYouTubePage() {
         />
         <AnimatedFeatureGrid
           isSolution
-          label="The Matera Solution"
-          title="How we build organic growth machines"
-          items={[
+          label={data?.solutionsLabel || "The Matera Solution"}
+          title={data?.solutionsTitle || "How we build organic growth machines"}
+          items={data?.solutions || [
             { title: "Retention-Driven Storytelling", description: "We structure every video with powerful hooks and pacing designed to maximize watch time." },
             { title: "Search & Algorithm Optimization", description: "Strategic titles, thumbnails, and metadata crafted to get recommended organically." },
             { title: "Content Systemization", description: "We build repeatable content frameworks so your channel grows consistently." }
           ]}
         />
-        <ResultsSection title="Our Results" items={[{ image: "/" }, { image: "/" }, { image: "/" }, { image: "/" }]} />
+        <ResultsSection
+          title={data?.resultsTitle || "Our Results"}
+          items={data?.results || [{ image: "/" }, { image: "/" }, { image: "/" }, { image: "/" }]}
+        />
         <ProcessSection />
-        <CenteredPricing />
+        <CenteredPricing data={data} />
+        <InquiryForm sourcePage="organic-content-youtube" />
       </main>
       <style jsx global>{`
         .no-scrollbar::-webkit-scrollbar { display: none; }

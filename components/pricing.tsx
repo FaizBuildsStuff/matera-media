@@ -117,17 +117,17 @@ export default function Pricing({ content }: { content?: any }) {
 
         {/* --- HEADER --- */}
         <div className="mb-28 flex flex-col items-center text-center gap-8">
-          <h2 className="text-5xl md:text-7xl font-medium text-white tracking-tighter leading-[1.1] max-w-5xl">
-            {title.split(' ').map((word: string, i: number) => {
-              const cleanWord = word.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, "");
-              const isMatch = cleanWord === highlightedWord;
-              return (
-                <span key={i} className={isMatch ? "italic font-normal text-[#10B981]" : ""}>
-                  {word}{" "}
-                </span>
-              );
-            })}
-          </h2>
+          <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-[1.1] max-w-5xl">
+  {title.split(' ').map((word: string, i: number) => {
+    const cleanWord = word.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, "");
+    const isMatch = cleanWord === highlightedWord;
+    return (
+      <span key={i} className={isMatch ? "italic font-normal text-[#10B981]" : ""}>
+        {word}{" "}
+      </span>
+    );
+  })}
+</h2>
           <p className="max-w-2xl text-white/40 text-lg md:text-xl font-normal leading-relaxed">
             {subtitle}
           </p>
