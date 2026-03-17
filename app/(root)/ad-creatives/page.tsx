@@ -88,6 +88,8 @@ const HeroCentered = ({ title, highlight, titleAfter, subtitle, sectionLabel }: 
           </Button>
         </Link>
       </motion.div>
+
+      
     </section>
   );
 };

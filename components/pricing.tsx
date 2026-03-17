@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
-import { Check, Zap, ArrowRight } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -18,7 +18,7 @@ const DEFAULT_SOLUTIONS = [
     popular: false,
   },
   {
-    name: "Organic Systems",
+    name: "Winner Ad Creatives",
     tagline: "Scale Authority",
     description: "A high-fidelity content engine designed for long-term community trust.",
     features: ["Full YouTube Production", "Viral Short-Form Systems", "SEO Strategy", "High-End Editing"],
@@ -66,24 +66,14 @@ export default function Pricing({ content }: { content?: any }) {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.to(".bg-orb", {
-        yPercent: 15,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          scrub: 1,
-        },
-      });
-
       gsap.fromTo(".pricing-card", 
-        { y: 60, opacity: 0, filter: "blur(10px)" },
+        { y: 60, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          filter: "blur(0px)",
           duration: 1.2,
           stagger: 0.1,
           ease: "expo.out",
-          clearProps: "filter",
           scrollTrigger: {
             trigger: cardsRef.current,
             start: "top 85%",
@@ -95,99 +85,96 @@ export default function Pricing({ content }: { content?: any }) {
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      className="py-40 px-6 bg-[#05180D] relative overflow-hidden font-satoshi"
-    >
-      <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400&display=swap" rel="stylesheet" />
-
-      {/* --- SEAMLESS MASK OVERLAYS --- */}
-      {/* These fade the noise and orbs to 0% at the top and bottom */}
+    <section ref={sectionRef} className="py-32 px-6 bg-[#05180D] relative overflow-hidden font-satoshi selection:bg-emerald-500/30">
+      
       <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-[#05180D] to-transparent z-20 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-[#05180D] to-transparent z-20 pointer-events-none" />
 
-      {/* --- BACKGROUND FX --- */}
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none z-0" />
-      
-      {/* Background Orbs restricted to not hit hard edges */}
-      <div className="bg-orb absolute top-[5%] right-[10%] w-[50%] h-[50%] bg-[#10B981]/5 blur-[120px] rounded-full pointer-events-none z-0" />
-      <div className="bg-orb absolute bottom-[5%] left-[5%] w-[40%] h-[40%] bg-[#10B981]/10 blur-[140px] rounded-full pointer-events-none z-0" />
+      <div className="absolute top-[5%] right-[10%] w-[50%] h-[50%] bg-[#10B981]/5 blur-[120px] rounded-full pointer-events-none z-0" />
 
       <div className="max-w-7xl mx-auto relative z-30">
 
-        {/* --- HEADER --- */}
-        <div className="mb-28 flex flex-col items-center text-center gap-8">
-          <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-[1.1] max-w-5xl">
-  {title.split(' ').map((word: string, i: number) => {
-    const cleanWord = word.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, "");
-    const isMatch = cleanWord === highlightedWord;
-    return (
-      <span key={i} className={isMatch ? "italic font-normal text-[#10B981]" : ""}>
-        {word}{" "}
-      </span>
-    );
-  })}
-</h2>
+        <div className="mb-14 flex flex-col items-center text-center gap-4">
+          <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-[1.1] max-w-5xl uppercase italic">
+            {title.split(' ').map((word: string, i: number) => {
+              const cleanWord = word.replace(/\W/g, "");
+              return (
+                <span key={i} className={cleanWord === highlightedWord ? "text-[#10B981] not-italic" : ""}>
+                  {word}{" "}
+                </span>
+              );
+            })}
+          </h2>
           <p className="max-w-2xl text-white/40 text-lg md:text-xl font-normal leading-relaxed">
             {subtitle}
           </p>
         </div>
 
-        {/* --- PRICING GRID --- */}
-        <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {plans.map((plan: any, idx: number) => (
-            <div
-              key={idx}
-              onMouseMove={(e) => handleMouseMove(e, idx)}
-              onMouseLeave={() => handleMouseLeave(idx)}
-              className={`pricing-card group relative flex flex-col p-10 rounded-[3rem] border transition-all duration-500 backdrop-blur-3xl overflow-hidden ${
-                plan.popular 
-                  ? "bg-white/4 border-[#10B981]/30 shadow-[0_40px_120px_-20px_rgba(16,185,129,0.2)]" 
-                  : "bg-white/2 border-white/5 hover:border-white/10"
-              }`}
-            >
-              {/* Interactive Hover Glow */}
-              <div className={`glow-${idx} pointer-events-none absolute -inset-px opacity-0 rounded-[3rem] transition-opacity duration-500`} 
-                   style={{ background: `radial-gradient(600px circle at var(--x) var(--y), rgba(16,185,129,0.15), transparent 40%)`, transform: 'translate(-50%, -50%)', left: 0, top: 0, width: '1200px', height: '1200px' }} />
-
-              <div className="relative z-10 flex flex-col h-full">
-                <div className="flex justify-between items-start mb-7">
-                  {plan.popular && <Zap className="size-4 text-[#10B981] fill-[#10B981] animate-pulse" />}
-                </div>
-
-                <h3 className="text-3xl font-semibold text-white mb-4 tracking-tighter uppercase">
-                  {plan.name}
-                </h3>
-                <p className="text-white/30 text-sm font-normal leading-relaxed mb-10">
-                  {plan.description}
-                </p>
-
-                <div className="flex-1 space-y-4 mb-12">
-                  {plan.features?.map((feature: string, fIdx: number) => (
-                    <div key={fIdx} className="flex items-center gap-3">
-                      <div className="size-5 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-[#10B981]/50 transition-colors">
-                        <Check className="size-2 text-[#10B981]" />
-                      </div>
-                      <span className="text-sm font-normal text-white/50 group-hover:text-white/80 transition-colors">
-                        {feature}
-                      </span>
+        <div className="max-w-6xl mx-auto">
+          <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+            {plans.map((plan: any, idx: number) => {
+              const isMiddle = idx === 1; 
+              
+              return (
+                <div
+                  key={idx}
+                  onMouseMove={(e) => handleMouseMove(e, idx)}
+                  onMouseLeave={() => handleMouseLeave(idx)}
+                  className={`pricing-card group relative flex flex-col p-10 rounded-[3rem] border transition-all duration-700 backdrop-blur-3xl overflow-hidden ${
+                    isMiddle 
+                      ? "bg-white/[0.05] border-[#10B981]/40 shadow-[0_40px_120px_-20px_rgba(16,185,129,0.3)] scale-105 z-30 md:-translate-y-6" 
+                      : "bg-white/2 border-white/5 hover:border-white/10 z-10 opacity-80 hover:opacity-100"
+                  }`}
+                >
+                  {isMiddle && (
+                    <div className="absolute top-0 right-10 px-6 py-2 bg-[#10B981] text-[#05180D] text-[9px] font-black uppercase tracking-[0.2em] rounded-b-2xl shadow-lg">
+                      Most Demanded
                     </div>
-                  ))}
-                </div>
+                  )}
 
-                <Link href="/book" className="mt-auto">
-                  <Button className={`w-full h-16 rounded-2xl font-medium uppercase tracking-[0.2em] text-[10px] transition-all duration-500 flex justify-between px-10 group shadow-2xl ${
-                    plan.popular 
-                      ? "bg-[#10B981] text-[#05180D] hover:bg-white" 
-                      : "bg-white/5 text-white border border-white/10 hover:bg-white hover:text-[#05180D]"
-                  }`}>
-                    Book Strategy Call
-                    <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          ))}
+                  <div className={`glow-${idx} pointer-events-none absolute -inset-px opacity-0 rounded-[3rem] transition-opacity duration-500`} 
+                       style={{ background: `radial-gradient(600px circle at var(--x) var(--y), rgba(16,185,129,0.15), transparent 40%)`, transform: 'translate(-50%, -50%)', left: 0, top: 0, width: '1200px', height: '1200px' }} />
+
+                  <div className="relative z-10 flex flex-col h-full">
+                    <div className="mb-7">
+                      <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#10B981] opacity-80">{plan.tagline}</span>
+                    </div>
+
+                    <h3 className="text-3xl font-black text-white mb-4 tracking-tighter uppercase">
+                      {plan.name}
+                    </h3>
+                    <p className="text-white/30 text-sm font-normal leading-relaxed mb-10">
+                      {plan.description}
+                    </p>
+
+                    {/* GAP REDUCED: mb-12 changed to mb-6 */}
+                    <div className="flex-1 space-y-4 mb-6 pt-2">
+                      {plan.features?.map((feature: string, fIdx: number) => (
+                        <div key={fIdx} className="flex items-center gap-3">
+                          <Check className="size-3 text-[#10B981]" />
+                          <span className="text-sm font-normal text-white/50 group-hover:text-white/80 transition-colors">
+                            {feature}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <Link href="/book" className="mt-auto">
+                      <Button className={`w-full h-16 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] transition-all duration-500 flex justify-between px-10 group ${
+                        isMiddle 
+                          ? "bg-white text-black hover:bg-[#10B981]" 
+                          : "bg-white/5 text-white border border-white/10 hover:bg-white hover:text-black"
+                      }`}>
+                        I need this
+                        <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

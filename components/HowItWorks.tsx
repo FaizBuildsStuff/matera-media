@@ -42,15 +42,15 @@ export const HowItWorks = ({ content }: HowItWorksProps) => {
                     scrollTrigger: {
                         trigger: sectionRef.current,
                         start: "top 30%",
-                        end: "bottom 70%",
+                        end: "bottom 80%",
                         scrub: true
                     } 
                 }
             );
 
             gsap.to(".ambient-glow", {
-                y: (i) => i === 0 ? -100 : 100,
-                opacity: 0.4,
+                y: (i) => i === 0 ? -150 : 150,
+                opacity: 0.5,
                 duration: 3,
                 scrollTrigger: {
                     trigger: sectionRef.current,
@@ -63,23 +63,22 @@ export const HowItWorks = ({ content }: HowItWorksProps) => {
             const rows = gsap.utils.toArray('.process-row');
             rows.forEach((row: any, i: number) => {
                 const isEven = i % 2 === 0;
-                const xVal = window.innerWidth > 768 ? (isEven ? -50 : 50) : 0;
-                const yVal = window.innerWidth > 768 ? 0 : 30;
+                const xVal = window.innerWidth > 768 ? (isEven ? -60 : 60) : 0;
 
                 gsap.fromTo(row.querySelector('.row-content'), 
                     { 
                         opacity: 0, 
                         x: xVal,
-                        y: yVal,
-                        filter: 'blur(10px)'
+                        y: 40,
+                        filter: 'blur(12px)'
                     },
                     {
                         opacity: 1, 
                         x: 0, 
                         y: 0,
                         filter: 'blur(0px)',
-                        duration: 1.2,
-                        ease: "power3.out",
+                        duration: 1.4,
+                        ease: "power4.out",
                         scrollTrigger: {
                             trigger: row,
                             start: "top 85%",
@@ -94,67 +93,67 @@ export const HowItWorks = ({ content }: HowItWorksProps) => {
     }, [content]);
 
     return (
-        <section ref={sectionRef} id="process" className="py-20 px-6 bg-[#05180D] relative overflow-hidden font-satoshi">
+        <section ref={sectionRef} id="process" className="py-32 px-6 bg-[#05180D] relative overflow-hidden font-satoshi selection:bg-emerald-500/30">
             
-            {/* --- SEAMLESS MASK OVERLAYS (Tightened) --- */}
-            <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-[#05180D] to-transparent z-20 pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-[#05180D] to-transparent z-20 pointer-events-none" />
+            {/* Seamless Blending Masks */}
+            <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-[#05180D] to-transparent z-20 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-[#05180D] to-transparent z-20 pointer-events-none" />
 
-            {/* --- BACKGROUND FX --- */}
+            {/* Background FX */}
             <div className="absolute inset-0 z-0 pointer-events-none">
-                <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-                
+                <div className="absolute inset-0 opacity-[0.04] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
                 <div className="absolute inset-0 overflow-hidden">
-                    <div className="ambient-glow absolute top-[10%] -right-[5%] w-[50vw] h-[50vw] bg-emerald-500/10 blur-[120px] rounded-full" />
-                    <div className="ambient-glow absolute bottom-[10%] -left-[5%] w-[40vw] h-[40vw] bg-emerald-900/20 blur-[100px] rounded-full" />
-                    <div className="absolute left-1/2 -translate-x-1/2 top-0 w-px h-full bg-gradient-to-b from-transparent via-emerald-500/10 to-transparent" />
+                    <div className="ambient-glow absolute top-[5%] -right-[10%] w-[60vw] h-[60vw] bg-emerald-500/10 blur-[150px] rounded-full" />
+                    <div className="ambient-glow absolute bottom-[5%] -left-[10%] w-[50vw] h-[50vw] bg-emerald-900/20 blur-[130px] rounded-full" />
                 </div>
             </div>
 
-            <div className="max-w-5xl mx-auto relative z-30">
+            <div className="max-w-6xl mx-auto relative z-30">
                 
-                <div className="text-center mb-16">
-                    <div className="flex items-center justify-center gap-3 mb-4">
-                        <div className="h-[1px] w-4 bg-emerald-500/50 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
-                        <span className="text-emerald-500 text-[9px] font-black tracking-[0.4em] uppercase">
+                {/* Header Section - SIZE FIXED HERE */}
+                <div className="text-center mb-24 md:mb-32">
+                    <div className="flex items-center justify-center gap-4 mb-6">
+                        <div className="h-[1px] w-8 bg-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.4)]" />
+                        <span className="text-emerald-500 text-[10px] font-black tracking-[0.5em] uppercase">
                             {label}
                         </span>
-                        <div className="h-[1px] w-4 bg-emerald-500/50 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+                        <div className="h-[1px] w-8 bg-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.4)]" />
                     </div>
-                    <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter uppercase leading-none drop-shadow-sm">
-    {titleText}
-</h2>
+                    {/* Changed from text-8xl to text-6xl */}
+                    <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter uppercase leading-[0.85] italic drop-shadow-2xl">
+                        {titleText}
+                    </h2>
                 </div>
 
                 <div className="relative">
                     <div 
                         ref={lineRef} 
-                        className="absolute left-1/2 -translate-x-1/2 top-0 w-[1px] h-full bg-emerald-500/30 origin-top z-20 hidden md:block" 
+                        className="absolute left-1/2 -translate-x-1/2 top-0 w-[1px] h-full bg-emerald-500/20 origin-top z-20 hidden md:block" 
                         style={{
-                            maskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)',
-                            WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)'
+                            maskImage: 'linear-gradient(to bottom, transparent, black 5%, black 95%, transparent)',
+                            WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 5%, black 95%, transparent)'
                         }}
                     />
 
-                    <div className="space-y-16 md:space-y-0">
+                    <div className="space-y-24 md:space-y-0">
                         {steps.map((step, i) => {
                             const isEven = i % 2 === 0;
                             return (
-                                <div key={step.id} className="process-row relative md:h-[250px] flex items-center">
-                                    <div className="absolute left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-emerald-400 z-30 hidden md:block shadow-[0_0_12px_rgba(52,211,153,0.8)]" />
+                                <div key={step.id} className="process-row relative md:h-[300px] flex items-center">
+                                    <div className="absolute left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-emerald-400 z-30 hidden md:block shadow-[0_0_15px_rgba(52,211,153,1)]" />
 
-                                    <div className={`row-content w-full md:w-[45%] ${isEven ? 'md:pr-12 md:text-right' : 'md:pl-12 md:text-left md:ml-[55%]'} space-y-3`}>
+                                    <div className={`row-content w-full md:w-[46%] ${isEven ? 'md:pr-16 md:text-right' : 'md:pl-16 md:text-left md:ml-[54%]'} space-y-4`}>
                                         <div className={`flex items-center gap-3 ${isEven ? 'md:justify-end' : 'md:justify-start'}`}>
-                                            <span className="text-emerald-500 font-black text-[10px] tracking-[0.3em] uppercase">
+                                            <span className="text-emerald-500 font-black text-[11px] tracking-[0.4em] uppercase opacity-80">
                                                 Phase {step.id}
                                             </span>
                                         </div>
 
-                                        <h3 className="text-xl md:text-2xl font-bold text-white tracking-tight uppercase">
+                                        <h3 className="text-2xl md:text-4xl font-black text-white tracking-tighter uppercase leading-none">
                                             {step.title}
                                         </h3>
                                         
-                                        <p className="text-white/40 text-sm md:text-base leading-relaxed group-hover:text-white/60 transition-colors duration-500">
+                                        <p className="text-white/40 text-base md:text-lg leading-relaxed font-normal max-w-lg mx-auto md:mx-0">
                                             {step.description}
                                         </p>
                                     </div>
