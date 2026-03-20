@@ -50,21 +50,25 @@ interface ResultsProps {
   title: string;
 }
 
-// --- 1. CENTERED HERO ---
-const HeroCentered = ({ title, highlight, titleAfter, subtitle, sectionLabel }: HeroProps) => {
-  const brands = ["SAMSUNG", "ADOBE", "SHOPIFY", "NIKE", "STRIPE", "SAMSUNG", "ADOBE", "SHOPIFY"];
-  const endlessBrands = [...brands, ...brands];
-
+// --- 1. CENTERED HERO (Smooth Gallery Spotlights) ---
+const HeroCentered = ({ title, highlight, titleAfter, subtitle }: HeroProps) => {
   return (
-    <section className="relative pt-32 pb-10 px-6 overflow-hidden bg-[#05180D] flex flex-col items-center text-center">
-      <link href="https://api.fontshare.com/v2/css?f[]=satoshi@401&display=swap" rel="stylesheet" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.15),transparent_70%)] pointer-events-none" />
+    // Updated z-index to 30 to stay above the next section's masks
+    <section className="relative pt-32 pb-24 px-6 overflow-hidden bg-[#051A0E] flex flex-col items-center text-center z-30">
+      <link href="https://api.fontshare.com/v2/css?f[]=satoshi@401,900&display=swap" rel="stylesheet" />
+      
+      {/* --- SMOOTHER WHITE SPOTLIGHTS --- */}
+      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-white/[0.03] blur-[160px] rounded-full pointer-events-none z-0" />
+      <div className="absolute top-[-10%] right-[-15%] w-[40%] h-[40%] bg-white/[0.03] blur-[140px] rounded-full pointer-events-none z-0" />
+
+      {/* Subtle Central Atmosphere */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.05),transparent_70%)] pointer-events-none z-0" />
 
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "circOut" }}
-        className="relative z-10 max-w-4xl mt-12 md:mt-20"
+        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-40 max-w-4xl mt-12 md:mt-20"
       >
         <h1 className="text-5xl md:text-6xl font-black text-white tracking-tighter leading-[0.9] mb-8">
           {title}{" "}
@@ -76,9 +80,11 @@ const HeroCentered = ({ title, highlight, titleAfter, subtitle, sectionLabel }: 
           </span>{" "}
           {titleAfter}
         </h1>
+
         <p className="text-white/40 text-base md:text-lg font-normal max-w-2xl mx-auto leading-relaxed mb-12">
           {subtitle}
         </p>
+
         <Link href="#schedule">
           <Button className="h-12 px-8 rounded-full bg-white text-black text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all group shadow-[0_0_40px_rgba(255,255,255,0.1)]">
             Book a Free Audit
@@ -89,7 +95,8 @@ const HeroCentered = ({ title, highlight, titleAfter, subtitle, sectionLabel }: 
         </Link>
       </motion.div>
 
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#05180D] to-transparent pointer-events-none" />
+      {/* --- THE "UNDER SECTION" FIX --- */}
+      <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
     </section>
   );
 };
@@ -172,7 +179,7 @@ const ReelCard = ({ item, isPlaying, onToggle }: { item: any; isPlaying: boolean
   );
 };
 
-// --- 2. REELS WORK SECTION ---
+// --- 2. REELS WORK SECTION (Connected with Hero Spotlights) ---
 const WorkReelsSection = ({ workData }: { workData?: any }) => {
   const [playingId, setPlayingId] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -190,20 +197,31 @@ const WorkReelsSection = ({ workData }: { workData?: any }) => {
   const items = workData?.items || [];
 
   return (
-    <section className="relative -mt-[1px] pt-0 pb-20 px-6 bg-[#05180D] overflow-hidden border-none">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.08),transparent_70%)] pointer-events-none" />
+    <section className="relative -mt-[1px] pt-24 pb-20 px-6 bg-[#051A0E] overflow-hidden border-none z-10">
+      
+      {/* --- TOP CONNECTION MASK --- */}
+      <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
 
-      <div className="max-w-7xl mx-auto relative z-10">
+      {/* --- MATCHING WHITE SPOTLIGHTS --- */}
+      <div className="absolute top-[10%] left-[-15%] w-[50%] h-[50%] bg-white/[0.02] blur-[160px] rounded-full pointer-events-none z-0" />
+      <div className="absolute bottom-[20%] right-[-10%] w-[40%] h-[40%] bg-white/[0.02] blur-[140px] rounded-full pointer-events-none z-0" />
+
+      <div className="max-w-7xl mx-auto relative z-30">
         <div className="flex flex-col md:flex-row justify-between items-end mb-10 gap-6">
           <div className="max-w-2xl">
             <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-3">{title}</h2>
             <p className="text-emerald-400 text-lg italic font-medium opacity-80">{label}</p>
           </div>
           <div className="flex gap-3">
-            <button onClick={() => scroll('left')} className="p-4 rounded-full border border-white/10 text-white hover:bg-white hover:text-black transition-all"><ArrowLeft className="w-5 h-5" /></button>
-            <button onClick={() => scroll('right')} className="p-4 rounded-full border border-white/10 text-white hover:bg-white hover:text-black transition-all"><ArrowRight className="w-5 h-5" /></button>
+            <button onClick={() => scroll('left')} className="p-4 rounded-full border border-white/10 text-white hover:bg-white hover:text-black transition-all">
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+            <button onClick={() => scroll('right')} className="p-4 rounded-full border border-white/10 text-white hover:bg-white hover:text-black transition-all">
+              <ArrowRight className="w-5 h-5" />
+            </button>
           </div>
         </div>
+        
         <div ref={scrollRef} className="flex gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-4">
           {items.map((item: any, i: number) => (
             <ReelCard
@@ -216,20 +234,26 @@ const WorkReelsSection = ({ workData }: { workData?: any }) => {
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#05180D] to-transparent pointer-events-none" />
+      {/* Bottom Mask for next section connection */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#051A0E] via-[#051A0E]/80 to-transparent pointer-events-none z-20" />
     </section>
   );
 };
 
-// --- 3. REIMAGINED 2060 FEATURE GRID ---
+// --- 3. REIMAGINED 2060 FEATURE GRID (Connected Lighting) ---
 const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: FeatureGridProps) => {
   return (
-    <section className="relative py-24 px-6 overflow-hidden bg-[#05180D]">
-      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none"
-        style={{ backgroundImage: `url("https://www.transparenttextures.com/patterns/stardust.png")` }} />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-500/5 blur-[100px] rounded-full pointer-events-none" />
+    <section className="relative -mt-[1px] py-24 px-6 overflow-hidden bg-[#051A0E] border-none z-10">
+      
+      {/* --- TOP CONNECTION MASK --- */}
+      <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
 
-      <div className="max-w-7xl mx-auto relative z-10">
+      {/* --- LUXURY WHITE SPOTLIGHTS --- */}
+      <div className="absolute top-[20%] right-[-10%] w-[50%] h-[50%] bg-white/[0.02] blur-[160px] rounded-full pointer-events-none z-0" />
+      <div className="absolute bottom-[10%] left-[-15%] w-[40%] h-[40%] bg-white/[0.02] blur-[140px] rounded-full pointer-events-none z-0" />
+
+      <div className="max-w-7xl mx-auto relative z-30">
+        {/* --- HEADER --- */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
           <div className="max-w-2xl">
             <div className="flex items-center gap-3 mb-4">
@@ -243,72 +267,91 @@ const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: Featur
           <div className="hidden md:block h-px flex-1 bg-white/5 mx-10 mb-4" />
         </div>
 
+        {/* --- GRID --- */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/5 border border-white/5 rounded-[2.5rem] overflow-hidden shadow-2xl">
           {items?.map((item: FeatureItem, i: number) => (
-            <div key={i} className="feature-card group relative p-8 md:p-10 bg-[#05180D] transition-all duration-700 hover:bg-white/2">
+            <div key={i} className="feature-card group relative p-8 md:p-10 bg-[#051A0E] transition-all duration-700 hover:bg-white/2">
               <div className="absolute top-0 right-0 p-5 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-3 group-hover:translate-x-0">
                 <ArrowUpRight className="w-4 h-4 text-emerald-500" />
               </div>
+
               <div className="relative z-10">
                 <div className="w-10 h-10 rounded-xl bg-white/3 border border-white/10 flex items-center justify-center mb-8 transition-all duration-500 group-hover:border-emerald-500/50 group-hover:bg-emerald-500/10">
                   {isSolution ? <ShieldCheck className="w-4 h-4 text-emerald-400" /> : <Zap className="w-4 h-4 text-emerald-400" />}
                 </div>
+
                 <div className="space-y-3">
-                  <h3 className="text-white text-xl font-bold tracking-tight group-hover:text-emerald-400 transition-colors duration-500">{item.title}</h3>
-                  <p className="text-white/30 leading-relaxed font-normal text-sm md:text-base group-hover:text-white/60 transition-colors duration-500">{item.description}</p>
+                  <h3 className="text-white text-xl font-bold tracking-tight group-hover:text-emerald-400 transition-colors duration-500">
+                    {item.title}
+                  </h3>
+                  <p className="text-white/30 leading-relaxed font-normal text-sm md:text-base group-hover:text-white/60 transition-colors duration-500">
+                    {item.description}
+                  </p>
                 </div>
               </div>
+
               <div className="absolute bottom-0 left-0 w-full h-[2px] bg-emerald-500/0 group-hover:bg-emerald-500/50 transition-all duration-700 origin-left scale-x-0 group-hover:scale-x-100" />
             </div>
           ))}
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#05180D] to-transparent pointer-events-none" />
+      {/* --- BOTTOM BLEND MASK --- */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#051A0E] via-[#051A0E]/80 to-transparent pointer-events-none z-20" />
     </section>
   );
 };
 
-// --- 4. CENTERED PRICING ---
+// --- 4. CENTERED PRICING (Connected Lighting) ---
 const CenteredPricing = ({ data }: { data?: any }) => {
   const label = data?.plansLabel || "Investment";
-  const title = data?.plansTitle || "Simple plans for YouTube growth.";
+  const title = data?.plansTitle || "Plans built for YouTube growth.";
   const plans = data?.plans || [
-    {
-      name: "Basic Growth",
-      popular: false,
-      description: "Starter Plan",
-      features: ["4 Videos Per Month", "Video Editing", "Title & Description Setup", "Monthly Performance Review"]
-    },
-    {
-      name: "Fast Growth",
-      popular: true,
-      description: "Pro Plan",
-      features: ["8 Videos Per Month", "Advanced Editing", "Thumbnail Design", "Weekly Performance Review"]
-    }
+    { name: "Basic Growth", popular: false, description: "Starter Plan", features: ["4 Videos Per Month", "Video Editing", "Title & Description Setup", "Monthly Performance Review"] },
+    { name: "Fast Growth", popular: true, description: "Pro Plan", features: ["8 Videos Per Month", "Advanced Editing", "Thumbnail Design", "Weekly Performance Review"] }
   ];
 
   return (
-    <section className="py-24 px-6 bg-[#05180D] relative overflow-hidden">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-500/3 blur-[120px] rounded-full pointer-events-none" />
-      <div className="max-w-5xl mx-auto relative z-10">
+    <section className="relative -mt-[1px] py-24 px-6 bg-[#051A0E] overflow-hidden border-none z-10">
+      
+      {/* --- TOP CONNECTION MASK --- */}
+      <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
+
+      {/* --- LUXURY WHITE SPOTLIGHTS --- */}
+      <div className="absolute top-[10%] right-[-5%] w-[40%] h-[40%] bg-white/[0.03] blur-[160px] rounded-full pointer-events-none z-0" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-white/[0.02] blur-[140px] rounded-full pointer-events-none z-0" />
+
+      <div className="max-w-5xl mx-auto relative z-30">
         <div className="text-center mb-12">
           <p className="text-emerald-500 text-[10px] font-black tracking-[0.4em] uppercase mb-4">{label}</p>
           <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-5">{title}</h2>
         </div>
-        <div className="grid md:grid-cols-2 gap-6 items-center">
+
+        <div className="grid md:grid-cols-2 gap-6 items-stretch">
           {plans.map((plan: any, i: number) => (
-            <div
-              key={i}
-              className={`p-8 md:p-10 rounded-[2.5rem] border backdrop-blur-3xl transition-all duration-500 ${plan.popular
-                ? "relative border-emerald-500/30 bg-white/5 shadow-[0_0_60px_rgba(16,185,129,0.08)] scale-102 z-20"
-                : "border-white/5 bg-white/2"
-                }`}
+            <div 
+              key={i} 
+              className={`flex flex-col p-8 md:p-10 rounded-[2.5rem] border backdrop-blur-3xl transition-all duration-500 ${
+                plan.popular 
+                  ? "relative border-emerald-500/30 bg-white/[0.04] shadow-[0_0_60px_rgba(16,185,129,0.08)] scale-102 z-20" 
+                  : "border-white/5 bg-white/[0.02]"
+              }`}
             >
-              {plan.popular && <div className="absolute top-6 right-8 px-2.5 py-1 rounded-full bg-emerald-500 text-black text-[8px] font-black uppercase tracking-widest">Recommended</div>}
-              <h3 className={`${plan.popular ? 'text-emerald-400' : 'text-white/50'} text-[10px] font-bold uppercase tracking-widest mb-1.5`}>{plan.description}</h3>
-              <span className="text-white text-4xl font-bold tracking-tighter mb-8 block">{plan.name}</span>
-              <ul className="space-y-4 mb-10">
+              {plan.popular && (
+                <div className="absolute top-6 right-8 px-2.5 py-1 rounded-full bg-emerald-500 text-black text-[8px] font-black uppercase tracking-widest">
+                  Recommended
+                </div>
+              )}
+              
+              <h3 className={`${plan.popular ? 'text-emerald-400' : 'text-white/50'} text-[10px] font-bold uppercase tracking-widest mb-1.5`}>
+                {plan.description}
+              </h3>
+              
+              <span className="text-white text-4xl font-bold tracking-tighter mb-8 block">
+                {plan.name}
+              </span>
+              
+              <ul className="space-y-4 mb-10 flex-1">
                 {plan.features?.map((f: string, idx: number) => (
                   <li key={idx} className={`flex items-center gap-2.5 text-sm ${plan.popular ? 'text-white font-medium' : 'text-white/70 font-normal'}`}>
                     <Check className={`w-3 h-3 ${plan.popular ? 'text-emerald-500' : 'text-emerald-400'}`} />
@@ -316,77 +359,113 @@ const CenteredPricing = ({ data }: { data?: any }) => {
                   </li>
                 ))}
               </ul>
-              <Link href="#schedule" className="block">
-                <Button className={`w-full h-12 rounded-full font-bold uppercase tracking-widest text-[9px] ${plan.popular ? 'bg-white text-black' : 'bg-white/5 border border-white/10 text-white'}`}>Book A Call</Button>
+              
+              <Link href="#schedule" className="block mt-auto">
+                <Button className={`w-full h-12 rounded-full font-bold uppercase tracking-widest text-[9px] transition-transform active:scale-95 ${
+                  plan.popular ? 'bg-white text-black hover:bg-emerald-500 hover:text-white' : 'bg-white/5 border border-white/10 text-white hover:bg-white hover:text-black'
+                }`}>
+                  Book A Call
+                </Button>
               </Link>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#05180D] to-transparent pointer-events-none" />
+      {/* --- BOTTOM BLEND MASK --- */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#051A0E] via-[#051A0E]/80 to-transparent pointer-events-none z-20" />
     </section>
   );
 };
 
-// --- 5. RESULTS ---
+// --- 5. RESULTS (Connected Lighting) ---
 const ResultsSection = ({ items, title }: ResultsProps) => {
   return (
-    <section className="py-24 px-6 bg-[#05180D] overflow-hidden text-center relative">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.1),transparent_70%)] pointer-events-none" />
+    <section className="relative -mt-[1px] py-24 px-6 bg-[#051A0E] overflow-hidden text-center border-none z-10">
+      
+      {/* --- TOP CONNECTION MASK --- */}
+      <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
 
-      <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter opacity-90 mb-16 relative z-10">{title}</h2>
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl mx-auto relative z-10">
-        {items?.map((item: ResultItem, i: number) => (
-          <div key={i} className="relative aspect-square rounded-[2rem] overflow-hidden border border-white/10 bg-white/5 group">
-            {item.image && <Image src={item.image} alt={item.label || "Result Proof"} fill className="object-cover opacity-70 transition-all duration-700 group-hover:opacity-100 group-hover:scale-105" />}
-          </div>
-        ))}
+      {/* --- LUXURY WHITE SPOTLIGHTS --- */}
+      <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[60%] h-[50%] bg-white/[0.03] blur-[160px] rounded-full pointer-events-none z-0" />
+      <div className="absolute bottom-[20%] right-[-5%] w-[30%] h-[40%] bg-white/[0.02] blur-[120px] rounded-full pointer-events-none z-0" />
+
+      <div className="max-w-7xl mx-auto relative z-30">
+        <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter opacity-90 mb-16">
+          {title}
+        </h2>
+        
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {items?.map((item: ResultItem, i: number) => (
+            <div key={i} className="relative aspect-square rounded-[2rem] overflow-hidden border border-white/10 bg-white/5 group">
+              {item.image && (
+                <Image 
+                  src={item.image} 
+                  alt={item.label || "Result Proof"} 
+                  fill 
+                  className="object-cover opacity-70 transition-all duration-700 group-hover:opacity-100 group-hover:scale-105" 
+                />
+              )}
+            </div>
+          ))}
+        </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#05180D] to-transparent pointer-events-none" />
+      {/* --- BOTTOM BLEND MASK --- */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#051A0E] via-[#051A0E]/80 to-transparent pointer-events-none z-20" />
     </section>
   );
 };
 
-// --- 6. OUR PROCESS ---
+// --- 6. OUR PROCESS (Connected Lighting) ---
 const ProcessSection = () => {
   const container = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo(lineRef.current,
-        { scaleX: 0, scaleY: 0, transformOrigin: "top left" },
-        {
-          scaleX: 1, scaleY: 1, ease: "none",
-          scrollTrigger: { trigger: container.current, start: "top 40%", end: "bottom 60%", scrub: 1 }
-        });
+      gsap.fromTo(lineRef.current, { scaleX: 0, scaleY: 0, transformOrigin: "top left" }, {
+        scaleX: 1, scaleY: 1, ease: "none",
+        scrollTrigger: { trigger: container.current, start: "top 40%", end: "bottom 60%", scrub: 1 }
+      });
     }, container);
     return () => ctx.revert();
   }, []);
 
   const steps = [
-    { name: "Channel & Audience Deep Dive", desc: "We audit your niche, competitors, and current content to identify positioning gaps." },
-    { name: "Content Strategy & Ideation", desc: "We build a strategic content roadmap with proven video angles." },
-    { name: "Production & Retention Editing", desc: "Every video is structured with strong hooks and pacing optimized for watch time." },
-    { name: "Optimization & Scaling", desc: "We refine titles, thumbnails, and performance data systematically." }
+    { name: "Channel Audit", desc: "We audit your niche, competitors, and current content to identify positioning gaps." },
+    { name: "Content Strategy", desc: "We build a strategic content roadmap with proven video angles and storytelling hooks." },
+    { name: "Retention Production", desc: "Every video is structured with strong hooks and pacing optimized for watch time." },
+    { name: "Optimization & Scaling", desc: "We refine titles, thumbnails, and performance data systematically to grow your channel." }
   ];
 
   return (
-    <section ref={container} className="py-32 px-6 bg-[#05180D] relative overflow-hidden">
-      <div className="max-w-7xl mx-auto relative z-10">
+    <section ref={container} className="relative -mt-[1px] py-24 px-6 bg-[#051A0E] overflow-hidden border-none z-10">
+      
+      {/* --- TOP CONNECTION MASK --- */}
+      <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
+
+      {/* --- LUXURY WHITE SPOTLIGHTS --- */}
+      <div className="absolute top-[10%] left-[-10%] w-[45%] h-[50%] bg-white/[0.02] blur-[160px] rounded-full pointer-events-none z-0" />
+      <div className="absolute bottom-[10%] right-[-15%] w-[40%] h-[50%] bg-white/[0.02] blur-[140px] rounded-full pointer-events-none z-0" />
+
+      <div className="max-w-7xl mx-auto relative z-30">
         <div className="mb-16 md:mb-20">
           <p className="text-emerald-500 text-[9px] font-black tracking-[0.4em] uppercase mb-3">The Workflow</p>
-          <h2 className="text-5xl md:text-7xl text-white font-black tracking-tighter leading-none italic lowercase">The Workflow</h2>
+          <h2 className="text-5xl md:text-7xl text-white font-black tracking-tighter leading-none italic lowercase">the system</h2>
         </div>
+        
         <div className="relative">
+          {/* Progress Line */}
           <div ref={lineRef} className="absolute top-0 left-0 md:w-full md:h-px w-[2px] h-full bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.8)] z-10" />
           <div className="absolute top-0 left-0 md:w-full md:h-px w-[2px] h-full bg-white/5" />
+          
           <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-12">
             {steps.map((step, i) => (
               <div key={i} className="pt-10 md:pt-14 relative group pl-8 md:pl-0">
-                <div className="absolute top-0 left-[-7px] md:left-0 md:-translate-y-1/2 w-3.5 h-3.5 rounded-full bg-emerald-500 border-4 border-[#05180D] z-20 group-hover:scale-125 transition-transform shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
+                {/* Step Circle */}
+                <div className="absolute top-0 left-[-7px] md:left-0 md:-translate-y-1/2 w-3.5 h-3.5 rounded-full bg-emerald-500 border-4 border-[#051A0E] z-20 group-hover:scale-125 transition-transform shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
+                
                 <span className="text-emerald-500 font-bold text-[9px] tracking-widest mb-3 block uppercase opacity-50 group-hover:opacity-100 transition-opacity">Step 0{i + 1}</span>
                 <h3 className="text-white text-xl md:text-2xl font-bold mb-4 tracking-tight group-hover:text-emerald-400 transition-colors">{step.name}</h3>
                 <p className="text-white/40 leading-relaxed font-normal text-sm md:text-base group-hover:text-white/60 transition-colors">{step.desc}</p>
@@ -395,6 +474,9 @@ const ProcessSection = () => {
           </div>
         </div>
       </div>
+
+      {/* --- BOTTOM BLEND MASK --- */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#051A0E] via-[#051A0E]/80 to-transparent pointer-events-none z-20" />
     </section>
   );
 };
