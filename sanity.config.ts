@@ -19,6 +19,10 @@ export default defineConfig({
   title: "Matera Media CMS",
   projectId,
   dataset,
+  
+  // --- ADD THIS LINE TO FIX THE ERROR ---
+  basePath: "/studio", 
+
   plugins: [
     structureTool({ structure }),
     visionTool(),

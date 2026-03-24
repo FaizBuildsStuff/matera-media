@@ -65,14 +65,14 @@ const chunkArray = (array: Testimonial[], chunkSize: number): Testimonial[][] =>
 
 
 export default function WallOfLoveSection({ content }: { content?: any }) {
-// 1. Dynamic Data from Sanity with Fallbacks
+    // 1. Dynamic Data from Sanity with Fallbacks
     const label = content?.label ?? "Client Success";
     const title = content?.title ?? "Trusted by Brands and Creators";
     const description = content?.description ?? "Results-driven production for high-growth B2B brands and creators.";
-    
+
     // Use Sanity items if they exist, otherwise use defaults
-    const testimonialsData = content?.items && content.items.length > 0 
-        ? content.items 
+    const testimonialsData = content?.items && content.items.length > 0
+        ? content.items
         : DEFAULT_TESTIMONIALS;
 
     const testimonialChunks = chunkArray(testimonialsData, Math.ceil(testimonialsData.length / 3));
@@ -86,7 +86,7 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
 
             <div className="mx-auto max-w-5xl relative z-10">
 
-                
+
 
                 {/* --- MINIMALIST HEADER --- */}
 
@@ -102,7 +102,7 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
 
                     </div>
 
-                    
+
 
                     <h2 className="text-3xl md:text-5xl font-black text-white mb-3 tracking-tighter">
 
@@ -110,7 +110,7 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
 
                     </h2>
 
-                    
+
 
                     <p className="text-white/20 text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] italic max-w-2xl mx-auto">
 
@@ -160,7 +160,7 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
 
                                         </p>
 
-                                        
+
 
                                         <div className="flex items-center gap-2 pt-4 border-t border-white/[0.03]">
 

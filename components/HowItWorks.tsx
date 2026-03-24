@@ -34,17 +34,17 @@ export const HowItWorks = ({ content }: HowItWorksProps) => {
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            gsap.fromTo(lineRef.current, 
-                { scaleY: 0 }, 
-                { 
-                    scaleY: 1, 
-                    ease: "none", 
+            gsap.fromTo(lineRef.current,
+                { scaleY: 0 },
+                {
+                    scaleY: 1,
+                    ease: "none",
                     scrollTrigger: {
                         trigger: sectionRef.current,
                         start: "top 30%",
                         end: "bottom 80%",
                         scrub: true
-                    } 
+                    }
                 }
             );
 
@@ -65,16 +65,16 @@ export const HowItWorks = ({ content }: HowItWorksProps) => {
                 const isEven = i % 2 === 0;
                 const xVal = window.innerWidth > 768 ? (isEven ? -60 : 60) : 0;
 
-                gsap.fromTo(row.querySelector('.row-content'), 
-                    { 
-                        opacity: 0, 
+                gsap.fromTo(row.querySelector('.row-content'),
+                    {
+                        opacity: 0,
                         x: xVal,
                         y: 40,
                         filter: 'blur(12px)'
                     },
                     {
-                        opacity: 1, 
-                        x: 0, 
+                        opacity: 1,
+                        x: 0,
                         y: 0,
                         filter: 'blur(0px)',
                         duration: 1.4,
@@ -94,7 +94,7 @@ export const HowItWorks = ({ content }: HowItWorksProps) => {
 
     return (
         <section ref={sectionRef} id="process" className="py-32 px-6 bg-[#05180D] relative overflow-hidden font-satoshi selection:bg-emerald-500/30">
-            
+
             {/* Seamless Blending Masks */}
             <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-[#05180D] to-transparent z-20 pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-[#05180D] to-transparent z-20 pointer-events-none" />
@@ -109,7 +109,7 @@ export const HowItWorks = ({ content }: HowItWorksProps) => {
             </div>
 
             <div className="max-w-6xl mx-auto relative z-30">
-                
+
                 {/* Header Section - SIZE FIXED HERE */}
                 <div className="text-center mb-24 md:mb-32">
                     <div className="flex items-center justify-center gap-4 mb-6">
@@ -126,9 +126,9 @@ export const HowItWorks = ({ content }: HowItWorksProps) => {
                 </div>
 
                 <div className="relative">
-                    <div 
-                        ref={lineRef} 
-                        className="absolute left-1/2 -translate-x-1/2 top-0 w-[1px] h-full bg-emerald-500/20 origin-top z-20 hidden md:block" 
+                    <div
+                        ref={lineRef}
+                        className="absolute left-1/2 -translate-x-1/2 top-0 w-[1px] h-full bg-emerald-500/20 origin-top z-20 hidden md:block"
                         style={{
                             maskImage: 'linear-gradient(to bottom, transparent, black 5%, black 95%, transparent)',
                             WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 5%, black 95%, transparent)'
@@ -152,7 +152,7 @@ export const HowItWorks = ({ content }: HowItWorksProps) => {
                                         <h3 className="text-2xl md:text-4xl font-black text-white tracking-tighter uppercase leading-none">
                                             {step.title}
                                         </h3>
-                                        
+
                                         <p className="text-white/40 text-base md:text-lg leading-relaxed font-normal max-w-lg mx-auto md:mx-0">
                                             {step.description}
                                         </p>

@@ -66,7 +66,7 @@ export default function Pricing({ content }: { content?: any }) {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo(".pricing-card", 
+      gsap.fromTo(".pricing-card",
         { y: 60, opacity: 0 },
         {
           y: 0,
@@ -86,7 +86,7 @@ export default function Pricing({ content }: { content?: any }) {
 
   return (
     <section ref={sectionRef} className="py-32 px-6 bg-[#05180D] relative overflow-hidden font-satoshi selection:bg-emerald-500/30">
-      
+
       <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-[#05180D] to-transparent z-20 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-[#05180D] to-transparent z-20 pointer-events-none" />
 
@@ -114,18 +114,17 @@ export default function Pricing({ content }: { content?: any }) {
         <div className="max-w-6xl mx-auto">
           <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
             {plans.map((plan: any, idx: number) => {
-              const isMiddle = idx === 1; 
-              
+              const isMiddle = idx === 1;
+
               return (
                 <div
                   key={idx}
                   onMouseMove={(e) => handleMouseMove(e, idx)}
                   onMouseLeave={() => handleMouseLeave(idx)}
-                  className={`pricing-card group relative flex flex-col p-10 rounded-[3rem] border transition-all duration-700 backdrop-blur-3xl overflow-hidden ${
-                    isMiddle 
-                      ? "bg-white/[0.05] border-[#10B981]/40 shadow-[0_40px_120px_-20px_rgba(16,185,129,0.3)] scale-105 z-30 md:-translate-y-6" 
+                  className={`pricing-card group relative flex flex-col p-10 rounded-[3rem] border transition-all duration-700 backdrop-blur-3xl overflow-hidden ${isMiddle
+                      ? "bg-white/[0.05] border-[#10B981]/40 shadow-[0_40px_120px_-20px_rgba(16,185,129,0.3)] scale-105 z-30 md:-translate-y-6"
                       : "bg-white/2 border-white/5 hover:border-white/10 z-10 opacity-80 hover:opacity-100"
-                  }`}
+                    }`}
                 >
                   {isMiddle && (
                     <div className="absolute top-0 right-10 px-6 py-2 bg-[#10B981] text-[#05180D] text-[9px] font-black uppercase tracking-[0.2em] rounded-b-2xl shadow-lg">
@@ -133,8 +132,8 @@ export default function Pricing({ content }: { content?: any }) {
                     </div>
                   )}
 
-                  <div className={`glow-${idx} pointer-events-none absolute -inset-px opacity-0 rounded-[3rem] transition-opacity duration-500`} 
-                       style={{ background: `radial-gradient(600px circle at var(--x) var(--y), rgba(16,185,129,0.15), transparent 40%)`, transform: 'translate(-50%, -50%)', left: 0, top: 0, width: '1200px', height: '1200px' }} />
+                  <div className={`glow-${idx} pointer-events-none absolute -inset-px opacity-0 rounded-[3rem] transition-opacity duration-500`}
+                    style={{ background: `radial-gradient(600px circle at var(--x) var(--y), rgba(16,185,129,0.15), transparent 40%)`, transform: 'translate(-50%, -50%)', left: 0, top: 0, width: '1200px', height: '1200px' }} />
 
                   <div className="relative z-10 flex flex-col h-full">
                     <div className="mb-7">
@@ -161,11 +160,10 @@ export default function Pricing({ content }: { content?: any }) {
                     </div>
 
                     <Link href="/book" className="mt-auto">
-                      <Button className={`w-full h-16 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] transition-all duration-500 flex justify-between px-10 group ${
-                        isMiddle 
-                          ? "bg-white text-black hover:bg-[#10B981]" 
+                      <Button className={`w-full h-16 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] transition-all duration-500 flex justify-between px-10 group ${isMiddle
+                          ? "bg-white text-black hover:bg-[#10B981]"
                           : "bg-white/5 text-white border border-white/10 hover:bg-white hover:text-black"
-                      }`}>
+                        }`}>
                         I need this
                         <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
                       </Button>

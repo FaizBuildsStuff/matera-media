@@ -3,15 +3,15 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { 
-  ArrowUpRight, 
-  Users, 
-  Globe, 
-  Zap, 
-  ShieldCheck, 
-  MapPin, 
-  Clock, 
-  Briefcase 
+import {
+  ArrowUpRight,
+  Users,
+  Globe,
+  Zap,
+  ShieldCheck,
+  MapPin,
+  Clock,
+  Briefcase
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -86,9 +86,9 @@ export const CareersSection = ({ content }: { content?: CareersSectionType }) =>
   const titleText = content?.title ?? "Scale the Future.";
   const highlightedWord = content?.highlightedWord ?? "Future.";
   const description = content?.description ?? "We’re hiring high-performance individuals to help us build the next generation of SaaS growth systems.";
-  
-  const roles = content?.items && content.items.length > 0 
-    ? content.items 
+
+  const roles = content?.items && content.items.length > 0
+    ? content.items
     : OPEN_ROLES_FALLBACK;
 
   useEffect(() => {
@@ -129,9 +129,9 @@ export const CareersSection = ({ content }: { content?: CareersSectionType }) =>
   }, [content]); // Re-run if content updates
 
   return (
-    <section 
-      ref={sectionRef} 
-      id="careers" 
+    <section
+      ref={sectionRef}
+      id="careers"
       className="py-32 px-6 bg-[#05180D] relative overflow-hidden border-t border-white/5"
     >
       <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,401,700,701&display=swap" rel="stylesheet" />
@@ -140,14 +140,14 @@ export const CareersSection = ({ content }: { content?: CareersSectionType }) =>
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_-10%,rgba(16,185,129,0.05),transparent_60%)] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto relative z-10">
-        
+
         {/* --- DYNAMIC HEADER --- */}
         <div ref={headerRef} className="mb-24 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/5 border border-emerald-500/10 mb-8">
             <Users className="size-3 text-emerald-400" />
             <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-[0.2em] font-satoshi">{label}</span>
           </div>
-          
+
           <h2 className="text-5xl md:text-8xl font-medium text-white mb-8 tracking-tighter font-instrument-sans">
             {titleText.includes(highlightedWord) ? (
               <>
@@ -161,7 +161,7 @@ export const CareersSection = ({ content }: { content?: CareersSectionType }) =>
               titleText
             )}
           </h2>
-          
+
           <p className="text-white/40 text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed font-satoshi">
             {description}
           </p>
@@ -192,9 +192,9 @@ export const CareersSection = ({ content }: { content?: CareersSectionType }) =>
 
           <div className="divide-y divide-white/5">
             {roles.map((role, i) => (
-              <Link 
-                href={role.link} 
-                key={i} 
+              <Link
+                href={role.link}
+                key={i}
                 className="role-row group block py-10 transition-all duration-500"
               >
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -232,11 +232,11 @@ export const CareersSection = ({ content }: { content?: CareersSectionType }) =>
 
         {/* --- GENERAL APPLICATION --- */}
         <div className="mt-24 p-12 rounded-[2.5rem] bg-gradient-to-br from-white/[0.03] to-transparent border border-white/5 flex flex-col items-center text-center">
-           <h4 className="text-white text-2xl font-medium mb-4 font-satoshi tracking-tight">Don't see your specific role?</h4>
-           <p className="text-white/40 text-sm mb-10 max-w-sm font-light font-satoshi">We’re always interested in meeting exceptional creative and technical talent.</p>
-           <Button className="h-12 px-10 rounded-full bg-white text-black font-bold uppercase tracking-widest text-[10px] hover:bg-emerald-400 transition-all active:scale-95 shadow-xl">
-             Send General Application
-           </Button>
+          <h4 className="text-white text-2xl font-medium mb-4 font-satoshi tracking-tight">Don't see your specific role?</h4>
+          <p className="text-white/40 text-sm mb-10 max-w-sm font-light font-satoshi">We’re always interested in meeting exceptional creative and technical talent.</p>
+          <Button className="h-12 px-10 rounded-full bg-white text-black font-bold uppercase tracking-widest text-[10px] hover:bg-emerald-400 transition-all active:scale-95 shadow-xl">
+            Send General Application
+          </Button>
         </div>
       </div>
     </section>

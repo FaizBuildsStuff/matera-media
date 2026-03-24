@@ -37,10 +37,10 @@ export const FAQ = ({ content }: { content?: FAQContent }) => {
             id: i._key || `item-${idx + 1}`,
             question: i.question ?? "",
             answer: i.answer ?? "",
-          }))
+        }))
         : DEFAULT_FAQS
     ).filter((f) => f.question);
-    
+
     const sectionRef = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLDivElement>(null);
     const accordionRef = useRef<HTMLDivElement>(null);
@@ -83,17 +83,17 @@ export const FAQ = ({ content }: { content?: FAQContent }) => {
         <section ref={sectionRef} id="faq" className="py-20 px-6 bg-[#05180D] relative overflow-hidden font-satoshi">
             {/* Fontshare Import */}
             <link href="https://api.fontshare.com/v2/css?f[]=satoshi@401&display=swap" rel="stylesheet" />
-            
+
             {/* --- SEAMLESS MASK OVERLAYS (Tightened) --- */}
             <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-[#05180D] to-transparent z-20 pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-[#05180D] to-transparent z-20 pointer-events-none" />
 
             {/* Background Logo Overlay with Masked Bottom */}
-            <div 
+            <div
                 className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] pointer-events-none select-none z-0"
                 style={{
-                  maskImage: 'radial-gradient(circle at center, black, transparent 80%)',
-                  WebkitMaskImage: 'radial-gradient(circle at center, black, transparent 80%)'
+                    maskImage: 'radial-gradient(circle at center, black, transparent 80%)',
+                    WebkitMaskImage: 'radial-gradient(circle at center, black, transparent 80%)'
                 }}
             >
                 <img src="/Logo.png" alt="Matera Media Logo" className="w-[900px] h-auto object-contain" />
@@ -104,12 +104,12 @@ export const FAQ = ({ content }: { content?: FAQContent }) => {
                 <div ref={headerRef} className="text-center mb-12">
                     <p className="text-emerald-400 font-medium tracking-widest uppercase text-[10px] mb-4">{label}</p>
                     <h2 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tighter uppercase leading-none">
-    {titleText.split(highlightedWord)[0]}
-    <span className="text-emerald-400 italic font-normal">
-        {highlightedWord}
-    </span>
-    {titleText.split(highlightedWord)[1] || ""}
-</h2>
+                        {titleText.split(highlightedWord)[0]}
+                        <span className="text-emerald-400 italic font-normal">
+                            {highlightedWord}
+                        </span>
+                        {titleText.split(highlightedWord)[1] || ""}
+                    </h2>
                 </div>
 
                 {/* FAQ Accordion */}
