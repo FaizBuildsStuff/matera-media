@@ -1,6 +1,6 @@
 "use client";
 
-import Script from "next/script";
+
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -25,6 +25,19 @@ export const CalendlyWidget = ({ content }: { content?: CalendlyContent }) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const widgetRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://assets.calendly.com/assets/external/widget.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      if (document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -122,11 +135,6 @@ export const CalendlyWidget = ({ content }: { content?: CalendlyContent }) => {
           />
         </div>
       </div>
-
-      <Script
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="lazyOnload"
-      />
     </section>
   );
 };

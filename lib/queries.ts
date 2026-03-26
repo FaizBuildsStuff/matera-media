@@ -60,6 +60,7 @@ export const servicePageQuery = `*[_type == "servicePage" && slug == $slug][0]{
   headlineHighlight,
   headlineTitleAfter,
   headlineSubtitle,
+  heroCta,
   bookACallHeading,
   bookACallCta,
   problemsLabel,
@@ -83,6 +84,13 @@ export const servicePageQuery = `*[_type == "servicePage" && slug == $slug][0]{
     label,
     value,
     "image": image.asset->url
+  },
+  processLabel,
+  processTitle,
+  processSteps[]{
+    _key,
+    name,
+    desc
   },
   plansLabel,
   plansTitle,
@@ -112,6 +120,8 @@ export const servicePageQuery = `*[_type == "servicePage" && slug == $slug][0]{
   },
   calendlyTitle,
   calendlySubtitle,
+  calendlyHighlightedWord,
+  calendlyUrl,
   faqLabel,
   faqTitle,
   faqHighlightedWord,
