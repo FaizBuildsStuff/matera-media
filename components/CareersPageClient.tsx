@@ -162,7 +162,7 @@ export default function CareersPageClient({ content }: CareersPageProps) {
             )}
           </h1>
           
-          <p className="text-white/40 text-base md:text-xl max-w-xl mx-auto font-light leading-relaxed font-satoshi px-4">
+          <p className="text-white/40 text-base md:text-xl max-w-xl mx-auto font-light leading-relaxed font-satoshi px-4 whitespace-pre-wrap">
             {description}
           </p>
         </div>

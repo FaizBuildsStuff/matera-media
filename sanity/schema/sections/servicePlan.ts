@@ -8,7 +8,8 @@ export default defineType({
     defineField({
       name: "name",
       title: "Plan Name",
-      type: "string",
+      type: "text",
+      rows: 2,
       validation: (Rule) => Rule.required(),
     }),
     defineField({

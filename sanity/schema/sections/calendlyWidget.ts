@@ -8,13 +8,15 @@ export default defineType({
     defineField({
       name: "title",
       title: "Section Title",
-      type: "string",
+      type: "text",
+      rows: 2,
       initialValue: "Let's Build Something Extraordinary",
     }),
     defineField({
       name: "highlightedWord",
       title: "Highlighted Word",
-      type: "string",
+      type: "text",
+      rows: 2,
       initialValue: "Extraordinary",
     }),
     defineField({

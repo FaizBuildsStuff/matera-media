@@ -106,7 +106,7 @@ export default function Pricing({ content }: { content?: any }) {
               );
             })}
           </h2>
-          <p className="max-w-2xl text-white/40 text-lg md:text-xl font-normal leading-relaxed">
+          <p className="max-w-2xl text-white/40 text-lg md:text-xl font-normal leading-relaxed whitespace-pre-wrap">
             {subtitle}
           </p>
         </div>
@@ -143,7 +143,7 @@ export default function Pricing({ content }: { content?: any }) {
                     <h3 className="text-3xl font-black text-white mb-4 tracking-tighter uppercase">
                       {plan.name}
                     </h3>
-                    <p className="text-white/30 text-sm font-normal leading-relaxed mb-10">
+                    <p className="text-white/30 text-sm font-normal leading-relaxed mb-10 whitespace-pre-wrap">
                       {plan.description}
                     </p>
 

@@ -131,7 +131,7 @@ export function BookCallPage({ content }: { content?: BookingPageContent }) {
                 )}
               </h1>
 
-              <p className="text-lg md:text-xl text-white/40 font-light leading-relaxed max-w-lg">
+              <p className="text-lg md:text-xl text-white/40 font-light leading-relaxed max-w-lg whitespace-pre-wrap">
                 {subtitle}
               </p>
             </div>
@@ -142,7 +142,7 @@ export function BookCallPage({ content }: { content?: BookingPageContent }) {
                   <div className="size-8 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 group-hover:scale-110 transition-transform">
                     <CheckCircle2 className="size-4 text-emerald-400" />
                   </div>
-                  <span className="text-white/70 text-sm font-medium">{benefit}</span>
+                  <span className="text-white/70 text-sm font-medium whitespace-pre-wrap">{benefit}</span>
                 </div>
               ))}
             </div>

@@ -8,11 +8,14 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight, ArrowLeft, Play, X, Volume2, VolumeX,
-  Activity, Check, Zap, ShieldCheck, ArrowUpRight
+  Activity, Check, Zap, ShieldCheck, ArrowUpRight,
+  CloudRain,
+  UserX,
+  XCircle
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { InquiryForm } from "@/components/InquiryForm";
+import { ServiceCalendly } from "@/components/ServiceCalendly";
 import { client } from "@/lib/sanity";
 import { servicePageQuery } from "@/lib/queries";
 
@@ -25,6 +28,7 @@ interface HeroProps {
   titleAfter?: string;
   subtitle?: string;
   sectionLabel?: string;
+  ctaText?: string;
 }
 
 interface FeatureItem {
@@ -50,19 +54,18 @@ interface ResultsProps {
   title: string;
 }
 
-// --- 1. CENTERED HERO (Smooth Gallery Spotlights) ---
-const HeroCentered = ({ title, highlight, titleAfter, subtitle }: HeroProps) => {
+// --- 1. CENTERED HERO (Refined Weights & Contrast) ---
+const HeroCentered = ({ title, highlight, titleAfter, subtitle, ctaText }: HeroProps) => {
   return (
-    // Updated z-index to 30 to stay above the next section's masks
     <section className="relative pt-32 pb-24 px-6 overflow-hidden bg-[#051A0E] flex flex-col items-center text-center z-30">
-      <link href="https://api.fontshare.com/v2/css?f[]=satoshi@401,900&display=swap" rel="stylesheet" />
+      <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700,900&display=swap" rel="stylesheet" />
       
-      {/* --- SMOOTHER WHITE SPOTLIGHTS --- */}
-      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-white/[0.03] blur-[160px] rounded-full pointer-events-none z-0" />
-      <div className="absolute top-[-10%] right-[-15%] w-[40%] h-[40%] bg-white/[0.03] blur-[140px] rounded-full pointer-events-none z-0" />
+      {/* --- REFINED SPOTLIGHTS (Pushed back to let text breathe) --- */}
+      <div className="absolute top-[-25%] left-[-15%] w-[50%] h-[50%] bg-white/[0.02] blur-[180px] rounded-full pointer-events-none z-0" />
+      <div className="absolute top-[-15%] right-[-20%] w-[40%] h-[40%] bg-white/[0.02] blur-[160px] rounded-full pointer-events-none z-0" />
 
       {/* Subtle Central Atmosphere */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.05),transparent_70%)] pointer-events-none z-0" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.03),transparent_80%)] pointer-events-none z-0" />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -70,24 +73,30 @@ const HeroCentered = ({ title, highlight, titleAfter, subtitle }: HeroProps) => 
         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-40 max-w-4xl mt-12 md:mt-20"
       >
-        <h1 className="text-5xl md:text-6xl font-black text-white tracking-tighter leading-[0.9] mb-8">
+        {/* Changed font-black to font-bold and tracking-tighter to tracking-tight for better legibility */}
+        <h1 className="text-5xl md:text-6xl font-bold text-white tracking-tight leading-[1.1] mb-8 whitespace-pre-wrap">
           {title}{" "}
           <span
-            className="text-emerald-500 px-1"
-            style={{ fontFamily: "'Satoshi', sans-serif", fontStyle: "italic", fontWeight: 400 }}
+            className="text-emerald-400 px-2 inline-block whitespace-pre-wrap"
+            style={{ 
+                fontFamily: "'Satoshi', sans-serif", 
+                fontStyle: "italic", 
+                fontWeight: 500, // Slightly heavier than before to stop blending
+                textShadow: "0 0 20px rgba(52, 211, 153, 0.2)" // Subtle glow to make it pop
+            }}
           >
             {highlight}
           </span>{" "}
           {titleAfter}
         </h1>
 
-        <p className="text-white/40 text-base md:text-lg font-normal max-w-2xl mx-auto leading-relaxed mb-12">
+        <p className="text-white/40 text-base md:text-lg font-normal max-w-2xl mx-auto leading-relaxed mb-12 whitespace-pre-wrap">
           {subtitle}
         </p>
 
         <Link href="#schedule">
-          <Button className="h-12 px-8 rounded-full bg-white text-black text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all group shadow-[0_0_40px_rgba(255,255,255,0.1)]">
-            Book a Free Audit
+          <Button className="h-12 px-8 rounded-full bg-white text-black text-[10px] font-black tracking-widest hover:scale-105 transition-all group shadow-[0_0_40px_rgba(255,255,255,0.1)] whitespace-pre-wrap">
+            {ctaText || "Book a Free Audit"}
             <div className="ml-3 w-6 h-6 rounded-full bg-black flex items-center justify-center">
               <ArrowRight className="w-3.5 h-3.5 text-white group-hover:translate-x-0.5 transition-transform" />
             </div>
@@ -150,7 +159,7 @@ const ReelCard = ({ item, isPlaying, onToggle }: { item: any; isPlaying: boolean
       </div>
 
       <div className="absolute bottom-8 left-8 z-20">
-        <p className="text-emerald-400 text-[9px] font-black uppercase tracking-widest mb-1.5">{item.category}</p>
+        <p className="text-emerald-400 text-[9px] font-black tracking-widest mb-1.5">{item.category}</p>
         <h4 className="text-white text-lg font-bold tracking-tight mb-2">{item.title}</h4>
         {isPlaying && (
           <div className="flex items-center gap-2 text-white/50 text-[8px] uppercase tracking-widest font-bold">
@@ -243,138 +252,154 @@ const WorkReelsSection = ({ workData }: { workData?: any }) => {
   );
 };
 
-// --- 3. REIMAGINED 2060 FEATURE GRID (Connected Lighting) ---
+// --- 3. REIMAGINED 2060 FEATURE GRID (Case & Line Break Fix) ---
 const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: FeatureGridProps) => {
+  
+  const getProblemIcon = (index: number) => {
+    const icons = [
+      <CloudRain className="w-5 h-5 text-red-500" />, 
+      <UserX className="w-5 h-5 text-red-500" />,      
+      <XCircle className="w-5 h-5 text-red-500" />     
+    ];
+    return icons[index % icons.length];
+  };
+
   return (
     <section className="relative -mt-[1px] py-24 px-6 overflow-hidden bg-[#051A0E] border-none z-10">
       
-      {/* --- TOP CONNECTION MASK --- */}
-      {/* Merges with the section above by starting with solid #051A0E */}
       <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
-
-      {/* --- LUXURY WHITE SPOTLIGHTS --- */}
-      {/* Soft spotlight coming from the right side for variety */}
       <div className="absolute top-[20%] right-[-10%] w-[50%] h-[50%] bg-white/[0.02] blur-[160px] rounded-full pointer-events-none z-0" />
-      {/* Bottom left subtle glow */}
       <div className="absolute bottom-[10%] left-[-15%] w-[40%] h-[40%] bg-white/[0.02] blur-[140px] rounded-full pointer-events-none z-0" />
 
       <div className="max-w-7xl mx-auto relative z-30">
         {/* --- HEADER --- */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
-          <div className="max-w-2xl">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-px w-6 bg-emerald-500/50" />
-              <p className="text-emerald-500 text-[9px] font-black tracking-[0.4em] uppercase">{label}</p>
-            </div>
-            <h2 className="text-4xl md:text-5xl text-white font-black tracking-tighter leading-none italic lowercase">
-              {title}
-            </h2>
+        <div className="flex flex-col items-center text-center mb-16">
+          <div className="flex items-center gap-3 mb-6">
+            <div className={`h-px w-8 ${isSolution ? 'bg-emerald-500/50' : 'bg-red-500/50'}`} />
+            <p className={`${isSolution ? 'text-emerald-500' : 'text-red-500'} text-[10px] font-bold tracking-[0.5em] uppercase whitespace-pre-wrap`}>
+              {label}
+            </p>
+            <div className={`h-px w-8 ${isSolution ? 'bg-emerald-500/50' : 'bg-red-500/50'}`} />
           </div>
-          <div className="hidden md:block h-px flex-1 bg-white/5 mx-10 mb-4" />
+          
+          {/* REMOVED 'lowercase' and fixed 'leading' for line breaks */}
+          <h2 className="text-4xl md:text-5xl text-white font-black tracking-tighter leading-tight italic max-w-2xl whitespace-pre-wrap">
+            {title}
+          </h2>
         </div>
 
-        {/* --- GRID --- */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/5 border border-white/5 rounded-[2.5rem] overflow-hidden shadow-2xl">
-          {items?.map((item: FeatureItem, i: number) => (
-            <div key={i} className="feature-card group relative p-8 md:p-10 bg-[#051A0E] transition-all duration-700 hover:bg-white/2">
-              <div className="absolute top-0 right-0 p-5 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-3 group-hover:translate-x-0">
-                <ArrowUpRight className="w-4 h-4 text-emerald-500" />
-              </div>
-
+        {/* --- THE GRID --- */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {items?.map((item: any, i: number) => (
+            <div 
+              key={i} 
+              className={`relative p-10 rounded-[2.5rem] transition-all duration-500 flex flex-col items-center text-center
+                ${isSolution 
+                  ? 'bg-white/[0.02] border border-white/5 shadow-2xl' 
+                  : 'bg-red-500/[0.01] border border-red-500/20 shadow-[0_0_40px_rgba(239,68,68,0.03)]' 
+                }`}
+            >
               <div className="relative z-10">
-                <div className="w-10 h-10 rounded-xl bg-white/3 border border-white/10 flex items-center justify-center mb-8 transition-all duration-500 group-hover:border-emerald-500/50 group-hover:bg-emerald-500/10">
-                  {isSolution ? <ShieldCheck className="w-4 h-4 text-emerald-400" /> : <Zap className="w-4 h-4 text-emerald-400" />}
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-8 mx-auto
+                  ${isSolution ? 'bg-emerald-500/10 border border-emerald-500/20' : 'bg-red-500/10 border border-red-500/20'}`}
+                >
+                  {isSolution ? (
+                    <ShieldCheck className="w-5 h-5 text-emerald-400" />
+                  ) : (
+                    getProblemIcon(i)
+                  )}
                 </div>
 
                 <div className="space-y-3">
-                  <h3 className="text-white text-xl font-bold tracking-tight group-hover:text-emerald-400 transition-colors duration-500">
+                  <h3 className="text-white text-xl font-bold tracking-tight whitespace-pre-wrap">
                     {item.title}
                   </h3>
-                  <p className="text-white/30 leading-relaxed font-normal text-sm md:text-base group-hover:text-white/60 transition-colors duration-500">
+                  <p className="text-white/30 leading-relaxed font-normal text-sm md:text-base max-w-[280px] mx-auto whitespace-pre-wrap">
                     {item.description}
                   </p>
                 </div>
               </div>
-
-              <div className="absolute bottom-0 left-0 w-full h-[2px] bg-emerald-500/0 group-hover:bg-emerald-500/50 transition-all duration-700 origin-left scale-x-0 group-hover:scale-x-100" />
             </div>
           ))}
         </div>
       </div>
 
-      {/* --- BOTTOM BLEND MASK --- */}
       <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#051A0E] via-[#051A0E]/80 to-transparent pointer-events-none z-20" />
     </section>
   );
 };
-
-// --- 4. CENTERED PRICING (Connected Lighting) ---
+// --- 4. CENTERED PRICING (2-Plan Focus Version) ---
 const CenteredPricing = ({ data }: { data?: any }) => {
   const label = data?.plansLabel || "Investment";
   const title = data?.plansTitle || "Plans built for scale.";
-  const plans = data?.plans || [
-    { name: "Growth Core", popular: false, description: "The Starter", features: ["8 Custom Ads / Mo", "Hook Testing Framework", "Monthly Audit", "72h Turnaround"] },
-    { name: "Scale Suite", popular: true, description: "The Dominator", features: ["16+ Custom Ads / Mo", "Full-Funnel Content", "Weekly Sync", "24h Priority"] }
-  ];
+  const plans = data?.plans || [];
+
+  const isSinglePlan = plans.length === 1;
+  const isTwoPlans = plans.length === 2;
 
   return (
     <section className="relative -mt-[1px] py-24 px-6 bg-[#051A0E] overflow-hidden border-none z-10">
       
-      {/* --- TOP CONNECTION MASK --- */}
+      {/* --- BG LIGHTING --- */}
       <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
-
-      {/* --- LUXURY WHITE SPOTLIGHTS --- */}
-      {/* Top Right soft glow */}
       <div className="absolute top-[10%] right-[-5%] w-[40%] h-[40%] bg-white/[0.03] blur-[160px] rounded-full pointer-events-none z-0" />
-      {/* Bottom Left subtle glow */}
-      <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-white/[0.02] blur-[140px] rounded-full pointer-events-none z-0" />
 
-      <div className="max-w-5xl mx-auto relative z-30">
-        <div className="text-center mb-12">
-          <p className="text-emerald-500 text-[10px] font-black tracking-[0.4em] uppercase mb-4">{label}</p>
-          <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-5">{title}</h2>
+      {/* Adaptive Container: Narrow for 1, Medium for 2, Wide for 3+ */}
+      <div className={`
+        ${isSinglePlan ? 'max-w-md' : isTwoPlans ? 'max-w-4xl' : 'max-w-7xl'} 
+        mx-auto relative z-30
+      `}>
+        <div className="text-center mb-16">
+          <p className="text-emerald-500 text-[10px] font-black tracking-[0.4em] mb-4 whitespace-pre-wrap">{label}</p>
+          <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-5 whitespace-pre-wrap">{title}</h2>
         </div>
 
-        {/* items-stretch ensures both cards are exactly the same height */}
-        <div className="grid md:grid-cols-2 gap-6 items-stretch">
+        {/* Grid Setup: 2 plans are centered using flex or grid-cols-2 */}
+        <div className={`
+          grid gap-8 items-stretch
+          ${isSinglePlan ? 'grid-cols-1' : isTwoPlans ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1 md:grid-cols-3'}
+        `}>
           {plans.map((plan: any, i: number) => (
             <div 
               key={i} 
-              className={`flex flex-col p-8 md:p-10 rounded-[2.5rem] border backdrop-blur-3xl transition-all duration-500 ${
-                plan.popular 
-                  ? "relative border-emerald-500/30 bg-white/[0.04] shadow-[0_0_60px_rgba(16,185,129,0.08)] scale-102 z-20" 
-                  : "border-white/5 bg-white/[0.02]"
-              }`}
+              className={`flex flex-col p-8 md:p-10 rounded-[2.5rem] border backdrop-blur-3xl transition-all duration-700 w-full
+                ${plan.popular 
+                  ? "relative border-emerald-500/40 bg-white/[0.05] shadow-[0_0_80px_rgba(16,185,129,0.12)] scale-105 z-20" 
+                  : "border-white/10 bg-white/[0.02] opacity-80 scale-100"
+                }
+              `}
             >
               {plan.popular && (
-                <div className="absolute top-6 right-8 px-2.5 py-1 rounded-full bg-emerald-500 text-black text-[8px] font-black uppercase tracking-widest">
-                  Recommended
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-emerald-500 text-black text-[9px] font-black uppercase tracking-widest shadow-[0_0_20px_rgba(16,185,129,0.4)]">
+                  Most Popular
                 </div>
               )}
               
-              <h3 className={`${plan.popular ? 'text-emerald-400' : 'text-white/50'} text-[10px] font-bold uppercase tracking-widest mb-1.5`}>
+              <h3 className={`${plan.popular ? 'text-emerald-400' : 'text-white/40'} text-[10px] font-bold tracking-widest mb-2 whitespace-pre-wrap`}>
                 {plan.description}
               </h3>
               
-              <span className="text-white text-4xl font-bold tracking-tighter mb-8 block">
+              <span className="text-white text-4xl font-bold tracking-tighter mb-8 block whitespace-pre-wrap">
                 {plan.name}
               </span>
               
-              {/* flex-1 pushes the button to the bottom so heights match */}
               <ul className="space-y-4 mb-10 flex-1">
                 {plan.features?.map((f: string, idx: number) => (
-                  <li key={idx} className={`flex items-center gap-2.5 text-sm ${plan.popular ? 'text-white font-medium' : 'text-white/70 font-normal'}`}>
-                    <Check className={`w-3 h-3 ${plan.popular ? 'text-emerald-500' : 'text-emerald-400'}`} />
+                  <li key={idx} className={`flex items-center gap-2.5 text-sm ${plan.popular ? 'text-white' : 'text-white/60'}`}>
+                    <Check className={`w-3.5 h-3.5 ${plan.popular ? 'text-emerald-500' : 'text-emerald-800'}`} />
                     {f}
                   </li>
                 ))}
               </ul>
               
               <Link href="#schedule" className="block mt-auto">
-                <Button className={`w-full h-12 rounded-full font-bold uppercase tracking-widest text-[9px] transition-transform active:scale-95 ${
-                  plan.popular ? 'bg-white text-black hover:bg-emerald-500 hover:text-white' : 'bg-white/5 border border-white/10 text-white hover:bg-white hover:text-black'
-                }`}>
-                  Book A Call
+                <Button className={`w-full h-12 rounded-full font-black uppercase tracking-widest text-[9px] transition-all
+                  ${plan.popular 
+                    ? 'bg-white text-black hover:bg-emerald-500 hover:text-white' 
+                    : 'bg-white/5 border border-white/10 text-white hover:bg-white hover:text-black'
+                  }
+                `}>
+                  I Need This
                 </Button>
               </Link>
             </div>
@@ -382,12 +407,10 @@ const CenteredPricing = ({ data }: { data?: any }) => {
         </div>
       </div>
 
-      {/* --- BOTTOM BLEND MASK --- */}
       <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#051A0E] via-[#051A0E]/80 to-transparent pointer-events-none z-20" />
     </section>
   );
 };
-
 // --- 5. RESULTS (Connected Lighting) ---
 const ResultsSection = ({ items, title }: ResultsProps) => {
   return (
@@ -404,7 +427,7 @@ const ResultsSection = ({ items, title }: ResultsProps) => {
       <div className="absolute bottom-[20%] right-[-5%] w-[30%] h-[40%] bg-white/[0.02] blur-[120px] rounded-full pointer-events-none z-0" />
 
       <div className="max-w-7xl mx-auto relative z-30">
-        <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter opacity-90 mb-16">
+        <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter opacity-90 mb-16 whitespace-pre-wrap">
           {title}
         </h2>
         
@@ -430,7 +453,7 @@ const ResultsSection = ({ items, title }: ResultsProps) => {
   );
 };
 // --- 6. OUR PROCESS (Connected Lighting) ---
-const ProcessSection = () => {
+const ProcessSection = ({ data }: { data?: any }) => {
   const container = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
 
@@ -444,7 +467,9 @@ const ProcessSection = () => {
     return () => ctx.revert();
   }, []);
 
-  const steps = [
+  const label = data?.processLabel || "The Workflow";
+  const title = data?.processTitle || "the system";
+  const steps = data?.processSteps || [
     { name: "Creative Audit", desc: "Data-driven analysis of your historical performance to identify hook-leakage." },
     { name: "Strategy Mapping", desc: "Strategy roadmap based on core human desires and direct-response triggers." },
     { name: "Asset Production", desc: "High-volume delivery of studio-grade videos built specifically for high CTR." },
@@ -465,8 +490,8 @@ const ProcessSection = () => {
 
       <div className="max-w-7xl mx-auto relative z-30">
         <div className="mb-16 md:mb-20">
-          <p className="text-emerald-500 text-[9px] font-black tracking-[0.4em] uppercase mb-3">The Workflow</p>
-          <h2 className="text-5xl md:text-7xl text-white font-black tracking-tighter leading-none italic lowercase">the system</h2>
+          <p className="text-emerald-500 text-[9px] font-black tracking-[0.4em] mb-3">{label}</p>
+          <h2 className="text-5xl md:text-7xl text-white font-black tracking-tighter leading-none italic">{title}</h2>
         </div>
         
         <div className="relative">
@@ -475,14 +500,14 @@ const ProcessSection = () => {
           <div className="absolute top-0 left-0 md:w-full md:h-px w-[2px] h-full bg-white/5" />
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-12">
-            {steps.map((step, i) => (
+            {steps.map((step: any, i: number) => (
               <div key={i} className="pt-10 md:pt-14 relative group pl-8 md:pl-0">
                 {/* Step Circle - Updated border to match #051A0E */}
                 <div className="absolute top-0 left-[-7px] md:left-0 md:-translate-y-1/2 w-3.5 h-3.5 rounded-full bg-emerald-500 border-4 border-[#051A0E] z-20 group-hover:scale-125 transition-transform shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
                 
                 <span className="text-emerald-500 font-bold text-[9px] tracking-widest mb-3 block uppercase opacity-50 group-hover:opacity-100 transition-opacity">Step 0{i + 1}</span>
-                <h3 className="text-white text-xl md:text-2xl font-bold mb-4 tracking-tight group-hover:text-emerald-400 transition-colors">{step.name}</h3>
-                <p className="text-white/40 leading-relaxed font-normal text-sm md:text-base group-hover:text-white/60 transition-colors">{step.desc}</p>
+                <h3 className="text-white text-xl md:text-2xl font-bold mb-4 tracking-tight group-hover:text-emerald-400 transition-colors whitespace-pre-wrap">{step.name}</h3>
+                <p className="text-white/40 leading-relaxed font-normal text-sm md:text-base group-hover:text-white/60 transition-colors whitespace-pre-wrap">{step.desc}</p>
               </div>
             ))}
           </div>
@@ -502,6 +527,14 @@ export default function AdCreativesPage() {
     client.fetch(servicePageQuery, { slug: "ad-creatives" }).then(setData);
   }, []);
 
+  if (!data) {
+    return (
+      <div className="flex flex-col min-h-screen bg-[#05180D] items-center justify-center">
+        <div className="w-8 h-8 rounded-full border-2 border-emerald-500/20 border-t-emerald-500 animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-[#05180D] selection:bg-emerald-500/30">
       <main className="grow">
@@ -511,6 +544,7 @@ export default function AdCreativesPage() {
           highlight={data?.headlineHighlight || "earns attention"}
           titleAfter={data?.headlineTitleAfter || "and converts."}
           subtitle={data?.headlineSubtitle || "An always-on creative system: hooks, angles, and iterations built for measurable revenue growth."}
+          ctaText={data?.heroCta}
         />
         <WorkReelsSection workData={data?.work} />
         <AnimatedFeatureGrid
@@ -536,9 +570,14 @@ export default function AdCreativesPage() {
           title={data?.resultsTitle || "Our Results"}
           items={data?.results || [{ image: "/" }, { image: "/results/s2.png" }, { image: "/results/s3.png" }, { image: "/results/s4.png" }]}
         />
-        <ProcessSection />
+        <ProcessSection data={data} />
         <CenteredPricing data={data} />
-        <InquiryForm sourcePage="ad-creatives" />
+        <ServiceCalendly content={{
+          title: data?.calendlyTitle,
+          subtitle: data?.calendlySubtitle,
+          calendlyUrl: data?.calendlyUrl,
+          highlightedWord: data?.calendlyHighlightedWord,
+        }} />
       </main>
       <style jsx global>{`
         .no-scrollbar::-webkit-scrollbar { display: none; }

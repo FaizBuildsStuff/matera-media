@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { InquiryForm } from "@/components/InquiryForm";
+import { ServiceCalendly } from "@/components/ServiceCalendly";
 import { client } from "@/lib/sanity";
 import { servicePageQuery } from "@/lib/queries";
 
@@ -25,6 +25,7 @@ interface HeroProps {
   titleAfter?: string;
   subtitle?: string;
   sectionLabel?: string;
+  ctaText?: string;
 }
 
 interface FeatureItem {
@@ -50,19 +51,18 @@ interface ResultsProps {
   title: string;
 }
 
-// --- 1. CENTERED HERO (Smooth Gallery Spotlights) ---
-const HeroCentered = ({ title, highlight, titleAfter, subtitle }: HeroProps) => {
+// --- 1. CENTERED HERO (Refined & Polished Version) ---
+const HeroCentered = ({ title, highlight, titleAfter, subtitle, ctaText }: HeroProps) => {
   return (
-    // Updated z-index to 30 to stay above the next section's masks
     <section className="relative pt-32 pb-24 px-6 overflow-hidden bg-[#051A0E] flex flex-col items-center text-center z-30">
-      <link href="https://api.fontshare.com/v2/css?f[]=satoshi@401,900&display=swap" rel="stylesheet" />
+      <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700,900&display=swap" rel="stylesheet" />
       
-      {/* --- SMOOTHER WHITE SPOTLIGHTS --- */}
-      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-white/[0.03] blur-[160px] rounded-full pointer-events-none z-0" />
-      <div className="absolute top-[-10%] right-[-15%] w-[40%] h-[40%] bg-white/[0.03] blur-[140px] rounded-full pointer-events-none z-0" />
+      {/* --- REFINED WHITE SPOTLIGHTS --- */}
+      <div className="absolute top-[-25%] left-[-15%] w-[50%] h-[50%] bg-white/[0.02] blur-[180px] rounded-full pointer-events-none z-0" />
+      <div className="absolute top-[-15%] right-[-20%] w-[40%] h-[40%] bg-white/[0.02] blur-[160px] rounded-full pointer-events-none z-0" />
 
       {/* Subtle Central Atmosphere */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.05),transparent_70%)] pointer-events-none z-0" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.03),transparent_80%)] pointer-events-none z-0" />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -70,24 +70,30 @@ const HeroCentered = ({ title, highlight, titleAfter, subtitle }: HeroProps) => 
         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-40 max-w-4xl mt-12 md:mt-20"
       >
-        <h1 className="text-5xl md:text-6xl font-black text-white tracking-tighter leading-[0.9] mb-8">
+        <h1 className="text-5xl md:text-6xl font-bold text-white tracking-tight leading-[1.1] mb-8 whitespace-pre-wrap">
           {title}{" "}
+          {/* This span now wraps the highlight and forces it to stay as one "chunk" */}
           <span
-            className="text-emerald-500 px-1"
-            style={{ fontFamily: "'Satoshi', sans-serif", fontStyle: "italic", fontWeight: 400 }}
+            className="text-emerald-400 inline whitespace-pre-wrap"
+            style={{ 
+                fontFamily: "'Satoshi', sans-serif", 
+                fontStyle: "italic", 
+                fontWeight: 500,
+                textShadow: "0 0 20px rgba(52, 211, 153, 0.2)"
+            }}
           >
             {highlight}
           </span>{" "}
           {titleAfter}
         </h1>
 
-        <p className="text-white/40 text-base md:text-lg font-normal max-w-2xl mx-auto leading-relaxed mb-12">
+        <p className="text-white/40 text-base md:text-lg font-normal max-w-2xl mx-auto leading-relaxed mb-12 whitespace-pre-wrap">
           {subtitle}
         </p>
 
         <Link href="#schedule">
-          <Button className="h-12 px-8 rounded-full bg-white text-black text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all group shadow-[0_0_40px_rgba(255,255,255,0.1)]">
-            Book a Free Audit
+          <Button className="h-12 px-8 rounded-full bg-white text-black text-[10px] font-black tracking-widest hover:scale-105 transition-all group shadow-[0_0_40px_rgba(255,255,255,0.1)] border-none whitespace-pre-wrap">
+            {ctaText || "Book a Free Audit"}
             <div className="ml-3 w-6 h-6 rounded-full bg-black flex items-center justify-center">
               <ArrowRight className="w-3.5 h-3.5 text-white group-hover:translate-x-0.5 transition-transform" />
             </div>
@@ -95,7 +101,6 @@ const HeroCentered = ({ title, highlight, titleAfter, subtitle }: HeroProps) => 
         </Link>
       </motion.div>
 
-      {/* --- THE "UNDER SECTION" FIX --- */}
       <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
     </section>
   );
@@ -150,7 +155,7 @@ const ReelCard = ({ item, isPlaying, onToggle }: { item: any; isPlaying: boolean
       </div>
 
       <div className="absolute bottom-8 left-8 z-20">
-        <p className="text-emerald-400 text-[9px] font-black uppercase tracking-widest mb-1.5">{item.category}</p>
+        <p className="text-emerald-400 text-[9px] font-black tracking-widest mb-1.5">{item.category}</p>
         <h4 className="text-white text-lg font-bold tracking-tight mb-2">{item.title}</h4>
         {isPlaying && (
           <div className="flex items-center gap-2 text-white/50 text-[8px] uppercase tracking-widest font-bold">
@@ -240,7 +245,7 @@ const WorkReelsSection = ({ workData }: { workData?: any }) => {
   );
 };
 
-// --- 3. REIMAGINED 2060 FEATURE GRID (Connected Lighting) ---
+// --- 3. REIMAGINED 2060 FEATURE GRID (Plain & Minimalist) ---
 const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: FeatureGridProps) => {
   return (
     <section className="relative -mt-[1px] py-24 px-6 overflow-hidden bg-[#051A0E] border-none z-10">
@@ -257,40 +262,38 @@ const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: Featur
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
           <div className="max-w-2xl">
             <div className="flex items-center gap-3 mb-4">
-              <div className="h-px w-6 bg-emerald-500/50" />
-              <p className="text-emerald-500 text-[9px] font-black tracking-[0.4em] uppercase">{label}</p>
+              <div className={`h-px w-6 ${isSolution ? 'bg-emerald-500/50' : 'bg-red-500/50'}`} />
+              <p className={`${isSolution ? 'text-emerald-500' : 'text-red-500'} text-[9px] font-black tracking-[0.4em]`}>{label}</p>
             </div>
-            <h2 className="text-4xl md:text-5xl text-white font-black tracking-tighter leading-none italic lowercase">
+            <h2 className="text-4xl md:text-5xl text-white font-black tracking-tighter leading-none italic">
               {title}
             </h2>
           </div>
           <div className="hidden md:block h-px flex-1 bg-white/5 mx-10 mb-4" />
         </div>
 
-        {/* --- GRID --- */}
+        {/* --- GRID (Cleaned up) --- */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/5 border border-white/5 rounded-[2.5rem] overflow-hidden shadow-2xl">
           {items?.map((item: FeatureItem, i: number) => (
-            <div key={i} className="feature-card group relative p-8 md:p-10 bg-[#051A0E] transition-all duration-700 hover:bg-white/2">
-              <div className="absolute top-0 right-0 p-5 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-3 group-hover:translate-x-0">
-                <ArrowUpRight className="w-4 h-4 text-emerald-500" />
-              </div>
+            <div key={i} className="feature-card relative p-8 md:p-10 bg-[#051A0E]">
+              {/* Arrow and Bottom Line Removed */}
 
               <div className="relative z-10">
-                <div className="w-10 h-10 rounded-xl bg-white/3 border border-white/10 flex items-center justify-center mb-8 transition-all duration-500 group-hover:border-emerald-500/50 group-hover:bg-emerald-500/10">
-                  {isSolution ? <ShieldCheck className="w-4 h-4 text-emerald-400" /> : <Zap className="w-4 h-4 text-emerald-400" />}
+                {/* Icon box made simpler - no hover color change */}
+                <div className="w-10 h-10 rounded-xl bg-white/3 border border-white/10 flex items-center justify-center mb-8">
+                  {isSolution ? <ShieldCheck className="w-4 h-4 text-emerald-400" /> : <Zap className="w-4 h-4 text-red-500" />}
                 </div>
 
                 <div className="space-y-3">
-                  <h3 className="text-white text-xl font-bold tracking-tight group-hover:text-emerald-400 transition-colors duration-500">
+                  {/* Title kept plain white */}
+                  <h3 className="text-white text-xl font-bold tracking-tight whitespace-pre-wrap">
                     {item.title}
                   </h3>
-                  <p className="text-white/30 leading-relaxed font-normal text-sm md:text-base group-hover:text-white/60 transition-colors duration-500">
+                  <p className="text-white/30 leading-relaxed font-normal text-sm md:text-base whitespace-pre-wrap">
                     {item.description}
                   </p>
                 </div>
               </div>
-
-              <div className="absolute bottom-0 left-0 w-full h-[2px] bg-emerald-500/0 group-hover:bg-emerald-500/50 transition-all duration-700 origin-left scale-x-0 group-hover:scale-x-100" />
             </div>
           ))}
         </div>
@@ -323,8 +326,8 @@ const CenteredPricing = ({ data }: { data?: any }) => {
 
       <div className="max-w-5xl mx-auto relative z-30">
         <div className="text-center mb-12">
-          <p className="text-emerald-500 text-[10px] font-black tracking-[0.4em] uppercase mb-4">{label}</p>
-          <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-5">{title}</h2>
+          <p className="text-emerald-500 text-[10px] font-black tracking-[0.4em] mb-4 whitespace-pre-wrap">{label}</p>
+          <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-5 whitespace-pre-wrap">{title}</h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6 items-stretch">
@@ -343,11 +346,11 @@ const CenteredPricing = ({ data }: { data?: any }) => {
                 </div>
               )}
               
-              <h3 className={`${plan.popular ? 'text-emerald-400' : 'text-white/50'} text-[10px] font-bold uppercase tracking-widest mb-1.5`}>
+              <h3 className={`${plan.popular ? 'text-emerald-400' : 'text-white/50'} text-[10px] font-bold tracking-widest mb-1.5 whitespace-pre-wrap`}>
                 {plan.description}
               </h3>
               
-              <span className="text-white text-4xl font-bold tracking-tighter mb-8 block">
+              <span className="text-white text-4xl font-bold tracking-tighter mb-8 block whitespace-pre-wrap">
                 {plan.name}
               </span>
               
@@ -391,7 +394,7 @@ const ResultsSection = ({ items, title }: ResultsProps) => {
       <div className="absolute bottom-[20%] right-[-5%] w-[30%] h-[40%] bg-white/[0.02] blur-[120px] rounded-full pointer-events-none z-0" />
 
       <div className="max-w-7xl mx-auto relative z-30">
-        <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter opacity-90 mb-16">
+        <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter opacity-90 mb-16 whitespace-pre-wrap">
           {title}
         </h2>
         
@@ -418,7 +421,7 @@ const ResultsSection = ({ items, title }: ResultsProps) => {
 };
 
 // --- 6. OUR PROCESS (Connected Lighting) ---
-const ProcessSection = () => {
+const ProcessSection = ({ data }: { data?: any }) => {
   const container = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
 
@@ -432,7 +435,9 @@ const ProcessSection = () => {
     return () => ctx.revert();
   }, []);
 
-  const steps = [
+  const label = data?.processLabel || "The Workflow";
+  const title = data?.processTitle || "the system";
+  const steps = data?.processSteps || [
     { name: "Channel Audit", desc: "We audit your niche, competitors, and current content to identify positioning gaps." },
     { name: "Content Strategy", desc: "We build a strategic content roadmap with proven video angles and storytelling hooks." },
     { name: "Retention Production", desc: "Every video is structured with strong hooks and pacing optimized for watch time." },
@@ -451,8 +456,8 @@ const ProcessSection = () => {
 
       <div className="max-w-7xl mx-auto relative z-30">
         <div className="mb-16 md:mb-20">
-          <p className="text-emerald-500 text-[9px] font-black tracking-[0.4em] uppercase mb-3">The Workflow</p>
-          <h2 className="text-5xl md:text-7xl text-white font-black tracking-tighter leading-none italic lowercase">the system</h2>
+          <p className="text-emerald-500 text-[9px] font-black tracking-[0.4em] mb-3 whitespace-pre-wrap">{label}</p>
+          <h2 className="text-5xl md:text-7xl text-white font-black tracking-tighter leading-none italic whitespace-pre-wrap">{title}</h2>
         </div>
         
         <div className="relative">
@@ -461,14 +466,14 @@ const ProcessSection = () => {
           <div className="absolute top-0 left-0 md:w-full md:h-px w-[2px] h-full bg-white/5" />
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-12">
-            {steps.map((step, i) => (
+            {steps.map((step: any, i: number) => (
               <div key={i} className="pt-10 md:pt-14 relative group pl-8 md:pl-0">
                 {/* Step Circle */}
                 <div className="absolute top-0 left-[-7px] md:left-0 md:-translate-y-1/2 w-3.5 h-3.5 rounded-full bg-emerald-500 border-4 border-[#051A0E] z-20 group-hover:scale-125 transition-transform shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
                 
                 <span className="text-emerald-500 font-bold text-[9px] tracking-widest mb-3 block uppercase opacity-50 group-hover:opacity-100 transition-opacity">Step 0{i + 1}</span>
-                <h3 className="text-white text-xl md:text-2xl font-bold mb-4 tracking-tight group-hover:text-emerald-400 transition-colors">{step.name}</h3>
-                <p className="text-white/40 leading-relaxed font-normal text-sm md:text-base group-hover:text-white/60 transition-colors">{step.desc}</p>
+                <h3 className="text-white text-xl md:text-2xl font-bold mb-4 tracking-tight group-hover:text-emerald-400 transition-colors whitespace-pre-wrap">{step.name}</h3>
+                <p className="text-white/40 leading-relaxed font-normal text-sm md:text-base group-hover:text-white/60 transition-colors whitespace-pre-wrap">{step.desc}</p>
               </div>
             ))}
           </div>
@@ -488,6 +493,14 @@ export default function OrganicContentYouTubePage() {
     client.fetch(servicePageQuery, { slug: "organic-content-youtube" }).then(setData);
   }, []);
 
+  if (!data) {
+    return (
+      <div className="flex flex-col min-h-screen bg-[#05180D] items-center justify-center">
+        <div className="w-8 h-8 rounded-full border-2 border-emerald-500/20 border-t-emerald-500 animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-[#05180D] selection:bg-emerald-500/30">
       <main className="grow">
@@ -497,6 +510,7 @@ export default function OrganicContentYouTubePage() {
           highlight={data?.headlineHighlight || "builds authority"}
           titleAfter={data?.headlineTitleAfter || "and drives real growth."}
           subtitle={data?.headlineSubtitle || "A strategy-first YouTube system focused on storytelling, retention, and long-term audience building — not paid ads."}
+          ctaText={data?.heroCta}
         />
         <WorkReelsSection workData={data?.work} />
         <AnimatedFeatureGrid
@@ -522,9 +536,14 @@ export default function OrganicContentYouTubePage() {
           title={data?.resultsTitle || "Our Results"}
           items={data?.results || [{ image: "/" }, { image: "/" }, { image: "/" }, { image: "/" }]}
         />
-        <ProcessSection />
+        <ProcessSection data={data} />
         <CenteredPricing data={data} />
-        <InquiryForm sourcePage="organic-content-youtube" />
+        <ServiceCalendly content={{
+          title: data?.calendlyTitle,
+          subtitle: data?.calendlySubtitle,
+          calendlyUrl: data?.calendlyUrl,
+          highlightedWord: data?.calendlyHighlightedWord,
+        }} />
       </main>
       <style jsx global>{`
         .no-scrollbar::-webkit-scrollbar { display: none; }

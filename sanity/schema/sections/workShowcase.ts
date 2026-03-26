@@ -8,7 +8,8 @@ export const workItem = defineType({
     defineField({
       name: "title",
       title: "Title",
-      type: "string",
+      type: "text",
+      rows: 2,
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -94,13 +95,15 @@ export default defineType({
     defineField({
       name: "title",
       title: "Section Title",
-      type: "string",
+      type: "text",
+      rows: 2,
       initialValue: "Selected Works",
     }),
     defineField({
       name: "highlightedWord",
       title: "Highlighted Word",
-      type: "string",
+      type: "text",
+      rows: 2,
       initialValue: "Works",
     }),
     defineField({

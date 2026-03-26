@@ -171,7 +171,7 @@ export const WorkShowcase = ({
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div ref={headerRef} className="mb-20">
-          <h2 className="text-4xl md:text-6xl font-black text-emerald-500 mb-6 tracking-tighter font-satoshi uppercase flex items-center gap-4">
+          <h2 className="text-4xl md:text-6xl font-black text-emerald-500 mb-6 tracking-tighter font-satoshi uppercase flex items-center gap-4 whitespace-pre-wrap">
             {/* Emerald Sparkle with a premium breathing animation */}
             <Sparkles className="w-10 h-10 md:w-12 md:h-12 text-emerald-500 animate-[pulse_3s_ease-in-out_infinite] opacity-80" />
 
@@ -183,7 +183,7 @@ export const WorkShowcase = ({
               {/* Extra CMS text here if needed */}
             </span>
           </h2>
-          <p className="text-white/50 max-w-xl font-light text-lg leading-relaxed">{description}</p>
+        <p className="text-white/50 max-w-xl font-light text-lg leading-relaxed whitespace-pre-wrap">{description}</p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
@@ -332,7 +332,7 @@ function ReelCard({ work }: { work: WorkItem }) {
                   </span>
                 ))}
               </div>
-              <h3 className="text-sm font-bold tracking-tight text-white leading-tight">
+              <h3 className="text-sm font-bold tracking-tight text-white leading-tight whitespace-pre-wrap">
                 {work.title}
               </h3>
             </div>

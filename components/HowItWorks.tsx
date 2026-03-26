@@ -153,7 +153,7 @@ export const HowItWorks = ({ content }: HowItWorksProps) => {
                                             {step.title}
                                         </h3>
 
-                                        <p className="text-white/40 text-base md:text-lg leading-relaxed font-normal max-w-lg mx-auto md:mx-0">
+                                        <p className="text-white/40 text-base md:text-lg leading-relaxed font-normal max-w-lg mx-auto md:mx-0 whitespace-pre-wrap">
                                             {step.description}
                                         </p>
                                     </div>

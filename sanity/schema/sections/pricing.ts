@@ -8,20 +8,23 @@ export const pricingPlan = defineType({
     defineField({
       name: "name",
       title: "Plan Name",
-      type: "string",
+      type: "text",
+      rows: 2,
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "price",
       title: "Price",
-      type: "string",
+      type: "text",
+      rows: 2,
       description: "e.g. $2,500 or Custom",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "period",
       title: "Period",
-      type: "string",
+      type: "text",
+      rows: 2,
       description: "e.g. /project, /month, or leave empty",
     }),
     defineField({
@@ -59,19 +62,22 @@ export default defineType({
     defineField({
       name: "label",
       title: "Section Label",
-      type: "string",
+      type: "text",
+      rows: 2,
       initialValue: "Investment",
     }),
     defineField({
       name: "title",
       title: "Section Title",
-      type: "string",
+      type: "text",
+      rows: 2,
       initialValue: "Transparent Pricing.",
     }),
     defineField({
       name: "highlightedWord",
       title: "Highlighted Word",
-      type: "string",
+      type: "text",
+      rows: 2,
       initialValue: "Pricing.",
     }),
     defineField({

@@ -8,13 +8,15 @@ export default defineType({
     defineField({
       name: "label",
       title: "Label",
-      type: "string",
+      type: "text",
+      rows: 2,
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "value",
       title: "Value",
-      type: "string",
+      type: "text",
+      rows: 2,
       validation: (Rule) => Rule.required(),
     }),
     defineField({

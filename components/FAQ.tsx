@@ -117,10 +117,10 @@ export const FAQ = ({ content }: { content?: FAQContent }) => {
                     <Accordion type="single" collapsible className="w-full">
                         {faqs.map((faq) => (
                             <AccordionItem key={faq.id} value={faq.id} className="border-white/10 last:border-b-0">
-                                <AccordionTrigger className="text-white hover:text-emerald-400 hover:no-underline text-lg font-medium text-left py-5">
+                                <AccordionTrigger className="text-white hover:text-emerald-400 hover:no-underline text-lg font-medium text-left py-5 whitespace-pre-wrap">
                                     {faq.question}
                                 </AccordionTrigger>
-                                <AccordionContent className="text-white/40 font-normal leading-relaxed text-base pb-6">
+                                <AccordionContent className="text-white/40 font-normal leading-relaxed text-base pb-6 whitespace-pre-wrap">
                                     {faq.answer}
                                 </AccordionContent>
                             </AccordionItem>
