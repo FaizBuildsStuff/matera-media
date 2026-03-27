@@ -65,6 +65,7 @@ export const servicePageQuery = `*[_type == "servicePage" && slug == $slug][0]{
   bookACallCta,
   problemsLabel,
   problemsTitle,
+  problemsHighlightedWord,
   problems[]{
     _key,
     title,

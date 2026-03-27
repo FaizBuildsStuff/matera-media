@@ -108,6 +108,14 @@ export default defineType({
       group: "problems",
     }),
     defineField({
+      name: "problemsHighlightedWord",
+      title: "Problems Highlighted Word",
+      type: "text",
+      rows: 2,
+      group: "problems",
+      description: "Paste the exact word from the title that you want to highlight",
+    }),
+    defineField({
       name: "problems",
       title: "Problems",
       type: "array",

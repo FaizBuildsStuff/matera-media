@@ -11,15 +11,20 @@ import {
   Activity, Check, Zap, ShieldCheck, ArrowUpRight,
   CloudRain,
   UserX,
-  XCircle
+  XCircle,
+  Plus,
+  Hash
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { ServiceCalendly } from "@/components/ServiceCalendly";
 import { client } from "@/lib/sanity";
 import { servicePageQuery } from "@/lib/queries";
+import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(ScrollTrigger);
+
+
 
 // --- Interfaces ---
 interface HeroProps {
@@ -41,6 +46,7 @@ interface FeatureGridProps {
   title: string;
   label: string;
   isSolution?: boolean;
+  highlightedWord?: string;
 }
 
 interface ResultItem {
@@ -59,7 +65,7 @@ const HeroCentered = ({ title, highlight, titleAfter, subtitle, ctaText }: HeroP
   return (
     <section className="relative pt-32 pb-24 px-6 overflow-hidden bg-[#051A0E] flex flex-col items-center text-center z-30">
       <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700,900&display=swap" rel="stylesheet" />
-      
+
       {/* --- REFINED SPOTLIGHTS (Pushed back to let text breathe) --- */}
       <div className="absolute top-[-25%] left-[-15%] w-[50%] h-[50%] bg-white/[0.02] blur-[180px] rounded-full pointer-events-none z-0" />
       <div className="absolute top-[-15%] right-[-20%] w-[40%] h-[40%] bg-white/[0.02] blur-[160px] rounded-full pointer-events-none z-0" />
@@ -78,11 +84,11 @@ const HeroCentered = ({ title, highlight, titleAfter, subtitle, ctaText }: HeroP
           {title}{" "}
           <span
             className="text-emerald-400 px-2 inline-block whitespace-pre-wrap"
-            style={{ 
-                fontFamily: "'Satoshi', sans-serif", 
-                fontStyle: "italic", 
-                fontWeight: 500, // Slightly heavier than before to stop blending
-                textShadow: "0 0 20px rgba(52, 211, 153, 0.2)" // Subtle glow to make it pop
+            style={{
+              fontFamily: "'Satoshi', sans-serif",
+              fontStyle: "italic",
+              fontWeight: 500, // Slightly heavier than before to stop blending
+              textShadow: "0 0 20px rgba(52, 211, 153, 0.2)" // Subtle glow to make it pop
             }}
           >
             {highlight}
@@ -207,7 +213,7 @@ const WorkReelsSection = ({ workData }: { workData?: any }) => {
 
   return (
     <section className="relative -mt-[1px] pt-24 pb-20 px-6 bg-[#051A0E] overflow-hidden border-none z-10">
-      
+
       {/* --- TOP CONNECTION MASK --- */}
       {/* This creates the 'Under the Hero' effect by starting with solid #051A0E */}
       <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
@@ -233,7 +239,7 @@ const WorkReelsSection = ({ workData }: { workData?: any }) => {
             </button>
           </div>
         </div>
-        
+
         <div ref={scrollRef} className="flex gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-4">
           {items.map((item: any, i: number) => (
             <ReelCard
@@ -252,69 +258,192 @@ const WorkReelsSection = ({ workData }: { workData?: any }) => {
   );
 };
 
-// --- 3. REIMAGINED 2060 FEATURE GRID (Case & Line Break Fix) ---
-const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: FeatureGridProps) => {
-  
+// --- 1. THE DOODLE LAYER (Among Us Drifting Effect) ---
+const DoodleLayer = ({ isSolution }: { isSolution: boolean }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    const items = gsap.utils.toArray(".doodle-item");
+    
+    items.forEach((item: any) => {
+      gsap.to(item, {
+        x: "random(-100, 100)",
+        y: "random(-100, 100)",
+        rotation: "random(-45, 45)",
+        duration: "random(10, 15)",
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+    });
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const { clientX, clientY } = e;
+      const xPos = (clientX / window.innerWidth - 0.5) * 50;
+      const yPos = (clientY / window.innerHeight - 0.5) * 50;
+      gsap.to(".parallax-group", { x: xPos, y: yPos, duration: 1, ease: "power2.out" });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, { scope: containerRef });
+
+  return (
+    <div ref={containerRef} className="absolute inset-0 overflow-hidden pointer-events-none z-0 select-none">
+      <div className="parallax-group absolute inset-0">
+        <Plus className="doodle-item absolute top-[15%] left-[10%] w-4 h-4 text-white/10" />
+        <Hash className="doodle-item absolute top-[60%] left-[85%] w-5 h-5 text-white/10" />
+        <div className="doodle-item absolute top-[20%] left-[80%] text-[9px] font-mono text-white/5 tracking-widest uppercase opacity-40">0x_protocol_active</div>
+        
+        <svg className="absolute inset-0 w-full h-full opacity-[0.04]">
+          <circle className="doodle-item fill-none stroke-white" cx="40%" cy="20%" r="80" strokeWidth="0.5" strokeDasharray="8 4" />
+          <rect className="doodle-item fill-none stroke-white" x="10%" y="75%" width="50" height="50" strokeWidth="0.5" />
+        </svg>
+
+        {[...Array(4)].map((_, i) => (
+          <div
+            key={i}
+            className={`doodle-item absolute blur-[150px] rounded-full opacity-[0.06] ${isSolution ? "bg-emerald-500" : "bg-red-500"}`}
+            style={{
+              width: `${Math.random() * 400 + 300}px`,
+              height: `${Math.random() * 400 + 300}px`,
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// --- 3. REIMAGINED 2060 FEATURE GRID (Refined Typography) ---
+const AnimatedFeatureGrid = ({ items, title, label, isSolution = false, highlightedWord }: FeatureGridProps) => {
+  const sectionRef = useRef(null);
+
+  useGSAP(() => {
+    if (!items || items.length === 0) return;
+
+    // MASTER TIMELINE: High-fidelity sync with scroll
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 95%", // Starts early for seamless entry
+        end: "bottom 70%",
+        scrub: 0.1, // Near-zero lag for professional snappiness
+      }
+    });
+
+    // 1. Header: Subtle scale-down + focus reveal
+    tl.fromTo(".header-anim", 
+      { y: 30, opacity: 0, filter: "blur(15px)", scale: 1.05 },
+      { y: 0, opacity: 1, filter: "blur(0px)", scale: 1, duration: 1, ease: "power2.out" }
+    );
+
+    // 2. The Cards: Unfolding from 3D space
+    tl.fromTo(".feature-card", 
+      { 
+        y: 80, 
+        opacity: 0, 
+        rotationX: -25, // Deep tilt for perspective
+        scale: 0.92,
+        filter: "blur(10px)",
+        transformOrigin: "top center"
+      },
+      { 
+        y: 0, 
+        opacity: 1, 
+        rotationX: 0, 
+        scale: 1, 
+        filter: "blur(0px)",
+        stagger: 0.12, // Rapid, sequential 'landing' feel
+        duration: 0.8, 
+        ease: "expo.out" 
+      },
+      "-=0.6"
+    );
+
+    // 3. Icons: Snappy pop-in
+    tl.fromTo(".icon-container", 
+      { scale: 0, rotation: -30, opacity: 0 },
+      { scale: 1, rotation: 0, opacity: 1, stagger: 0.12, duration: 0.5, ease: "back.out(2)" },
+      "<" 
+    );
+
+    ScrollTrigger.refresh();
+  }, { scope: sectionRef, dependencies: [items] });
+
   const getProblemIcon = (index: number) => {
-    const icons = [
-      <CloudRain className="w-5 h-5 text-red-500" />, 
-      <UserX className="w-5 h-5 text-red-500" />,      
-      <XCircle className="w-5 h-5 text-red-500" />     
-    ];
-    return icons[index % icons.length];
+    const icons = [<CloudRain key={0} />, <UserX key={1} />, <XCircle key={2} />];
+    return React.cloneElement(icons[index % icons.length] as any, { className: "w-6 h-6 text-red-500" });
   };
 
   return (
-    <section className="relative -mt-[1px] py-24 px-6 overflow-hidden bg-[#051A0E] border-none z-10">
-      
-      <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
-      <div className="absolute top-[20%] right-[-10%] w-[50%] h-[50%] bg-white/[0.02] blur-[160px] rounded-full pointer-events-none z-0" />
-      <div className="absolute bottom-[10%] left-[-15%] w-[40%] h-[40%] bg-white/[0.02] blur-[140px] rounded-full pointer-events-none z-0" />
+    <section 
+      ref={sectionRef} 
+      className="relative py-32 px-6 overflow-hidden bg-[#051A0E] border-none z-10"
+      style={{ fontFamily: "'Satoshi', sans-serif" }}
+    >
+      <DoodleLayer isSolution={isSolution} />
+
+      {/* --- SEAMLESS BLEND GRADIENTS --- */}
+      <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-[#051A0E] via-[#051A0E]/95 to-transparent pointer-events-none z-20" />
+      <div className="absolute bottom-0 left-0 w-full h-96 bg-gradient-to-t from-[#051A0E] via-[#051A0E]/95 to-transparent pointer-events-none z-20" />
 
       <div className="max-w-7xl mx-auto relative z-30">
+        
         {/* --- HEADER --- */}
-        <div className="flex flex-col items-center text-center mb-16">
-          <div className="flex items-center gap-3 mb-6">
-            <div className={`h-px w-8 ${isSolution ? 'bg-emerald-500/50' : 'bg-red-500/50'}`} />
-            <p className={`${isSolution ? 'text-emerald-500' : 'text-red-500'} text-[10px] font-bold tracking-[0.5em] uppercase whitespace-pre-wrap`}>
+        <div className="flex flex-col items-center text-center mb-28">
+          <div className="header-anim flex items-center gap-4 mb-8">
+            <div className={`h-[1px] w-12 ${isSolution ? 'bg-emerald-500/30' : 'bg-red-500/30'}`} />
+            <p className={`${isSolution ? 'text-emerald-500' : 'text-red-500'} text-[11px] font-bold tracking-[0.7em] uppercase`}>
               {label}
             </p>
-            <div className={`h-px w-8 ${isSolution ? 'bg-emerald-500/50' : 'bg-red-500/50'}`} />
+            <div className={`h-[1px] w-12 ${isSolution ? 'bg-emerald-500/30' : 'bg-red-500/30'}`} />
           </div>
-          
-          {/* REMOVED 'lowercase' and fixed 'leading' for line breaks */}
-          <h2 className="text-4xl md:text-5xl text-white font-black tracking-tighter leading-tight italic max-w-2xl whitespace-pre-wrap">
-            {title}
+
+          {/* MAIN TITLE: Satoshi Bold */}
+          <h2 className="header-anim text-5xl md:text-7xl text-white font-bold tracking-tighter leading-[1.05] max-w-4xl whitespace-pre-wrap">
+            {title ? title.split(highlightedWord || "").map((part, i, arr) => (
+              <React.Fragment key={i}>
+                {part}
+                {i < arr.length - 1 && highlightedWord && (
+                  /* HIGHLIGHT: Satoshi Italic */
+                  <span className={`${isSolution ? 'text-emerald-400' : 'text-red-500'} px-1 inline font-normal italic`}>
+                    {highlightedWord}
+                  </span>
+                )}
+              </React.Fragment>
+            )) : null}
           </h2>
         </div>
 
-        {/* --- THE GRID --- */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* --- THE GRID (Responsive & Interactive) --- */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8" style={{ perspective: "2500px" }}>
           {items?.map((item: any, i: number) => (
-            <div 
-              key={i} 
-              className={`relative p-10 rounded-[2.5rem] transition-all duration-500 flex flex-col items-center text-center
-                ${isSolution 
-                  ? 'bg-white/[0.02] border border-white/5 shadow-2xl' 
-                  : 'bg-red-500/[0.01] border border-red-500/20 shadow-[0_0_40px_rgba(239,68,68,0.03)]' 
+            <div
+              key={i}
+              className={`feature-card relative p-12 rounded-[3.5rem] flex flex-col items-center text-center group border backdrop-blur-[24px] transition-all duration-700
+                ${isSolution
+                  ? 'bg-white/[0.03] border-white/5 hover:border-emerald-500/40 shadow-2xl'
+                  : 'bg-red-500/[0.02] border-red-500/10 hover:border-red-500/40 shadow-[0_0_60px_rgba(239,68,68,0.05)]'
                 }`}
             >
               <div className="relative z-10">
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-8 mx-auto
+                {/* ICON CONTAINER */}
+                <div className={`icon-container w-16 h-16 rounded-2xl flex items-center justify-center mb-10 mx-auto transition-all duration-500 group-hover:scale-110 group-hover:rotate-6
                   ${isSolution ? 'bg-emerald-500/10 border border-emerald-500/20' : 'bg-red-500/10 border border-red-500/20'}`}
                 >
-                  {isSolution ? (
-                    <ShieldCheck className="w-5 h-5 text-emerald-400" />
-                  ) : (
-                    getProblemIcon(i)
-                  )}
+                  {isSolution ? <ShieldCheck className="w-7 h-7 text-emerald-400" /> : getProblemIcon(i)}
                 </div>
 
-                <div className="space-y-3">
-                  <h3 className="text-white text-xl font-bold tracking-tight whitespace-pre-wrap">
+                <div className="space-y-4">
+                  {/* CARD TITLE: Satoshi Bold */}
+                  <h3 className="text-white text-2xl font-bold tracking-tight whitespace-pre-wrap leading-tight">
                     {item.title}
                   </h3>
-                  <p className="text-white/30 leading-relaxed font-normal text-sm md:text-base max-w-[280px] mx-auto whitespace-pre-wrap">
+                  {/* DESCRIPTION: Satoshi Regular (400) */}
+                  <p className="text-white/30 leading-relaxed font-normal text-base max-w-[280px] mx-auto whitespace-pre-wrap">
                     {item.description}
                   </p>
                 </div>
@@ -323,8 +452,6 @@ const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: Featur
           ))}
         </div>
       </div>
-
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#051A0E] via-[#051A0E]/80 to-transparent pointer-events-none z-20" />
     </section>
   );
 };
@@ -339,7 +466,7 @@ const CenteredPricing = ({ data }: { data?: any }) => {
 
   return (
     <section className="relative -mt-[1px] py-24 px-6 bg-[#051A0E] overflow-hidden border-none z-10">
-      
+
       {/* --- BG LIGHTING --- */}
       <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
       <div className="absolute top-[10%] right-[-5%] w-[40%] h-[40%] bg-white/[0.03] blur-[160px] rounded-full pointer-events-none z-0" />
@@ -360,11 +487,11 @@ const CenteredPricing = ({ data }: { data?: any }) => {
           ${isSinglePlan ? 'grid-cols-1' : isTwoPlans ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1 md:grid-cols-3'}
         `}>
           {plans.map((plan: any, i: number) => (
-            <div 
-              key={i} 
+            <div
+              key={i}
               className={`flex flex-col p-8 md:p-10 rounded-[2.5rem] border backdrop-blur-3xl transition-all duration-700 w-full
-                ${plan.popular 
-                  ? "relative border-emerald-500/40 bg-white/[0.05] shadow-[0_0_80px_rgba(16,185,129,0.12)] scale-105 z-20" 
+                ${plan.popular
+                  ? "relative border-emerald-500/40 bg-white/[0.05] shadow-[0_0_80px_rgba(16,185,129,0.12)] scale-105 z-20"
                   : "border-white/10 bg-white/[0.02] opacity-80 scale-100"
                 }
               `}
@@ -374,15 +501,15 @@ const CenteredPricing = ({ data }: { data?: any }) => {
                   Most Popular
                 </div>
               )}
-              
+
               <h3 className={`${plan.popular ? 'text-emerald-400' : 'text-white/40'} text-[10px] font-bold tracking-widest mb-2 whitespace-pre-wrap`}>
                 {plan.description}
               </h3>
-              
+
               <span className="text-white text-4xl font-bold tracking-tighter mb-8 block whitespace-pre-wrap">
                 {plan.name}
               </span>
-              
+
               <ul className="space-y-4 mb-10 flex-1">
                 {plan.features?.map((f: string, idx: number) => (
                   <li key={idx} className={`flex items-center gap-2.5 text-sm ${plan.popular ? 'text-white' : 'text-white/60'}`}>
@@ -391,11 +518,11 @@ const CenteredPricing = ({ data }: { data?: any }) => {
                   </li>
                 ))}
               </ul>
-              
+
               <Link href="#schedule" className="block mt-auto">
                 <Button className={`w-full h-12 rounded-full font-black uppercase tracking-widest text-[9px] transition-all
-                  ${plan.popular 
-                    ? 'bg-white text-black hover:bg-emerald-500 hover:text-white' 
+                  ${plan.popular
+                    ? 'bg-white text-black hover:bg-emerald-500 hover:text-white'
                     : 'bg-white/5 border border-white/10 text-white hover:bg-white hover:text-black'
                   }
                 `}>
@@ -415,7 +542,7 @@ const CenteredPricing = ({ data }: { data?: any }) => {
 const ResultsSection = ({ items, title }: ResultsProps) => {
   return (
     <section className="relative -mt-[1px] py-24 px-6 bg-[#051A0E] overflow-hidden text-center border-none z-10">
-      
+
       {/* --- TOP CONNECTION MASK --- */}
       {/* Merges with the section above */}
       <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
@@ -430,16 +557,16 @@ const ResultsSection = ({ items, title }: ResultsProps) => {
         <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter opacity-90 mb-16 whitespace-pre-wrap">
           {title}
         </h2>
-        
+
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {items?.map((item: ResultItem, i: number) => (
             <div key={i} className="relative aspect-square rounded-[2rem] overflow-hidden border border-white/10 bg-white/5 group">
               {item.image && (
-                <Image 
-                  src={item.image} 
-                  alt={item.label || "Result Proof"} 
-                  fill 
-                  className="object-cover opacity-70 transition-all duration-700 group-hover:opacity-100 group-hover:scale-105" 
+                <Image
+                  src={item.image}
+                  alt={item.label || "Result Proof"}
+                  fill
+                  className="object-cover opacity-70 transition-all duration-700 group-hover:opacity-100 group-hover:scale-105"
                 />
               )}
             </div>
@@ -478,7 +605,7 @@ const ProcessSection = ({ data }: { data?: any }) => {
 
   return (
     <section ref={container} className="relative -mt-[1px] py-24 px-6 bg-[#051A0E] overflow-hidden border-none z-10">
-      
+
       {/* --- TOP CONNECTION MASK --- */}
       <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
 
@@ -493,18 +620,18 @@ const ProcessSection = ({ data }: { data?: any }) => {
           <p className="text-emerald-500 text-[9px] font-black tracking-[0.4em] mb-3">{label}</p>
           <h2 className="text-5xl md:text-7xl text-white font-black tracking-tighter leading-none italic">{title}</h2>
         </div>
-        
+
         <div className="relative">
           {/* Progress Line */}
           <div ref={lineRef} className="absolute top-0 left-0 md:w-full md:h-px w-[2px] h-full bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.8)] z-10" />
           <div className="absolute top-0 left-0 md:w-full md:h-px w-[2px] h-full bg-white/5" />
-          
+
           <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-12">
             {steps.map((step: any, i: number) => (
               <div key={i} className="pt-10 md:pt-14 relative group pl-8 md:pl-0">
                 {/* Step Circle - Updated border to match #051A0E */}
                 <div className="absolute top-0 left-[-7px] md:left-0 md:-translate-y-1/2 w-3.5 h-3.5 rounded-full bg-emerald-500 border-4 border-[#051A0E] z-20 group-hover:scale-125 transition-transform shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
-                
+
                 <span className="text-emerald-500 font-bold text-[9px] tracking-widest mb-3 block uppercase opacity-50 group-hover:opacity-100 transition-opacity">Step 0{i + 1}</span>
                 <h3 className="text-white text-xl md:text-2xl font-bold mb-4 tracking-tight group-hover:text-emerald-400 transition-colors whitespace-pre-wrap">{step.name}</h3>
                 <p className="text-white/40 leading-relaxed font-normal text-sm md:text-base group-hover:text-white/60 transition-colors whitespace-pre-wrap">{step.desc}</p>
@@ -550,6 +677,7 @@ export default function AdCreativesPage() {
         <AnimatedFeatureGrid
           label={data?.problemsLabel || "The Problem"}
           title={data?.problemsTitle || "What brands usually go through"}
+          highlightedWord={data?.problemsHighlightedWord}
           items={data?.problems || [
             { title: "Pretty but Passive", description: "Creative is the #1 lever in paid, yet most brands ship videos without a testing framework." },
             { title: "Retention Leaks", description: "If the first 2 seconds don't stop the scroll, your ad budget is essentially a donation." },

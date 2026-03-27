@@ -38,6 +38,7 @@ interface FeatureGridProps {
   title: string;
   label: string;
   isSolution?: boolean;
+  highlightedWord?: string;
 }
 
 interface ResultItem {
@@ -244,7 +245,7 @@ const WorkReelsSection = ({ workData }: { workData?: any }) => {
 };
 
 // --- 3. REIMAGINED 2060 FEATURE GRID (Plain & Minimalist) ---
-const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: FeatureGridProps) => {
+const AnimatedFeatureGrid = ({ items, title, label, isSolution = false, highlightedWord }: FeatureGridProps) => {
   return (
     <section className="relative -mt-[1px] py-24 px-6 overflow-hidden bg-[#051A0E] border-none z-10">
       
@@ -263,10 +264,37 @@ const AnimatedFeatureGrid = ({ items, title, label, isSolution = false }: Featur
               <div className={`h-px w-6 ${isSolution ? 'bg-emerald-500/50' : 'bg-red-500/50'}`} />
               <p className={`${isSolution ? 'text-emerald-500' : 'text-red-500'} text-[9px] font-black tracking-[0.4em]`}>{label}</p>
             </div>
-            {/* Header kept lowercase italic as per original design */}
-            <h2 className="text-4xl md:text-5xl text-white font-black tracking-tighter leading-none italic">
-              {title}
-            </h2>
+            {/* REMOVED 'lowercase' and fixed 'leading' for line breaks */}
+          <h2 className="text-4xl md:text-5xl text-white font-normal tracking-tight leading-tight max-w-2xl whitespace-pre-wrap" style={{ fontFamily: "'Satoshi', sans-serif" }}>
+            {(() => {
+              if (!title || !highlightedWord) return title;
+              const parts = title.split(highlightedWord);
+              if (parts.length === 1) return title;
+              return (
+                <>
+                  {parts.map((part, i) => (
+                    <React.Fragment key={i}>
+                      {part}
+                      {i < parts.length - 1 && (
+                        <span
+                          className="text-red-500 px-1 inline-block whitespace-pre-wrap"
+                          style={{
+                            fontFamily: "'Satoshi', sans-serif",
+                            fontStyle: "italic",
+                            fontWeight: 400,
+                            letterSpacing: "-0.02em",
+                            textShadow: "0 0 30px rgba(239, 68, 68, 0.4), 0 0 10px rgba(239, 68, 68, 0.2)"
+                          }}
+                        >
+                          {highlightedWord}
+                        </span>
+                      )}
+                    </React.Fragment>
+                  ))}
+                </>
+              );
+            })()}
+          </h2>
           </div>
           <div className="hidden md:block h-px flex-1 bg-white/5 mx-10 mb-4" />
         </div>
@@ -519,6 +547,7 @@ export default function SaaSVideosPage() {
         <AnimatedFeatureGrid
           label={data?.problemsLabel || "The Bottlenecks"}
           title={data?.problemsTitle || "Why your software isn't selling itself"}
+          highlightedWord={data?.problemsHighlightedWord}
           items={data?.problems || [
             { title: "Complex Value Proposition", description: "Users don't instantly understand what your software does, leading to high bounce rates." },
             { title: "Trial Drop-offs", description: "Poor onboarding leads to users abandoning your app before experiencing the 'aha' moment." },
