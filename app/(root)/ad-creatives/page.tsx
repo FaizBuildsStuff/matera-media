@@ -26,6 +26,7 @@ import { ServiceCalendly } from "@/components/ServiceCalendly";
 import { client } from "@/lib/sanity";
 import { servicePageQuery } from "@/lib/queries";
 import { useGSAP } from "@gsap/react";
+import { ProblemSolutionComparison } from "@/components/ProblemSolutionComparison";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -263,200 +264,6 @@ const WorkReelsSection = ({ workData }: { workData?: any }) => {
   );
 };
 
-const CardVisual = ({ index, isSolution }: { index: number; isSolution: boolean }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(() => {
-    if (!isSolution) {
-      // 🚨 PROBLEM ANIMATIONS (Chaotic, Broken, Descending)
-      if (index === 0) {
-        gsap.to(".p-glitch-bar", { scaleY: "random(0.2, 0.8)", opacity: "random(0.2, 0.7)", duration: 0.2, repeat: -1, yoyo: true, stagger: 0.05, ease: "steps(3)" });
-      } else if (index === 1) {
-        gsap.to(".p-ring", { rotation: "random(-25, 25)", x: "random(-2, 2)", y: "random(-2, 2)", duration: 0.1, repeat: -1, yoyo: true, ease: "steps(4)" });
-      } else {
-        gsap.to(".p-drop", { y: "+=50", opacity: 0, duration: "random(1, 1.5)", repeat: -1, ease: "power1.in", stagger: 0.2 });
-      }
-    } else {
-      // 🌿 SOLUTION ANIMATIONS (Harmonious, Growing, Connected)
-      if (index === 0) {
-        gsap.to(".s-bar", { scaleY: "random(0.6, 1.2)", duration: 1.5, repeat: -1, yoyo: true, stagger: { each: 0.1, from: "center" }, ease: "sine.inOut" });
-      } else if (index === 1) {
-        gsap.to(".s-ring", { rotation: 360, duration: 15, repeat: -1, ease: "none" });
-        gsap.to(".s-pulse", { scale: 1.5, opacity: 0, duration: 2.5, repeat: -1, ease: "expo.out" });
-      } else {
-        gsap.fromTo(".s-flow", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 2, repeat: -1, ease: "none" });
-        gsap.to(".s-glow", { opacity: 1, scale: 1.2, duration: 1.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
-      }
-    }
-  }, { scope: containerRef });
-
-  return (
-    <div ref={containerRef} className={`w-full h-40 mb-10 relative flex items-center justify-center overflow-hidden rounded-[2rem] border transition-all duration-700 
-      ${isSolution 
-        ? 'bg-emerald-950/20 border-emerald-500/10 group-hover:border-emerald-500/30 group-hover:bg-emerald-900/20' 
-        : 'bg-red-950/20 border-red-500/10 group-hover:border-red-500/30 group-hover:bg-red-900/20'
-      }`}>
-      
-      {/* Dynamic Background Glow inside the visual box */}
-      <div className={`absolute inset-0 opacity-20 transition-opacity duration-700 group-hover:opacity-60 blur-2xl
-        ${isSolution ? 'bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.5)_0%,transparent_70%)]' : 'bg-[radial-gradient(circle_at_center,rgba(239,68,68,0.5)_0%,transparent_70%)]'}
-      `} />
-
-      {/* --- PROBLEM VISUALS --- */}
-      {!isSolution && index === 0 && (
-        <div className="flex items-end justify-center gap-[3px] h-16 w-full px-8 relative z-10">
-          {[1, 2, 3, 4, 5, 6, 7].map((i) => (
-            <div key={i} className="p-glitch-bar w-[6px] bg-red-500/60 rounded-t-[2px] origin-bottom shadow-[0_0_10px_rgba(239,68,68,0.4)]" style={{ height: `${Math.random() * 60 + 20}%` }} />
-          ))}
-          <TrendingUp className="absolute top-0 right-10 w-5 h-5 text-red-500/40 rotate-[130deg]" />
-        </div>
-      )}
-
-      {!isSolution && index === 1 && (
-        <div className="relative w-24 h-24 flex items-center justify-center z-10">
-          <div className="p-ring absolute inset-3 border-2 border-dashed border-red-500/40 rounded-full" />
-          <div className="p-ring absolute inset-7 border-b-2 border-r-2 border-red-500/70 rounded-full" />
-          <Target className="w-8 h-8 text-red-500/50" />
-        </div>
-      )}
-
-      {!isSolution && (index === 2 || index > 2) && (
-        <div className="relative w-full h-full flex items-start justify-center pt-8 z-10">
-          <CloudRain className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 text-red-500/30" />
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="p-drop absolute w-1.5 h-1.5 bg-red-500/60 rounded-full shadow-[0_0_8px_rgba(239,68,68,0.5)]" 
-                 style={{ left: `${30 + (i * 8)}%`, top: '25%' }} />
-          ))}
-        </div>
-      )}
-
-      {/* --- SOLUTION VISUALS --- */}
-      {isSolution && index === 0 && (
-        <div className="flex items-end justify-center gap-2 h-20 w-full px-8 relative z-10">
-          <div className="absolute bottom-0 left-0 w-full h-full bg-linear-to-t from-emerald-500/20 to-transparent blur-md pointer-events-none" />
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="s-bar w-3 bg-linear-to-t from-emerald-600 to-emerald-400 rounded-t-[4px] origin-bottom shadow-[0_0_15px_rgba(16,185,129,0.5)]" style={{ height: `${40 + (i * 10)}%` }} />
-          ))}
-          <TrendingUp className="absolute top-0 right-8 w-6 h-6 text-emerald-400 drop-shadow-[0_0_12px_rgba(16,185,129,0.6)]" />
-        </div>
-      )}
-
-      {isSolution && index === 1 && (
-        <div className="relative w-24 h-24 flex items-center justify-center z-10">
-          <div className="s-pulse absolute inset-0 rounded-full bg-emerald-500/20 border border-emerald-500/50" />
-          <div className="s-ring absolute inset-4 border border-emerald-500/40 rounded-full" style={{ borderStyle: 'dashed' }} />
-          <div className="s-ring absolute w-3/4 h-3/4 border border-emerald-500/60 rounded-full border-t-emerald-400" />
-          <Target className="w-8 h-8 text-emerald-400 drop-shadow-[0_0_15px_rgba(16,185,129,0.8)]" />
-        </div>
-      )}
-
-      {isSolution && (index === 2 || index > 2) && (
-        <div className="relative w-full h-full flex items-center justify-center z-10">
-          <svg className="absolute inset-0 w-full h-full opacity-60 pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <path className="s-flow stroke-emerald-500/40 fill-none" d="M0,50 Q25,20 50,50 T100,50" strokeWidth="2" strokeDasharray="100" />
-          </svg>
-          <div className="relative flex items-center justify-center">
-            <div className="s-glow absolute w-16 h-16 bg-emerald-500/30 rounded-full blur-xl opacity-0" />
-            <Activity className="w-8 h-8 text-emerald-400 drop-shadow-[0_0_15px_rgba(16,185,129,0.8)]" />
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-// --- 3. REIMAGINED 2060 FEATURE GRID (Refined Typography) ---
-
-const AnimatedFeatureGrid = ({ items, title, label, isSolution = false, highlightedWord }: any) => {
-  const sectionRef = useRef(null);
-
-  useGSAP(() => {
-    if (!items || items.length === 0) return;
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top 90%", 
-        end: "bottom 80%",
-        scrub: 0.1,
-      }
-    });
-
-    tl.fromTo(".header-anim", 
-      { y: 30, opacity: 0, filter: "blur(10px)" },
-      { y: 0, opacity: 1, filter: "blur(0px)", duration: 1 }
-    );
-
-    tl.fromTo(".feature-card", 
-      { y: 40, opacity: 0, scale: 0.98 },
-      { y: 0, opacity: 1, scale: 1, stagger: 0.1, duration: 0.8, ease: "power2.out" },
-      "-=0.5"
-    );
-  }, { scope: sectionRef, dependencies: [items] });
-
-  return (
-    <section ref={sectionRef} className="relative py-32 px-6 overflow-hidden bg-[#051A0E] z-10" style={{ fontFamily: "'Satoshi', sans-serif" }}>
-      
-      {/* Seamless Blends */}
-      <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#051A0E] to-transparent pointer-events-none z-20" />
-      <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-[#051A0E] to-transparent pointer-events-none z-20" />
-
-      <div className="max-w-[1300px] mx-auto relative z-30">
-        
-        {/* --- HEADER (Downsized for Premium look) --- */}
-        <div className="flex flex-col items-center text-center mb-24">
-          <div className="header-anim flex items-center gap-4 mb-6">
-            <div className={`h-[1px] w-10 ${isSolution ? 'bg-emerald-500/20' : 'bg-red-500/20'}`} />
-            <p className={`${isSolution ? 'text-emerald-500' : 'text-red-500'} text-[11px] font-bold tracking-[0.5em] uppercase`}>{label}</p>
-            <div className={`h-[1px] w-10 ${isSolution ? 'bg-emerald-500/20' : 'bg-red-500/20'}`} />
-          </div>
-
-          <h2 className="header-anim text-4xl md:text-7xl text-white font-bold tracking-tighter leading-[1.05] max-w-4xl">
-            {title ? title.split(highlightedWord || "").map((part: string, i: number, arr: any) => (
-              <React.Fragment key={i}>
-                {part}
-                {i < arr.length - 1 && highlightedWord && (
-                  <span className={`${isSolution ? 'text-emerald-400' : 'text-red-500'} px-1 inline font-normal italic`}>{highlightedWord}</span>
-                )}
-              </React.Fragment>
-            )) : null}
-          </h2>
-        </div>
-
-        {/* --- THE GRID (Responsive & Premium) --- */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-[1240px] mx-auto">
-          {items?.map((item: any, i: number) => (
-            <div
-              key={i}
-              className={`feature-card relative flex flex-col items-center text-center group border transition-all duration-700 w-full rounded-[2.5rem] overflow-hidden backdrop-blur-xl p-8 md:p-10 lg:p-14
-                ${isSolution
-                  ? 'bg-gradient-to-b from-white/[0.04] to-transparent border-white/[0.08] hover:border-emerald-500/40 shadow-[0_8px_30px_rgba(16,185,129,0.02)] hover:shadow-[0_20px_60px_rgba(16,185,129,0.08)] hover:bg-white/[0.06]'
-                  : 'bg-gradient-to-b from-white/[0.02] to-transparent border-white/[0.05] hover:border-red-500/30 shadow-[0_8px_30px_rgba(239,68,68,0.02)] hover:shadow-[0_20px_60px_rgba(239,68,68,0.06)] hover:bg-white/[0.04]'
-                }`}
-            >
-              {/* Premium Glow Overlay borders & background */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-px bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-              <div className={`absolute -top-[10%] left-1/2 -translate-x-1/2 w-full h-full rounded-full blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none z-0
-                ${isSolution ? 'bg-emerald-500/10' : 'bg-red-500/5'}
-              `} />
-              
-              <div className="relative z-10 w-full">
-                <CardVisual index={i} isSolution={isSolution} />
-
-                <div className="space-y-4">
-                  {/* Satoshi Bold */}
-                  <h3 className="text-white text-2xl md:text-[1.7rem] font-bold tracking-tight leading-tight">{item.title}</h3>
-                  {/* Satoshi Regular */}
-                  <p className="text-white/30 leading-relaxed font-normal text-[0.95rem] max-w-[260px] mx-auto">{item.description}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
 // --- 4. CENTERED PRICING (2-Plan Focus Version) ---
 const CenteredPricing = ({ data }: { data?: any }) => {
   const label = data?.plansLabel || "Investment";
@@ -676,21 +483,17 @@ export default function AdCreativesPage() {
           ctaText={data?.heroCta}
         />
         <WorkReelsSection workData={data?.work} />
-        <AnimatedFeatureGrid
-          label={data?.problemsLabel || "The Problem"}
-          title={data?.problemsTitle || "What brands usually go through"}
-          highlightedWord={data?.problemsHighlightedWord}
-          items={data?.problems || [
+        <ProblemSolutionComparison
+          problemsLabel={data?.problemsLabel || "The Problem"}
+          problemsTitle={data?.problemsTitle || "The Old Way"}
+          problems={data?.problems || [
             { title: "Pretty but Passive", description: "Creative is the #1 lever in paid, yet most brands ship videos without a testing framework." },
             { title: "Retention Leaks", description: "If the first 2 seconds don't stop the scroll, your ad budget is essentially a donation." },
             { title: "Random Iteration", description: "Guessing what to make next leads to inconsistent ROAS and massive wasted spend." }
           ]}
-        />
-        <AnimatedFeatureGrid
-          isSolution
-          label={data?.solutionsLabel || "The Matera Solution"}
-          title={data?.solutionsTitle || "How we solve for growth"}
-          items={data?.solutions || [
+          solutionsLabel={data?.solutionsLabel || "The Matera Solution"}
+          solutionsTitle={data?.solutionsTitle || "Dominate Media"}
+          solutions={data?.solutions || [
             { title: "Hook Testing Engine", description: "We produce rapid variations to find the specific hooks that earn the click." },
             { title: "Direct-Response Edits", description: "Pacing, pattern interrupts, and captions designed specifically for watch time." },
             { title: "Strategy-First Design", description: "Messaging and offer clarity mapped out before we ever touch a timeline." }
