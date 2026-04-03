@@ -15,6 +15,8 @@ import { Button } from "@/components/ui/button";
 import { ServiceCalendly } from "@/components/ServiceCalendly";
 import { client } from "@/lib/sanity";
 import { servicePageQuery } from "@/lib/queries";
+import { useGSAP } from "@gsap/react";
+import { ProblemSolutionComparison } from "@/components/ProblemSolutionComparison";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -52,13 +54,13 @@ interface ResultsProps {
   title: string;
 }
 
-// --- 1. CENTERED HERO (Refined & Polished Version) ---
+// --- 1. CENTERED HERO (Refined Weights & Contrast) ---
 const HeroCentered = ({ title, highlight, titleAfter, subtitle, ctaText }: HeroProps) => {
   return (
     <section className="relative pt-32 pb-24 px-6 overflow-hidden bg-[#051A0E] flex flex-col items-center text-center z-30">
       <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700,900&display=swap" rel="stylesheet" />
-      
-      {/* --- REFINED WHITE SPOTLIGHTS --- */}
+
+      {/* --- REFINED SPOTLIGHTS (Pushed back to let text breathe) --- */}
       <div className="absolute top-[-25%] left-[-15%] w-[50%] h-[50%] bg-white/[0.02] blur-[180px] rounded-full pointer-events-none z-0" />
       <div className="absolute top-[-15%] right-[-20%] w-[40%] h-[40%] bg-white/[0.02] blur-[160px] rounded-full pointer-events-none z-0" />
 
@@ -71,16 +73,16 @@ const HeroCentered = ({ title, highlight, titleAfter, subtitle, ctaText }: HeroP
         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-40 max-w-4xl mt-12 md:mt-20"
       >
+        {/* Changed font-black to font-bold and tracking-tighter to tracking-tight for better legibility */}
         <h1 className="text-5xl md:text-6xl font-bold text-white tracking-tight leading-[1.1] mb-8 whitespace-pre-wrap">
           {title}{" "}
-          {/* This span now wraps the highlight and forces it to stay as one "chunk" */}
           <span
-            className="text-emerald-400 inline whitespace-pre-wrap"
-            style={{ 
-                fontFamily: "'Satoshi', sans-serif", 
-                fontStyle: "italic", 
-                fontWeight: 500,
-                textShadow: "0 0 20px rgba(52, 211, 153, 0.2)"
+            className="text-emerald-400 px-2 inline-block whitespace-pre-wrap"
+            style={{
+              fontFamily: "'Satoshi', sans-serif",
+              fontStyle: "italic",
+              fontWeight: 500, // Slightly heavier than before to stop blending
+              textShadow: "0 0 20px rgba(52, 211, 153, 0.2)" // Subtle glow to make it pop
             }}
           >
             {highlight}
@@ -93,7 +95,7 @@ const HeroCentered = ({ title, highlight, titleAfter, subtitle, ctaText }: HeroP
         </p>
 
         <Link href="#schedule">
-          <Button className="h-12 px-8 rounded-full bg-white text-black text-[10px] font-black tracking-widest hover:scale-105 transition-all group shadow-[0_0_40px_rgba(255,255,255,0.1)] border-none whitespace-pre-wrap">
+          <Button className="h-12 px-8 rounded-full bg-white text-black text-[10px] font-black tracking-widest hover:scale-105 transition-all group shadow-[0_0_40px_rgba(255,255,255,0.1)] whitespace-pre-wrap">
             {ctaText || "Book a Free Audit"}
             <div className="ml-3 w-6 h-6 rounded-full bg-black flex items-center justify-center">
               <ArrowRight className="w-3.5 h-3.5 text-white group-hover:translate-x-0.5 transition-transform" />
@@ -102,6 +104,7 @@ const HeroCentered = ({ title, highlight, titleAfter, subtitle, ctaText }: HeroP
         </Link>
       </motion.div>
 
+      {/* --- THE "UNDER SECTION" FIX --- */}
       <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
     </section>
   );
@@ -334,69 +337,78 @@ const AnimatedFeatureGrid = ({ items, title, label, isSolution = false, highligh
   );
 };
 
-// --- 4. CENTERED PRICING (Connected Lighting) ---
+// --- 4. CENTERED PRICING (2-Plan Focus Version) ---
 const CenteredPricing = ({ data }: { data?: any }) => {
   const label = data?.plansLabel || "Investment";
-  const title = data?.plansTitle || "Plans built for YouTube growth.";
-  const plans = data?.plans || [
-    { name: "Basic Growth", popular: false, description: "Starter Plan", features: ["4 Videos Per Month", "Video Editing", "Title & Description Setup", "Monthly Performance Review"] },
-    { name: "Fast Growth", popular: true, description: "Pro Plan", features: ["8 Videos Per Month", "Advanced Editing", "Thumbnail Design", "Weekly Performance Review"] }
-  ];
+  const title = data?.plansTitle || "Plans built for scale.";
+  const plans = data?.plans || [];
+
+  const isSinglePlan = plans.length === 1;
+  const isTwoPlans = plans.length === 2;
 
   return (
     <section className="relative -mt-[1px] py-24 px-6 bg-[#051A0E] overflow-hidden border-none z-10">
-      
-      {/* --- TOP CONNECTION MASK --- */}
+
+      {/* --- BG LIGHTING --- */}
       <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
-
-      {/* --- LUXURY WHITE SPOTLIGHTS --- */}
       <div className="absolute top-[10%] right-[-5%] w-[40%] h-[40%] bg-white/[0.03] blur-[160px] rounded-full pointer-events-none z-0" />
-      <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-white/[0.02] blur-[140px] rounded-full pointer-events-none z-0" />
 
-      <div className="max-w-5xl mx-auto relative z-30">
-        <div className="text-center mb-12">
+      {/* Adaptive Container: Narrow for 1, Medium for 2, Wide for 3+ */}
+      <div className={`
+        ${isSinglePlan ? 'max-w-md' : isTwoPlans ? 'max-w-4xl' : 'max-w-7xl'} 
+        mx-auto relative z-30
+      `}>
+        <div className="text-center mb-16">
           <p className="text-emerald-500 text-[10px] font-black tracking-[0.4em] mb-4 whitespace-pre-wrap">{label}</p>
           <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-5 whitespace-pre-wrap">{title}</h2>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6 items-stretch">
+        {/* Grid Setup: 2 plans are centered using flex or grid-cols-2 */}
+        <div className={`
+          grid gap-8 items-stretch
+          ${isSinglePlan ? 'grid-cols-1' : isTwoPlans ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1 md:grid-cols-3'}
+        `}>
           {plans.map((plan: any, i: number) => (
-            <div 
-              key={i} 
-              className={`flex flex-col p-8 md:p-10 rounded-[2.5rem] border backdrop-blur-3xl transition-all duration-500 ${
-                plan.popular 
-                  ? "relative border-emerald-500/30 bg-white/[0.04] shadow-[0_0_60px_rgba(16,185,129,0.08)] scale-102 z-20" 
-                  : "border-white/5 bg-white/[0.02]"
-              }`}
+            <div
+              key={i}
+              className={`flex flex-col p-8 md:p-10 rounded-[2.5rem] border backdrop-blur-3xl transition-all duration-700 w-full
+                ${plan.popular
+                  ? "relative border-emerald-500/40 bg-white/5 shadow-[0_0_80px_rgba(16,185,129,0.12)] scale-105 z-20"
+                  : "border-white/10 bg-white/5 opacity-80 scale-100"
+                }
+              `}
             >
               {plan.popular && (
-                <div className="absolute top-6 right-8 px-2.5 py-1 rounded-full bg-emerald-500 text-black text-[8px] font-black uppercase tracking-widest">
-                  Recommended
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-emerald-500 text-black text-[9px] font-black uppercase tracking-widest shadow-[0_0_20px_rgba(16,185,129,0.4)]">
+                  Most Popular
                 </div>
               )}
-              
-              <h3 className={`${plan.popular ? 'text-emerald-400' : 'text-white/50'} text-[10px] font-bold tracking-widest mb-1.5 whitespace-pre-wrap`}>
+
+              <h3 className={`${plan.popular ? 'text-emerald-400' : 'text-white/40'} text-[10px] font-bold tracking-widest mb-2 whitespace-pre-wrap`}>
                 {plan.description}
               </h3>
-              
+
               <span className="text-white text-4xl font-bold tracking-tighter mb-8 block whitespace-pre-wrap">
                 {plan.name}
               </span>
-              
+
               <ul className="space-y-4 mb-10 flex-1">
                 {plan.features?.map((f: string, idx: number) => (
-                  <li key={idx} className={`flex items-center gap-2.5 text-sm ${plan.popular ? 'text-white font-medium' : 'text-white/70 font-normal'}`}>
-                    <Check className={`w-3 h-3 ${plan.popular ? 'text-emerald-500' : 'text-emerald-400'}`} />
+                  <li key={idx} className={`flex items-center gap-2.5 text-sm ${plan.popular ? 'text-white' : 'text-white/60'}`}>
+                    <Check className={`w-3.5 h-3.5 ${plan.popular ? 'text-emerald-500' : 'text-emerald-800'}`} />
                     {f}
                   </li>
                 ))}
               </ul>
-              
+
               <Link href="#schedule" className="block mt-auto">
-                <Button className={`w-full h-12 rounded-full font-bold uppercase tracking-widest text-[9px] transition-transform active:scale-95 ${
-                  plan.popular ? 'bg-white text-black hover:bg-emerald-500 hover:text-white' : 'bg-white/5 border border-white/10 text-white hover:bg-white hover:text-black'
-                }`}>
-                  Book A Call
+                <Button className={`w-full h-12 rounded-full font-black uppercase tracking-widest text-[9px] transition-all
+                  ${plan.popular
+                    ? 'bg-white text-black hover:bg-emerald-500 hover:text-white'
+                    : 'bg-white/5 border border-white/10 text-white hover:bg-white hover:text-black'
+                  }
+                `}>
+                  I Need This
                 </Button>
               </Link>
             </div>
@@ -404,7 +416,6 @@ const CenteredPricing = ({ data }: { data?: any }) => {
         </div>
       </div>
 
-      {/* --- BOTTOM BLEND MASK --- */}
       <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#051A0E] via-[#051A0E]/80 to-transparent pointer-events-none z-20" />
     </section>
   );
@@ -414,28 +425,31 @@ const CenteredPricing = ({ data }: { data?: any }) => {
 const ResultsSection = ({ items, title }: ResultsProps) => {
   return (
     <section className="relative -mt-[1px] py-24 px-6 bg-[#051A0E] overflow-hidden text-center border-none z-10">
-      
+
       {/* --- TOP CONNECTION MASK --- */}
+      {/* Merges with the section above */}
       <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
 
       {/* --- LUXURY WHITE SPOTLIGHTS --- */}
+      {/* Large soft top-center spotlight */}
       <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[60%] h-[50%] bg-white/[0.03] blur-[160px] rounded-full pointer-events-none z-0" />
+      {/* Subtle side glow */}
       <div className="absolute bottom-[20%] right-[-5%] w-[30%] h-[40%] bg-white/[0.02] blur-[120px] rounded-full pointer-events-none z-0" />
 
       <div className="max-w-7xl mx-auto relative z-30">
         <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter opacity-90 mb-16 whitespace-pre-wrap">
           {title}
         </h2>
-        
+
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {items?.map((item: ResultItem, i: number) => (
             <div key={i} className="relative aspect-square rounded-[2rem] overflow-hidden border border-white/10 bg-white/5 group">
               {item.image && (
-                <Image 
-                  src={item.image} 
-                  alt={item.label || "Result Proof"} 
-                  fill 
-                  className="object-cover opacity-70 transition-all duration-700 group-hover:opacity-100 group-hover:scale-105" 
+                <Image
+                  src={item.image}
+                  alt={item.label || "Result Proof"}
+                  fill
+                  className="object-cover opacity-70 transition-all duration-700 group-hover:opacity-100 group-hover:scale-105"
                 />
               )}
             </div>
@@ -542,21 +556,17 @@ export default function OrganicContentYouTubePage() {
           ctaText={data?.heroCta}
         />
         <WorkReelsSection workData={data?.work} />
-        <AnimatedFeatureGrid
-          label={data?.problemsLabel || "The Problem"}
-          title={data?.problemsTitle || "What creators usually struggle with"}
-          highlightedWord={data?.problemsHighlightedWord}
-          items={data?.problems || [
+        <ProblemSolutionComparison
+          problemsLabel={data?.problemsLabel || "The Problem"}
+          problemsTitle={data?.problemsTitle || "What creators usually struggle with"}
+          problems={data?.problems || [
             { title: "Uploading Without Strategy", description: "Most creators post consistently but without understanding audience psychology or retention structure." },
             { title: "Low Retention & Watch Time", description: "If viewers drop in the first 30 seconds, YouTube won't push your content organically." },
             { title: "Inconsistent Growth", description: "Random topics and no content system lead to slow growth and unpredictable results." }
           ]}
-        />
-        <AnimatedFeatureGrid
-          isSolution
-          label={data?.solutionsLabel || "The Matera Solution"}
-          title={data?.solutionsTitle || "How we build organic growth machines"}
-          items={data?.solutions || [
+          solutionsLabel={data?.solutionsLabel || "The Matera Solution"}
+          solutionsTitle={data?.solutionsTitle || "How we build organic growth machines"}
+          solutions={data?.solutions || [
             { title: "Retention-Driven Storytelling", description: "We structure every video with powerful hooks and pacing designed to maximize watch time." },
             { title: "Search & Algorithm Optimization", description: "Strategic titles, thumbnails, and metadata crafted to get recommended organically." },
             { title: "Content Systemization", description: "We build repeatable content frameworks so your channel grows consistently." }
