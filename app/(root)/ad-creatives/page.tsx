@@ -107,7 +107,7 @@ const HeroCentered = ({ title, highlight, titleAfter, subtitle, ctaText }: HeroP
         </p>
 
         <Link href="#schedule">
-          <Button className="h-12 px-8 rounded-full bg-white text-black text-[10px] font-black tracking-widest hover:scale-105 transition-all group shadow-[0_0_40px_rgba(255,255,255,0.1)] whitespace-pre-wrap">
+          <Button className="h-12 px-8 rounded-full bg-white text-black text-[10px] font-black tracking-widest hover:scale-105 hover:bg-white hover:text-black transition-all group shadow-[0_0_40px_rgba(255,255,255,0.1)] whitespace-pre-wrap">
             {ctaText || "Book a Free Audit"}
             <div className="ml-3 w-6 h-6 rounded-full bg-black flex items-center justify-center">
               <ArrowRight className="w-3.5 h-3.5 text-white group-hover:translate-x-0.5 transition-transform" />
