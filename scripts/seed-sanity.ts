@@ -332,6 +332,9 @@ const servicePageAdCreatives = {
         "Yes—format, pacing, and text treatments are tailored for each placement (Meta, TikTok, YouTube Shorts, etc.).",
     },
   ],
+  howItWorksSimple: {
+    active: false,
+  },
 };
 
 const servicePageOrganic = {
@@ -377,6 +380,18 @@ const servicePageOrganic = {
     { _key: "oc-2", question: "Can you repurpose long-form into shorts?", answer: "Absolutely. We can turn long-form recordings into multiple short-form deliverables." },
     { _key: "oc-3", question: "Will this work for B2B?", answer: "Yes. We structure content around buyer intent, credibility, and conversion—not trends." },
   ],
+  howItWorksSimple: {
+    active: true,
+    badge: "How it works",
+    title: "Getting started is simple.",
+    highlight: "simple.",
+    subtitle: "You get on camera, we handle the rest",
+    steps: [
+      { _key: "s1", title: "Brand Audit", description: "We get to know you—your voice, your vision, and what kind of content will actually move the needle.", icon: "search" },
+      { _key: "s2", title: "Content Calendar", description: "We build a tailored content roadmap + fill your calendar with viral-ready ideas and scripts that sound like you.", icon: "calendar" },
+      { _key: "s3", title: "Full Production", description: "You record—we turn it into scroll-stopping videos, publish across all platforms, and fuel it with SEO.", icon: "camera" }
+    ]
+  }
 };
 
 const servicePageSaas = {
@@ -420,6 +435,9 @@ const servicePageSaas = {
     { _key: "sv-f2", question: "Can you capture our UI and build motion around it?", answer: "Yes—UI capture and motion design are a core part of our SaaS work." },
     { _key: "sv-f3", question: "Can we reuse the footage for ads and onboarding?", answer: "Absolutely. We plan the deliverables so you can repurpose assets across the funnel." },
   ],
+  howItWorksSimple: {
+    active: false,
+  },
 };
 
 const legalPagePrivacy = {

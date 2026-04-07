@@ -45,7 +45,7 @@ const RetroTV = () => {
         <div className="absolute top-[16%] bottom-[16%] inset-x-[22%] sm:top-[18%] sm:bottom-[18%] sm:inset-x-[22%] rounded-3xl overflow-hidden flex items-center justify-center bg-[#0a0a0a] shadow-[0_0_50px_rgba(0,0,0,0.8)] border border-[#1a1a1a]">
           {/* Main content video */}
           <video
-            src="/manwithproblem.mp4"
+            src="/anxiety.mp4"
             autoPlay
             loop
             muted
@@ -159,11 +159,12 @@ export const ProblemSolutionComparison = ({
     gsap.to(".gsap-bg-text", {
       xPercent: -20,
       ease: "none",
+      force3D: true,
       scrollTrigger: {
         trigger: containerRef.current,
         start: "top bottom",
         end: "bottom top",
-        scrub: 1,
+        scrub: 0.5,
       }
     });
 
@@ -206,6 +207,7 @@ export const ProblemSolutionComparison = ({
           <div
             key={i}
             className={`gsap-bg-text whitespace-nowrap font-black text-[10vh] md:text-[15vh] leading-none text-white uppercase tracking-tighter ${i % 2 === 0 ? 'ml-[10%]' : 'ml-[-10%]'}`}
+            style={{ willChange: 'transform', backfaceVisibility: 'hidden' }}
           >
             MATERA MEDIA • DOMINATE YOUR MARKET • MATERA MEDIA • DOMINATE YOUR MARKET
           </div>
@@ -221,7 +223,7 @@ export const ProblemSolutionComparison = ({
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <div className="gsap-ambient absolute top-[40%] right-[10%] w-[300px] h-[300px] bg-emerald-500/10 blur-[80px] rounded-full" />
         <div className="gsap-ambient absolute top-[60%] left-[5%] w-[250px] h-[250px] bg-red-500/5 blur-[70px] rounded-full" />
-        
+
         {/* Aesthetic Plus Crosses floating */}
         <div className="gsap-ambient absolute top-[80%] left-[20%] text-white/5 text-2xl font-light">+</div>
         <div className="gsap-ambient absolute top-[30%] right-[25%] text-emerald-500/10 text-3xl font-light">+</div>
@@ -229,12 +231,12 @@ export const ProblemSolutionComparison = ({
 
       <div className="max-w-5xl mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-stretch">
-          
+
           {/* --- PROBLEM CARD (LEFT) --- */}
           <div className="gsap-problem-card group relative flex flex-col p-6 md:p-8 rounded-[2rem] bg-red-950/20 border border-red-500/10 shadow-[0_0_80px_rgba(220,38,38,0.05)] hover:border-red-500/20 transition-all duration-300 overflow-hidden">
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay rounded-[2.5rem] pointer-events-none" />
             <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-red-500/5 blur-[80px] rounded-full pointer-events-none" />
-            
+
             <div className="h-40 md:h-48 flex items-center justify-center">
               <RetroTV />
             </div>
@@ -273,7 +275,7 @@ export const ProblemSolutionComparison = ({
           <div className="gsap-solution-card group relative flex flex-col p-6 md:p-8 rounded-[2rem] bg-emerald-950/20 border border-emerald-500/20 shadow-[0_0_80px_rgba(16,185,129,0.05)] overflow-hidden">
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] mix-blend-overlay rounded-[2.5rem] pointer-events-none" />
             <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-emerald-500/10 blur-[80px] rounded-full pointer-events-none" />
-            
+
             <div className="h-40 md:h-48 flex items-center justify-center relative z-10 mix-blend-screen">
               <HUDGraphic />
             </div>

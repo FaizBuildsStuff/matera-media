@@ -17,18 +17,12 @@ import { client } from "@/lib/sanity";
 import { servicePageQuery } from "@/lib/queries";
 import { useGSAP } from "@gsap/react";
 import { ProblemSolutionComparison } from "@/components/ProblemSolutionComparison";
+import { HeroCentered } from "@/components/HeroCentered";
+import { HowItWorksSimple } from "@/components/HowItWorksSimple";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// --- Interfaces ---
-interface HeroProps {
-  title?: string;
-  highlight?: string;
-  titleAfter?: string;
-  subtitle?: string;
-  sectionLabel?: string;
-  ctaText?: string;
-}
+
 
 interface FeatureItem {
   title: string;
@@ -54,61 +48,7 @@ interface ResultsProps {
   title: string;
 }
 
-// --- 1. CENTERED HERO (Refined Weights & Contrast) ---
-const HeroCentered = ({ title, highlight, titleAfter, subtitle, ctaText }: HeroProps) => {
-  return (
-    <section className="relative pt-32 pb-24 px-6 overflow-hidden bg-[#051A0E] flex flex-col items-center text-center z-30">
-      <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700,900&display=swap" rel="stylesheet" />
 
-      {/* --- REFINED SPOTLIGHTS (Pushed back to let text breathe) --- */}
-      <div className="absolute top-[-25%] left-[-15%] w-[50%] h-[50%] bg-white/[0.02] blur-[180px] rounded-full pointer-events-none z-0" />
-      <div className="absolute top-[-15%] right-[-20%] w-[40%] h-[40%] bg-white/[0.02] blur-[160px] rounded-full pointer-events-none z-0" />
-
-      {/* Subtle Central Atmosphere */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.03),transparent_80%)] pointer-events-none z-0" />
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-40 max-w-4xl mt-12 md:mt-20"
-      >
-        {/* Changed font-black to font-bold and tracking-tighter to tracking-tight for better legibility */}
-        <h1 className="text-5xl md:text-6xl font-bold text-white tracking-tight leading-[1.1] mb-8 whitespace-pre-wrap">
-          {title}{" "}
-          <span
-            className="text-emerald-400 px-2 inline-block whitespace-pre-wrap"
-            style={{
-              fontFamily: "'Satoshi', sans-serif",
-              fontStyle: "italic",
-              fontWeight: 500, // Slightly heavier than before to stop blending
-              textShadow: "0 0 20px rgba(52, 211, 153, 0.2)" // Subtle glow to make it pop
-            }}
-          >
-            {highlight}
-          </span>{" "}
-          {titleAfter}
-        </h1>
-
-        <p className="text-white/40 text-base md:text-lg font-normal max-w-2xl mx-auto leading-relaxed mb-12 whitespace-pre-wrap">
-          {subtitle}
-        </p>
-
-        <Link href="#schedule">
-          <Button className="h-12 px-8 rounded-full bg-white text-black text-[10px] font-black tracking-widest hover:scale-105 hover:bg-white hover:text-black transition-all group shadow-[0_0_40px_rgba(255,255,255,0.1)] whitespace-pre-wrap">
-            {ctaText || "Book a Free Audit"}
-            <div className="ml-3 w-6 h-6 rounded-full bg-black flex items-center justify-center">
-              <ArrowRight className="w-3.5 h-3.5 text-white group-hover:translate-x-0.5 transition-transform" />
-            </div>
-          </Button>
-        </Link>
-      </motion.div>
-
-      {/* --- THE "UNDER SECTION" FIX --- */}
-      <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
-    </section>
-  );
-};
 
 // --- Reel Card Component ---
 const ReelCard = ({ item, isPlaying, onToggle }: { item: any; isPlaying: boolean; onToggle: () => void }) => {
@@ -207,7 +147,7 @@ const WorkReelsSection = ({ workData }: { workData?: any }) => {
 
   return (
     <section className="relative -mt-[1px] pt-24 pb-20 px-6 bg-[#051A0E] overflow-hidden border-none z-10">
-      
+
       {/* --- TOP CONNECTION MASK --- */}
       <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
 
@@ -230,7 +170,7 @@ const WorkReelsSection = ({ workData }: { workData?: any }) => {
             </button>
           </div>
         </div>
-        
+
         <div ref={scrollRef} className="flex gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-4">
           {items.map((item: any, i: number) => (
             <ReelCard
@@ -253,7 +193,7 @@ const WorkReelsSection = ({ workData }: { workData?: any }) => {
 const AnimatedFeatureGrid = ({ items, title, label, isSolution = false, highlightedWord }: FeatureGridProps) => {
   return (
     <section className="relative -mt-[1px] py-24 px-6 overflow-hidden bg-[#051A0E] border-none z-10">
-      
+
       {/* --- TOP CONNECTION MASK --- */}
       <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
 
@@ -489,7 +429,7 @@ const ProcessSection = ({ data }: { data?: any }) => {
 
   return (
     <section ref={container} className="relative -mt-[1px] py-24 px-6 bg-[#051A0E] overflow-hidden border-none z-10">
-      
+
       {/* --- TOP CONNECTION MASK --- */}
       <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
 
@@ -502,18 +442,18 @@ const ProcessSection = ({ data }: { data?: any }) => {
           <p className="text-emerald-500 text-[9px] font-black tracking-[0.4em] mb-3 whitespace-pre-wrap">{label}</p>
           <h2 className="text-5xl md:text-7xl text-white font-black tracking-tighter leading-none italic whitespace-pre-wrap">{title}</h2>
         </div>
-        
+
         <div className="relative">
           {/* Progress Line */}
           <div ref={lineRef} className="absolute top-0 left-0 md:w-full md:h-px w-[2px] h-full bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.8)] z-10" />
           <div className="absolute top-0 left-0 md:w-full md:h-px w-[2px] h-full bg-white/5" />
-          
+
           <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-12">
             {steps.map((step: any, i: number) => (
               <div key={i} className="pt-10 md:pt-14 relative group pl-8 md:pl-0">
                 {/* Step Circle */}
                 <div className="absolute top-0 left-[-7px] md:left-0 md:-translate-y-1/2 w-3.5 h-3.5 rounded-full bg-emerald-500 border-4 border-[#051A0E] z-20 group-hover:scale-125 transition-transform shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
-                
+
                 <span className="text-emerald-500 font-bold text-[9px] tracking-widest mb-3 block uppercase opacity-50 group-hover:opacity-100 transition-opacity">Step 0{i + 1}</span>
                 <h3 className="text-white text-xl md:text-2xl font-bold mb-4 tracking-tight group-hover:text-emerald-400 transition-colors whitespace-pre-wrap">{step.name}</h3>
                 <p className="text-white/40 leading-relaxed font-normal text-sm md:text-base group-hover:text-white/60 transition-colors whitespace-pre-wrap">{step.desc}</p>
@@ -556,21 +496,19 @@ export default function OrganicContentYouTubePage() {
           ctaText={data?.heroCta}
         />
         <WorkReelsSection workData={data?.work} />
-        <ProblemSolutionComparison
-          problemsLabel={data?.problemsLabel || "The Problem"}
-          problemsTitle={data?.problemsTitle || "What creators usually struggle with"}
-          problems={data?.problems || [
-            { title: "Uploading Without Strategy", description: "Most creators post consistently but without understanding audience psychology or retention structure." },
-            { title: "Low Retention & Watch Time", description: "If viewers drop in the first 30 seconds, YouTube won't push your content organically." },
-            { title: "Inconsistent Growth", description: "Random topics and no content system lead to slow growth and unpredictable results." }
-          ]}
-          solutionsLabel={data?.solutionsLabel || "The Matera Solution"}
-          solutionsTitle={data?.solutionsTitle || "How we build organic growth machines"}
-          solutions={data?.solutions || [
-            { title: "Retention-Driven Storytelling", description: "We structure every video with powerful hooks and pacing designed to maximize watch time." },
-            { title: "Search & Algorithm Optimization", description: "Strategic titles, thumbnails, and metadata crafted to get recommended organically." },
-            { title: "Content Systemization", description: "We build repeatable content frameworks so your channel grows consistently." }
-          ]}
+        <HowItWorksSimple
+          data={data?.howItWorksSimple || {
+            active: true,
+            badge: "How it works",
+            title: "Getting started is simple.",
+            highlight: "simple.",
+            subtitle: "You get on camera, we handle the rest",
+            steps: [
+              { title: "Brand Audit", description: "We get to know you—your voice, your vision, and what kind of content will actually move the needle.", icon: "search" },
+              { title: "Content Calendar", description: "We build a tailored content roadmap + fill your calendar with viral-ready ideas and scripts that sound like you.", icon: "calendar" },
+              { title: "Full Production", description: "You record—we turn it into scroll-stopping videos, publish across all platforms, and fuel it with SEO.", icon: "camera" }
+            ]
+          }}
         />
         <ResultsSection
           title={data?.resultsTitle || "Our Results"}

@@ -53,7 +53,7 @@ export const pageQuery = `*[_type == "page" && (_id == $slug || slug.current == 
 }`;
 
 // Fetch service page by slug (ad-creatives | organic-content-youtube | saas-videos)
-export const servicePageQuery = `*[_type == "servicePage" && slug == $slug][0]{
+export const servicePageQuery = `*[_type == "servicePage" && (slug == $slug || _id == $slug)][0]{
   slug,
   sectionLabel,
   headlineTitle,
@@ -130,11 +130,24 @@ export const servicePageQuery = `*[_type == "servicePage" && slug == $slug][0]{
     _key,
     question,
     answer
+  },
+  howItWorksSimple{
+    active,
+    badge,
+    title,
+    highlight,
+    subtitle,
+    steps[]{
+      _key,
+      title,
+      description,
+      icon
+    }
   }
 }`;
 
 // Fetch legal page by slug (privacy-policy)
-export const legalPageQuery = `*[_type == "legalPage" && slug == $slug][0]{
+export const legalPageQuery = `*[_type == "legalPage" && (slug == $slug || _id == $slug)][0]{
   slug,
   title,
   subtitle,

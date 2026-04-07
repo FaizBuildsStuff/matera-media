@@ -14,6 +14,7 @@ export default defineType({
     { name: "plans", title: "Plans" },
     { name: "calendly", title: "Calendly" },
     { name: "work", title: "Work / Case Studies" },
+    { name: "howItWorksSimple", title: "How It Works (Simplified)" },
   ],
   fields: [
     defineField({
@@ -98,6 +99,7 @@ export default defineType({
       rows: 2,
       initialValue: "Problems",
       group: "problems",
+      hidden: ({ document }) => document?.slug !== "ad-creatives",
     }),
     defineField({
       name: "problemsTitle",
@@ -106,6 +108,7 @@ export default defineType({
       rows: 2,
       initialValue: "What clients are usually going through",
       group: "problems",
+      hidden: ({ document }) => document?.slug !== "ad-creatives",
     }),
     defineField({
       name: "problemsHighlightedWord",
@@ -114,6 +117,7 @@ export default defineType({
       rows: 2,
       group: "problems",
       description: "Paste the exact word from the title that you want to highlight",
+      hidden: ({ document }) => document?.slug !== "ad-creatives",
     }),
     defineField({
       name: "problems",
@@ -121,6 +125,7 @@ export default defineType({
       type: "array",
       of: [{ type: "problemSolutionItem" }],
       group: "problems",
+      hidden: ({ document }) => document?.slug !== "ad-creatives",
     }),
     defineField({
       name: "solutionsLabel",
@@ -129,6 +134,7 @@ export default defineType({
       rows: 2,
       initialValue: "Solutions",
       group: "solutions",
+      hidden: ({ document }) => document?.slug !== "ad-creatives",
     }),
     defineField({
       name: "solutionsTitle",
@@ -137,6 +143,7 @@ export default defineType({
       rows: 2,
       initialValue: "How we fix it",
       group: "solutions",
+      hidden: ({ document }) => document?.slug !== "ad-creatives",
     }),
     defineField({
       name: "solutions",
@@ -144,6 +151,7 @@ export default defineType({
       type: "array",
       of: [{ type: "problemSolutionItem" }],
       group: "solutions",
+      hidden: ({ document }) => document?.slug !== "ad-creatives",
     }),
     defineField({
       name: "resultsLabel",
@@ -260,6 +268,46 @@ export default defineType({
       title: "Work Showcase",
       type: "workShowcase",
       group: "work",
+    }),
+    defineField({
+      name: "howItWorksSimple",
+      title: "How It Works (Simplified)",
+      type: "object",
+      group: "howItWorksSimple",
+      hidden: ({ document }) => document?.slug !== "organic-content-youtube",
+      fields: [
+        defineField({ name: "active", title: "Active", type: "boolean", initialValue: false }),
+        defineField({ name: "badge", title: "Badge Text", type: "string", initialValue: "How it works" }),
+        defineField({ name: "title", title: "Section Title", type: "string", initialValue: "Getting started is simple." }),
+        defineField({ name: "highlight", title: "Highlighted Word", type: "string", initialValue: "simple." }),
+        defineField({ name: "subtitle", title: "Subtitle", type: "text", rows: 2, initialValue: "You get on camera, we handle the rest" }),
+        defineField({
+          name: "steps",
+          title: "Steps",
+          type: "array",
+          of: [
+            {
+              type: "object",
+              fields: [
+                defineField({ name: "title", title: "Step Title", type: "string" }),
+                defineField({ name: "description", title: "Description", type: "text", rows: 3 }),
+                defineField({ 
+                  name: "icon", 
+                  title: "Icon Type", 
+                  type: "string", 
+                  options: { 
+                    list: [
+                      { title: "Search / Audit", value: "search" },
+                      { title: "Calendar / List", value: "calendar" },
+                      { title: "Camera / Production", value: "camera" }
+                    ]
+                  }
+                }),
+              ],
+            },
+          ],
+        }),
+      ],
     }),
   ],
   preview: {

@@ -37,17 +37,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         {/* Fontshare Satoshi Import */}
         <link 
-          href="https://api.fontshare.com/v2/css?f[]=satoshi@400&display=swap" 
+          href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700,900&display=swap" 
           rel="stylesheet" 
         />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${instrumentSans.variable} ${instrumentSerif.variable} antialiased`}
-        style={{ fontFamily: "'Satoshi', sans-serif" }}
       >
         {children}
       </body>
