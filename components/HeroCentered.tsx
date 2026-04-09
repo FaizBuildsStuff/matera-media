@@ -17,11 +17,15 @@ export interface HeroProps {
 
 export const HeroCentered = ({ title, highlight, titleAfter, subtitle, ctaText }: HeroProps) => {
   return (
-    <section className="relative pt-32 pb-24 px-6 overflow-hidden bg-[#051A0E] flex flex-col items-center text-center z-30">
+    <section className="relative pt-32 pb-24 px-6 overflow-hidden bg-[#051A0E] flex flex-col items-center text-center z-30 border-none">
 
-      {/* --- REFINED SPOTLIGHTS --- */}
-      <div className="absolute top-[-25%] left-[-15%] w-[50%] h-[50%] bg-white/[0.02] blur-[180px] rounded-full pointer-events-none z-0" />
-      <div className="absolute top-[-15%] right-[-20%] w-[40%] h-[40%] bg-white/[0.02] blur-[160px] rounded-full pointer-events-none z-0" />
+      {/* --- REFINED SPOTLIGHTS (Full Coverage to prevent lines) --- */}
+      <div 
+        className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(255,255,255,0.02)_0%,transparent_50%)] pointer-events-none z-0 blur-[120px]" 
+      />
+      <div 
+        className="absolute inset-0 bg-[radial-gradient(circle_at_80%_0%,rgba(255,255,255,0.02)_0%,transparent_50%)] pointer-events-none z-0 blur-[120px]" 
+      />
 
       {/* Subtle Central Atmosphere */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.03),transparent_80%)] pointer-events-none z-0" />
@@ -50,7 +54,7 @@ export const HeroCentered = ({ title, highlight, titleAfter, subtitle, ctaText }
         </p>
 
         <Link href="#schedule">
-          <Button className="h-12 px-8 rounded-full bg-white text-black text-[10px] font-black tracking-widest hover:scale-105 hover:bg-white hover:text-black transition-all group shadow-[0_0_40px_rgba(255,255,255,0.1)] whitespace-pre-wrap">
+          <Button className="h-12 px-8 rounded-full bg-white text-black text-[10px] font-bold tracking-widest hover:scale-105 active:scale-95 hover:bg-white hover:text-black active:bg-white active:text-black transition-all group shadow-[0_0_40px_rgba(255,255,255,0.1)] whitespace-pre-wrap">
             {ctaText || "Book a Free Audit"}
             <div className="ml-3 w-6 h-6 rounded-full bg-black flex items-center justify-center">
               <ArrowRight className="w-3.5 h-3.5 text-white group-hover:translate-x-0.5 transition-transform" />

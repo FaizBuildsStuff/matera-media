@@ -57,11 +57,15 @@ export const Hero = ({ content }: { content?: any }) => {
   return (
     <section
       ref={containerRef}
-      className="relative w-full flex flex-col items-center justify-start pt-24 md:pt-32 pb-16 px-6 bg-[#05180D] overflow-hidden font-satoshi"
+      className="relative w-full flex flex-col items-center justify-start pt-24 md:pt-32 pb-16 px-6 bg-[#05180D] overflow-hidden font-satoshi border-none"
     >
-      {/* 1. Top Glow Atmosphere (Refined) */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[60%] bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.08)_0%,transparent_70%)] pointer-events-none" />
-      <div className="absolute top-0 left-[-10%] w-[40%] h-[40%] bg-white/[0.02] blur-[160px] rounded-full pointer-events-none" />
+      {/* 1. Top Glow Atmosphere (Full Coverage to prevent lines) */}
+      <div 
+        className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.08)_0%,transparent_60%)] pointer-events-none" 
+      />
+      <div 
+        className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(255,255,255,0.02)_0%,transparent_50%)] pointer-events-none blur-[120px]" 
+      />
 
       {/* --- BOTTOM SEAMLESS BLENDING --- */}
       <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#05180D] via-[#05180D] to-transparent z-10 pointer-events-none" />
@@ -96,20 +100,23 @@ export const Hero = ({ content }: { content?: any }) => {
 
         {/* CTA Section */}
         <div className="reveal flex flex-col items-center gap-4">
-          <Button asChild className="h-14 md:h-16 px-10 md:px-12 rounded-full bg-white text-black hover:scale-105 transition-all duration-500 font-black text-[10px] md:text-xs uppercase tracking-[0.2em] shadow-[0_0_40px_rgba(255,255,255,0.1)]">
-            <Link href={ctaLink}>
-              {ctaPrimary}
-            </Link>
-          </Button>
+          <Button 
+  asChild 
+  className="h-14 md:h-16 px-10 md:px-12 rounded-full bg-white text-black hover:bg-white/90 hover:text-black active:bg-white transition-all duration-500 font-black text-[10px] md:text-xs uppercase tracking-[0.2em] shadow-[0_0_40px_rgba(255,255,255,0.1)]"
+>
+  <Link href={ctaLink}>
+    {ctaPrimary}
+  </Link>
+</Button>
         </div>
       </div>
 
-      {/* Grainy Noise Overlay with Masked Bottom */}
+      {/* Grainy Noise Overlay with Smooth Mask */}
       <div 
         className="absolute inset-0 z-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none" 
         style={{
-          maskImage: 'linear-gradient(to bottom, black 90%, transparent 100%)',
-          WebkitMaskImage: 'linear-gradient(to bottom, black 90%, transparent 100%)'
+          maskImage: 'linear-gradient(to bottom, black 0%, black 90%, transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 90%, transparent 100%)'
         }}
       />
     </section>
