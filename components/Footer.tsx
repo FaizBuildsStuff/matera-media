@@ -10,7 +10,7 @@ export const Footer = () => {
             {/* --- BACKGROUND DESIGN ELEMENTS --- */}
             <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden select-none">
                 {/* Large Scale Subtle Watermark */}
-                <h2 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[18vw] font-black text-white/[0.015] uppercase tracking-tighter whitespace-nowrap">
+                <h2 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[18vw] font-bold text-white/[0.015] uppercase tracking-tight whitespace-nowrap">
                     MATERA MEDIA
                 </h2>
                 
@@ -77,10 +77,10 @@ export const Footer = () => {
                 <div className="pt-8 pb-12 flex flex-col md:flex-row justify-between items-center gap-8 border-t border-white/5">
                     {/* Copyright & Slogan */}
                     <div className="flex flex-col items-center md:items-start gap-1">
-                        <p className="text-white/20 text-[10px] tracking-[0.3em] uppercase font-black">
+                        <p className="text-white/20 text-[10px] tracking-[0.3em] uppercase font-bold">
                             © {new Date().getFullYear()} MATERA MEDIA
                         </p>
-                        <p className="text-white/10 text-[9px] tracking-widest uppercase font-bold">
+                        <p className="text-white/10 text-[9px] tracking-widest uppercase font-normal">
                             Engineered for Attention & Revenue
                         </p>
                     </div>

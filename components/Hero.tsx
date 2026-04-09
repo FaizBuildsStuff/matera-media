@@ -43,7 +43,11 @@ export const Hero = ({ content }: { content?: any }) => {
     return parts.map((part: string, i: number) => {
       const isMatch = sortedHighlights.some(h => h.toLowerCase() === part.toLowerCase());
       return (
-        <span key={i} className={isMatch ? "text-emerald-400 font-bold" : "text-white"}>
+        <span 
+          key={i} 
+          className={isMatch ? "text-emerald-400 italic font-semibold px-1" : "text-white"}
+          style={isMatch ? { textShadow: "0 0 20px rgba(52, 211, 153, 0.25)" } : {}}
+        >
           {part}
         </span>
       );
@@ -53,23 +57,24 @@ export const Hero = ({ content }: { content?: any }) => {
   return (
     <section
       ref={containerRef}
-      className="relative w-full flex flex-col items-center justify-start pt-16 md:pt-20 pb-12 px-6 bg-[#05180D] overflow-hidden font-satoshi"
+      className="relative w-full flex flex-col items-center justify-start pt-24 md:pt-32 pb-16 px-6 bg-[#05180D] overflow-hidden font-satoshi"
     >
-      {/* 1. Top Glow Atmosphere */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[50%] bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.15)_0%,transparent_70%)] pointer-events-none" />
+      {/* 1. Top Glow Atmosphere (Refined) */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[60%] bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.08)_0%,transparent_70%)] pointer-events-none" />
+      <div className="absolute top-0 left-[-10%] w-[40%] h-[40%] bg-white/[0.02] blur-[160px] rounded-full pointer-events-none" />
 
-      {/* --- BOTTOM SEAMLESS BLENDING (Tightened) --- */}
-      <div className="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-[#05180D] via-[#05180D]/80 to-transparent z-10 pointer-events-none" />
+      {/* --- BOTTOM SEAMLESS BLENDING --- */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#05180D] via-[#05180D] to-transparent z-10 pointer-events-none" />
 
       <div className="relative z-20 w-full max-w-4xl mx-auto flex flex-col items-center mt-6 md:mt-10 mb-8 md:mb-12">
         
-        <h1 className="reveal text-4xl md:text-6xl font-black leading-[1.1] tracking-tighter text-center mb-10 text-white max-w-3xl">
+        <h1 className="reveal text-5xl md:text-6xl font-black leading-[1.05] tracking-tighter text-center mb-10 text-white max-w-4xl">
           {renderHeadline()}
         </h1>
 
-        {/* Video Player Card */}
+        {/* Video Player Card - Medium Scale */}
         {videoUrl && (
-          <div className="reveal relative w-full aspect-video rounded-2xl md:rounded-[2.5rem] overflow-hidden border border-white/5 shadow-2xl bg-black group mb-10">
+          <div className="reveal relative w-full max-w-4xl aspect-video rounded-3xl md:rounded-[3rem] overflow-hidden border border-white/5 shadow-2xl bg-black group mb-10">
             {!isVideoPlaying ? (
               <div className="absolute inset-0 flex items-center justify-center cursor-pointer z-10" onClick={() => setIsVideoPlaying(true)}>
                 {thumbnailUrl && (
@@ -91,7 +96,7 @@ export const Hero = ({ content }: { content?: any }) => {
 
         {/* CTA Section */}
         <div className="reveal flex flex-col items-center gap-4">
-          <Button asChild className="h-14 md:h-16 px-10 md:px-12 rounded-2xl bg-emerald-400 text-black hover:bg-white transition-all duration-500 font-black text-base md:text-lg uppercase tracking-tight">
+          <Button asChild className="h-14 md:h-16 px-10 md:px-12 rounded-full bg-white text-black hover:scale-105 transition-all duration-500 font-black text-[10px] md:text-xs uppercase tracking-[0.2em] shadow-[0_0_40px_rgba(255,255,255,0.1)]">
             <Link href={ctaLink}>
               {ctaPrimary}
             </Link>

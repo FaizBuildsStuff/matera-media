@@ -171,38 +171,33 @@ export const WorkShowcase = ({
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div ref={headerRef} className="mb-20">
-          <h2 className="text-4xl md:text-6xl font-black text-emerald-500 mb-6 tracking-tighter font-satoshi uppercase flex items-center gap-4 whitespace-pre-wrap">
-            {/* Emerald Sparkle with a premium breathing animation */}
-            <Sparkles className="w-10 h-10 md:w-12 md:h-12 text-emerald-500 animate-[pulse_3s_ease-in-out_infinite] opacity-80" />
+          <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight font-satoshi flex items-center gap-4 whitespace-pre-wrap">
+            <Sparkles className="w-8 h-8 md:w-10 md:h-10 text-emerald-400 animate-[pulse_3s_ease-in-out_infinite] opacity-80" />
 
             <span className="relative">
               {title}
-            </span>
-
-            <span className="text-emerald-500/20 tracking-[0.08em] italic font-medium font-satoshi ml-2">
-              {/* Extra CMS text here if needed */}
+              <span className="text-emerald-400 italic font-semibold ml-3 px-1" style={{ textShadow: "0 0 20px rgba(52, 211, 153, 0.2)" }}>
+                {highlightedWord}
+              </span>
             </span>
           </h2>
-        <p className="text-white/50 max-w-xl font-light text-lg leading-relaxed whitespace-pre-wrap">{description}</p>
+          <p className="text-white/40 max-w-xl font-normal text-lg leading-relaxed whitespace-pre-wrap">{description}</p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
           <aside ref={leftRef} className="lg:w-72 shrink-0">
-            <nav className="sticky top-32 space-y-0.5">
-              <p className="text-white/30 text-[10px] font-bold tracking-[0.3em] uppercase mb-6 pl-1">Filter Protocol</p>
+            <nav className="sticky top-32 space-y-2">
+              <p className="text-white/20 text-[9px] font-bold tracking-[0.4em] uppercase mb-8 pl-1">Protocol / Filter</p>
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat.id}
                   onClick={() => handleCategoryClick(cat.slug)}
-                  className={`relative block w-full text-left px-6 py-4 rounded-2xl text-base font-medium transition-all duration-300 active:scale-[0.98] ${activeCategory === cat.slug
-                    ? "text-white bg-white/[0.08] border border-white/10 shadow-lg shadow-emerald-950/20"
-                    : "text-white/40 hover:text-white/70 hover:bg-white/[0.04] border border-transparent"
+                  className={`relative block w-full text-left px-7 py-4 rounded-full text-[13px] font-bold tracking-tight transition-all duration-300 active:scale-[0.98] ${activeCategory === cat.slug
+                    ? "text-black bg-white shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+                    : "text-white/40 hover:text-white/70 hover:bg-white/[0.04] border border-white/5"
                     }`}
                 >
-                  {activeCategory === cat.slug && (
-                    <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 rounded-r-full bg-emerald-500" />
-                  )}
-                  <span className="relative pl-1">{cat.label}</span>
+                  <span className="relative">{cat.label}</span>
                 </button>
               ))}
             </nav>

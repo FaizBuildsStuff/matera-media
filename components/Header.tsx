@@ -28,7 +28,7 @@ export const Header = () => {
             {/* This inner DIV is the actual header bar. 
                It has the background, the border, and the 'cut' look on the sides.
             */}
-            <div className="max-w-6xl mx-auto h-18 bg-[#05180D] border border-white/10 rounded-2xl px-6 md:px-10 flex items-center justify-between shadow-2xl">
+            <div className="max-w-6xl mx-auto h-16 bg-[#05180D] border border-white/10 rounded-full px-6 md:px-10 flex items-center justify-between shadow-2xl backdrop-blur-xl">
                 
                 {/* LEFT: LOGO */}
                 <Link
@@ -44,7 +44,7 @@ export const Header = () => {
                         className="w-7 h-7 object-contain grayscale brightness-200 transition-all duration-500"
                         priority
                     />
-                    <span className="text-white font-black tracking-tighter text-sm uppercase">
+                    <span className="text-white font-bold tracking-tight text-xs uppercase">
                         Matera Media
                     </span>
                 </Link>
@@ -70,7 +70,7 @@ export const Header = () => {
 
                     <div className="flex items-center gap-4">
                         <Link href="/book" className="hidden sm:block group relative">
-                            <button className="relative flex items-center gap-3 px-5 py-2 bg-white text-black text-[9px] font-black uppercase tracking-[0.1em] rounded-full transition-all active:scale-95 hover:bg-emerald-50">
+                            <button className="relative flex items-center gap-3 px-6 py-2.5 bg-white text-black text-[9px] font-black uppercase tracking-[0.15em] rounded-full transition-all active:scale-95 hover:bg-emerald-50">
                                 Book A Call
                                 <div className="w-4 h-4 rounded-full bg-black flex items-center justify-center transition-transform group-hover:rotate-45">
                                     <ArrowRight className="w-2.5 h-2.5 text-white" />
@@ -98,7 +98,7 @@ export const Header = () => {
                                 key={item.href}
                                 href={item.href}
                                 onClick={() => setMobileOpen(false)}
-                                className={`text-xl font-black uppercase tracking-tighter transition-colors ${
+                                className={`text-lg font-bold uppercase tracking-widest transition-colors ${
                                     pathname === item.href ? "text-emerald-500" : "text-white/60"
                                 }`}
                             >

@@ -95,12 +95,17 @@ export default function Pricing({ content }: { content?: any }) {
 
       <div className="max-w-7xl mx-auto relative z-30">
 
-        <div className="mb-14 flex flex-col items-center text-center gap-4">
-          <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-[1.1] max-w-5xl uppercase italic">
+        <div className="mb-20 flex flex-col items-center text-center gap-6">
+          <h2 className="text-5xl md:text-7xl font-bold text-white tracking-tight leading-[1.05] max-w-5xl">
             {title.split(' ').map((word: string, i: number) => {
               const cleanWord = word.replace(/\W/g, "");
+              const isHighlight = cleanWord === highlightedWord;
               return (
-                <span key={i} className={cleanWord === highlightedWord ? "text-[#10B981] not-italic" : ""}>
+                <span 
+                  key={i} 
+                  className={isHighlight ? "text-emerald-400 italic font-semibold px-2" : ""}
+                  style={isHighlight ? { textShadow: "0 0 20px rgba(52, 211, 153, 0.2)" } : {}}
+                >
                   {word}{" "}
                 </span>
               );
@@ -127,8 +132,8 @@ export default function Pricing({ content }: { content?: any }) {
                     }`}
                 >
                   {isMiddle && (
-                    <div className="absolute top-0 right-10 px-6 py-2 bg-[#10B981] text-[#05180D] text-[9px] font-black uppercase tracking-[0.2em] rounded-b-2xl shadow-lg">
-                      Most Demanded
+                    <div className="absolute top-0 right-10 px-6 py-2 bg-emerald-500 text-black text-[9px] font-black uppercase tracking-[0.2em] rounded-b-2xl shadow-lg">
+                      Popular / Scalable
                     </div>
                   )}
 
@@ -140,10 +145,10 @@ export default function Pricing({ content }: { content?: any }) {
                       <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#10B981] opacity-80">{plan.tagline}</span>
                     </div>
 
-                    <h3 className="text-3xl font-black text-white mb-4 tracking-tighter uppercase">
+                    <h3 className="text-3xl font-bold text-white mb-4 tracking-tight">
                       {plan.name}
                     </h3>
-                    <p className="text-white/30 text-sm font-normal leading-relaxed mb-10 whitespace-pre-wrap">
+                    <p className="text-white/40 text-[13px] font-normal leading-relaxed mb-10 whitespace-pre-wrap">
                       {plan.description}
                     </p>
 
@@ -160,9 +165,9 @@ export default function Pricing({ content }: { content?: any }) {
                     </div>
 
                     <Link href="/book" className="mt-auto">
-                      <Button className={`w-full h-16 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] transition-all duration-500 flex justify-between px-10 group ${isMiddle
-                          ? "bg-white text-black hover:bg-[#10B981]"
-                          : "bg-white/5 text-white border border-white/10 hover:bg-white hover:text-black"
+                      <Button className={`w-full h-16 rounded-full font-black uppercase tracking-[0.2em] text-[10px] transition-all duration-500 flex justify-between px-10 group ${isMiddle
+                          ? "bg-white text-black hover:scale-[1.02]"
+                          : "bg-white/5 text-white border border-white/10 hover:bg-white hover:text-black hover:scale-[1.02]"
                         }`}>
                         I need this
                         <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />

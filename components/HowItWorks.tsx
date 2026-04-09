@@ -112,16 +112,27 @@ export const HowItWorks = ({ content }: HowItWorksProps) => {
 
                 {/* Header Section - SIZE FIXED HERE */}
                 <div className="text-center mb-24 md:mb-32">
-                    <div className="flex items-center justify-center gap-4 mb-6">
-                        <div className="h-[1px] w-8 bg-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.4)]" />
-                        <span className="text-emerald-500 text-[10px] font-black tracking-[0.5em] uppercase">
+                    <div className="flex items-center justify-center gap-6 mb-8">
+                        <div className="h-px w-10 bg-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.3)]" />
+                        <span className="text-emerald-500 text-[10px] font-bold tracking-[0.4em] uppercase">
                             {label}
                         </span>
-                        <div className="h-[1px] w-8 bg-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.4)]" />
+                        <div className="h-px w-10 bg-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.3)]" />
                     </div>
-                    {/* Changed from text-8xl to text-6xl */}
-                    <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter uppercase leading-[0.85] italic drop-shadow-2xl">
-                        {titleText}
+                    
+                    <h2 className="text-5xl md:text-7xl font-bold text-white tracking-tight leading-none">
+                        {titleText.split(' ').map((word: string, i: number) => {
+                            const isLast = i === titleText.split(' ').length - 1;
+                            return (
+                                <span 
+                                    key={i} 
+                                    className={isLast ? "text-emerald-400 italic font-semibold px-2" : ""}
+                                    style={isLast ? { textShadow: "0 0 20px rgba(52, 211, 153, 0.2)" } : {}}
+                                >
+                                    {word}{" "}
+                                </span>
+                            );
+                        })}
                     </h2>
                 </div>
 
@@ -142,14 +153,14 @@ export const HowItWorks = ({ content }: HowItWorksProps) => {
                                 <div key={step.id} className="process-row relative md:h-[300px] flex items-center">
                                     <div className="absolute left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-emerald-400 z-30 hidden md:block shadow-[0_0_15px_rgba(52,211,153,1)]" />
 
-                                    <div className={`row-content w-full md:w-[46%] ${isEven ? 'md:pr-16 md:text-right' : 'md:pl-16 md:text-left md:ml-[54%]'} space-y-4`}>
+                                    <div className={`row-content w-full md:w-[46%] ${isEven ? 'md:pr-16 md:text-right' : 'md:pl-16 md:text-left md:ml-[54%]'} space-y-5`}>
                                         <div className={`flex items-center gap-3 ${isEven ? 'md:justify-end' : 'md:justify-start'}`}>
-                                            <span className="text-emerald-500 font-black text-[11px] tracking-[0.4em] uppercase opacity-80">
-                                                Phase {step.id}
+                                            <span className="text-emerald-500 font-bold text-[10px] tracking-[0.3em] uppercase opacity-60">
+                                                Protocol {step.id}
                                             </span>
                                         </div>
 
-                                        <h3 className="text-2xl md:text-4xl font-black text-white tracking-tighter uppercase leading-none">
+                                        <h3 className="text-2xl md:text-4xl font-bold text-white tracking-tight leading-tight">
                                             {step.title}
                                         </h3>
 

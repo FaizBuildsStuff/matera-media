@@ -25,7 +25,7 @@ import { Button } from "@/components/ui/button";
 import { ServiceCalendly } from "@/components/ServiceCalendly";
 import { client } from "@/lib/sanity";
 import { servicePageQuery } from "@/lib/queries";
-import { ProblemSolutionComparison } from "@/components/ProblemSolutionComparison";
+import { HowItWorksSimple } from "@/components/HowItWorksSimple";
 import { HeroCentered } from "@/components/HeroCentered";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -179,8 +179,8 @@ const WorkReelsSection = ({ workData }: { workData?: any }) => {
       <div className="max-w-7xl mx-auto relative z-30">
         <div className="flex flex-col md:flex-row justify-between items-end mb-10 gap-6">
           <div className="max-w-2xl">
-            <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-3">{title}</h2>
-            <p className="text-emerald-400 text-lg italic font-medium opacity-80">{label}</p>
+            <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-3">{title}</h2>
+            <p className="text-emerald-400 text-lg italic font-semibold opacity-80">{label}</p>
           </div>
           <div className="flex gap-3">
             <button onClick={() => scroll('left')} className="p-4 rounded-full border border-white/10 text-white hover:bg-white hover:text-black transition-all">
@@ -232,8 +232,8 @@ const CenteredPricing = ({ data }: { data?: any }) => {
         mx-auto relative z-30
       `}>
         <div className="text-center mb-16">
-          <p className="text-emerald-500 text-[10px] font-black tracking-[0.4em] mb-4 whitespace-pre-wrap">{label}</p>
-          <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-5 whitespace-pre-wrap">{title}</h2>
+          <p className="text-emerald-500 text-[10px] font-bold tracking-[0.4em] mb-4 whitespace-pre-wrap">{label}</p>
+          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-5 whitespace-pre-wrap">{title}</h2>
         </div>
 
         {/* Grid Setup: 2 plans are centered using flex or grid-cols-2 */}
@@ -309,7 +309,7 @@ const ResultsSection = ({ items, title }: ResultsProps) => {
       <div className="absolute bottom-[20%] right-[-5%] w-[30%] h-[40%] bg-white/[0.02] blur-[120px] rounded-full pointer-events-none z-0" />
 
       <div className="max-w-7xl mx-auto relative z-30">
-        <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter opacity-90 mb-16 whitespace-pre-wrap">
+        <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-16 whitespace-pre-wrap">
           {title}
         </h2>
 
@@ -372,8 +372,8 @@ const ProcessSection = ({ data }: { data?: any }) => {
 
       <div className="max-w-7xl mx-auto relative z-30">
         <div className="mb-16 md:mb-20">
-          <p className="text-emerald-500 text-[9px] font-black tracking-[0.4em] mb-3">{label}</p>
-          <h2 className="text-5xl md:text-7xl text-white font-black tracking-tighter leading-none italic">{title}</h2>
+          <p className="text-emerald-500 text-[10px] font-bold tracking-[0.4em] mb-3">{label}</p>
+          <h2 className="text-5xl md:text-7xl text-white font-bold tracking-tight leading-none italic">{title}</h2>
         </div>
 
         <div className="relative">
@@ -429,22 +429,18 @@ export default function AdCreativesPage() {
           ctaText={data?.heroCta}
         />
         <WorkReelsSection workData={data?.work} />
-        <ProblemSolutionComparison
-          problemsLabel={data?.problemsLabel || "The Problem"}
-          problemsTitle={data?.problemsTitle || "The Old Way"}
-          problems={data?.problems || [
-            { title: "Pretty but Passive", description: "Creative is the #1 lever in paid, yet most brands ship videos without a testing framework." },
-            { title: "Retention Leaks", description: "If the first 2 seconds don't stop the scroll, your ad budget is essentially a donation." },
-            { title: "Random Iteration", description: "Guessing what to make next leads to inconsistent ROAS and massive wasted spend." }
-          ]}
-          solutionsLabel={data?.solutionsLabel || "The Matera Solution"}
-          solutionsTitle={data?.solutionsTitle || "Dominate Media"}
-          solutions={data?.solutions || [
-            { title: "Hook Testing Engine", description: "We produce rapid variations to find the specific hooks that earn the click." },
-            { title: "Direct-Response Edits", description: "Pacing, pattern interrupts, and captions designed specifically for watch time." },
-            { title: "Strategy-First Design", description: "Messaging and offer clarity mapped out before we ever touch a timeline." }
-          ]}
-        />
+        <HowItWorksSimple data={data?.howItWorksSimple || {
+          active: true,
+          badge: "RECOVERY PROTOCOL",
+          title: "Our scientific creative process.",
+          highlight: "scientific",
+          subtitle: "We don't guess. We engineer data-backed winners.",
+          steps: [
+            { title: "Strategic Audit", description: "Analyzing your current performance to find where budget is being wasted.", icon: "search" },
+            { title: "Rapid Iteration", description: "Producing multiple high-response hooks to see what stops the scroll.", icon: "calendar" },
+            { title: "Scale Deployment", description: "Doubling down on winning angles to maximize your ROAS.", icon: "camera" }
+          ]
+        }} />
         <ResultsSection
           title={data?.resultsTitle || "Our Results"}
           items={data?.results || [{ image: "/" }, { image: "/results/s2.png" }, { image: "/results/s3.png" }, { image: "/results/s4.png" }]}

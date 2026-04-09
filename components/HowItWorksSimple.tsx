@@ -161,12 +161,12 @@ export const HowItWorksSimple = ({ data }: HowItWorksSimpleProps) => {
         </motion.div>
 
         {/* Heading */}
-        <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-[0.9] mb-8 max-w-4xl mx-auto">
+        <h2 className="text-5xl md:text-7xl font-bold text-white tracking-tight leading-[1.05] mb-8 max-w-4xl mx-auto">
           {renderTitle()}
         </h2>
 
         {/* Subtitle */}
-        <p className="text-white/40 text-lg md:text-xl font-medium mb-24 max-w-2xl mx-auto italic">
+        <p className="text-white/40 text-lg md:text-xl font-normal mb-24 max-w-2xl mx-auto italic">
           {subtitle || "You get on camera, we handle the rest"}
         </p>
 
@@ -198,10 +198,10 @@ export const HowItWorksSimple = ({ data }: HowItWorksSimpleProps) => {
 
                 {/* Text Content */}
                 <div className="relative z-10">
-                    <h3 className="text-white text-2xl font-black mb-4 tracking-tight group-hover:text-emerald-400 transition-colors">
+                    <h3 className="text-white text-2xl font-bold mb-4 tracking-tight group-hover:text-emerald-400 transition-colors">
                     {step.title}
                     </h3>
-                    <p className="text-white/30 leading-relaxed font-normal text-sm md:text-base group-hover:text-white/50 transition-colors">
+                    <p className="text-white/30 leading-relaxed font-normal text-sm md:text-base group-hover:text-white/40 transition-colors">
                     {step.description}
                     </p>
                 </div>
