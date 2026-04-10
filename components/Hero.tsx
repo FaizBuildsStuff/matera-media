@@ -4,7 +4,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { Play } from "lucide-react";
+import { motion } from "framer-motion";
+import { Play, ArrowRight, Sparkles } from "lucide-react";
+import { GSAPButton } from "./GSAPButton";
 
 const getYoutubeId = (url: string) => {
   if (!url) return null;
@@ -43,8 +45,8 @@ export const Hero = ({ content }: { content?: any }) => {
     return parts.map((part: string, i: number) => {
       const isMatch = sortedHighlights.some(h => h.toLowerCase() === part.toLowerCase());
       return (
-        <span 
-          key={i} 
+        <span
+          key={i}
           className={isMatch ? "text-emerald-400 italic font-semibold px-1" : "text-white"}
           style={isMatch ? { textShadow: "0 0 20px rgba(52, 211, 153, 0.25)" } : {}}
         >
@@ -57,22 +59,22 @@ export const Hero = ({ content }: { content?: any }) => {
   return (
     <section
       ref={containerRef}
-      className="relative w-full flex flex-col items-center justify-start pt-24 md:pt-32 pb-16 px-6 bg-[#05180D] overflow-hidden font-satoshi border-none"
+      className="relative w-full flex flex-col items-center justify-start pt-20 md:pt-32 pb-16 px-6 bg-[#05180D] overflow-hidden font-satoshi border-none"
     >
       {/* 1. Top Glow Atmosphere (Full Coverage to prevent lines) */}
-      <div 
-        className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.08)_0%,transparent_60%)] pointer-events-none" 
+      <div
+        className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.08)_0%,transparent_60%)] pointer-events-none"
       />
-      <div 
-        className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(255,255,255,0.02)_0%,transparent_50%)] pointer-events-none blur-[120px]" 
+      <div
+        className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(255,255,255,0.02)_0%,transparent_50%)] pointer-events-none blur-[120px]"
       />
 
       {/* --- BOTTOM SEAMLESS BLENDING --- */}
       <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#05180D] via-[#05180D] to-transparent z-10 pointer-events-none" />
 
       <div className="relative z-20 w-full max-w-4xl mx-auto flex flex-col items-center mt-6 md:mt-10 mb-8 md:mb-12">
-        
-        <h1 className="reveal text-5xl md:text-6xl font-black leading-[1.05] tracking-tighter text-center mb-10 text-white max-w-4xl">
+
+        <h1 className="reveal text-3xl sm:text-4xl md:text-5xl font-semibold leading-[1.2] md:leading-[1.1] tracking-tight text-center mb-8 md:mb-10 text-white max-w-4xl">
           {renderHeadline()}
         </h1>
 
@@ -98,22 +100,15 @@ export const Hero = ({ content }: { content?: any }) => {
           </div>
         )}
 
-        {/* CTA Section */}
-        <div className="reveal flex flex-col items-center gap-4">
-          <Button 
-  asChild 
-  className="h-14 md:h-16 px-10 md:px-12 rounded-full bg-white text-black hover:bg-white/90 hover:text-black active:bg-white transition-all duration-500 font-black text-[10px] md:text-xs uppercase tracking-[0.2em] shadow-[0_0_40px_rgba(255,255,255,0.1)]"
->
-  <Link href={ctaLink}>
-    {ctaPrimary}
-  </Link>
-</Button>
+        {/* CTA Section (Advanced High-End GSAP Magnetic Button) */}
+        <div className="reveal mt-8 flex justify-center z-30">
+          <GSAPButton href={ctaLink} text={ctaPrimary} />
         </div>
       </div>
 
       {/* Grainy Noise Overlay with Smooth Mask */}
-      <div 
-        className="absolute inset-0 z-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none" 
+      <div
+        className="absolute inset-0 z-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none"
         style={{
           maskImage: 'linear-gradient(to bottom, black 0%, black 90%, transparent 100%)',
           WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 90%, transparent 100%)'

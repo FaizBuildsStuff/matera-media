@@ -13,14 +13,14 @@ export const Footer = () => {
                 <h2 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[18vw] font-bold text-white/[0.015] uppercase tracking-tight whitespace-nowrap">
                     MATERA MEDIA
                 </h2>
-                
+
                 {/* Depth Glows */}
                 <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px]" />
                 <div className="absolute top-[-10%] right-[-5%] w-[400px] h-[400px] bg-white/5 rounded-full blur-[100px]" />
             </div>
 
             <div className="max-w-7xl mx-auto px-6 relative z-10">
-                
+
                 {/* --- CENTERED BRANDING & NAVIGATION --- */}
                 <div className="py-24 flex flex-col items-center">
                     {/* Centered Logo with Refined Treatment */}
@@ -43,9 +43,9 @@ export const Footer = () => {
                             { name: 'SaaS Videos', url: '/saas-videos' },
                             { name: 'Privacy', url: '/privacy-policy' },
                         ].map((item) => (
-                            <Link 
-                                key={item.name} 
-                                href={item.url} 
+                            <Link
+                                key={item.name}
+                                href={item.url}
                                 className="text-white/30 hover:text-white transition-all duration-300 text-[11px] font-bold uppercase tracking-[0.25em]"
                             >
                                 {item.name}
@@ -62,9 +62,9 @@ export const Footer = () => {
                             { icon: <Youtube className="w-4 h-4" />, url: '#' },
                             { icon: <Mail className="w-4 h-4" />, url: '#' },
                         ].map((social, idx) => (
-                            <Link 
-                                key={idx} 
-                                href={social.url} 
+                            <Link
+                                key={idx}
+                                href={social.url}
                                 className="w-12 h-12 flex items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/40 hover:bg-white hover:text-black hover:border-white transition-all duration-700 transform hover:-translate-y-1"
                             >
                                 {social.icon}
@@ -84,7 +84,7 @@ export const Footer = () => {
                             Engineered for Attention & Revenue
                         </p>
                     </div>
-                    
+
                     {/* Legal Links */}
                     <div className="flex gap-12">
                         <Link href="/privacy-policy" className="text-white/10 hover:text-white text-[10px] font-bold uppercase tracking-widest transition-colors">Privacy Policy</Link>

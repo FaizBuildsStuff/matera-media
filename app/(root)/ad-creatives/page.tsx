@@ -25,8 +25,9 @@ import { Button } from "@/components/ui/button";
 import { ServiceCalendly } from "@/components/ServiceCalendly";
 import { client } from "@/lib/sanity";
 import { servicePageQuery } from "@/lib/queries";
-import { HowItWorksSimple } from "@/components/HowItWorksSimple";
+import { ProblemSolutionComparison } from "@/components/ProblemSolutionComparison";
 import { HeroCentered } from "@/components/HeroCentered";
+import { StackedResults } from "@/components/StackedResults";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -294,46 +295,7 @@ const CenteredPricing = ({ data }: { data?: any }) => {
   );
 };
 // --- 5. RESULTS (Connected Lighting) ---
-const ResultsSection = ({ items, title }: ResultsProps) => {
-  return (
-    <section className="relative -mt-[1px] py-24 px-6 bg-[#051A0E] overflow-hidden text-center border-none z-10">
-
-      {/* --- TOP CONNECTION MASK --- */}
-      {/* Merges with the section above */}
-      <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
-
-      {/* --- LUXURY WHITE SPOTLIGHTS --- */}
-      {/* Large soft top-center spotlight */}
-      <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[60%] h-[50%] bg-white/[0.03] blur-[160px] rounded-full pointer-events-none z-0" />
-      {/* Subtle side glow */}
-      <div className="absolute bottom-[20%] right-[-5%] w-[30%] h-[40%] bg-white/[0.02] blur-[120px] rounded-full pointer-events-none z-0" />
-
-      <div className="max-w-7xl mx-auto relative z-30">
-        <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-16 whitespace-pre-wrap">
-          {title}
-        </h2>
-
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {items?.map((item: ResultItem, i: number) => (
-            <div key={i} className="relative aspect-square rounded-[2rem] overflow-hidden border border-white/10 bg-white/5 group">
-              {item.image && (
-                <Image
-                  src={item.image}
-                  alt={item.label || "Result Proof"}
-                  fill
-                  className="object-cover opacity-70 transition-all duration-700 group-hover:opacity-100 group-hover:scale-105"
-                />
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* --- BOTTOM BLEND MASK --- */}
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#051A0E] via-[#051A0E]/80 to-transparent pointer-events-none z-20" />
-    </section>
-  );
-};
+// Removed inline ResultsSection component - using StackedResults from components instead.
 // --- 6. OUR PROCESS (Connected Lighting) ---
 const ProcessSection = ({ data }: { data?: any }) => {
   const container = useRef<HTMLDivElement>(null);
@@ -429,20 +391,23 @@ export default function AdCreativesPage() {
           ctaText={data?.heroCta}
         />
         <WorkReelsSection workData={data?.work} />
-        <HowItWorksSimple data={data?.howItWorksSimple || {
-          active: true,
-          badge: "RECOVERY PROTOCOL",
-          title: "Our scientific creative process.",
-          highlight: "scientific",
-          subtitle: "We don't guess. We engineer data-backed winners.",
-          steps: [
-            { title: "Strategic Audit", description: "Analyzing your current performance to find where budget is being wasted.", icon: "search" },
-            { title: "Rapid Iteration", description: "Producing multiple high-response hooks to see what stops the scroll.", icon: "calendar" },
-            { title: "Scale Deployment", description: "Doubling down on winning angles to maximize your ROAS.", icon: "camera" }
-          ]
-        }} />
-        <ResultsSection
+        <ProblemSolutionComparison
+          problems={data?.problems || [
+            { title: "Low Conversion Rates", description: "You are bleeding ad spend on creatives that don't convert." },
+            { title: "High CAC", description: "Customer acquisition costs are eating your margins." }
+          ]}
+          solutions={data?.solutions || [
+            { title: "Data-Driven Creatives", description: "We engineer assets based on numbers, not guesses." },
+            { title: "Rapid Iteration", description: "We test hooks fast to find scaleable winners." }
+          ]}
+          problemsLabel={data?.problemsLabel || "The Problem"}
+          problemsTitle={data?.problemsTitle || "Old Way"}
+          solutionsLabel={data?.solutionsLabel || "The Matera Solution"}
+          solutionsTitle={data?.solutionsTitle || "Dominate Media"}
+        />
+        <StackedResults
           title={data?.resultsTitle || "Our Results"}
+          label={data?.resultsLabel || "Case Studies"}
           items={data?.results || [{ image: "/" }, { image: "/results/s2.png" }, { image: "/results/s3.png" }, { image: "/results/s4.png" }]}
         />
         <ProcessSection data={data} />

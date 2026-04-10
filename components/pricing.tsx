@@ -101,8 +101,8 @@ export default function Pricing({ content }: { content?: any }) {
               const cleanWord = word.replace(/\W/g, "");
               const isHighlight = cleanWord === highlightedWord;
               return (
-                <span 
-                  key={i} 
+                <span
+                  key={i}
                   className={isHighlight ? "text-emerald-400 italic font-semibold px-2" : ""}
                   style={isHighlight ? { textShadow: "0 0 20px rgba(52, 211, 153, 0.2)" } : {}}
                 >
@@ -127,8 +127,8 @@ export default function Pricing({ content }: { content?: any }) {
                   onMouseMove={(e) => handleMouseMove(e, idx)}
                   onMouseLeave={() => handleMouseLeave(idx)}
                   className={`pricing-card group relative flex flex-col p-10 rounded-[3rem] border transition-all duration-700 backdrop-blur-3xl overflow-hidden ${isMiddle
-                      ? "bg-white/[0.05] border-[#10B981]/40 shadow-[0_40px_120px_-20px_rgba(16,185,129,0.3)] scale-105 z-30 md:-translate-y-6"
-                      : "bg-white/2 border-white/5 hover:border-white/10 z-10 opacity-80 hover:opacity-100"
+                    ? "bg-white/[0.05] border-[#10B981]/40 shadow-[0_40px_120px_-20px_rgba(16,185,129,0.3)] scale-105 z-30 md:-translate-y-6"
+                    : "bg-white/2 border-white/5 hover:border-white/10 z-10 opacity-80 hover:opacity-100"
                     }`}
                 >
                   {isMiddle && (
@@ -166,8 +166,8 @@ export default function Pricing({ content }: { content?: any }) {
 
                     <Link href="/book" className="mt-auto">
                       <Button className={`w-full h-16 rounded-full font-black uppercase tracking-[0.2em] text-[10px] transition-all duration-500 flex justify-between px-10 group ${isMiddle
-                          ? "bg-white text-black hover:scale-[1.02]"
-                          : "bg-white/5 text-white border border-white/10 hover:bg-white hover:text-black hover:scale-[1.02]"
+                        ? "bg-white text-black hover:scale-[1.02]"
+                        : "bg-white/5 text-white border border-white/10 hover:bg-white hover:text-black hover:scale-[1.02]"
                         }`}>
                         I need this
                         <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />

@@ -6,18 +6,39 @@ export default defineType({
   type: "object",
   fields: [
     defineField({
-      name: "label",
-      title: "Label",
+      name: "clientName",
+      title: "Client Name",
+      type: "string",
+    }),
+    defineField({
+      name: "clientAvatar",
+      title: "Client Avatar",
+      type: "image",
+      options: { hotspot: true },
+    }),
+    defineField({
+      name: "title",
+      title: "Result Title / Huge Value",
       type: "text",
       rows: 2,
-      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "description",
+      title: "Result Description",
+      type: "text",
+      rows: 4,
+    }),
+    defineField({
+      name: "label",
+      title: "Label (Old/Fallback)",
+      type: "text",
+      rows: 2,
     }),
     defineField({
       name: "value",
-      title: "Value",
+      title: "Value (Old/Fallback)",
       type: "text",
       rows: 2,
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "image",
@@ -27,9 +48,9 @@ export default defineType({
     }),
   ],
   preview: {
-    select: { label: "label", value: "value" },
-    prepare({ label, value }) {
-      return { title: label, subtitle: value };
+    select: { title: "title", value: "value", image: "image" },
+    prepare({ title, value, image }) {
+      return { title: title || value || "Result", subtitle: "Result Item", media: image };
     },
   },
 });

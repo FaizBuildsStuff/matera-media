@@ -84,7 +84,11 @@ export const servicePageQuery = `*[_type == "servicePage" && (slug == $slug || _
     _key,
     label,
     value,
-    "image": image.asset->url
+    "image": image.asset->url,
+    clientName,
+    "clientAvatar": clientAvatar.asset->url,
+    title,
+    description
   },
   processLabel,
   processTitle,

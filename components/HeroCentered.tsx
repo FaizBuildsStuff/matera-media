@@ -3,8 +3,8 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight, Sparkles } from "lucide-react";
+import { GSAPButton } from "./GSAPButton";
 
 export interface HeroProps {
   title?: string;
@@ -17,14 +17,14 @@ export interface HeroProps {
 
 export const HeroCentered = ({ title, highlight, titleAfter, subtitle, ctaText }: HeroProps) => {
   return (
-    <section className="relative pt-32 pb-24 px-6 overflow-hidden bg-[#051A0E] flex flex-col items-center text-center z-30 border-none">
+    <section className="relative pt-24 md:pt-32 pb-24 px-6 overflow-hidden bg-[#051A0E] flex flex-col items-center text-center z-30 border-none">
 
       {/* --- REFINED SPOTLIGHTS (Full Coverage to prevent lines) --- */}
-      <div 
-        className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(255,255,255,0.02)_0%,transparent_50%)] pointer-events-none z-0 blur-[120px]" 
+      <div
+        className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(255,255,255,0.02)_0%,transparent_50%)] pointer-events-none z-0 blur-[120px]"
       />
-      <div 
-        className="absolute inset-0 bg-[radial-gradient(circle_at_80%_0%,rgba(255,255,255,0.02)_0%,transparent_50%)] pointer-events-none z-0 blur-[120px]" 
+      <div
+        className="absolute inset-0 bg-[radial-gradient(circle_at_80%_0%,rgba(255,255,255,0.02)_0%,transparent_50%)] pointer-events-none z-0 blur-[120px]"
       />
 
       {/* Subtle Central Atmosphere */}
@@ -36,7 +36,7 @@ export const HeroCentered = ({ title, highlight, titleAfter, subtitle, ctaText }
         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-40 max-w-4xl mt-12 md:mt-20"
       >
-        <h1 className="text-5xl md:text-6xl font-black text-white tracking-tighter leading-[1.05] mb-8 whitespace-pre-wrap">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-white tracking-tight leading-[1.2] md:leading-[1.1] mb-8 whitespace-pre-wrap">
           {title}{" "}
           <span
             className="text-emerald-400 px-2 inline-block whitespace-pre-wrap italic font-semibold"
@@ -53,14 +53,9 @@ export const HeroCentered = ({ title, highlight, titleAfter, subtitle, ctaText }
           {subtitle}
         </p>
 
-        <Link href="#schedule">
-          <Button className="h-12 px-8 rounded-full bg-white text-black text-[10px] font-bold tracking-widest hover:scale-105 active:scale-95 hover:bg-white hover:text-black active:bg-white active:text-black transition-all group shadow-[0_0_40px_rgba(255,255,255,0.1)] whitespace-pre-wrap">
-            {ctaText || "Book a Free Audit"}
-            <div className="ml-3 w-6 h-6 rounded-full bg-black flex items-center justify-center">
-              <ArrowRight className="w-3.5 h-3.5 text-white group-hover:translate-x-0.5 transition-transform" />
-            </div>
-          </Button>
-        </Link>
+        <div className="mt-8 flex justify-center z-30">
+          <GSAPButton href="#schedule" text={ctaText || "Book a Free Audit"} />
+        </div>
       </motion.div>
 
       {/* --- THE "UNDER SECTION" FIX --- */}
