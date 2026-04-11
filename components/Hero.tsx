@@ -1,12 +1,8 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
+import React, { useRef, useState } from "react";
 import Link from "next/link";
-import { Button } from "./ui/button";
-import { motion } from "framer-motion";
-import { Play, ArrowRight, Sparkles } from "lucide-react";
-import { GSAPButton } from "./GSAPButton";
+import { ArrowRight, Play } from "lucide-react";
 
 const getYoutubeId = (url: string) => {
   if (!url) return null;
@@ -16,104 +12,102 @@ const getYoutubeId = (url: string) => {
 };
 
 export const Hero = ({ content }: { content?: any }) => {
-  const headline = content?.headline || "We build you a YouTube organic + Paid funnel that books you 20+ calls per month.";
-  const hWords = content?.highlightedWords || ["YouTube organic + Paid funnel", "20+ calls per month."];
-  const ctaPrimary = content?.ctaPrimary || "Book a Call";
+  // Use Sanity content or fallback exactly to the requested client screenshot copy
+  const headline = content?.headline || "We Will Build A Paid & Organic Content System That Attracts Leads & Closes Deals (Done-For-You)";
+  // The screenshot doesn't use the highlighted words feature, so we render standard text.
+
+  const ctaPrimary = content?.ctaPrimary || "Learn More";
   const ctaLink = content?.ctaPrimaryLink || "#";
 
   const videoId = getYoutubeId(content?.videoUrl || "");
   const videoUrl = videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1&modestbranding=1` : "";
   const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : "";
 
-  const containerRef = useRef<HTMLDivElement>(null);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
-      tl.fromTo(".reveal", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 1, stagger: 0.1 });
-    }, containerRef);
-    return () => ctx.revert();
-  }, []);
-
-  const renderHeadline = () => {
-    const sortedHighlights = [...hWords].sort((a, b) => b.length - a.length);
-    const escaped = sortedHighlights.map(h => h.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
-    const regex = new RegExp(`(${escaped})`, "gi");
-    const parts = headline.split(regex);
-
-    return parts.map((part: string, i: number) => {
-      const isMatch = sortedHighlights.some(h => h.toLowerCase() === part.toLowerCase());
-      return (
-        <span
-          key={i}
-          className={isMatch ? "text-emerald-400 italic font-semibold px-1" : "text-white"}
-          style={isMatch ? { textShadow: "0 0 20px rgba(52, 211, 153, 0.25)" } : {}}
-        >
-          {part}
-        </span>
-      );
-    });
-  };
-
   return (
-    <section
-      ref={containerRef}
-      className="relative w-full flex flex-col items-center justify-start pt-20 md:pt-32 pb-16 px-6 bg-[#05180D] overflow-hidden font-satoshi border-none"
-    >
-      {/* 1. Top Glow Atmosphere (Full Coverage to prevent lines) */}
-      <div
-        className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.08)_0%,transparent_60%)] pointer-events-none"
-      />
-      <div
-        className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(255,255,255,0.02)_0%,transparent_50%)] pointer-events-none blur-[120px]"
-      />
-
-      {/* --- BOTTOM SEAMLESS BLENDING --- */}
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#05180D] via-[#05180D] to-transparent z-10 pointer-events-none" />
-
-      <div className="relative z-20 w-full max-w-4xl mx-auto flex flex-col items-center mt-6 md:mt-10 mb-8 md:mb-12">
-
-        <h1 className="reveal text-3xl sm:text-4xl md:text-5xl font-semibold leading-[1.2] md:leading-[1.1] tracking-tight text-center mb-8 md:mb-10 text-white max-w-4xl">
-          {renderHeadline()}
-        </h1>
-
-        {/* Video Player Card - Medium Scale */}
-        {videoUrl && (
-          <div className="reveal relative w-full max-w-4xl aspect-video rounded-3xl md:rounded-[3rem] overflow-hidden border border-white/5 shadow-2xl bg-black group mb-10">
-            {!isVideoPlaying ? (
-              <div className="absolute inset-0 flex items-center justify-center cursor-pointer z-10" onClick={() => setIsVideoPlaying(true)}>
-                {thumbnailUrl && (
-                  <img
-                    src={thumbnailUrl}
-                    alt="Preview"
-                    className="absolute inset-0 w-full h-full object-cover opacity-40 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
-                  />
-                )}
-                <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/5 backdrop-blur-3xl border border-white/10 flex items-center justify-center group-hover:bg-emerald-500 group-hover:border-emerald-500 transition-all duration-500">
-                  <Play className="w-6 h-6 text-white fill-current ml-1" />
-                </div>
-              </div>
-            ) : (
-              <iframe className="absolute inset-0 w-full h-full" src={videoUrl} allow="autoplay; fullscreen" allowFullScreen />
-            )}
-          </div>
-        )}
-
-        {/* CTA Section (Advanced High-End GSAP Magnetic Button) */}
-        <div className="reveal mt-8 flex justify-center z-30">
-          <GSAPButton href={ctaLink} text={ctaPrimary} />
+    <section className="relative w-full flex flex-col items-center justify-start pt-32 pb-24 px-6 bg-transparent overflow-hidden font-satoshi border-none">
+      
+      {/* --- COMPLEX BACKGROUND MATCHING THE IMAGE --- */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        {/* Subtle geometric/shattered light beams mimicking the background */}
+        <div className="absolute top-0 left-[-10%] w-[80%] h-[800px] bg-gradient-to-br from-emerald-500/10 via-transparent to-transparent transform rotate-12 blur-3xl mix-blend-screen" />
+        <div className="absolute top-[10%] right-[-20%] w-[60%] h-[800px] bg-gradient-to-bl from-emerald-400/5 via-emerald-900/10 to-transparent transform -rotate-[25deg] blur-3xl mix-blend-screen" />
+        
+        {/* Sharp abstract lines to mimic cracked glass / geometric shard effect */}
+        <div className="absolute top-0 left-0 w-full h-[800px] opacity-[0.12]">
+          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0%" y1="20%" x2="40%" y2="0%" stroke="#00E676" strokeWidth="1" />
+            <line x1="70%" y1="0%" x2="100%" y2="40%" stroke="#00E676" strokeWidth="0.5" />
+            <line x1="60%" y1="100%" x2="80%" y2="30%" stroke="#00E676" strokeWidth="1.5" />
+            <line x1="20%" y1="100%" x2="50%" y2="50%" stroke="#00E676" strokeWidth="0.5" />
+          </svg>
         </div>
+
+        {/* Dense Dot Matrix Pattern at the bottom */}
+        <div 
+          className="absolute bottom-0 left-0 w-full h-[400px] bg-[image:radial-gradient(rgba(16,185,129,0.15)_1.5px,transparent_1.5px)] [background-size:24px_24px] opacity-70"
+          style={{ maskImage: "linear-gradient(to bottom, transparent 0%, black 100%)", WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 100%)" }}
+        />
       </div>
 
-      {/* Grainy Noise Overlay with Smooth Mask */}
-      <div
-        className="absolute inset-0 z-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none"
-        style={{
-          maskImage: 'linear-gradient(to bottom, black 0%, black 90%, transparent 100%)',
-          WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 90%, transparent 100%)'
-        }}
-      />
+      {/* --- CONTENT AREA --- */}
+      <div className="relative z-20 w-full max-w-5xl mx-auto flex flex-col items-center mt-12 text-center">
+        {/* Main Headline */}
+        <h1 className="text-3xl sm:text-4xl md:text-[44px] font-bold leading-[1.3] tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 max-w-[850px] mb-8 pb-2">
+          {headline}
+        </h1>
+
+
+        {/* Specific Client Button Design: White pill, green inner circle */}
+        <div className="flex justify-center mb-16">
+          <Link 
+            href={ctaLink} 
+            className="group flex items-center bg-white rounded-full p-[3px] pr-8 shadow-[0_0_40px_rgba(0,230,118,0.1)] hover:shadow-[0_0_60px_rgba(0,230,118,0.2)] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+          >
+            {/* Bright Green Circle with icon */}
+            <div className="w-10 h-10 rounded-full bg-[#00FF66] flex items-center justify-center mr-4 group-hover:bg-[#00E65C] transition-colors">
+              <ArrowRight className="w-[18px] h-[18px] text-white stroke-[2.5]" />
+            </div>
+            {/* Stark black text */}
+            <span className="text-black text-[13px] font-bold tracking-wide">
+              {ctaPrimary}
+            </span>
+          </Link>
+        </div>
+
+        {/* Video Player Card (Kept below standard text for functionality) */}
+        {videoUrl && (
+          <div className="relative w-full max-w-4xl aspect-[16/9] rounded-2xl overflow-hidden border border-white/5 bg-[#0A1A10] group perspective-1000 mt-8 shadow-2xl">
+            <div className="relative z-10 w-full h-full rounded-2xl overflow-hidden bg-black transition-all duration-700">
+              {!isVideoPlaying ? (
+                <div className="absolute inset-0 flex items-center justify-center cursor-pointer group/vid" onClick={() => setIsVideoPlaying(true)}>
+                  
+                  {thumbnailUrl && (
+                    <img
+                      src={thumbnailUrl}
+                      alt="Preview"
+                      className="absolute inset-0 w-full h-full object-cover opacity-60 grayscale-[0.4] group-hover/vid:grayscale-0 group-hover/vid:scale-[1.02] transition-all duration-700 ease-out"
+                    />
+                  )}
+                  
+                  <div className="absolute inset-0 bg-black/20" />
+                  
+                  <div className="relative z-20 flex flex-col items-center gap-4">
+                    <div className="w-20 h-20 rounded-full bg-[#00FF66] flex items-center justify-center group-hover/vid:scale-110 transition-all duration-300 shadow-[0_0_30px_rgba(0,255,102,0.4)]">
+                      <Play className="w-8 h-8 text-black fill-black ml-1" />
+                    </div>
+                  </div>
+
+                </div>
+              ) : (
+                <iframe className="absolute inset-0 w-full h-full" src={videoUrl} allow="autoplay; fullscreen" allowFullScreen />
+              )}
+            </div>
+          </div> 
+        )}
+      </div>
+
     </section>
   );
 };

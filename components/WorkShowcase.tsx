@@ -169,16 +169,18 @@ export const WorkShowcase = ({
         <img src="/Logo.png" alt="Matera Media" className="w-[600px] h-auto object-contain" />
       </div>
 
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="max-w-7xl mx-auto relative z-30">
         <div ref={headerRef} className="mb-20">
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight font-satoshi flex items-center gap-4 whitespace-pre-wrap">
+          <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight font-satoshi flex items-center gap-4 whitespace-pre-wrap leading-[1.2]">
             <Sparkles className="w-8 h-8 md:w-10 md:h-10 text-emerald-400 animate-[pulse_3s_ease-in-out_infinite] opacity-80" />
 
-            <span className="relative">
+            <span className="relative text-white">
               {title}
-              <span className="text-emerald-400 italic font-semibold ml-3 px-1" style={{ textShadow: "0 0 20px rgba(52, 211, 153, 0.2)" }}>
-                {highlightedWord}
-              </span>
+              {highlightedWord && (
+                <span className="text-emerald-400 italic font-semibold ml-3 px-1" style={{ textShadow: "0 0 20px rgba(52, 211, 153, 0.2)" }}>
+                  {highlightedWord}
+                </span>
+              )}
             </span>
           </h2>
           <p className="text-white/40 max-w-xl font-normal text-lg leading-relaxed whitespace-pre-wrap">{description}</p>
