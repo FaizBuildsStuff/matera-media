@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Play } from "lucide-react";
 
@@ -11,103 +11,143 @@ const getYoutubeId = (url: string) => {
   return match && match[2].length === 11 ? match[2] : null;
 };
 
-export const Hero = ({ content }: { content?: any }) => {
-  // Use Sanity content or fallback exactly to the requested client screenshot copy
-  const headline = content?.headline || "We Will Build A Paid & Organic Content System That Attracts Leads & Closes Deals (Done-For-You)";
-  // The screenshot doesn't use the highlighted words feature, so we render standard text.
+/** Renders a headline string, wrapping any `highlightedWords` in an emerald italic span */
+function HighlightedHeadline({
+  headline,
+  highlightedWords,
+}: {
+  headline: string;
+  highlightedWords?: string[];
+}) {
+  if (!highlightedWords || highlightedWords.length === 0) {
+    return <>{headline}</>;
+  }
 
-  const ctaPrimary = content?.ctaPrimary || "Learn More";
-  const ctaLink = content?.ctaPrimaryLink || "#";
+  // Build a regex that matches any of the highlighted words
+  const escaped = highlightedWords.map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  const regex = new RegExp(`(${escaped.join("|")})`, "g");
+  const parts = headline.split(regex);
+
+  return (
+    <>
+      {parts.map((part, i) =>
+        highlightedWords.includes(part) ? (
+          <span
+            key={i}
+            className="text-emerald-500 italic"
+            style={{ fontFamily: "'Satoshi', sans-serif" }}
+          >
+            {part}
+          </span>
+        ) : (
+          <React.Fragment key={i}>{part}</React.Fragment>
+        )
+      )}
+    </>
+  );
+}
+
+export const Hero = ({ content }: { content?: any }) => {
+  const headline =
+    content?.headline ||
+    "We Will Build A Paid & Organic Content System That Attracts Leads & Closes Deals (Done-For-You)";
+  const highlightedWords: string[] = content?.highlightedWords || [];
+  const ctaPrimary = content?.ctaPrimary || "Book a Strategy Call";
+  const ctaLink = content?.ctaPrimaryLink || "#schedule";
 
   const videoId = getYoutubeId(content?.videoUrl || "");
-  const videoUrl = videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1&modestbranding=1` : "";
-  const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : "";
+  const videoUrl = videoId
+    ? `https://www.youtube.com/embed/${videoId}?autoplay=1&modestbranding=1`
+    : "";
+  const thumbnailUrl = videoId
+    ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+    : "";
 
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   return (
-    <section className="relative w-full flex flex-col items-center justify-start pt-32 pb-24 px-6 bg-transparent overflow-hidden font-satoshi border-none">
-      
-      {/* --- COMPLEX BACKGROUND MATCHING THE IMAGE --- */}
+    <section className="relative w-full flex flex-col items-center justify-start pt-36 pb-28 px-6 bg-transparent overflow-hidden font-satoshi">
+
+      {/* ── Background ── */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        {/* Subtle geometric/shattered light beams mimicking the background */}
-        <div className="absolute top-0 left-[-10%] w-[80%] h-[800px] bg-gradient-to-br from-emerald-500/10 via-transparent to-transparent transform rotate-12 blur-3xl mix-blend-screen" />
-        <div className="absolute top-[10%] right-[-20%] w-[60%] h-[800px] bg-gradient-to-bl from-emerald-400/5 via-emerald-900/10 to-transparent transform -rotate-[25deg] blur-3xl mix-blend-screen" />
-        
-        {/* Sharp abstract lines to mimic cracked glass / geometric shard effect */}
-        <div className="absolute top-0 left-0 w-full h-[800px] opacity-[0.12]">
+        {/* Soft green gradient bloom */}
+        <div className="absolute top-[-10%] left-[-5%] w-[60%] h-[70%] bg-emerald-500/[0.06] blur-[120px] rounded-full" />
+        <div className="absolute top-[5%] right-[-15%] w-[50%] h-[60%] bg-emerald-400/[0.04] blur-[120px] rounded-full" />
+
+        {/* Subtle geometric shard lines */}
+        <div className="absolute top-0 left-0 w-full h-[700px] opacity-[0.08]">
           <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-            <line x1="0%" y1="20%" x2="40%" y2="0%" stroke="#00E676" strokeWidth="1" />
-            <line x1="70%" y1="0%" x2="100%" y2="40%" stroke="#00E676" strokeWidth="0.5" />
-            <line x1="60%" y1="100%" x2="80%" y2="30%" stroke="#00E676" strokeWidth="1.5" />
-            <line x1="20%" y1="100%" x2="50%" y2="50%" stroke="#00E676" strokeWidth="0.5" />
+            <line x1="0%" y1="25%" x2="38%" y2="0%" stroke="#00E676" strokeWidth="1" />
+            <line x1="72%" y1="0%" x2="100%" y2="35%" stroke="#00E676" strokeWidth="0.5" />
+            <line x1="62%" y1="100%" x2="82%" y2="28%" stroke="#00E676" strokeWidth="1" />
+            <line x1="18%" y1="100%" x2="48%" y2="55%" stroke="#00E676" strokeWidth="0.5" />
           </svg>
         </div>
 
-        {/* Dense Dot Matrix Pattern at the bottom */}
-        <div 
-          className="absolute bottom-0 left-0 w-full h-[400px] bg-[image:radial-gradient(rgba(16,185,129,0.15)_1.5px,transparent_1.5px)] [background-size:24px_24px] opacity-70"
-          style={{ maskImage: "linear-gradient(to bottom, transparent 0%, black 100%)", WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 100%)" }}
+        {/* Dot matrix — fades in from bottom */}
+        <div
+          className="absolute bottom-0 left-0 w-full h-[360px] bg-[image:radial-gradient(rgba(16,185,129,0.12)_1.5px,transparent_1.5px)] [background-size:26px_26px] opacity-60"
+          style={{
+            maskImage: "linear-gradient(to bottom, transparent 0%, black 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 100%)",
+          }}
         />
       </div>
 
-      {/* --- CONTENT AREA --- */}
-      <div className="relative z-20 w-full max-w-5xl mx-auto flex flex-col items-center mt-12 text-center">
-        {/* Main Headline */}
-        <h1 className="text-3xl sm:text-4xl md:text-[44px] font-bold leading-[1.3] tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 max-w-[850px] mb-8 pb-2">
-          {headline}
+      {/* ── Content ── */}
+      <div className="relative z-20 w-full max-w-4xl mx-auto flex flex-col items-center text-center gap-0">
+
+        {/* Main headline */}
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-[1.25] tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 max-w-[820px] mb-6">
+          <HighlightedHeadline headline={headline} highlightedWords={highlightedWords} />
         </h1>
+        
+        {/* CTA */}
+        <Link
+          href={ctaLink}
+          className="group flex items-center bg-white rounded-full p-[3px] pr-7 shadow-[0_0_40px_rgba(0,230,118,0.08)] hover:shadow-[0_0_60px_rgba(0,230,118,0.18)] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+        >
+          <div className="w-9 h-9 rounded-full bg-[#00FF66] flex items-center justify-center mr-3.5 group-hover:bg-emerald-400 transition-colors">
+            <ArrowRight className="w-4 h-4 text-white stroke-[2.5]" />
+          </div>
+          <span className="text-black text-[13px] font-bold tracking-wide">
+            {ctaPrimary}
+          </span>
+        </Link>
 
-
-        {/* Specific Client Button Design: White pill, green inner circle */}
-        <div className="flex justify-center mb-16">
-          <Link 
-            href={ctaLink} 
-            className="group flex items-center bg-white rounded-full p-[3px] pr-8 shadow-[0_0_40px_rgba(0,230,118,0.1)] hover:shadow-[0_0_60px_rgba(0,230,118,0.2)] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-          >
-            {/* Bright Green Circle with icon */}
-            <div className="w-10 h-10 rounded-full bg-[#00FF66] flex items-center justify-center mr-4 group-hover:bg-[#00E65C] transition-colors">
-              <ArrowRight className="w-[18px] h-[18px] text-white stroke-[2.5]" />
-            </div>
-            {/* Stark black text */}
-            <span className="text-black text-[13px] font-bold tracking-wide">
-              {ctaPrimary}
-            </span>
-          </Link>
-        </div>
-
-        {/* Video Player Card (Kept below standard text for functionality) */}
+        {/* Video embed */}
         {videoUrl && (
-          <div className="relative w-full max-w-4xl aspect-[16/9] rounded-2xl overflow-hidden border border-white/5 bg-[#0A1A10] group perspective-1000 mt-8 shadow-2xl">
-            <div className="relative z-10 w-full h-full rounded-2xl overflow-hidden bg-black transition-all duration-700">
-              {!isVideoPlaying ? (
-                <div className="absolute inset-0 flex items-center justify-center cursor-pointer group/vid" onClick={() => setIsVideoPlaying(true)}>
-                  
-                  {thumbnailUrl && (
-                    <img
-                      src={thumbnailUrl}
-                      alt="Preview"
-                      className="absolute inset-0 w-full h-full object-cover opacity-60 grayscale-[0.4] group-hover/vid:grayscale-0 group-hover/vid:scale-[1.02] transition-all duration-700 ease-out"
-                    />
-                  )}
-                  
-                  <div className="absolute inset-0 bg-black/20" />
-                  
-                  <div className="relative z-20 flex flex-col items-center gap-4">
-                    <div className="w-20 h-20 rounded-full bg-[#00FF66] flex items-center justify-center group-hover/vid:scale-110 transition-all duration-300 shadow-[0_0_30px_rgba(0,255,102,0.4)]">
-                      <Play className="w-8 h-8 text-black fill-black ml-1" />
-                    </div>
+          <div className="relative w-full max-w-4xl aspect-[16/9] rounded-2xl overflow-hidden border border-white/5 bg-[#0A1A10] mt-16 shadow-2xl">
+            {!isVideoPlaying ? (
+              <div
+                className="absolute inset-0 flex items-center justify-center cursor-pointer group/vid"
+                onClick={() => setIsVideoPlaying(true)}
+              >
+                {thumbnailUrl && (
+                  <img
+                    src={thumbnailUrl}
+                    alt="Preview"
+                    className="absolute inset-0 w-full h-full object-cover opacity-60 grayscale-[0.3] group-hover/vid:opacity-80 group-hover/vid:scale-[1.02] transition-all duration-700 ease-out"
+                  />
+                )}
+                <div className="absolute inset-0 bg-black/20" />
+                <div className="relative z-20">
+                  <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center group-hover/vid:scale-110 transition-all duration-300 shadow-xl">
+                    <Play className="w-6 h-6 text-black fill-black ml-0.5" />
                   </div>
-
                 </div>
-              ) : (
-                <iframe className="absolute inset-0 w-full h-full" src={videoUrl} allow="autoplay; fullscreen" allowFullScreen />
-              )}
-            </div>
-          </div> 
+              </div>
+            ) : (
+              <iframe
+                className="absolute inset-0 w-full h-full"
+                src={videoUrl}
+                allow="autoplay; fullscreen"
+                allowFullScreen
+              />
+            )}
+          </div>
         )}
       </div>
-
     </section>
   );
 };
