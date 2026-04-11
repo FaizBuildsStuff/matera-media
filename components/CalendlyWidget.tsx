@@ -111,11 +111,12 @@ export const CalendlyWidget = ({ content }: { content?: CalendlyContent }) => {
         </div>
 
         {/* Header - Forced 1 Line on Desktop */}
-        <div ref={headerRef} className="text-center mb-16 px-4">
-          <h2 className="text-3xl sm:text-4xl md:text-6xl font-black text-white tracking-tighter uppercase mb-4 leading-tight md:whitespace-nowrap">
+        <div ref={headerRef} className="text-center mb-10 md:mb-14 px-4">
+          {/* Increased max-w and refined font size */}
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tighter leading-[1.1] mb-5 max-w-5xl mx-auto">
             {title}
           </h2>
-          <p className="text-white/40 text-sm md:text-base max-w-lg mx-auto leading-relaxed">
+          <p className="text-white/50 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
             {subtitle}
           </p>
         </div>

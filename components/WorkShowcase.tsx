@@ -171,13 +171,13 @@ export const WorkShowcase = ({
 
       <div className="max-w-7xl mx-auto relative z-30">
         <div ref={headerRef} className="mb-20">
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight font-satoshi flex items-center gap-4 whitespace-pre-wrap leading-[1.2]">
-            <Sparkles className="w-8 h-8 md:w-10 md:h-10 text-emerald-400 animate-[pulse_3s_ease-in-out_infinite] opacity-80" />
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tighter font-satoshi flex items-center gap-3 md:gap-4 whitespace-pre-wrap leading-[1.05]">
+            <Sparkles className="w-6 h-6 md:w-8 md:h-8 text-emerald-400/80 animate-pulse shrink-0" />
 
-            <span className="relative text-white">
+            <span className="relative">
               {title}
               {highlightedWord && (
-                <span className="text-emerald-400 italic font-semibold ml-3 px-1" style={{ textShadow: "0 0 20px rgba(52, 211, 153, 0.2)" }}>
+                <span className="text-emerald-400 italic font-medium ml-2 md:ml-3 px-1">
                   {highlightedWord}
                 </span>
               )}

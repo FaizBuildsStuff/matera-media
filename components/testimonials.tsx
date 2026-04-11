@@ -96,7 +96,7 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
 
                         <span className="text-[8px] uppercase tracking-[0.4em] text-white/30 font-black">
 
-                            Client Success
+                            {label}
 
                         </span>
 

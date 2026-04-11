@@ -2,7 +2,7 @@ import { client } from "@/lib/sanity";
 import { bookingPageQuery } from "@/lib/queries";
 import { BookCallPage, type BookingPageContent } from "@/components/BookCallPage";
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 export default async function BookPage() {
   const data = await client.fetch<{
@@ -11,7 +11,7 @@ export default async function BookPage() {
     benefits?: string[];
     trustText?: string;
     calendlyUrl?: string;
-  } | null>(bookingPageQuery);
+  } | null>(bookingPageQuery, {}, { cache: "no-store" });
 
   const content: BookingPageContent | undefined = data
     ? {

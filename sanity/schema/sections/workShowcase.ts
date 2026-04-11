@@ -97,7 +97,8 @@ export default defineType({
       title: "Section Title",
       type: "text",
       rows: 2,
-      initialValue: "Selected Works",
+      initialValue: "Our Work",
+      description: "Displayed as the heading above the reel cards (e.g. 'Our Work', 'Selected Reels')",
     }),
     defineField({
       name: "highlightedWord",
@@ -108,9 +109,10 @@ export default defineType({
     }),
     defineField({
       name: "description",
-      title: "Description",
+      title: "Subtitle / Tagline",
       type: "text",
       rows: 2,
+      description: "Short italic tagline shown below the section title (e.g. 'High-converting SaaS video content.')",
     }),
     defineField({
       name: "items",

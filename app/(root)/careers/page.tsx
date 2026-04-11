@@ -2,7 +2,7 @@ import { client } from "@/lib/sanity";
 import { careersPageQuery } from "@/lib/queries";
 import CareersPageClient from "@/components/CareersPageClient"; 
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 export default async function CareersPage() {
   const data = await client.fetch<
@@ -20,7 +20,7 @@ export default async function CareersPage() {
         }>;
       }
     | null
-  >(careersPageQuery);
+  >(careersPageQuery, {}, { cache: "no-store" });
 
   return (
     <main className="min-h-screen bg-[#05180D]">

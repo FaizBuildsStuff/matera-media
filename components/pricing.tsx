@@ -95,16 +95,16 @@ export default function Pricing({ content }: { content?: any }) {
 
       <div className="max-w-7xl mx-auto relative z-30">
 
-        <div className="mb-20 flex flex-col items-center text-center gap-6">
-          <h2 className="text-5xl md:text-7xl font-bold text-white tracking-tight leading-[1.05] max-w-5xl">
+        <div className="mb-12 flex flex-col items-center text-center gap-6">
+          <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tighter leading-[1.1] max-w-4xl">
             {title.split(' ').map((word: string, i: number) => {
               const cleanWord = word.replace(/\W/g, "");
               const isHighlight = cleanWord === highlightedWord;
               return (
                 <span
                   key={i}
-                  className={isHighlight ? "text-emerald-400 italic font-semibold px-2" : ""}
-                  style={isHighlight ? { textShadow: "0 0 20px rgba(52, 211, 153, 0.2)" } : {}}
+                  className={isHighlight ? "text-emerald-400 italic font-medium px-1" : ""}
+                  style={isHighlight ? { textShadow: "0 0 30px rgba(52, 211, 153, 0.15)" } : {}}
                 >
                   {word}{" "}
                 </span>
@@ -117,21 +117,22 @@ export default function Pricing({ content }: { content?: any }) {
         </div>
 
         <div className="max-w-6xl mx-auto">
-          <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+          <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
             {plans.map((plan: any, idx: number) => {
-              const isMiddle = idx === 1;
+              // Dynamic highlight based on Sanity 'popular' boolean instead of index
+              const isHighlighted = plan.popular === true;
 
               return (
                 <div
                   key={idx}
                   onMouseMove={(e) => handleMouseMove(e, idx)}
                   onMouseLeave={() => handleMouseLeave(idx)}
-                  className={`pricing-card group relative flex flex-col p-10 rounded-[3rem] border transition-all duration-700 backdrop-blur-3xl overflow-hidden ${isMiddle
-                    ? "bg-white/[0.05] border-[#10B981]/40 shadow-[0_40px_120px_-20px_rgba(16,185,129,0.3)] scale-105 z-30 md:-translate-y-6"
+                  className={`pricing-card group relative flex flex-col p-10 rounded-[3rem] border transition-all duration-700 backdrop-blur-3xl overflow-hidden ${isHighlighted
+                    ? "bg-white/[0.05] border-[#10B981]/40 shadow-[0_40px_120px_-20px_rgba(16,185,129,0.3)] z-30"
                     : "bg-white/2 border-white/5 hover:border-white/10 z-10 opacity-80 hover:opacity-100"
                     }`}
                 >
-                  {isMiddle && (
+                  {isHighlighted && (
                     <div className="absolute top-0 right-10 px-6 py-2 bg-emerald-500 text-black text-[9px] font-black uppercase tracking-[0.2em] rounded-b-2xl shadow-lg">
                       Popular / Scalable
                     </div>
@@ -152,7 +153,6 @@ export default function Pricing({ content }: { content?: any }) {
                       {plan.description}
                     </p>
 
-                    {/* GAP REDUCED: mb-12 changed to mb-6 */}
                     <div className="flex-1 space-y-4 mb-6 pt-2">
                       {plan.features?.map((feature: string, fIdx: number) => (
                         <div key={fIdx} className="flex items-center gap-3">
@@ -165,7 +165,7 @@ export default function Pricing({ content }: { content?: any }) {
                     </div>
 
                     <Link href="/book" className="mt-auto">
-                      <Button className={`w-full h-16 rounded-full font-black uppercase tracking-[0.2em] text-[10px] transition-all duration-500 flex justify-between px-10 group ${isMiddle
+                      <Button className={`w-full h-16 rounded-full font-black uppercase tracking-[0.2em] text-[10px] transition-all duration-500 flex justify-between px-10 group ${isHighlighted
                         ? "bg-white text-black hover:scale-[1.02]"
                         : "bg-white/5 text-white border border-white/10 hover:bg-white hover:text-black hover:scale-[1.02]"
                         }`}>
