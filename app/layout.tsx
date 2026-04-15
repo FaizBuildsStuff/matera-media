@@ -40,9 +40,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         {/* Fontshare Satoshi Import */}
-        <link 
-          href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700,900&display=swap" 
-          rel="stylesheet" 
+        <link
+          href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700,900&display=swap"
+          rel="stylesheet"
         />
       </head>
       <body
