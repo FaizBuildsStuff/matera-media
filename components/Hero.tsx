@@ -23,12 +23,53 @@ export const Hero = ({ content }: { content?: any }) => {
   const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : "";
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const pathRef = useRef<SVGPathElement>(null);
+  const arrowRef = useRef<SVGGElement>(null);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
       tl.fromTo(".reveal", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 1, stagger: 0.1 });
+
+      // Wavy Line & Arrow Growth Animation
+      const animObj = { progress: 0 };
+      const lineTl = gsap.timeline({ repeat: -1, repeatDelay: 1.5 });
+
+      lineTl.to(".animated-wavy-line, .animated-arrow", { opacity: 1, duration: 0.3, ease: "power1.inOut" })
+        .fromTo(animObj,
+          { progress: 0 },
+          {
+            progress: 1,
+            duration: 3,
+            ease: "power2.out",
+            onUpdate: () => {
+              if (!pathRef.current || !arrowRef.current) return;
+              const p = animObj.progress;
+
+              // 1. Draw line
+              gsap.set(".animated-wavy-line", { strokeDashoffset: 100 * (1 - p) });
+
+              // 2. Position Arrow mathematically on the path
+              const length = pathRef.current.getTotalLength();
+              const currentLen = p * length;
+              const pt = pathRef.current.getPointAtLength(currentLen);
+
+              // 3. Calculate tangent angle for rotation
+            const pt2 = pathRef.current.getPointAtLength(Math.min(currentLen + 2, length));
+            const angle = Math.atan2(pt2.y - pt.y, pt2.x - pt.x) * (180 / Math.PI);
+
+            gsap.set(arrowRef.current, { 
+              x: pt.x, 
+              y: pt.y, 
+              rotation: angle,
+              transformOrigin: "0 0" // Explicitly lock rotation to the true coordinate
+            });
+          }
+          },
+          "<" // start simultaneously with opacity fade
+        )
+        .to(".animated-wavy-line, .animated-arrow", { opacity: 0, duration: 0.5, ease: "power1.inOut" });
     }, containerRef);
     return () => ctx.revert();
   }, []);
@@ -36,19 +77,84 @@ export const Hero = ({ content }: { content?: any }) => {
   return (
     <section
       ref={containerRef}
-      className="relative w-full flex flex-col items-center justify-start pt-24 md:pt-32 pb-16 md:pb-24 px-6 bg-[#030b06] overflow-hidden font-satoshi"
+      className="relative w-full flex flex-col items-center justify-start pt-24 md:pt-32 pb-16 md:pb-24 px-6 overflow-hidden font-satoshi"
     >
-      {/* Background Image Layer */}
-      <div
-        className="absolute inset-0 z-0 bg-no-repeat bg-cover bg-center pointer-events-none opacity-50"
-        style={{ backgroundImage: `url('/herobg.png')` }}
-      />
+      {/* ── Background ── */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        {/* Soft green gradient bloom */}
+        <div className="absolute top-[-10%] left-[-5%] w-[60%] h-[70%] bg-emerald-500/[0.06] blur-[120px] rounded-full" />
+        <div className="absolute top-[5%] right-[-15%] w-[50%] h-[60%] bg-emerald-400/[0.04] blur-[120px] rounded-full" />
 
-      {/* Dark gradient overlay to blend into the website */}
-      <div className="absolute inset-0 z-10 bg-gradient-to-b from-[#030b06]/20 via-[#030b06]/60 to-[#05180d] pointer-events-none" />
+        {/* Subtle geometric shard lines */}
+        <div className="absolute top-0 left-0 w-full h-[700px] opacity-[0.08]">
+          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0%" y1="25%" x2="38%" y2="0%" stroke="#00E676" strokeWidth="1" />
+            <line x1="72%" y1="0%" x2="100%" y2="35%" stroke="#00E676" strokeWidth="0.5" />
+            <line x1="62%" y1="100%" x2="82%" y2="28%" stroke="#00E676" strokeWidth="1" />
+            <line x1="18%" y1="100%" x2="48%" y2="55%" stroke="#00E676" strokeWidth="0.5" />
+          </svg>
+        </div>
 
-      {/* Top Glow Atmosphere */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[60vh] bg-[radial-gradient(ellipse_at_top,rgba(0,255,102,0.12)_0%,transparent_60%)] pointer-events-none z-10" />
+        {/* Dot matrix — fades in from bottom */}
+        <div
+          className="absolute bottom-0 left-0 w-full h-[360px] bg-[image:radial-gradient(rgba(16,185,129,0.12)_1.5px,transparent_1.5px)] [background-size:26px_26px] opacity-60"
+          style={{
+            maskImage: "linear-gradient(to bottom, transparent 0%, black 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 100%)",
+          }}
+        />
+
+        {/* Animated Glowing Wavy Line (Replicating the chart line organically) */}
+        <div className="absolute inset-0 pointer-events-none z-10 opacity-70">
+          <svg className="w-full h-full" viewBox="0 0 1000 600" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="neon-glow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="6" result="coloredBlur" />
+                <feMerge>
+                  <feMergeNode in="coloredBlur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+              <linearGradient id="wavyGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="transparent" />
+                <stop offset="20%" stopColor="#00ff66" />
+                <stop offset="100%" stopColor="#00ff66" />
+              </linearGradient>
+            </defs>
+
+            {/* The invisible track for reference/subtle depth (optional, keeping it super faint) */}
+            <path
+              d="M -50 650 Q 150 600, 300 450 T 650 250 T 1050 -50"
+              fill="none"
+              stroke="#00ff66"
+              strokeWidth="1"
+              strokeOpacity="0.05"
+            />
+
+            {/* The growing glowing wave */}
+            <path
+              ref={pathRef}
+              className="animated-wavy-line opacity-0"
+              d="M -50 650 Q 150 600, 300 450 T 650 250 T 1050 -50"
+              fill="none"
+              stroke="url(#wavyGrad)"
+              strokeWidth="5"
+              strokeLinecap="round"
+              filter="url(#neon-glow)"
+              pathLength="100"
+              strokeDasharray="100 100"
+              strokeDashoffset="100"
+            />
+            {/* The Arrow Head Leading the Growth */}
+            <g ref={arrowRef} className="animated-arrow opacity-0">
+              {/* Outer Glow Dart */}
+              <polygon points="-40,-12 5,0 -40,12" fill="#00ff66" filter="url(#neon-glow)" opacity="0.6" />
+              {/* Inner Solid White Needle */}
+              <polygon points="-30,-6 5,0 -30,6" fill="#ffffff" />
+            </g>
+          </svg>
+        </div>
+      </div>
 
       <div className="relative z-20 w-full max-w-[56rem] mx-auto flex flex-col items-center text-center mt-6 md:mt-8 mb-8 md:mb-12">
 
