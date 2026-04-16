@@ -23,8 +23,7 @@ export const Hero = ({ content }: { content?: any }) => {
   const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : "";
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const pathRef = useRef<SVGPathElement>(null);
-  const arrowRef = useRef<SVGGElement>(null);
+
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   useEffect(() => {
@@ -32,48 +31,10 @@ export const Hero = ({ content }: { content?: any }) => {
       const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
       tl.fromTo(".reveal", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 1, stagger: 0.1 });
 
-      // Wavy Line & Arrow Growth Animation
-      const animObj = { progress: 0 };
-      const lineTl = gsap.timeline({ repeat: -1, repeatDelay: 1.5 });
 
-      lineTl.to(".animated-wavy-line, .animated-arrow", { opacity: 1, duration: 0.3, ease: "power1.inOut" })
-        .fromTo(animObj,
-          { progress: 0 },
-          {
-            progress: 1,
-            duration: 3,
-            ease: "power2.out",
-            onUpdate: () => {
-              if (!pathRef.current || !arrowRef.current) return;
-              const p = animObj.progress;
-
-              // 1. Draw line
-              gsap.set(".animated-wavy-line", { strokeDashoffset: 100 * (1 - p) });
-
-              // 2. Position Arrow mathematically on the path
-              const length = pathRef.current.getTotalLength();
-              const currentLen = p * length;
-              const pt = pathRef.current.getPointAtLength(currentLen);
-
-              // 3. Calculate tangent angle for rotation
-            const pt2 = pathRef.current.getPointAtLength(Math.min(currentLen + 2, length));
-            const angle = Math.atan2(pt2.y - pt.y, pt2.x - pt.x) * (180 / Math.PI);
-
-            gsap.set(arrowRef.current, { 
-              x: pt.x, 
-              y: pt.y, 
-              rotation: angle,
-              transformOrigin: "0 0" // Explicitly lock rotation to the true coordinate
-            });
-          }
-          },
-          "<" // start simultaneously with opacity fade
-        )
-        .to(".animated-wavy-line, .animated-arrow", { opacity: 0, duration: 0.5, ease: "power1.inOut" });
     }, containerRef);
     return () => ctx.revert();
   }, []);
-
   return (
     <section
       ref={containerRef}
@@ -104,56 +65,7 @@ export const Hero = ({ content }: { content?: any }) => {
           }}
         />
 
-        {/* Animated Glowing Wavy Line (Replicating the chart line organically) */}
-        <div className="absolute inset-0 pointer-events-none z-10 opacity-70">
-          <svg className="w-full h-full" viewBox="0 0 1000 600" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <filter id="neon-glow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="6" result="coloredBlur" />
-                <feMerge>
-                  <feMergeNode in="coloredBlur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-              <linearGradient id="wavyGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="transparent" />
-                <stop offset="20%" stopColor="#00ff66" />
-                <stop offset="100%" stopColor="#00ff66" />
-              </linearGradient>
-            </defs>
 
-            {/* The invisible track for reference/subtle depth (optional, keeping it super faint) */}
-            <path
-              d="M -50 650 Q 150 600, 300 450 T 650 250 T 1050 -50"
-              fill="none"
-              stroke="#00ff66"
-              strokeWidth="1"
-              strokeOpacity="0.05"
-            />
-
-            {/* The growing glowing wave */}
-            <path
-              ref={pathRef}
-              className="animated-wavy-line opacity-0"
-              d="M -50 650 Q 150 600, 300 450 T 650 250 T 1050 -50"
-              fill="none"
-              stroke="url(#wavyGrad)"
-              strokeWidth="5"
-              strokeLinecap="round"
-              filter="url(#neon-glow)"
-              pathLength="100"
-              strokeDasharray="100 100"
-              strokeDashoffset="100"
-            />
-            {/* The Arrow Head Leading the Growth */}
-            <g ref={arrowRef} className="animated-arrow opacity-0">
-              {/* Outer Glow Dart */}
-              <polygon points="-40,-12 5,0 -40,12" fill="#00ff66" filter="url(#neon-glow)" opacity="0.6" />
-              {/* Inner Solid White Needle */}
-              <polygon points="-30,-6 5,0 -30,6" fill="#ffffff" />
-            </g>
-          </svg>
-        </div>
       </div>
 
       <div className="relative z-20 w-full max-w-[56rem] mx-auto flex flex-col items-center text-center mt-6 md:mt-8 mb-8 md:mb-12">
