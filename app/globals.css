@@ -165,6 +165,10 @@
     @apply border-border outline-ring/50;
   }
 
+  html {
+    zoom: 0.8;
+  }
+
   body {
     @apply bg-background text-foreground;
     font-family: "Satoshi", sans-serif;
