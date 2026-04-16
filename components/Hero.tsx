@@ -23,22 +23,20 @@ export const Hero = ({ content }: { content?: any }) => {
   const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : "";
 
   const containerRef = useRef<HTMLDivElement>(null);
-
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
-      tl.fromTo(".reveal", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 1, stagger: 0.1 });
-
-
+      tl.fromTo(".hero-reveal", { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 1, stagger: 0.12 });
     }, containerRef);
     return () => ctx.revert();
   }, []);
+
   return (
     <section
       ref={containerRef}
-      className="relative w-full flex flex-col items-center justify-start pt-24 md:pt-32 pb-16 md:pb-24 px-6 overflow-hidden font-satoshi"
+      className="relative w-full flex flex-col items-center justify-start pt-20 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-24 px-4 sm:px-6 overflow-hidden font-satoshi"
     >
       {/* ── Background ── */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
@@ -58,36 +56,34 @@ export const Hero = ({ content }: { content?: any }) => {
 
         {/* Dot matrix — fades in from bottom */}
         <div
-          className="absolute bottom-0 left-0 w-full h-[360px] bg-[image:radial-gradient(rgba(16,185,129,0.12)_1.5px,transparent_1.5px)] [background-size:26px_26px] opacity-60"
+          className="absolute bottom-0 left-0 w-full h-[300px] sm:h-[360px] bg-[image:radial-gradient(rgba(16,185,129,0.12)_1.5px,transparent_1.5px)] [background-size:26px_26px] opacity-60"
           style={{
             maskImage: "linear-gradient(to bottom, transparent 0%, black 100%)",
             WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 100%)",
           }}
         />
-
-
       </div>
 
-      <div className="relative z-20 w-full max-w-[56rem] mx-auto flex flex-col items-center text-center mt-6 md:mt-8 mb-8 md:mb-12">
+      <div className="relative z-20 w-full max-w-[56rem] mx-auto flex flex-col items-center text-center mt-4 sm:mt-6 md:mt-8 mb-8 md:mb-12">
 
         {/* Top Label */}
-        <div className="reveal text-[#00ff66] font-bold text-xs md:text-sm tracking-widest uppercase mb-8">
+        <div className="hero-reveal text-[#00ff66] font-bold text-[10px] sm:text-xs md:text-sm tracking-widest uppercase mb-5 sm:mb-7 md:mb-8 px-2">
           {topText}
         </div>
 
         {/* Main Headline */}
-        <h1 className="reveal text-4xl md:text-[3.5rem] font-bold leading-[1.12] tracking-tight text-white mb-8 w-full max-w-[48rem]">
+        <h1 className="hero-reveal text-[1.75rem] sm:text-4xl md:text-[3.5rem] font-bold leading-[1.15] sm:leading-[1.12] tracking-tight text-white mb-6 sm:mb-8 w-full max-w-[48rem] px-1">
           {headline}
         </h1>
 
         {/* CTA Section */}
-        <div className="reveal flex flex-col items-center gap-4 mb-8">
+        <div className="hero-reveal flex flex-col items-center gap-4 mb-8 sm:mb-10">
           <Link href={ctaLink}>
-            <div className="flex items-center bg-white rounded-full p-1.5 pr-8 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.15)] group">
-              <div className="w-10 h-10 md:w-[3.25rem] md:h-[3.25rem] bg-[#00e65c] rounded-full flex items-center justify-center mr-5 group-hover:bg-[#00ff66] transition-colors shadow-[0_0_15px_rgba(0,230,92,0.4)]">
-                <ArrowRight className="w-[1.125rem] h-[1.125rem] text-[#030b06] stroke-[2.5]" />
+            <div className="flex items-center bg-white rounded-full p-1 sm:p-1.5 pr-5 sm:pr-8 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.15)] group">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 md:w-[3.25rem] md:h-[3.25rem] bg-[#00e65c] rounded-full flex items-center justify-center mr-3 sm:mr-5 group-hover:bg-[#00ff66] transition-colors shadow-[0_0_15px_rgba(0,230,92,0.4)]">
+                <ArrowRight className="w-4 h-4 sm:w-[1.125rem] sm:h-[1.125rem] text-[#030b06] stroke-[2.5]" />
               </div>
-              <span className="text-[#030b06] font-bold text-[0.95rem] md:text-base tracking-wide mr-2">
+              <span className="text-[#030b06] font-bold text-[0.85rem] sm:text-[0.95rem] md:text-base tracking-wide mr-1 sm:mr-2">
                 {ctaPrimary}
               </span>
             </div>
@@ -96,7 +92,7 @@ export const Hero = ({ content }: { content?: any }) => {
 
         {/* Video Player Card (Optional if passed via prop) */}
         {videoUrl && (
-          <div className="reveal relative w-full aspect-video rounded-2xl md:rounded-[2.5rem] overflow-hidden border border-white/5 shadow-2xl bg-black group mb-10">
+          <div className="hero-reveal relative w-full aspect-video rounded-xl sm:rounded-2xl md:rounded-[2.5rem] overflow-hidden border border-white/5 shadow-2xl bg-black group mb-8 sm:mb-10">
             {!isVideoPlaying ? (
               <div className="absolute inset-0 flex items-center justify-center cursor-pointer z-10" onClick={() => setIsVideoPlaying(true)}>
                 {thumbnailUrl && (
@@ -106,8 +102,8 @@ export const Hero = ({ content }: { content?: any }) => {
                     className="absolute inset-0 w-full h-full object-cover opacity-40 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
                   />
                 )}
-                <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/5 backdrop-blur-3xl border border-white/10 flex items-center justify-center group-hover:bg-[#00ff66] group-hover:border-[#00ff66] transition-all duration-500">
-                  <Play className="w-6 h-6 text-white group-hover:text-[#030b06] fill-current ml-1" />
+                <div className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-white/5 backdrop-blur-3xl border border-white/10 flex items-center justify-center group-hover:bg-[#00ff66] group-hover:border-[#00ff66] transition-all duration-500">
+                  <Play className="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:text-[#030b06] fill-current ml-1" />
                 </div>
               </div>
             ) : (

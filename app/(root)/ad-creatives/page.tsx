@@ -34,14 +34,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 
 // --- Interfaces ---
-interface HeroProps {
-  title?: string;
-  highlight?: string;
-  titleAfter?: string;
-  subtitle?: string;
-  sectionLabel?: string;
-  ctaText?: string;
-}
 
 interface FeatureItem {
   title: string;
