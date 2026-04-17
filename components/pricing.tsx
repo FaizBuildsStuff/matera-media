@@ -134,7 +134,7 @@ export default function Pricing({ content }: { content?: any }) {
                 >
                   {isHighlighted && (
                     <div className="absolute top-0 right-10 px-6 py-2 bg-emerald-500 text-black text-[9px] font-black uppercase tracking-[0.2em] rounded-b-2xl shadow-lg">
-                      Popular / Scalable
+                      MOST DEMANDED
                     </div>
                   )}
 

@@ -37,42 +37,58 @@ interface ProblemSolutionComparisonProps {
   solutionsTitle?: string;
 }
 
-const RetroTV = () => {
+const ProblemGraphic = () => {
+  const hudRef = useRef(null);
+
+  useGSAP(() => {
+    gsap.to(".prob-ring", {
+      rotation: -180,
+      duration: 12,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+    });
+    gsap.to(".prob-ring-inner", {
+      rotation: 360,
+      duration: 20,
+      repeat: -1,
+      ease: "none",
+    });
+    gsap.to(".prob-pulse", {
+      scale: 1.15,
+      opacity: 0.4,
+      duration: 0.15,
+      repeat: -1,
+      yoyo: true,
+      ease: "steps(2)" // Glitchy vibe
+    });
+  }, { scope: hudRef });
+
   return (
-    <div className="relative w-full aspect-[4/3] max-w-sm mx-auto mb-8 group pl-2 sm:pl-0">
-      <div className="relative w-full h-full flex items-center justify-center">
-        {/* Video layer hidden tightly behind the screen area */}
-        <div className="absolute top-[16%] bottom-[16%] inset-x-[22%] sm:top-[18%] sm:bottom-[18%] sm:inset-x-[22%] rounded-3xl overflow-hidden flex items-center justify-center bg-[#0a0a0a] shadow-[0_0_50px_rgba(0,0,0,0.8)] border border-[#1a1a1a]">
-          {/* Main content video */}
-          <video
-            src="/anxiety.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-
-          {/* Vintage TV effect overlay */}
-          <video
-            src="/vintage.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-screen pointer-events-none"
-          />
-
-          {/* Overlay to darken/style the video slightly */}
-          <div className="absolute inset-0 bg-black/10 pointer-events-none mix-blend-multiply" />
+    <div ref={hudRef} className="relative w-full aspect-square max-w-[200px] mx-auto flex items-center justify-center">
+      {/* Central Glitch Orb */}
+      <div className="relative z-20 w-20 h-20 bg-red-500/5 rounded-full border border-red-500/20 flex items-center justify-center shadow-[0_0_30px_rgba(239,68,68,0.15)] backdrop-blur-sm">
+        <div className="prob-pulse absolute inset-0 rounded-full bg-red-500/10 blur-xl" />
+        <div className="relative z-30 w-12 h-12 flex items-center justify-center text-red-500/60">
+          <X className="w-8 h-8 stroke-[2.5] prob-pulse" />
         </div>
+      </div>
 
-        {/* TV Image layer (transparent inside screen) */}
-        <img
-          src="/tv.png"
-          alt="Retro TV"
-          className="absolute inset-0 w-full h-full object-contain pointer-events-none z-10 drop-shadow-2xl"
-        />
+      {/* Rotating Broken Rings */}
+      <div className="prob-ring absolute w-[140px] h-[140px] border border-dashed border-red-500/20 rounded-full" />
+      <div className="prob-ring-inner absolute w-[110px] h-[110px] border border-red-500/10 border-t-red-500/40 border-l-red-500/10 rounded-full" />
+
+      {/* Scattered Icons */}
+      <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+        <div className="absolute top-2 right-4 p-1.5 bg-black/40 backdrop-blur-md rounded-xl border border-red-500/20 text-red-400">
+          <DollarSign className="w-4 h-4 opacity-40" />
+        </div>
+        <div className="absolute bottom-6 left-2 p-1.5 bg-black/40 backdrop-blur-md rounded-xl border border-red-500/20 text-red-400">
+          <Users className="w-4 h-4 opacity-40" />
+        </div>
+        <div className="absolute top-1/2 -left-2 -translate-y-1/2 p-2 bg-red-500/20 rounded-full text-red-500 shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+           <X className="w-3 h-3 stroke-[3]" />
+        </div>
       </div>
     </div>
   );
@@ -237,8 +253,8 @@ export const ProblemSolutionComparison = ({
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay rounded-[2.5rem] pointer-events-none" />
             <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-red-500/5 blur-[80px] rounded-full pointer-events-none" />
 
-            <div className="h-40 md:h-48 flex items-center justify-center">
-              <RetroTV />
+            <div className="h-40 md:h-48 flex items-center justify-center relative z-10 mix-blend-screen">
+              <ProblemGraphic />
             </div>
 
             <div className="mt-8 relative z-10">

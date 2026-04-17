@@ -26,7 +26,7 @@ export const Header = () => {
         /* The root header is absolute */
         <header className="absolute top-0 left-0 right-0 z-50 font-satoshi bg-transparent pt-4 px-4 md:px-6">
 
-            <div className="max-w-6xl mx-auto relative h-16 bg-[#05180D]/80 border border-white/10 rounded-full px-5 md:px-10 flex items-center justify-between shadow-2xl backdrop-blur-xl z-50">
+            <div className="max-w-[90%] xl:max-w-[1400px] mx-auto relative h-16 bg-[#05180D]/80 border border-white/10 rounded-full px-5 md:px-10 flex items-center justify-between shadow-2xl backdrop-blur-xl z-50">
 
                 {/* LEFT: LOGO */}
                 <Link
@@ -42,7 +42,7 @@ export const Header = () => {
                         className="w-7 h-7 object-contain grayscale brightness-200 transition-all duration-500"
                         priority
                     />
-                    <span className="text-white font-bold tracking-tight text-xs uppercase">
+                    <span className="text-white font-bold tracking-tight text-sm uppercase">
                         Matera Media
                     </span>
                 </Link>
@@ -56,7 +56,7 @@ export const Header = () => {
                                 <Link
                                     key={item.href}
                                     href={item.href}
-                                    className={`relative text-[10px] uppercase font-bold tracking-[0.15em] transition-all duration-300 hover:text-white ${isActive ? "text-emerald-500" : "text-white/50"
+                                    className={`relative text-xs uppercase font-bold tracking-[0.15em] transition-all duration-300 hover:text-white ${isActive ? "text-emerald-500" : "text-white/70"
                                         }`}
                                 >
                                     {item.label}
@@ -73,7 +73,7 @@ export const Header = () => {
 
                     <div className="flex items-center gap-3">
                         <Link href="#schedule" className="hidden sm:block group relative">
-                            <button className="relative flex items-center gap-3 px-6 py-2.5 bg-white text-black text-[9px] font-black uppercase tracking-[0.15em] rounded-full transition-all active:scale-95 hover:bg-emerald-50">
+                            <button className="relative flex items-center gap-3 px-6 py-2.5 bg-white text-black text-[11px] md:text-xs font-black uppercase tracking-[0.15em] rounded-full transition-all active:scale-95 hover:bg-emerald-50">
                                 Book A Call
                                 <div className="w-4 h-4 rounded-full bg-black flex items-center justify-center transition-transform group-hover:rotate-45">
                                     <ArrowRight className="w-2.5 h-2.5 text-white" />

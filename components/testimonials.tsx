@@ -92,9 +92,9 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
 
                 <div className="text-center mb-16">
 
-                    <div className="inline-flex items-center px-2 py-0.5 rounded-full border border-white/10 bg-white/5 mb-4">
+                    <div className="inline-flex items-center px-3 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 mb-5">
 
-                        <span className="text-[8px] uppercase tracking-[0.4em] text-white/30 font-black">
+                        <span className="text-[10px] sm:text-xs uppercase tracking-widest text-[#00ff66] font-bold">
 
                             {label}
 
@@ -154,7 +154,7 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
 
 
 
-                                        <p className="text-white/60 text-[13px] leading-relaxed mb-6 font-medium tracking-tight">
+                                        <p className="text-white/90 text-sm md:text-[15px] leading-relaxed mb-6 font-medium tracking-tight">
 
                                             "{quote}"
 
@@ -176,9 +176,9 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
 
                                             <div className="flex flex-col">
 
-                                                <h3 className="font-black text-white text-[10px] tracking-tight uppercase">{name}</h3>
+                                                <h3 className="font-black text-white text-xs tracking-tight uppercase">{name}</h3>
 
-                                                <span className="text-emerald-400/40 text-[8px] font-bold uppercase tracking-widest mt-0.5">
+                                                <span className="text-emerald-400/80 text-[10px] font-bold uppercase tracking-widest mt-0.5">
 
                                                     {role}
 

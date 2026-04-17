@@ -189,7 +189,7 @@ export const WorkShowcase = ({
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
           <aside ref={leftRef} className="lg:w-72 shrink-0">
             <nav className="sticky top-32 space-y-2">
-              <p className="text-white/20 text-[9px] font-bold tracking-[0.4em] uppercase mb-8 pl-1">Protocol / Filter</p>
+              <p className="text-white/20 text-[9px] font-bold tracking-[0.4em] uppercase mb-8 pl-1">Filter by category</p>
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat.id}

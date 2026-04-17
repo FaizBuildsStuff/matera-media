@@ -77,15 +77,7 @@ export const HeroCentered = ({
 
         {/* Main Headline */}
         <h1 className="hc-reveal text-[1.75rem] sm:text-4xl md:text-[3.5rem] font-bold leading-[1.15] sm:leading-[1.12] tracking-tight text-white mb-4 sm:mb-6 md:mb-8 w-full max-w-[48rem] px-1">
-          <span className="inline bg-gradient-to-b from-white via-white to-zinc-400 bg-clip-text text-transparent decoration-clone">
-            {title}{" "}
-            {highlight && (
-              <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#00ff66] to-emerald-600 pr-1">
-                {highlight}
-              </span>
-            )}{" "}
-            {titleAfter}
-          </span>
+          {title} {highlight} {titleAfter}
         </h1>
 
         {/* Subtitle */}

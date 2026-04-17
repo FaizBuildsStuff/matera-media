@@ -294,15 +294,17 @@ const CenteredPricing = ({ data }: { data?: any }) => {
       <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
       <div className="absolute top-[10%] right-[-5%] w-[40%] h-[40%] bg-white/[0.03] blur-[160px] rounded-full pointer-events-none z-0" />
 
+      {/* Always allow the header to take full width so it doesn't line-break */}
+      <div className="max-w-7xl mx-auto relative z-30 text-center mb-16">
+        <p className="text-emerald-500 text-[10px] font-black tracking-[0.4em] mb-4 whitespace-pre-wrap">{label}</p>
+        <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-5 whitespace-pre-wrap">{title}</h2>
+      </div>
+
       {/* Adaptive Container: Narrow for 1, Medium for 2, Wide for 3+ */}
       <div className={`
         ${isSinglePlan ? 'max-w-md' : isTwoPlans ? 'max-w-4xl' : 'max-w-7xl'} 
         mx-auto relative z-30
       `}>
-        <div className="text-center mb-16">
-          <p className="text-emerald-500 text-[10px] font-black tracking-[0.4em] mb-4 whitespace-pre-wrap">{label}</p>
-          <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-5 whitespace-pre-wrap">{title}</h2>
-        </div>
 
         {/* Grid Setup: 2 plans are centered using flex or grid-cols-2 */}
         <div className={`
@@ -362,7 +364,44 @@ const CenteredPricing = ({ data }: { data?: any }) => {
   );
 };
 
-// Removed inline ResultsSection component - using StackedResults from components instead.
+// --- 5. RESULTS (Connected Lighting) ---
+const ResultsSection = ({ items, title }: ResultsProps) => {
+  return (
+    <section className="relative -mt-[1px] py-24 px-6 bg-[#051A0E] overflow-hidden text-center border-none z-10">
+
+      {/* --- TOP CONNECTION MASK --- */}
+      <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
+
+      {/* --- LUXURY WHITE SPOTLIGHTS --- */}
+      <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[60%] h-[50%] bg-white/[0.03] blur-[160px] rounded-full pointer-events-none z-0" />
+      <div className="absolute bottom-[20%] right-[-5%] w-[30%] h-[40%] bg-white/[0.02] blur-[120px] rounded-full pointer-events-none z-0" />
+
+      <div className="max-w-7xl mx-auto relative z-30">
+        <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-16 whitespace-pre-wrap">
+          {title}
+        </h2>
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {items?.map((item: ResultItem, i: number) => (
+            <div key={i} className="relative aspect-square rounded-[2rem] overflow-hidden border border-white/10 bg-white/5 group">
+              {item.image && (
+                <Image
+                  src={item.image}
+                  alt={item.label || "Result Proof"}
+                  fill
+                  className="object-cover opacity-70 transition-all duration-700 group-hover:opacity-100 group-hover:scale-105"
+                />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* --- BOTTOM BLEND MASK --- */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#051A0E] via-[#051A0E]/80 to-transparent pointer-events-none z-20" />
+    </section>
+  );
+};
 
 // --- 6. OUR PROCESS (Connected Lighting) ---
 const ProcessSection = ({ data }: { data?: any }) => {
@@ -471,9 +510,8 @@ export default function OrganicContentYouTubePage() {
             ]
           }}
         />
-        <StackedResults
+        <ResultsSection
           title={data?.resultsTitle || "Our Results"}
-          label={data?.resultsLabel || "Case Studies"}
           items={data?.results || [{ image: "/" }, { image: "/" }, { image: "/" }, { image: "/" }]}
         />
         <ProcessSection data={data} />
