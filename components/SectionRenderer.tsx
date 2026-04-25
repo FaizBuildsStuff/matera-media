@@ -144,27 +144,24 @@ export function SectionRenderer({ sections, documentId }: SectionRendererProps) 
 }
 
 function RenderBlock({ section, documentId }: { section: SectionBlock; documentId?: string }) {
-  // Pass the section key and document ID for Sanity patches
-  const content = { ...section, _documentId: documentId, _sectionKey: section._key };
-
   // We return the components directly without wrapping divs to avoid extra spacing
   switch (section._type) {
     case "hero":
-      return <Hero content={content} />;
+      return <Hero content={{ ...section, _documentId: documentId, _sectionKey: section._key }} />;
     case "testimonials":
-      return <Testimonials content={content} />;
+      return <Testimonials content={{ ...section, _documentId: documentId, _sectionKey: section._key }} />;
     case "workShowcase":
-      return <WorkShowcase content={content} />;
+      return <WorkShowcase content={{ ...section, _documentId: documentId, _sectionKey: section._key }} />;
     case "howItWorks":
-      return <HowItWorks content={content} />;
+      return <HowItWorks content={{ ...section, _documentId: documentId, _sectionKey: section._key }} />;
     case "pricing":
-      return <Pricing content={content} />;
+      return <Pricing content={{ ...section, _documentId: documentId, _sectionKey: section._key }} />;
     case "careers":
-      return <CareersSection content={content} />;
+      return <CareersSection content={{ ...section, _documentId: documentId, _sectionKey: section._key }} />;
     case "faq":
-      return <FAQ content={content} />;
+      return <FAQ content={{ ...section, _documentId: documentId, _sectionKey: section._key }} />;
     case "calendlyWidget":
-      return <CalendlyWidget content={content} />;
+      return <CalendlyWidget content={{ ...section, _documentId: documentId, _sectionKey: section._key }} />;
     default:
       return null;
   }

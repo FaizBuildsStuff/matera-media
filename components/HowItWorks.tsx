@@ -157,7 +157,7 @@ export const HowItWorks = ({ content }: { content?: any }) => {
             />
 
             <div className="space-y-24 md:space-y-0">
-                {steps.map((step, i) => {
+                {steps.map((step: any, i: number) => {
                     const isEven = i % 2 === 0;
                     return (
                         <div key={step._key || step.id} className="process-row relative md:h-[280px] flex items-center">
