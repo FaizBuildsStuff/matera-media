@@ -6,6 +6,8 @@ import { gsap } from "gsap";
 import { CheckCircle2, Sparkles, ShieldCheck, Clock, ArrowRight } from "lucide-react";
 import { colors } from "@/theme/colors";
 import { Card } from "@/components/ui/card";
+import { EditableText } from "./visual-editing/EditableText";
+import { EditableButton } from "./visual-editing/EditableButton";
 
 declare global {
   interface Window {
@@ -14,6 +16,7 @@ declare global {
 }
 
 export type BookingPageContent = {
+  _id?: string;
   title?: string;
   subtitle?: string;
   benefits?: string[];
@@ -27,6 +30,7 @@ export function BookCallPage({ content }: { content?: BookingPageContent }) {
   const leftRef = useRef<HTMLDivElement>(null);
   const rightRef = useRef<HTMLDivElement>(null);
 
+  const documentId = content?._id;
   const title = content?.title ?? "Book your strategy call";
   const subtitle = content?.subtitle ?? "Let's discuss your growth goals and how our high-performance content systems can scale your brand.";
   const benefits = content?.benefits ?? [
@@ -90,10 +94,6 @@ export function BookCallPage({ content }: { content?: BookingPageContent }) {
     return () => ctx.revert();
   }, [content]);
 
-  const words = title.split(" ");
-  const mainTitle = words.length > 2 ? words.slice(0, -2).join(" ") : title;
-  const highlight = words.length > 2 ? words.slice(-2).join(" ") : "";
-
   return (
     <>
       <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet" />
@@ -123,17 +123,16 @@ export function BookCallPage({ content }: { content?: BookingPageContent }) {
 
             <div className="space-y-6">
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-medium text-white leading-[1.1] tracking-tighter font-instrument-sans">
-                {mainTitle}{" "}
-                {highlight && (
-                  <span className="text-emerald-400 italic font-bold" style={{ fontFamily: "Satoshi" }}>
-                    {highlight}
-                  </span>
-                )}
+                {documentId ? (
+                  <EditableText id={documentId} field="title" value={title} as="span" />
+                ) : title}
               </h1>
 
-              <p className="text-lg md:text-xl text-white/40 font-light leading-relaxed max-w-lg whitespace-pre-wrap">
-                {subtitle}
-              </p>
+              <div className="text-lg md:text-xl text-white/40 font-light leading-relaxed max-w-lg whitespace-pre-wrap">
+                {documentId ? (
+                  <EditableText id={documentId} field="subtitle" value={subtitle} />
+                ) : subtitle}
+              </div>
             </div>
 
             <div className="space-y-4 max-w-md">
@@ -142,11 +141,30 @@ export function BookCallPage({ content }: { content?: BookingPageContent }) {
                   <div className="size-8 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 group-hover:scale-110 transition-transform">
                     <CheckCircle2 className="size-4 text-emerald-400" />
                   </div>
-                  <span className="text-white/70 text-sm font-medium whitespace-pre-wrap">{benefit}</span>
+                  <div className="text-white/70 text-sm font-medium whitespace-pre-wrap">
+                    {documentId ? (
+                      <EditableText id={documentId} field={`benefits[${i}]`} value={benefit} as="span" />
+                    ) : benefit}
+                  </div>
                 </div>
               ))}
             </div>
 
+            {documentId && (
+              <div className="pt-4">
+                <EditableButton 
+                  id={documentId} 
+                  textField="calendlyUrl" 
+                  linkField="calendlyUrl" 
+                  text="Edit Calendly URL" 
+                  link={calendlyUrl}
+                >
+                  <button className="text-[10px] text-emerald-500/40 uppercase font-black tracking-widest hover:text-emerald-500 transition-colors">
+                    Config URL
+                  </button>
+                </EditableButton>
+              </div>
+            )}
           </div>
 
           {/* CALENDLY SECTION */}

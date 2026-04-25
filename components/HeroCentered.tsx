@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
+import { gsap } from "gsap";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { gsap } from "gsap";
+import { EditableText } from "./visual-editing/EditableText";
+import { EditableButton } from "./visual-editing/EditableButton";
 
 export interface HeroProps {
   title?: string;
@@ -13,6 +15,8 @@ export interface HeroProps {
   sectionLabel?: string;
   ctaText?: string;
   ctaLink?: string;
+  _documentId?: string;
+  _sectionKey?: string;
 }
 
 export const HeroCentered = ({
@@ -23,6 +27,8 @@ export const HeroCentered = ({
   sectionLabel,
   ctaText,
   ctaLink = "#schedule",
+  _documentId,
+  _sectionKey,
 }: HeroProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -71,34 +77,66 @@ export const HeroCentered = ({
         {/* Section Label */}
         {sectionLabel && (
           <div className="hc-reveal text-[#00ff66] font-bold text-[10px] sm:text-xs md:text-sm tracking-widest uppercase mb-5 sm:mb-7 md:mb-8 px-2">
-            {sectionLabel}
+            {_documentId ? (
+              <EditableText id={_documentId} field="sectionLabel" sectionKey={_sectionKey} value={sectionLabel} as="span" />
+            ) : sectionLabel}
           </div>
         )}
 
         {/* Main Headline */}
-        <h1 className="hc-reveal text-[1.75rem] sm:text-4xl md:text-[3.5rem] font-bold leading-[1.15] sm:leading-[1.12] tracking-tight text-white mb-4 sm:mb-6 md:mb-8 w-full max-w-[48rem] px-1">
-          {title} {highlight} {titleAfter}
+        <h1 className="hc-reveal text-[1.75rem] sm:text-4xl md:text-[3.5rem] font-bold leading-[1.15] sm:leading-[1.12] tracking-tight text-white mb-4 sm:mb-6 md:mb-8 w-full max-w-[48rem] px-1 flex flex-wrap justify-center">
+          {_documentId ? (
+            <>
+              <EditableText id={_documentId} field="headlineTitle" sectionKey={_sectionKey} value={title || ""} as="span" className="mr-3" />
+              <EditableText id={_documentId} field="headlineHighlight" sectionKey={_sectionKey} value={highlight || ""} as="span" className="mr-3 text-emerald-400 italic" />
+              <EditableText id={_documentId} field="headlineTitleAfter" sectionKey={_sectionKey} value={titleAfter || ""} as="span" />
+            </>
+          ) : (
+            <>{title} <span className="text-emerald-400 italic px-1">{highlight}</span> {titleAfter}</>
+          )}
         </h1>
 
         {/* Subtitle */}
         {subtitle && (
-          <p className="hc-reveal text-white/50 text-sm sm:text-base md:text-lg max-w-2xl text-center mb-6 sm:mb-8 leading-relaxed font-normal px-2">
-            {subtitle}
-          </p>
+          <div className="hc-reveal text-white/50 text-sm sm:text-base md:text-lg max-w-2xl text-center mb-6 sm:mb-8 leading-relaxed font-normal px-2">
+            {_documentId ? (
+              <EditableText id={_documentId} field="headlineSubtitle" sectionKey={_sectionKey} value={subtitle} />
+            ) : subtitle}
+          </div>
         )}
 
         {/* CTA — matches Hero.tsx exactly */}
         <div className="hc-reveal">
-          <Link href={ctaLink}>
-            <div className="flex items-center bg-white rounded-full p-1 sm:p-1.5 pr-5 sm:pr-8 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.15)] group">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 md:w-[3.25rem] md:h-[3.25rem] bg-[#00e65c] rounded-full flex items-center justify-center mr-3 sm:mr-5 group-hover:bg-[#00ff66] transition-colors shadow-[0_0_15px_rgba(0,230,92,0.4)]">
-                <ArrowRight className="w-4 h-4 sm:w-[1.125rem] sm:h-[1.125rem] text-[#030b06] stroke-[2.5]" />
+          {_documentId ? (
+            <EditableButton
+              id={_documentId}
+              textField="heroCta"
+              linkField="heroCtaLink"
+              sectionKey={_sectionKey}
+              text={ctaText || "Book a Strategy Call"}
+              link={ctaLink}
+            >
+              <div className="flex items-center bg-white rounded-full p-1 sm:p-1.5 pr-5 sm:pr-8 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.15)] group">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 md:w-[3.25rem] md:h-[3.25rem] bg-[#00e65c] rounded-full flex items-center justify-center mr-3 sm:mr-5 group-hover:bg-[#00ff66] transition-colors shadow-[0_0_15px_rgba(0,230,92,0.4)]">
+                  <ArrowRight className="w-4 h-4 sm:w-[1.125rem] sm:h-[1.125rem] text-[#030b06] stroke-[2.5]" />
+                </div>
+                <span className="text-[#030b06] font-bold text-[0.85rem] sm:text-[0.95rem] md:text-base tracking-wide mr-1 sm:mr-2">
+                  {ctaText || "Book a Strategy Call"}
+                </span>
               </div>
-              <span className="text-[#030b06] font-bold text-[0.85rem] sm:text-[0.95rem] md:text-base tracking-wide mr-1 sm:mr-2">
-                {ctaText || "Book a Strategy Call"}
-              </span>
-            </div>
-          </Link>
+            </EditableButton>
+          ) : (
+            <Link href={ctaLink}>
+              <div className="flex items-center bg-white rounded-full p-1 sm:p-1.5 pr-5 sm:pr-8 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.15)] group">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 md:w-[3.25rem] md:h-[3.25rem] bg-[#00e65c] rounded-full flex items-center justify-center mr-3 sm:mr-5 group-hover:bg-[#00ff66] transition-colors shadow-[0_0_15px_rgba(0,230,92,0.4)]">
+                  <ArrowRight className="w-4 h-4 sm:w-[1.125rem] sm:h-[1.125rem] text-[#030b06] stroke-[2.5]" />
+                </div>
+                <span className="text-[#030b06] font-bold text-[0.85rem] sm:text-[0.95rem] md:text-base tracking-wide mr-1 sm:mr-2">
+                  {ctaText || "Book a Strategy Call"}
+                </span>
+              </div>
+            </Link>
+          )}
         </div>
 
       </div>

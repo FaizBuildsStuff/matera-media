@@ -2,20 +2,22 @@ import React, { ReactNode } from 'react'
 import { SmoothScroll } from '@/components/SmoothScroll'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
+import { client } from '@/lib/sanity'
+import { siteSettingsQuery } from '@/lib/queries'
 
-// Fix 1: Use the correct TypeScript interface/type for props
 interface LayoutProps {
   children: ReactNode;
 }
 
-const Layout = ({ children }: LayoutProps) => {
+const Layout = async ({ children }: LayoutProps) => {
+  const settings = await client.fetch(siteSettingsQuery, {}, { cache: "no-store" });
+
   return (
-    // Fix 2: Wrap children in a Fragment <> or a semantic tag like <main>
     <>
-            <SmoothScroll />
-            <Header />
+      <SmoothScroll />
+      <Header settings={settings} />
       {children}
-      <Footer />
+      <Footer settings={settings} />
     </>
   )
 }

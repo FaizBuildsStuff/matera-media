@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "concurrently \"next start\" \"npm run studio\"",
     "studio": "env-cmd -f .env npx sanity dev",
     "seed:sanity": "env-cmd -f .env npx tsx scripts/seed-sanity.ts"
   },

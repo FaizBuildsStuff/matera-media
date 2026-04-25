@@ -6,6 +6,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 import { Check, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { EditableText } from "./visual-editing/EditableText";
+import { EditableButton } from "./visual-editing/EditableButton";
+import { AddRemoveControls } from "./visual-editing/AddRemoveControls";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -34,6 +37,9 @@ const DEFAULT_SOLUTIONS = [
 ];
 
 export default function Pricing({ content }: { content?: any }) {
+  const documentId = content?._documentId;
+  const sectionKey = content?._sectionKey;
+
   const title = content?.title ?? "Built for Absolute Velocity.";
   const highlightedWord = content?.highlightedWord ?? "Absolute";
   const subtitle = content?.subtitle ?? "Choose the creative discipline that aligns with your revenue infrastructure.";
@@ -96,35 +102,53 @@ export default function Pricing({ content }: { content?: any }) {
       <div className="max-w-7xl mx-auto relative z-30">
 
         <div className="mb-12 flex flex-col items-center text-center gap-6">
-          <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tighter leading-[1.1] max-w-4xl">
-            {title.split(' ').map((word: string, i: number) => {
-              const cleanWord = word.replace(/\W/g, "");
-              const isHighlight = cleanWord === highlightedWord;
-              return (
-                <span
-                  key={i}
-                  className={isHighlight ? "text-emerald-400 italic font-medium px-1" : ""}
-                  style={isHighlight ? { textShadow: "0 0 30px rgba(52, 211, 153, 0.15)" } : {}}
-                >
-                  {word}{" "}
-                </span>
-              );
-            })}
+          <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tighter leading-[1.1] max-w-4xl flex flex-wrap justify-center">
+            {documentId ? (
+              <EditableText id={documentId} field="title" sectionKey={sectionKey} value={title} />
+            ) : (
+              title.split(' ').map((word: string, i: number) => {
+                const cleanWord = word.replace(/\W/g, "");
+                const isHighlight = cleanWord === highlightedWord;
+                return (
+                  <span
+                    key={i}
+                    className={isHighlight ? "text-emerald-400 italic font-medium px-1" : ""}
+                    style={isHighlight ? { textShadow: "0 0 30px rgba(52, 211, 153, 0.15)" } : {}}
+                  >
+                    {word}{" "}
+                  </span>
+                );
+              })
+            )}
           </h2>
-          <p className="max-w-2xl text-white/40 text-lg md:text-xl font-normal leading-relaxed whitespace-pre-wrap">
-            {subtitle}
-          </p>
+          <div className="max-w-2xl text-white/40 text-lg md:text-xl font-normal leading-relaxed whitespace-pre-wrap">
+            {documentId ? (
+              <EditableText id={documentId} field="subtitle" sectionKey={sectionKey} value={subtitle} />
+            ) : (
+              subtitle
+            )}
+          </div>
+          {documentId && (
+            <div className="flex justify-center mt-2">
+              <AddRemoveControls
+                id={documentId}
+                field={sectionKey ? `sections[_key == "${sectionKey}"].plans` : "plans"}
+                label="Plan"
+                newItemTemplate={{ name: "New Plan", tagline: "Tagline", description: "Plan description", features: ["Feature 1"], popular: false }}
+              />
+            </div>
+          )}
         </div>
 
         <div className="max-w-6xl mx-auto">
           <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
             {plans.map((plan: any, idx: number) => {
-              // Dynamic highlight based on Sanity 'popular' boolean instead of index
               const isHighlighted = plan.popular === true;
+              const planId = plan._key || String(idx);
 
               return (
                 <div
-                  key={idx}
+                  key={planId}
                   onMouseMove={(e) => handleMouseMove(e, idx)}
                   onMouseLeave={() => handleMouseLeave(idx)}
                   className={`pricing-card group relative flex flex-col p-10 rounded-[3rem] border transition-all duration-700 backdrop-blur-3xl overflow-hidden ${isHighlighted
@@ -143,36 +167,89 @@ export default function Pricing({ content }: { content?: any }) {
 
                   <div className="relative z-10 flex flex-col h-full">
                     <div className="mb-7">
-                      <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#10B981] opacity-80">{plan.tagline}</span>
+                      <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#10B981] opacity-80">
+                        {documentId ? (
+                          <EditableText 
+                            id={documentId} 
+                            field={`plans[_key == "${planId}"].tagline`} 
+                            sectionKey={sectionKey} 
+                            value={plan.tagline} 
+                            as="span" 
+                          />
+                        ) : plan.tagline}
+                      </span>
                     </div>
 
                     <h3 className="text-3xl font-bold text-white mb-4 tracking-tight">
-                      {plan.name}
+                      {documentId ? (
+                        <EditableText 
+                          id={documentId} 
+                          field={`plans[_key == "${planId}"].name`} 
+                          sectionKey={sectionKey} 
+                          value={plan.name} 
+                          as="span" 
+                        />
+                      ) : plan.name}
                     </h3>
-                    <p className="text-white/40 text-[13px] font-normal leading-relaxed mb-10 whitespace-pre-wrap">
-                      {plan.description}
-                    </p>
+                    <div className="text-white/40 text-[13px] font-normal leading-relaxed mb-10 whitespace-pre-wrap">
+                      {documentId ? (
+                        <EditableText 
+                          id={documentId} 
+                          field={`plans[_key == "${planId}"].description`} 
+                          sectionKey={sectionKey} 
+                          value={plan.description} 
+                        />
+                      ) : plan.description}
+                    </div>
 
                     <div className="flex-1 space-y-4 mb-6 pt-2">
                       {plan.features?.map((feature: string, fIdx: number) => (
                         <div key={fIdx} className="flex items-center gap-3">
                           <Check className="size-3 text-[#10B981]" />
                           <span className="text-sm font-normal text-white/50 group-hover:text-white/80 transition-colors">
-                            {feature}
+                            {documentId ? (
+                              <EditableText 
+                                id={documentId} 
+                                field={`plans[_key == "${planId}"].features[${fIdx}]`} 
+                                sectionKey={sectionKey} 
+                                value={feature} 
+                                as="span" 
+                              />
+                            ) : feature}
                           </span>
                         </div>
                       ))}
                     </div>
 
-                    <Link href="/book" className="mt-auto">
-                      <Button className={`w-full h-16 rounded-full font-black uppercase tracking-[0.2em] text-[10px] transition-all duration-500 flex justify-between px-10 group ${isHighlighted
-                        ? "bg-white text-black hover:scale-[1.02]"
-                        : "bg-white/5 text-white border border-white/10 hover:bg-white hover:text-black hover:scale-[1.02]"
-                        }`}>
-                        I need this
-                        <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
-                      </Button>
-                    </Link>
+                    {documentId ? (
+                      <EditableButton
+                        id={documentId}
+                        textField={`plans[_key == "${planId}"].buttonText`}
+                        linkField={`plans[_key == "${planId}"].buttonLink`}
+                        sectionKey={sectionKey}
+                        text={plan.buttonText || "I need this"}
+                        link={plan.buttonLink || "/book"}
+                        className="mt-auto"
+                      >
+                        <Button className={`w-full h-16 rounded-full font-black uppercase tracking-[0.2em] text-[10px] transition-all duration-500 flex justify-between px-10 group ${isHighlighted
+                          ? "bg-white text-black hover:scale-[1.02]"
+                          : "bg-white/5 text-white border border-white/10 hover:bg-white hover:text-black hover:scale-[1.02]"
+                          }`}>
+                          {plan.buttonText || "I need this"}
+                          <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
+                        </Button>
+                      </EditableButton>
+                    ) : (
+                      <Link href="/book" className="mt-auto">
+                        <Button className={`w-full h-16 rounded-full font-black uppercase tracking-[0.2em] text-[10px] transition-all duration-500 flex justify-between px-10 group ${isHighlighted
+                          ? "bg-white text-black hover:scale-[1.02]"
+                          : "bg-white/5 text-white border border-white/10 hover:bg-white hover:text-black hover:scale-[1.02]"
+                          }`}>
+                          I need this
+                          <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
+                        </Button>
+                      </Link>
+                    )}
                   </div>
                 </div>
               );
@@ -182,4 +259,4 @@ export default function Pricing({ content }: { content?: any }) {
       </div>
     </section>
   );
-}
+}

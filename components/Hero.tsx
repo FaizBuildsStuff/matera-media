@@ -12,7 +12,13 @@ const getYoutubeId = (url: string) => {
   return match && match[2].length === 11 ? match[2] : null;
 };
 
+import { EditableText } from "./visual-editing/EditableText";
+import { EditableButton } from "./visual-editing/EditableButton";
+
 export const Hero = ({ content }: { content?: any }) => {
+  const documentId = content?._documentId;
+  const sectionKey = content?._sectionKey;
+
   const topText = content?.topText || "SERVICE FOUNDERS & INFO ENTREPRENEURS!";
   const headline = content?.headline || "We Will Build A Paid & Organic Content System That Attracts Leads & Closes Deals (Done-For-You)";
   const ctaPrimary = content?.ctaPrimary || "Learn More";
@@ -68,26 +74,55 @@ export const Hero = ({ content }: { content?: any }) => {
 
         {/* Top Label */}
         <div className="hero-reveal text-[#00ff66] font-bold text-[10px] sm:text-xs md:text-sm tracking-widest uppercase mb-5 sm:mb-7 md:mb-8 px-2">
-          {topText}
+          {documentId ? (
+            <EditableText id={documentId} field="topText" sectionKey={sectionKey} value={topText} />
+          ) : (
+            topText
+          )}
         </div>
 
         {/* Main Headline */}
         <h1 className="hero-reveal text-[1.75rem] sm:text-4xl md:text-[3.5rem] font-bold leading-[1.15] sm:leading-[1.12] tracking-tight text-white mb-6 sm:mb-8 w-full max-w-[48rem] px-1">
-          {headline}
+          {documentId ? (
+            <EditableText id={documentId} field="headline" sectionKey={sectionKey} value={headline} />
+          ) : (
+            headline
+          )}
         </h1>
 
         {/* CTA Section */}
         <div className="hero-reveal flex flex-col items-center gap-4 mb-8 sm:mb-10">
-          <Link href={ctaLink}>
-            <div className="flex items-center bg-white rounded-full p-1 sm:p-1.5 pr-5 sm:pr-8 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.15)] group">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 md:w-[3.25rem] md:h-[3.25rem] bg-[#00e65c] rounded-full flex items-center justify-center mr-3 sm:mr-5 group-hover:bg-[#00ff66] transition-colors shadow-[0_0_15px_rgba(0,230,92,0.4)]">
-                <ArrowRight className="w-4 h-4 sm:w-[1.125rem] sm:h-[1.125rem] text-[#030b06] stroke-[2.5]" />
+          {documentId ? (
+            <EditableButton
+              id={documentId}
+              textField="ctaPrimary"
+              linkField="ctaPrimaryLink"
+              sectionKey={sectionKey}
+              text={ctaPrimary}
+              link={ctaLink}
+              className="group"
+            >
+              <div className="flex items-center bg-white rounded-full p-1 sm:p-1.5 pr-5 sm:pr-8 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.15)]">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 md:w-[3.25rem] md:h-[3.25rem] bg-[#00e65c] rounded-full flex items-center justify-center mr-3 sm:mr-5 group-hover:bg-[#00ff66] transition-colors shadow-[0_0_15px_rgba(0,230,92,0.4)]">
+                  <ArrowRight className="w-4 h-4 sm:w-[1.125rem] sm:h-[1.125rem] text-[#030b06] stroke-[2.5]" />
+                </div>
+                <span className="text-[#030b06] font-bold text-[0.85rem] sm:text-[0.95rem] md:text-base tracking-wide mr-1 sm:mr-2">
+                  {ctaPrimary}
+                </span>
               </div>
-              <span className="text-[#030b06] font-bold text-[0.85rem] sm:text-[0.95rem] md:text-base tracking-wide mr-1 sm:mr-2">
-                {ctaPrimary}
-              </span>
-            </div>
-          </Link>
+            </EditableButton>
+          ) : (
+            <Link href={ctaLink}>
+              <div className="flex items-center bg-white rounded-full p-1 sm:p-1.5 pr-5 sm:pr-8 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.15)] group">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 md:w-[3.25rem] md:h-[3.25rem] bg-[#00e65c] rounded-full flex items-center justify-center mr-3 sm:mr-5 group-hover:bg-[#00ff66] transition-colors shadow-[0_0_15px_rgba(0,230,92,0.4)]">
+                  <ArrowRight className="w-4 h-4 sm:w-[1.125rem] sm:h-[1.125rem] text-[#030b06] stroke-[2.5]" />
+                </div>
+                <span className="text-[#030b06] font-bold text-[0.85rem] sm:text-[0.95rem] md:text-base tracking-wide mr-1 sm:mr-2">
+                  {ctaPrimary}
+                </span>
+              </div>
+            </Link>
+          )}
         </div>
 
         {/* Video Player Card (Optional if passed via prop) */}

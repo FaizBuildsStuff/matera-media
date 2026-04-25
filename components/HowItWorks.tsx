@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { EditableText } from "./visual-editing/EditableText";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,7 +25,11 @@ const DEFAULT_STEPS = [
     { id: '03', title: 'Launch & Optimization', description: 'We launch and tweak results based on real-time performance data.' },
 ];
 
-export const HowItWorks = ({ content }: HowItWorksProps) => {
+
+export const HowItWorks = ({ content }: { content?: any }) => {
+    const documentId = content?._documentId;
+    const sectionKey = content?._sectionKey;
+
     const label = content?.label ?? "Evolution Protocol";
     const titleText = content?.title ?? "How it works";
     const steps = content?.steps?.length ? content.steps : DEFAULT_STEPS;
@@ -49,7 +54,7 @@ export const HowItWorks = ({ content }: HowItWorksProps) => {
             );
 
             gsap.to(".ambient-glow", {
-                y: (i) => i === 0 ? -150 : 150,
+                y: (i: number) => i === 0 ? -150 : 150,
                 opacity: 0.5,
                 duration: 3,
                 scrollTrigger: {
@@ -113,23 +118,31 @@ export const HowItWorks = ({ content }: HowItWorksProps) => {
             <div className="flex items-center justify-center gap-4 mb-6">
                 <div className="h-px w-10 bg-emerald-500/20" />
                 <span className="text-emerald-500 text-[10px] font-bold tracking-[0.4em] uppercase">
-                    {label}
+                    {documentId ? (
+                        <EditableText id={documentId} field="label" sectionKey={sectionKey} value={label} as="span" />
+                    ) : (
+                        label
+                    )}
                 </span>
                 <div className="h-px w-10 bg-emerald-500/20" />
             </div>
             
-            <h2 className="text-5xl md:text-6xl font-bold text-white tracking-tight leading-[1.1]">
-                {titleText.split(' ').map((word: string, i: number) => {
-                    const isLast = i === titleText.split(' ').length - 1;
-                    return (
-                        <span 
-                            key={i} 
-                            className={isLast ? "text-emerald-400 italic font-semibold px-1" : ""}
-                        >
-                            {word}{" "}
-                        </span>
-                    );
-                })}
+            <h2 className="text-5xl md:text-6xl font-bold text-white tracking-tight leading-[1.1] flex flex-wrap justify-center">
+                {documentId ? (
+                    <EditableText id={documentId} field="title" sectionKey={sectionKey} value={titleText} />
+                ) : (
+                    titleText.split(' ').map((word: string, i: number) => {
+                        const isLast = i === titleText.split(' ').length - 1;
+                        return (
+                            <span 
+                                key={i} 
+                                className={isLast ? "text-emerald-400 italic font-semibold px-1" : ""}
+                            >
+                                {word}{" "}
+                            </span>
+                        );
+                    })
+                )}
             </h2>
         </div>
 
@@ -147,7 +160,7 @@ export const HowItWorks = ({ content }: HowItWorksProps) => {
                 {steps.map((step, i) => {
                     const isEven = i % 2 === 0;
                     return (
-                        <div key={step.id} className="process-row relative md:h-[280px] flex items-center">
+                        <div key={step._key || step.id} className="process-row relative md:h-[280px] flex items-center">
                             <div className="absolute left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-emerald-400 z-30 hidden md:block shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
 
                             <div className={`row-content w-full md:w-[46%] ${isEven ? 'md:pr-14 md:text-right' : 'md:pl-14 md:text-left md:ml-[54%]'} space-y-4`}>
@@ -158,12 +171,27 @@ export const HowItWorks = ({ content }: HowItWorksProps) => {
                                 </div>
 
                                 <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight leading-tight">
-                                    {step.title}
+                                    {documentId ? (
+                                        <EditableText 
+                                            id={documentId} 
+                                            field={`steps[_key == "${step._key || step.id}"].title`} 
+                                            sectionKey={sectionKey} 
+                                            value={step.title} 
+                                            as="span" 
+                                        />
+                                    ) : step.title}
                                 </h3>
 
-                                <p className="text-white/40 text-base leading-relaxed font-normal max-w-md mx-auto md:mx-0 whitespace-pre-wrap">
-                                    {step.description}
-                                </p>
+                                <div className="text-white/40 text-base leading-relaxed font-normal max-w-md mx-auto md:mx-0 whitespace-pre-wrap">
+                                    {documentId ? (
+                                        <EditableText 
+                                            id={documentId} 
+                                            field={`steps[_key == "${step._key || step.id}"].description`} 
+                                            sectionKey={sectionKey} 
+                                            value={step.description} 
+                                        />
+                                    ) : step.description}
+                                </div>
                             </div>
                         </div>
                     );
@@ -173,4 +201,4 @@ export const HowItWorks = ({ content }: HowItWorksProps) => {
     </div>
 </section>
     );
-};
+};

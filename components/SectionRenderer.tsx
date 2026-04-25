@@ -124,43 +124,47 @@ export type SectionBlock =
 
 interface SectionRendererProps {
   sections: SectionBlock[] | null | undefined;
+  documentId?: string;
 }
 
 // --- MAIN RENDERER ---
 
-export function SectionRenderer({ sections }: SectionRendererProps) {
+export function SectionRenderer({ sections, documentId }: SectionRendererProps) {
   return (
     <main className="bg-[#05180D] min-h-screen flex flex-col">
       {!sections || sections.length === 0 ? (
         <DefaultSections />
       ) : (
         sections.map((section) => (
-          <RenderBlock key={section._key} section={section} />
+          <RenderBlock key={section._key} section={section} documentId={documentId} />
         ))
       )}
     </main>
   );
 }
 
-function RenderBlock({ section }: { section: SectionBlock }) {
+function RenderBlock({ section, documentId }: { section: SectionBlock; documentId?: string }) {
+  // Pass the section key and document ID for Sanity patches
+  const content = { ...section, _documentId: documentId, _sectionKey: section._key };
+
   // We return the components directly without wrapping divs to avoid extra spacing
   switch (section._type) {
     case "hero":
-      return <Hero content={section} />;
+      return <Hero content={content} />;
     case "testimonials":
-      return <Testimonials content={section} />;
+      return <Testimonials content={content} />;
     case "workShowcase":
-      return <WorkShowcase content={section} />;
+      return <WorkShowcase content={content} />;
     case "howItWorks":
-      return <HowItWorks content={section} />;
+      return <HowItWorks content={content} />;
     case "pricing":
-      return <Pricing content={section} />;
+      return <Pricing content={content} />;
     case "careers":
-      return <CareersSection content={section} />;
+      return <CareersSection content={content} />;
     case "faq":
-      return <FAQ content={section} />;
+      return <FAQ content={content} />;
     case "calendlyWidget":
-      return <CalendlyWidget content={section} />;
+      return <CalendlyWidget content={content} />;
     default:
       return null;
   }

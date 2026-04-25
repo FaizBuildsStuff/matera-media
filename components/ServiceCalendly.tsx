@@ -1,7 +1,9 @@
 "use client";
 
+import React, { useEffect } from "react";
 import Image from "next/image";
-import { useEffect } from "react";
+import { EditableText } from "./visual-editing/EditableText";
+import { EditableButton } from "./visual-editing/EditableButton";
 
 const DEFAULT_CALENDLY_URL =
   "https://calendly.com/m-faizurrehman-crypto/30min?primary_color=10b981&background_color=05180D&text_color=ffffff&hide_landing_page_details=1&hide_gdpr_banner=1";
@@ -12,10 +14,12 @@ type ServiceCalendlyProps = {
     subtitle?: string;
     calendlyUrl?: string;
     highlightedWord?: string;
+    _documentId?: string;
   };
 };
 
 export function ServiceCalendly({ content }: ServiceCalendlyProps) {
+  const documentId = content?._documentId;
   const title = content?.title ?? "Let's start a conversation.";
   const subtitle = content?.subtitle ?? "Choose a time below to discuss how we can help your business.";
   const calendlyUrl = content?.calendlyUrl || DEFAULT_CALENDLY_URL;
@@ -57,30 +61,51 @@ export function ServiceCalendly({ content }: ServiceCalendlyProps) {
 
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-semibold text-white tracking-tight mb-4 whitespace-pre-wrap">
-            {title}
+            {documentId ? (
+              <EditableText id={documentId} field="calendlyTitle" value={title} as="span" />
+            ) : title}
           </h2>
-          <p className="text-white/60 text-lg whitespace-pre-wrap">
-            {content?.highlightedWord ? (
-              subtitle.split(new RegExp("(" + content.highlightedWord + ")", "gi")).map((part, i) =>
-                part.toLowerCase() === content.highlightedWord!.toLowerCase() ? (
-                  <span 
-                    key={i} 
-                    className="text-emerald-400 font-medium" 
-                    style={{ 
-                      fontFamily: "'Satoshi', sans-serif", 
-                      fontStyle: "italic", 
-                      textShadow: "0 0 25px rgba(52, 211, 153, 0.25)" 
-                    }}>
-                    {part}
-                  </span>
-                ) : (
-                  part
-                )
-              )
+          <div className="text-white/60 text-lg whitespace-pre-wrap">
+            {documentId ? (
+              <EditableText id={documentId} field="calendlySubtitle" value={subtitle} />
             ) : (
-              subtitle
+              content?.highlightedWord ? (
+                subtitle.split(new RegExp("(" + content.highlightedWord + ")", "gi")).map((part, i) =>
+                  part.toLowerCase() === content.highlightedWord!.toLowerCase() ? (
+                    <span 
+                      key={i} 
+                      className="text-emerald-400 font-medium" 
+                      style={{ 
+                        fontFamily: "'Satoshi', sans-serif", 
+                        fontStyle: "italic", 
+                        textShadow: "0 0 25px rgba(52, 211, 153, 0.25)" 
+                      }}>
+                      {part}
+                    </span>
+                  ) : (
+                    part
+                  )
+                )
+              ) : (
+                subtitle
+              )
             )}
-          </p>
+          </div>
+          {documentId && (
+            <div className="mt-4">
+              <EditableButton 
+                id={documentId} 
+                textField="calendlyUrl" // Reusing text field for simplicity in UI, but it's the URL
+                linkField="calendlyUrl" 
+                text="Edit Calendly URL" 
+                link={calendlyUrl}
+              >
+                <button className="text-[10px] text-emerald-500/40 uppercase font-black tracking-widest hover:text-emerald-500 transition-colors">
+                  Config URL
+                </button>
+              </EditableButton>
+            </div>
+          )}
         </div>
 
         {/* --- SCROLLBAR FIX WRAPPER --- */}

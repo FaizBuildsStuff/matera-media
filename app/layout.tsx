@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Instrument_Sans, Instrument_Serif } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/Header";
-import { SmoothScroll } from "@/components/SmoothScroll";
-import { Footer } from "@/components/Footer";
+import { cookies } from "next/headers";
+import { VisualEditingProvider } from "@/components/visual-editing/VisualEditingProvider";
+import { EditControls } from "@/components/visual-editing/EditControls";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,11 +31,14 @@ export const metadata: Metadata = {
   description: "We help B2B Brands and Creators to Grow and Hit Revenue with Organic Content and Motion Ad Creatives",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const isAdmin = cookieStore.get("matera_admin_token")?.value === "authenticated";
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -49,7 +52,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${instrumentSans.variable} ${instrumentSerif.variable} antialiased`}
         suppressHydrationWarning
       >
-        {children}
+        <VisualEditingProvider isAdmin={isAdmin}>
+          {children}
+          <EditControls />
+        </VisualEditingProvider>
       </body>
     </html>
   );

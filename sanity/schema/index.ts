@@ -15,6 +15,7 @@ import inquiry from "./inquiry";
 import careersPage from "./sections/careersPage";
 // New Imports
 import careers, { careerRole } from "./sections/careers";
+import siteSettings from "./siteSettings";
 
 export const schemaTypes = [
   page,
@@ -38,4 +39,5 @@ export const schemaTypes = [
   inquiry,
   careersPage, // Add this
   careerRole,  // Add this
+  siteSettings,
 ];

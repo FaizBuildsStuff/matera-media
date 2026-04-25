@@ -4,12 +4,33 @@ import React, { useRef } from "react";
 import { motion } from "framer-motion";
 import { Search, Calendar, Camera, LucideIcon } from "lucide-react";
 import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap } from "gsap";
+import { EditableText } from "./visual-editing/EditableText";
+import { AddRemoveControls } from "./visual-editing/AddRemoveControls";
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
+const ICON_MAP: Record<string, React.FC<{ className?: string }>> = {
+  search: Search,
+  calendar: Calendar,
+  camera: Camera,
+};
+
+const HUDIcon = ({ icon }: { icon?: string }) => {
+  const IconComponent = icon ? ICON_MAP[icon.toLowerCase()] : null;
+
+  return (
+    <div className="relative w-16 h-16 mb-8 z-10">
+      <div className="absolute inset-0 rounded-2xl bg-emerald-500/5 border border-emerald-500/10 backdrop-blur-sm" />
+      <div className="absolute inset-0 rounded-2xl bg-emerald-500/5 blur-xl" />
+      <div className="relative w-full h-full flex items-center justify-center text-emerald-400/60 group-hover:text-emerald-400 transition-colors">
+        {IconComponent ? (
+          <IconComponent className="w-7 h-7" />
+        ) : (
+          <div className="w-7 h-7 rounded-full border border-emerald-500/30 bg-emerald-500/10" />
+        )}
+      </div>
+    </div>
+  );
+};
 
 interface Step {
   _key?: string;
@@ -27,60 +48,12 @@ interface HowItWorksSimpleProps {
     subtitle?: string;
     steps?: Step[];
   };
+  _documentId?: string;
+  _sectionKey?: string;
 }
 
-const IconMap: Record<string, LucideIcon> = {
-  search: Search,
-  calendar: Calendar,
-  camera: Camera,
-};
-
-const HUDIcon = ({ icon: IconName }: { icon?: string }) => {
-  const hudRef = useRef(null);
-  const Icon = IconName ? IconMap[IconName] : null;
-
-  useGSAP(() => {
-    gsap.to(".hud-ring", {
-      rotation: 360,
-      duration: 15,
-      repeat: -1,
-      ease: "none",
-    });
-    gsap.to(".hud-pulse", {
-      scale: 1.15,
-      opacity: 0.6,
-      duration: 2,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut"
-    });
-  }, { scope: hudRef });
-
-  return (
-    <div ref={hudRef} className="relative w-full aspect-square max-w-[160px] mx-auto flex items-center justify-center mb-10">
-      {/* Central Glow Orb */}
-      <div className="relative z-20 w-16 h-16 bg-emerald-500/5 rounded-full border border-emerald-500/20 flex items-center justify-center shadow-[0_0_40px_rgba(16,185,129,0.15)] backdrop-blur-sm">
-        <div className="hud-pulse absolute inset-0 rounded-full bg-emerald-500/10 blur-xl" />
-        <div className="relative z-30 flex items-center justify-center">
-          {Icon && <Icon className="w-8 h-8 text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.5)]" strokeWidth={1.5} />}
-        </div>
-      </div>
-
-      {/* Aesthetic Rings */}
-      <div className="hud-ring absolute w-[120px] h-[120px] border border-dashed border-emerald-500/20 rounded-full" />
-      <div className="absolute w-[100px] h-[100px] border border-emerald-500/5 rounded-full" />
-
-      {/* Decorative Dots */}
-      <div className="absolute top-2 right-2 w-1 h-1 bg-emerald-500/40 rounded-full animate-pulse" />
-      <div className="absolute bottom-4 left-0 w-1 h-1 bg-emerald-500/20 rounded-full" />
-    </div>
-  );
-};
-
-export const HowItWorksSimple = ({ data }: HowItWorksSimpleProps) => {
+export const HowItWorksSimple = ({ data, _documentId, _sectionKey }: HowItWorksSimpleProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
-
-  // if (!data?.active) return null; // Seed script sets active: true for organic page
 
   const { badge, title, highlight, subtitle, steps } = data || {};
 
@@ -116,20 +89,6 @@ export const HowItWorksSimple = ({ data }: HowItWorksSimpleProps) => {
 
   }, { scope: containerRef });
 
-  const renderTitle = () => {
-    if (!title || !highlight) return title || "Getting started is simple.";
-    const parts = title.split(highlight);
-    return (
-      <>
-        {parts[0]}
-        <span className="text-emerald-400 italic">
-          {highlight}
-        </span>
-        {parts[1]}
-      </>
-    );
-  };
-
   return (
     <section ref={containerRef} className="relative -mt-px py-32 px-6 bg-[#051A0E] overflow-hidden selection:bg-emerald-500/30">
 
@@ -156,19 +115,36 @@ export const HowItWorksSimple = ({ data }: HowItWorksSimpleProps) => {
         >
           <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2.5 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
           <span className="text-emerald-500 text-[10px] font-black tracking-[0.3em] uppercase">
-            {badge || "How it works"}
+            {_documentId ? (
+              <EditableText id={_documentId} field="howItWorksSimple.badge" value={badge || "How it works"} as="span" />
+            ) : (badge || "How it works")}
           </span>
         </motion.div>
 
         {/* Heading */}
-        <h2 className="text-5xl md:text-7xl font-bold text-white tracking-tight leading-[1.05] mb-8 max-w-4xl mx-auto">
-          {renderTitle()}
+        <h2 className="text-5xl md:text-7xl font-bold text-white tracking-tight leading-[1.05] mb-8 max-w-4xl mx-auto flex flex-wrap justify-center">
+          {_documentId ? (
+            <EditableText id={_documentId} field="howItWorksSimple.title" value={title || "Getting started is simple."} />
+          ) : (
+            title || "Getting started is simple."
+          )}
         </h2>
 
         {/* Subtitle */}
-        <p className="text-white/40 text-lg md:text-xl font-normal mb-24 max-w-2xl mx-auto italic">
-          {subtitle || "You get on camera, we handle the rest"}
-        </p>
+        <div className="text-white/40 text-lg md:text-xl font-normal mb-16 max-w-2xl mx-auto italic">
+          {_documentId ? (
+            <EditableText id={_documentId} field="howItWorksSimple.subtitle" value={subtitle || "You get on camera, we handle the rest"} />
+          ) : (
+            subtitle || "You get on camera, we handle the rest"
+          )}
+        </div>
+
+        {/* Add Step Control */}
+        {_documentId && (
+          <div className="flex justify-center mb-10">
+            <AddRemoveControls id={_documentId} field="howItWorksSimple.steps" label="Step" />
+          </div>
+        )}
 
         {/* Steps Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
@@ -185,12 +161,17 @@ export const HowItWorksSimple = ({ data }: HowItWorksSimpleProps) => {
                 {/* Premium Texture Overlay */}
                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay pointer-events-none rounded-[2.5rem]" />
 
-                {/* Step Number Glowing Node */}
-                <div className="absolute top-0 right-10 -translate-y-1/2 flex flex-col items-center">
+                {/* Step Number Glowing Node + Remove Button */}
+                <div className="absolute top-0 right-10 -translate-y-1/2 flex flex-col items-center gap-2">
                   <div className="h-20 w-px bg-linear-to-b from-transparent via-emerald-500/20 to-transparent" />
                   <div className="w-10 h-10 rounded-full bg-[#111] border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xs font-black z-20 shadow-[0_0_20px_rgba(16,185,129,0.2)] group-hover:scale-110 group-hover:border-emerald-500/60 transition-transform">
                     {i + 1}
                   </div>
+                  {_documentId && (
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                      <AddRemoveControls id={_documentId} field="howItWorksSimple.steps" itemKey={step._key} />
+                    </div>
+                  )}
                 </div>
 
                 {/* HUD Icon Illustration */}
@@ -199,11 +180,15 @@ export const HowItWorksSimple = ({ data }: HowItWorksSimpleProps) => {
                 {/* Text Content */}
                 <div className="relative z-10">
                   <h3 className="text-white text-2xl font-bold mb-4 tracking-tight group-hover:text-emerald-400 transition-colors">
-                    {step.title}
+                    {_documentId ? (
+                      <EditableText id={_documentId} field={`howItWorksSimple.steps[_key == "${step._key}"].title`} value={step.title} as="span" />
+                    ) : step.title}
                   </h3>
-                  <p className="text-white/30 leading-relaxed font-normal text-sm md:text-base group-hover:text-white/40 transition-colors">
-                    {step.description}
-                  </p>
+                  <div className="text-white/30 leading-relaxed font-normal text-sm md:text-base group-hover:text-white/40 transition-colors">
+                    {_documentId ? (
+                      <EditableText id={_documentId} field={`howItWorksSimple.steps[_key == "${step._key}"].description`} value={step.description} />
+                    ) : step.description}
+                  </div>
                 </div>
 
                 {/* Bottom Accent Decor */}

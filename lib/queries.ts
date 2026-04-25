@@ -54,6 +54,7 @@ export const pageQuery = `*[_type == "page" && (_id == $slug || slug.current == 
 
 // Fetch service page by slug (ad-creatives | organic-content-youtube | saas-videos)
 export const servicePageQuery = `*[_type == "servicePage" && (slug == $slug || _id == $slug)][0]{
+  _id,
   slug,
   sectionLabel,
   headlineTitle,
@@ -152,6 +153,7 @@ export const servicePageQuery = `*[_type == "servicePage" && (slug == $slug || _
 
 // Fetch legal page by slug (privacy-policy)
 export const legalPageQuery = `*[_type == "legalPage" && (slug == $slug || _id == $slug)][0]{
+  _id,
   slug,
   title,
   subtitle,
@@ -165,6 +167,7 @@ export const legalPageQuery = `*[_type == "legalPage" && (slug == $slug || _id =
 
 // Booking page (single document)
 export const bookingPageQuery = `*[_type == "bookingPage" && _id == "booking-page"][0]{
+  _id,
   title,
   subtitle,
   benefits,
@@ -173,6 +176,7 @@ export const bookingPageQuery = `*[_type == "bookingPage" && _id == "booking-pag
 }`;
 
 export const careersPageQuery = `*[_type == "careersPage" && _id == "careers-page"][0]{
+  _id,
   label,
   "title": headline,
   highlightedWord,
@@ -185,3 +189,26 @@ export const careersPageQuery = `*[_type == "careersPage" && _id == "careers-pag
     link
   }
 }`;
+
+export const siteSettingsQuery = `*[_type == "siteSettings" && _id == "site-settings"][0]{
+  _id,
+  "logo": logo.asset->url,
+  headerLinks[]{
+    _key,
+    label,
+    href
+  },
+  footerLinks[]{
+    _key,
+    label,
+    href
+  },
+  socialLinks[]{
+    _key,
+    platform,
+    url
+  },
+  copyright,
+  slogan
+}`;
+

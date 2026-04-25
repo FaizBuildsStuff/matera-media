@@ -4,7 +4,20 @@ export const structure = (S: StructureBuilder) =>
   S.list()
     .title("Content")
     .items([
-      // 1. HOME PAGE
+      // 1. GLOBAL SETTINGS
+      S.listItem()
+        .title("Site Settings")
+        .icon(() => "⚙️")
+        .child(
+          S.document()
+            .schemaType("siteSettings")
+            .documentId("site-settings")
+            .title("Site Settings")
+        ),
+
+      S.divider(),
+
+      // 2. HOME PAGE
       S.listItem()
         .title("Home Page")
         .child(
@@ -81,7 +94,8 @@ export const structure = (S: StructureBuilder) =>
             "careersPage", // Added to filter
             "servicePage", 
             "legalPage", 
-            "inquiry"
+            "inquiry",
+            "siteSettings"
           ].includes(item.getId() ?? "")
       ),
     ]);

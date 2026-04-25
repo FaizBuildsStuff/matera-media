@@ -9,6 +9,8 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
+import { EditableText } from "./visual-editing/EditableText";
+import { AddRemoveControls } from "./visual-editing/AddRemoveControls";
 
 // Register ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
@@ -28,7 +30,10 @@ type FAQContent = {
     items?: Array<{ _key: string; question?: string; answer?: string }>;
 };
 
-export const FAQ = ({ content }: { content?: FAQContent }) => {
+export const FAQ = ({ content }: { content?: FAQContent & { _documentId?: string; _sectionKey?: string } }) => {
+    const documentId = content?._documentId;
+    const sectionKey = content?._sectionKey;
+
     const label = content?.label ?? "Common Questions";
     const titleText = content?.title ?? "Everything you need to Know.";
     const highlightedWord = content?.highlightedWord ?? "Know.";
@@ -102,26 +107,67 @@ export const FAQ = ({ content }: { content?: FAQContent }) => {
             <div className="max-w-3xl mx-auto relative z-30">
                 {/* Header */}
                 <div ref={headerRef} className="text-center mb-12">
-                    <p className="text-emerald-400 font-medium tracking-widest uppercase text-[10px] mb-4">{label}</p>
-                    <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight leading-tight">
-                        {titleText.split(highlightedWord)[0]}
-                        <span className="text-emerald-400 italic font-medium px-1">
-                            {highlightedWord}
-                        </span>
-                        {titleText.split(highlightedWord)[1] || ""}
+                    <p className="text-emerald-400 font-medium tracking-widest uppercase text-[10px] mb-4">
+                        {documentId ? (
+                            <EditableText id={documentId} field="label" sectionKey={sectionKey} value={label} as="span" />
+                        ) : label}
+                    </p>
+                    <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight leading-tight flex flex-wrap justify-center">
+                        {documentId ? (
+                            <EditableText id={documentId} field="title" sectionKey={sectionKey} value={titleText} />
+                        ) : (
+                            <>
+                                {titleText.split(highlightedWord)[0]}
+                                <span className="text-emerald-400 italic font-medium px-1">
+                                    {highlightedWord}
+                                </span>
+                                {titleText.split(highlightedWord)[1] || ""}
+                            </>
+                        )}
                     </h2>
+                    {documentId && (
+                        <div className="flex justify-center mt-4">
+                            <AddRemoveControls id={documentId} field={sectionKey ? `sections[_key == "${sectionKey}"].items` : "faqItems"} label="FAQ Item" />
+                        </div>
+                    )}
                 </div>
 
                 {/* FAQ Accordion */}
                 <div ref={accordionRef} className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 md:p-8 backdrop-blur-sm">
                     <Accordion type="single" collapsible className="w-full">
                         {faqs.map((faq) => (
-                            <AccordionItem key={faq.id} value={faq.id} className="border-white/10 last:border-b-0">
+                            <AccordionItem key={faq.id} value={faq.id} className="border-white/10 last:border-b-0 group/faq">
                                 <AccordionTrigger className="text-white hover:text-emerald-400 hover:no-underline text-lg font-medium text-left py-5 whitespace-pre-wrap">
-                                    {faq.question}
+                                    <div className="flex justify-between items-center gap-4 w-full pr-2">
+                                        <span className="flex-1">
+                                            {documentId ? (
+                                                <EditableText 
+                                                    id={documentId} 
+                                                    field={`${sectionKey ? `sections[_key == "${sectionKey}"].` : ""}faqItems[_key == "${faq.id}"].question`} 
+                                                    value={faq.question} 
+                                                    as="span" 
+                                                />
+                                            ) : faq.question}
+                                        </span>
+                                        {documentId && (
+                                            <div className="opacity-0 group-hover/faq:opacity-100 transition-opacity" onClick={e => e.stopPropagation()}>
+                                                <AddRemoveControls 
+                                                    id={documentId} 
+                                                    field={sectionKey ? `sections[_key == "${sectionKey}"].faqItems` : "faqItems"} 
+                                                    itemKey={faq.id} 
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
                                 </AccordionTrigger>
                                 <AccordionContent className="text-white/40 font-normal leading-relaxed text-base pb-6 whitespace-pre-wrap">
-                                    {faq.answer}
+                                    {documentId ? (
+                                        <EditableText 
+                                            id={documentId} 
+                                            field={`${sectionKey ? `sections[_key == "${sectionKey}"].` : ""}faqItems[_key == "${faq.id}"].answer`} 
+                                            value={faq.answer} 
+                                        />
+                                    ) : faq.answer}
                                 </AccordionContent>
                             </AccordionItem>
                         ))}
@@ -130,4 +176,4 @@ export const FAQ = ({ content }: { content?: FAQContent }) => {
             </div>
         </section>
     );
-};
+};

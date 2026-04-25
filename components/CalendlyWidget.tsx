@@ -8,16 +8,24 @@ import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
+import { EditableText } from "./visual-editing/EditableText";
+import { EditableButton } from "./visual-editing/EditableButton";
+
 const DEFAULT_CALENDLY_URL =
   "https://calendly.com/m-faizurrehman-crypto/30min?primary_color=10b981&background_color=05180D&text_color=ffffff&hide_landing_page_details=1&hide_gdpr_banner=1";
 
 type CalendlyContent = {
+  _documentId?: string;
+  _sectionKey?: string;
   title?: string;
   subtitle?: string;
   calendlyUrl?: string;
 };
 
 export const CalendlyWidget = ({ content }: { content?: CalendlyContent }) => {
+  const documentId = content?._documentId;
+  const sectionKey = content?._sectionKey;
+  
   const title = content?.title ?? "Architect Your Next Phase.";
   const subtitle = content?.subtitle ?? "Book a strategic discovery call to explore our performance systems.";
   const calendlyUrl = content?.calendlyUrl || DEFAULT_CALENDLY_URL;
@@ -112,13 +120,33 @@ export const CalendlyWidget = ({ content }: { content?: CalendlyContent }) => {
 
         {/* Header - Forced 1 Line on Desktop */}
         <div ref={headerRef} className="text-center mb-10 md:mb-14 px-4">
-          {/* Increased max-w and refined font size */}
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tighter leading-[1.1] mb-5 max-w-5xl mx-auto">
-            {title}
+            {documentId ? (
+              <EditableText id={documentId} field="title" sectionKey={sectionKey} value={title} as="span" />
+            ) : title}
           </h2>
-          <p className="text-white/50 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
-            {subtitle}
-          </p>
+          <div className="text-white/50 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
+            {documentId ? (
+              <EditableText id={documentId} field="subtitle" sectionKey={sectionKey} value={subtitle} />
+            ) : subtitle}
+          </div>
+
+          {documentId && (
+            <div className="mt-6">
+              <EditableButton 
+                id={documentId} 
+                textField="calendlyUrl" 
+                linkField="calendlyUrl" 
+                sectionKey={sectionKey}
+                text="Edit Calendly URL" 
+                link={calendlyUrl}
+              >
+                <button className="text-[10px] text-emerald-500/40 uppercase font-black tracking-widest hover:text-emerald-500 transition-colors">
+                  Config URL
+                </button>
+              </EditableButton>
+            </div>
+          )}
         </div>
 
         {/* Calendly Widget with Loader */}
@@ -138,4 +166,4 @@ export const CalendlyWidget = ({ content }: { content?: CalendlyContent }) => {
       </div>
     </section>
   );
-};
+};

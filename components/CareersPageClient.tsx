@@ -15,17 +15,21 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { EditableText } from "./visual-editing/EditableText";
+import { EditableButton } from "./visual-editing/EditableButton";
 
 gsap.registerPlugin(ScrollTrigger);
 
 // --- TYPES ---
 export type CareersPageProps = {
   content?: {
+    _id?: string;
     label?: string;
     title?: string;
     highlightedWord?: string;
     description?: string;
     items?: Array<{
+      _key?: string;
       title: string;
       department: string;
       location: string;
@@ -37,6 +41,7 @@ export type CareersPageProps = {
 
 const OPEN_ROLES_FALLBACK = [
   {
+    _key: "fallback-1",
     title: "Senior Motion Designer",
     department: "Creative",
     location: "Remote / Dubai",
@@ -44,6 +49,7 @@ const OPEN_ROLES_FALLBACK = [
     link: "/careers/motion-designer",
   },
   {
+    _key: "fallback-2",
     title: "SaaS Growth Strategist",
     department: "Strategy",
     location: "Remote",
@@ -75,6 +81,7 @@ export default function CareersPageClient({ content }: CareersPageProps) {
   const headerRef = useRef<HTMLDivElement>(null);
   const rolesRef = useRef<HTMLDivElement>(null);
 
+  const documentId = content?._id;
   const label = content?.label ?? "Join the team";
   const titleText = content?.title ?? "Do the best work of your career.";
   const highlightedWord = content?.highlightedWord ?? "career.";
@@ -141,30 +148,38 @@ export default function CareersPageClient({ content }: CareersPageProps) {
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/5 border border-emerald-500/10 mb-6 md:mb-10">
             <Users className="size-3 text-emerald-400" />
             <span className="text-[9px] md:text-[10px] text-emerald-400 font-bold uppercase tracking-[0.3em] font-satoshi">
-              {label}
+              {documentId ? (
+                <EditableText id={documentId} field="label" value={label} as="span" />
+              ) : label}
             </span>
           </div>
           
           <h1 className="text-4xl sm:text-6xl md:text-8xl font-medium text-white mb-6 md:mb-10 tracking-tight leading-[1.1] font-instrument-sans">
-            {titleText.includes(highlightedWord) ? (
-              <>
-                {titleText.split(highlightedWord)[0]}
-                <span 
-                  style={{ fontFamily: "'Satoshi', sans-serif", fontStyle: "italic", fontWeight: 700 }} 
-                  className="text-emerald-400 block sm:inline"
-                >
-                  {highlightedWord}
-                </span>
-                {titleText.split(highlightedWord)[1]}
-              </>
+            {documentId ? (
+              <EditableText id={documentId} field="title" value={titleText} as="span" />
             ) : (
-              titleText
+              titleText.includes(highlightedWord) ? (
+                <>
+                  {titleText.split(highlightedWord)[0]}
+                  <span 
+                    style={{ fontFamily: "'Satoshi', sans-serif", fontStyle: "italic", fontWeight: 700 }} 
+                    className="text-emerald-400 block sm:inline"
+                  >
+                    {highlightedWord}
+                  </span>
+                  {titleText.split(highlightedWord)[1]}
+                </>
+              ) : (
+                titleText
+              )
             )}
           </h1>
           
-          <p className="text-white/40 text-base md:text-xl max-w-xl mx-auto font-light leading-relaxed font-satoshi px-4 whitespace-pre-wrap">
-            {description}
-          </p>
+          <div className="text-white/40 text-base md:text-xl max-w-xl mx-auto font-light leading-relaxed font-satoshi px-4 whitespace-pre-wrap">
+            {documentId ? (
+              <EditableText id={documentId} field="description" value={description} />
+            ) : description}
+          </div>
         </div>
 
         {/* --- CULTURE GRID --- */}
@@ -194,41 +209,59 @@ export default function CareersPageClient({ content }: CareersPageProps) {
 
           <div className="space-y-4">
             {roles.map((role, i) => (
-              <Link href={role.link || "#"} key={i} className="role-row group block" target="_blank">
-                <div className="relative p-6 md:p-10 rounded-[2.5rem] bg-white/[0.01] border border-white/5 hover:border-emerald-500/30 transition-all duration-700 overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                  
-                  <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-8">
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-2">
-                        <span className="px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 text-[8px] font-bold uppercase tracking-widest font-satoshi">
-                          {role.department}
-                        </span>
-                        <span className="px-2.5 py-1 rounded-md bg-white/5 text-white/40 text-[8px] font-bold uppercase tracking-widest font-satoshi">
-                          {role.type}
-                        </span>
+              <div key={role._key || i} className="role-row group relative">
+                <Link href={role.link || "#"} className="block" target="_blank">
+                  <div className="relative p-6 md:p-10 rounded-[2.5rem] bg-white/[0.01] border border-white/5 hover:border-emerald-500/30 transition-all duration-700 overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                    
+                    <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-8">
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2">
+                          <span className="px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 text-[8px] font-bold uppercase tracking-widest font-satoshi">
+                            {documentId ? (
+                              <EditableText id={documentId} field={`items[_key == "${role._key}"].department`} value={role.department} as="span" />
+                            ) : role.department}
+                          </span>
+                          <span className="px-2.5 py-1 rounded-md bg-white/5 text-white/40 text-[8px] font-bold uppercase tracking-widest font-satoshi">
+                            {documentId ? (
+                              <EditableText id={documentId} field={`items[_key == "${role._key}"].type`} value={role.type} as="span" />
+                            ) : role.type}
+                          </span>
+                        </div>
+                        <h2 className="text-2xl md:text-4xl font-medium text-white tracking-tight group-hover:text-emerald-400 transition-colors duration-500 font-satoshi">
+                          {documentId ? (
+                            <EditableText id={documentId} field={`items[_key == "${role._key}"].title`} value={role.title} as="span" />
+                          ) : role.title}
+                        </h2>
                       </div>
-                      <h2 className="text-2xl md:text-4xl font-medium text-white tracking-tight group-hover:text-emerald-400 transition-colors duration-500 font-satoshi">
-                        {role.title}
-                      </h2>
-                    </div>
 
-                    <div className="flex items-center justify-between gap-6 border-t border-white/5 pt-6 md:border-0 md:pt-0">
-                      <div className="text-left md:text-right text-white/30 text-[11px] font-satoshi space-y-1">
-                        <div className="flex items-center md:justify-end gap-2">
-                          <MapPin className="size-3 text-emerald-500/50" /> {role.location}
+                      <div className="flex items-center justify-between gap-6 border-t border-white/5 pt-6 md:border-0 md:pt-0">
+                        <div className="text-left md:text-right text-white/30 text-[11px] font-satoshi space-y-1">
+                          <div className="flex items-center md:justify-end gap-2">
+                            <MapPin className="size-3 text-emerald-500/50" />
+                            {documentId ? (
+                              <EditableText id={documentId} field={`items[_key == "${role._key}"].location`} value={role.location} as="span" />
+                            ) : role.location}
+                          </div>
+                          <div className="flex items-center md:justify-end gap-2">
+                            <Clock className="size-3 text-emerald-500/50" /> Instant Start
+                          </div>
                         </div>
-                        <div className="flex items-center md:justify-end gap-2">
-                          <Clock className="size-3 text-emerald-500/50" /> Instant Start
+                        <div className="size-14 rounded-full border border-white/10 flex items-center justify-center bg-white/[0.02] group-hover:bg-emerald-500 group-hover:border-emerald-500 transition-all duration-500 shadow-2xl shadow-emerald-500/0 group-hover:shadow-emerald-500/20">
+                          <ArrowUpRight className="size-6 text-white group-hover:text-black transition-transform duration-500 group-hover:scale-110" />
                         </div>
-                      </div>
-                      <div className="size-14 rounded-full border border-white/10 flex items-center justify-center bg-white/[0.02] group-hover:bg-emerald-500 group-hover:border-emerald-500 transition-all duration-500 shadow-2xl shadow-emerald-500/0 group-hover:shadow-emerald-500/20">
-                        <ArrowUpRight className="size-6 text-white group-hover:text-black transition-transform duration-500 group-hover:scale-110" />
                       </div>
                     </div>
                   </div>
-                </div>
-              </Link>
+                </Link>
+                {documentId && (
+                  <div className="absolute top-2 right-2 z-30">
+                    <EditableButton id={documentId} textField={`items[_key == "${role._key}"].link`} linkField={`items[_key == "${role._key}"].link`} text="Link" link={role.link}>
+                      <button className="text-[8px] text-white/20 hover:text-emerald-400">Edit Link</button>
+                    </EditableButton>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         </div>

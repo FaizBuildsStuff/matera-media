@@ -7,20 +7,25 @@ import React, { useMemo, useState } from "react";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export const Header = () => {
+interface HeaderSettings {
+    logo?: string;
+    headerLinks?: Array<{ label: string; href: string }>;
+}
+
+export const Header = ({ settings }: { settings?: HeaderSettings }) => {
     const pathname = usePathname();
     const [mobileOpen, setMobileOpen] = useState(false);
 
-    const links = useMemo(
-        () => [
-            { label: "Ad Creatives", href: "/ad-creatives" },
-            { label: "YouTube", href: "/organic-content-youtube" },
-            { label: "SaaS Videos", href: "/saas-videos" },
-            { label: "Careers", href: "/careers" },
-            { label: "Privacy", href: "/privacy-policy" },
-        ],
-        []
-    );
+    const defaultLinks = [
+        { label: "Ad Creatives", href: "/ad-creatives" },
+        { label: "YouTube", href: "/organic-content-youtube" },
+        { label: "SaaS Videos", href: "/saas-videos" },
+        { label: "Careers", href: "/careers" },
+        { label: "Privacy", href: "/privacy-policy" },
+    ];
+
+    const links = settings?.headerLinks || defaultLinks;
+    const logoUrl = settings?.logo || "/Logo.png";
 
     return (
         /* The root header is absolute */
@@ -35,7 +40,7 @@ export const Header = () => {
                     onClick={() => setMobileOpen(false)}
                 >
                     <Image
-                        src="/Logo.png"
+                        src={logoUrl}
                         alt="Matera Media"
                         width={30}
                         height={30}

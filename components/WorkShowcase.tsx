@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Play, Sparkles, X } from "lucide-react";
 import Image from "next/image";
+import { EditableText } from "./visual-editing/EditableText";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -71,13 +72,17 @@ type WorkShowcaseContent = {
   }>;
 };
 
+
 export const WorkShowcase = ({
   content,
   initialCategory,
 }: {
-  content?: WorkShowcaseContent;
+  content?: WorkShowcaseContent & { _documentId?: string; _sectionKey?: string };
   initialCategory?: CategorySlug;
 }) => {
+  const documentId = content?._documentId;
+  const sectionKey = content?._sectionKey;
+
   const title = content?.title ?? "Selected";
   const highlightedWord = content?.highlightedWord ?? "Works";
   const description = content?.description ?? "Shorts & reels that drive results. Filter by category.";
@@ -174,16 +179,30 @@ export const WorkShowcase = ({
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tighter font-satoshi flex items-center gap-3 md:gap-4 whitespace-pre-wrap leading-[1.05]">
             <Sparkles className="w-6 h-6 md:w-8 md:h-8 text-emerald-400/80 animate-pulse shrink-0" />
 
-            <span className="relative">
-              {title}
+            <span className="relative flex items-center">
+              {documentId ? (
+                <EditableText id={documentId} field="title" sectionKey={sectionKey} value={title} as="span" />
+              ) : (
+                title
+              )}
               {highlightedWord && (
                 <span className="text-emerald-400 italic font-medium ml-2 md:ml-3 px-1">
-                  {highlightedWord}
+                  {documentId ? (
+                    <EditableText id={documentId} field="highlightedWord" sectionKey={sectionKey} value={highlightedWord} as="span" />
+                  ) : (
+                    highlightedWord
+                  )}
                 </span>
               )}
             </span>
           </h2>
-          <p className="text-white/40 max-w-xl font-normal text-lg leading-relaxed whitespace-pre-wrap">{description}</p>
+          <div className="text-white/40 max-w-xl font-normal text-lg leading-relaxed whitespace-pre-wrap">
+            {documentId ? (
+              <EditableText id={documentId} field="description" sectionKey={sectionKey} value={description} />
+            ) : (
+              description
+            )}
+          </div>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
@@ -210,7 +229,12 @@ export const WorkShowcase = ({
               <div ref={reelContainerRef} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-8">
                 {filteredWorks.length > 0 ? (
                   filteredWorks.map((work) => (
-                    <ReelCard key={work.id} work={work} />
+                    <ReelCard 
+                      key={work.id} 
+                      work={work} 
+                      documentId={documentId} 
+                      sectionKey={sectionKey} 
+                    />
                   ))
                 ) : (
                   <div className="reel-empty-state col-span-full py-24 text-center">
@@ -229,7 +253,15 @@ export const WorkShowcase = ({
   );
 };
 
-function ReelCard({ work }: { work: WorkItem }) {
+function ReelCard({ 
+  work, 
+  documentId, 
+  sectionKey 
+}: { 
+  work: WorkItem; 
+  documentId?: string; 
+  sectionKey?: string; 
+}) {
   const [isCurrentlyPlaying, setIsCurrentlyPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const youtubeVideoId = work.videoUrl ? getYouTubeVideoId(work.videoUrl) : null;
@@ -325,12 +357,28 @@ function ReelCard({ work }: { work: WorkItem }) {
               <div className="flex flex-wrap gap-1.5">
                 {work.tags?.slice(0, 2).map((tag, idx) => (
                   <span key={idx} className="px-2 py-0.5 rounded-md bg-white/10 text-[8px] font-bold uppercase tracking-widest text-white/50">
-                    {tag}
+                    {documentId ? (
+                      <EditableText 
+                        id={documentId} 
+                        field={`items[_key == "${work.id}"].tags[${idx}]`} 
+                        sectionKey={sectionKey} 
+                        value={tag} 
+                        as="span" 
+                      />
+                    ) : tag}
                   </span>
                 ))}
               </div>
               <h3 className="text-sm font-bold tracking-tight text-white leading-tight whitespace-pre-wrap">
-                {work.title}
+                {documentId ? (
+                  <EditableText 
+                    id={documentId} 
+                    field={`items[_key == "${work.id}"].title`} 
+                    sectionKey={sectionKey} 
+                    value={work.title} 
+                    as="span" 
+                  />
+                ) : work.title}
               </h3>
             </div>
           </>
@@ -338,4 +386,4 @@ function ReelCard({ work }: { work: WorkItem }) {
       </div>
     </div>
   );
-}
+}

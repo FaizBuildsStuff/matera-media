@@ -6,7 +6,7 @@ import { SectionRenderer, type SectionBlock } from "@/components/SectionRenderer
 export const revalidate = 0;
 
 export default async function Home() {
-  const page = await client.fetch<{ sections?: SectionBlock[] } | null>(
+  const page = await client.fetch<{ _id: string; sections?: SectionBlock[] } | null>(
     pageQuery,
     { slug: "home" },
     { cache: "no-store" }
@@ -15,7 +15,7 @@ export default async function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-[#05180D]">
       <main className="grow">
-        <SectionRenderer sections={page?.sections ?? undefined} />
+        <SectionRenderer sections={page?.sections ?? undefined} documentId={page?._id} />
       </main>
     </div>
   );
