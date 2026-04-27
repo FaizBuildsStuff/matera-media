@@ -3,7 +3,9 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useVisualEditing } from "./visual-editing/VisualEditingProvider";
 import { EditableText } from "./visual-editing/EditableText";
+import { AddRemoveControls } from "./visual-editing/AddRemoveControls";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -30,9 +32,11 @@ export const HowItWorks = ({ content }: { content?: any }) => {
     const documentId = content?._documentId;
     const sectionKey = content?._sectionKey;
 
+    const { getLiveItems } = useVisualEditing();
     const label = content?.label ?? "Evolution Protocol";
     const titleText = content?.title ?? "How it works";
-    const steps = content?.steps?.length ? content.steps : DEFAULT_STEPS;
+    const originalSteps = content?.steps?.length ? content.steps : DEFAULT_STEPS;
+    const steps = getLiveItems(documentId || "", sectionKey ? `sections[_key == "${sectionKey}"].steps` : "steps", originalSteps);
 
     const sectionRef = useRef<HTMLDivElement>(null);
     const lineRef = useRef<HTMLDivElement>(null);
@@ -144,6 +148,20 @@ export const HowItWorks = ({ content }: { content?: any }) => {
                     })
                 )}
             </h2>
+            {documentId && (
+                <div className="mt-6 flex justify-center">
+                    <AddRemoveControls 
+                        id={documentId} 
+                        field={sectionKey ? `sections[_key == "${sectionKey}"].steps` : "steps"} 
+                        label="Step" 
+                        fields={[
+                            { name: "id", label: "Phase Number", type: "string", placeholder: "e.g. 01" },
+                            { name: "title", label: "Title", type: "string", placeholder: "e.g. Strategy" },
+                            { name: "description", label: "Description", type: "text", placeholder: "..." }
+                        ]}
+                    />
+                </div>
+            )}
         </div>
 
         <div className="relative">
@@ -192,6 +210,21 @@ export const HowItWorks = ({ content }: { content?: any }) => {
                                         />
                                     ) : step.description}
                                 </div>
+                                {documentId && (
+                                    <div className={`mt-4 flex ${isEven ? 'md:justify-end' : 'md:justify-start'}`}>
+                                        <AddRemoveControls 
+                                            id={documentId} 
+                                            field={sectionKey ? `sections[_key == "${sectionKey}"].steps` : "steps"} 
+                                            itemKey={step._key || step.id} 
+                                            label="Step"
+                                            initialData={step}
+                                            fields={[
+                                                { name: "title", label: "Step Title", type: "string", placeholder: "e.g. Discovery Call" },
+                                                { name: "description", label: "Step Description", type: "text", placeholder: "Describe what happens..." }
+                                            ]}
+                                        />
+                                    </div>
+                                )}
                             </div>
                         </div>
                     );

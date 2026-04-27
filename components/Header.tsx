@@ -6,10 +6,13 @@ import { usePathname } from "next/navigation";
 import React, { useMemo, useState } from "react";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { EditableButton } from "./visual-editing/EditableButton";
+import { AddRemoveControls } from "./visual-editing/AddRemoveControls";
+import { EditableText } from "./visual-editing/EditableText";
 
 interface HeaderSettings {
     logo?: string;
-    headerLinks?: Array<{ label: string; href: string }>;
+    headerLinks?: Array<{ _key?: string; label: string; href: string }>;
 }
 
 export const Header = ({ settings }: { settings?: HeaderSettings }) => {
@@ -17,11 +20,11 @@ export const Header = ({ settings }: { settings?: HeaderSettings }) => {
     const [mobileOpen, setMobileOpen] = useState(false);
 
     const defaultLinks = [
-        { label: "Ad Creatives", href: "/ad-creatives" },
-        { label: "YouTube", href: "/organic-content-youtube" },
-        { label: "SaaS Videos", href: "/saas-videos" },
-        { label: "Careers", href: "/careers" },
-        { label: "Privacy", href: "/privacy-policy" },
+        { _key: "1", label: "Ad Creatives", href: "/ad-creatives" },
+        { _key: "2", label: "YouTube", href: "/organic-content-youtube" },
+        { _key: "3", label: "SaaS Videos", href: "/saas-videos" },
+        { _key: "4", label: "Careers", href: "/careers" },
+        { _key: "5", label: "Privacy", href: "/privacy-policy" },
     ];
 
     const links = settings?.headerLinks || defaultLinks;
@@ -57,23 +60,65 @@ export const Header = ({ settings }: { settings?: HeaderSettings }) => {
                     <nav className="hidden lg:flex items-center gap-6">
                         {links.map((item) => {
                             const isActive = pathname === item.href;
+                            const documentId = (settings as any)?._id;
                             return (
-                                <Link
-                                    key={item.href}
-                                    href={item.href}
-                                    className={`relative text-xs uppercase font-bold tracking-[0.15em] transition-all duration-300 hover:text-white ${isActive ? "text-emerald-500" : "text-white/70"
-                                        }`}
-                                >
-                                    {item.label}
+                                <div key={item._key || item.href} className="group/nav relative">
+                                    {documentId ? (
+                                        <>
+                                            <EditableButton
+                                                id={documentId}
+                                                textField={`headerLinks[_key == "${item._key}"].label`}
+                                                linkField={`headerLinks[_key == "${item._key}"].href`}
+                                                text={item.label}
+                                                link={item.href}
+                                            >
+                                                <div className={`relative text-xs uppercase font-bold tracking-[0.15em] transition-all duration-300 hover:text-white cursor-pointer ${isActive ? "text-emerald-500" : "text-white/70"}`}>
+                                                    {item.label}
+                                                </div>
+                                            </EditableButton>
+                                            <div className="absolute -top-4 left-1/2 -translate-x-1/2 opacity-0 group-hover/nav:opacity-100 transition-opacity">
+                                                <AddRemoveControls 
+                                                    id={documentId} 
+                                                    field="headerLinks" 
+                                                    itemKey={item._key} 
+                                                    label="Link"
+                                                    initialData={item}
+                                                    fields={[
+                                                        { name: "label", label: "Label", type: "string", placeholder: "Home" },
+                                                        { name: "href", label: "URL", type: "string", placeholder: "/" }
+                                                    ]}
+                                                />
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <Link
+                                            href={item.href}
+                                            className={`relative text-xs uppercase font-bold tracking-[0.15em] transition-all duration-300 hover:text-white ${isActive ? "text-emerald-500" : "text-white/70"
+                                                }`}
+                                        >
+                                            {item.label}
+                                        </Link>
+                                    )}
                                     {isActive && (
                                         <motion.div
                                             layoutId="header-active-tab"
                                             className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,1)]"
                                         />
                                     )}
-                                </Link>
+                                </div>
                             );
                         })}
+                        {(settings as any)?._id && (
+                            <AddRemoveControls 
+                                id={(settings as any)?._id} 
+                                field="headerLinks" 
+                                label="Link" 
+                                fields={[
+                                    { name: "label", label: "Label", type: "string", placeholder: "Home" },
+                                    { name: "href", label: "URL", type: "string", placeholder: "/" }
+                                ]}
+                            />
+                        )}
                     </nav>
 
                     <div className="flex items-center gap-3">
@@ -150,7 +195,7 @@ export const Header = ({ settings }: { settings?: HeaderSettings }) => {
                                 <Link href="#schedule" onClick={() => setMobileOpen(false)} className="group flex items-center justify-between w-full p-4 rounded-2xl bg-white text-[#051A0E]">
                                     <span className="text-sm font-black uppercase tracking-widest">Book A Call</span>
                                     <div className="w-8 h-8 rounded-full bg-[#051A0E] flex items-center justify-center transition-transform group-hover:-rotate-45">
-                                        <ArrowRight className="w-4 h-4 text-emerald-400 stroke-[3]" />
+                                        <ArrowRight className="w-4 h-4 text-emerald-400 stroke-3" />
                                     </div>
                                 </Link>
                             </motion.div>

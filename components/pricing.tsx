@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 import { Check, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useVisualEditing } from "./visual-editing/VisualEditingProvider";
 import { EditableText } from "./visual-editing/EditableText";
 import { EditableButton } from "./visual-editing/EditableButton";
 import { AddRemoveControls } from "./visual-editing/AddRemoveControls";
@@ -39,11 +40,14 @@ const DEFAULT_SOLUTIONS = [
 export default function Pricing({ content }: { content?: any }) {
   const documentId = content?._documentId;
   const sectionKey = content?._sectionKey;
+  const { getLiveItems } = useVisualEditing();
 
   const title = content?.title ?? "Built for Absolute Velocity.";
   const highlightedWord = content?.highlightedWord ?? "Absolute";
   const subtitle = content?.subtitle ?? "Choose the creative discipline that aligns with your revenue infrastructure.";
-  const plans = content?.plans?.length > 0 ? content.plans : DEFAULT_SOLUTIONS;
+  
+  const originalPlans = content?.plans?.length > 0 ? content.plans : DEFAULT_SOLUTIONS;
+  const plans = getLiveItems(documentId || "", sectionKey ? `sections[_key == "${sectionKey}"].plans` : "plans", originalPlans);
 
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
@@ -93,8 +97,8 @@ export default function Pricing({ content }: { content?: any }) {
   return (
     <section ref={sectionRef} className="py-32 px-6 bg-[#05180D] relative overflow-hidden font-satoshi selection:bg-emerald-500/30">
 
-      <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-[#05180D] to-transparent z-20 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-[#05180D] to-transparent z-20 pointer-events-none" />
+      <div className="absolute top-0 left-0 w-full h-40 bg-linear-to-b from-[#05180D] to-transparent z-20 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-full h-40 bg-linear-to-t from-[#05180D] to-transparent z-20 pointer-events-none" />
 
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none z-0" />
       <div className="absolute top-[5%] right-[10%] w-[50%] h-[50%] bg-[#10B981]/5 blur-[120px] rounded-full pointer-events-none z-0" />
@@ -134,7 +138,15 @@ export default function Pricing({ content }: { content?: any }) {
                 id={documentId}
                 field={sectionKey ? `sections[_key == "${sectionKey}"].plans` : "plans"}
                 label="Plan"
-                newItemTemplate={{ name: "New Plan", tagline: "Tagline", description: "Plan description", features: ["Feature 1"], popular: false }}
+                fields={[
+                  { name: "name", label: "Plan Name", type: "string", placeholder: "e.g. Performance Ads" },
+                  { name: "tagline", label: "Tagline", type: "string", placeholder: "e.g. High-Response" },
+                  { name: "price", label: "Price", type: "string", placeholder: "e.g. $2,500" },
+                  { name: "period", label: "Period", type: "string", placeholder: "e.g. /project" },
+                  { name: "description", label: "Description", type: "text", placeholder: "Describe the plan..." },
+                  { name: "features", label: "Features", type: "array", placeholder: "Add a feature" },
+                  { name: "popular", label: "Most Popular", type: "boolean", placeholder: "Highlight this plan" }
+                ]}
               />
             </div>
           )}
@@ -152,13 +164,34 @@ export default function Pricing({ content }: { content?: any }) {
                   onMouseMove={(e) => handleMouseMove(e, idx)}
                   onMouseLeave={() => handleMouseLeave(idx)}
                   className={`pricing-card group relative flex flex-col p-10 rounded-[3rem] border transition-all duration-700 backdrop-blur-3xl overflow-hidden ${isHighlighted
-                    ? "bg-white/[0.05] border-[#10B981]/40 shadow-[0_40px_120px_-20px_rgba(16,185,129,0.3)] z-30"
+                    ? "bg-white/5 border-[#10B981]/40 shadow-[0_40px_120px_-20px_rgba(16,185,129,0.3)] z-30"
                     : "bg-white/2 border-white/5 hover:border-white/10 z-10 opacity-80 hover:opacity-100"
                     }`}
                 >
                   {isHighlighted && (
                     <div className="absolute top-0 right-10 px-6 py-2 bg-emerald-500 text-black text-[9px] font-black uppercase tracking-[0.2em] rounded-b-2xl shadow-lg">
                       MOST DEMANDED
+                    </div>
+                  )}
+
+                  {documentId && (
+                    <div className="absolute top-3 right-3 z-30 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <AddRemoveControls 
+                        id={documentId} 
+                        field={sectionKey ? `sections[_key == "${sectionKey}"].plans` : "plans"} 
+                        itemKey={planId} 
+                        label="Plan"
+                        initialData={plan}
+                        fields={[
+                          { name: "name", label: "Plan Name", type: "string", placeholder: "e.g. Performance Ads" },
+                          { name: "tagline", label: "Tagline", type: "string", placeholder: "e.g. High-Response" },
+                          { name: "price", label: "Price", type: "string", placeholder: "e.g. $2,500" },
+                          { name: "period", label: "Period", type: "string", placeholder: "e.g. /project" },
+                          { name: "description", label: "Description", type: "text", placeholder: "Describe the plan..." },
+                          { name: "features", label: "Features", type: "array", placeholder: "Add a feature" },
+                          { name: "popular", label: "Most Popular", type: "boolean", placeholder: "Highlight this plan" }
+                        ]}
+                      />
                     </div>
                   )}
 

@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useVisualEditing } from "./visual-editing/VisualEditingProvider";
 import { EditableText } from "./visual-editing/EditableText";
 import { AddRemoveControls } from "./visual-editing/AddRemoveControls";
 
@@ -26,6 +27,7 @@ interface ProcessSectionProps {
 export const ProcessSection = ({ data, documentId }: ProcessSectionProps) => {
   const container = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
+  const { getLiveItems, getLiveValue } = useVisualEditing();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -37,15 +39,16 @@ export const ProcessSection = ({ data, documentId }: ProcessSectionProps) => {
     return () => ctx.revert();
   }, []);
 
-  const label = data?.processLabel || "The Workflow";
-  const title = data?.processTitle || "the system";
-  const steps = data?.processSteps || [];
+  const label = getLiveValue(documentId || "", "processLabel", data?.processLabel || "The Workflow");
+  const title = getLiveValue(documentId || "", "processTitle", data?.processTitle || "the system");
+  const originalSteps = data?.processSteps || [];
+  const steps = getLiveItems(documentId || "", "processSteps", originalSteps);
 
   return (
-    <section ref={container} className="relative -mt-[1px] py-24 px-6 bg-[#051A0E] overflow-hidden border-none z-10">
-      <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
-      <div className="absolute top-[10%] left-[-10%] w-[45%] h-[50%] bg-white/[0.02] blur-[160px] rounded-full pointer-events-none z-0" />
-      <div className="absolute bottom-[10%] right-[-15%] w-[40%] h-[50%] bg-white/[0.02] blur-[140px] rounded-full pointer-events-none z-0" />
+    <section ref={container} className="relative -mt-px py-24 px-6 bg-[#051A0E] overflow-hidden border-none z-10">
+      <div className="absolute top-0 left-0 w-full h-48 bg-linear-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
+      <div className="absolute top-[10%] left-[-10%] w-[45%] h-[50%] bg-white/2 blur-[160px] rounded-full pointer-events-none z-0" />
+      <div className="absolute bottom-[10%] right-[-15%] w-[40%] h-[50%] bg-white/2 blur-[140px] rounded-full pointer-events-none z-0" />
 
       <div className="max-w-7xl mx-auto relative z-30">
         <div className="mb-16 md:mb-20">
@@ -60,7 +63,10 @@ export const ProcessSection = ({ data, documentId }: ProcessSectionProps) => {
                 id={documentId} 
                 field="processSteps" 
                 label="Step"
-                newItemTemplate={{ name: "New Step", desc: "Step description" }}
+                fields={[
+                  { name: "name", label: "Step Name", type: "string", placeholder: "e.g. Discovery Call" },
+                  { name: "desc", label: "Step Description", type: "text", placeholder: "Describe what happens in this step..." }
+                ]}
               />
             )}
           </div>
@@ -87,6 +93,12 @@ export const ProcessSection = ({ data, documentId }: ProcessSectionProps) => {
                       id={documentId} 
                       field="processSteps" 
                       itemKey={step._key} 
+                      label="Step"
+                      initialData={step}
+                      fields={[
+                        { name: "name", label: "Step Name", type: "string", placeholder: "e.g. Discovery Call" },
+                        { name: "desc", label: "Step Description", type: "text", placeholder: "Describe what happens in this step..." }
+                      ]}
                       className="opacity-0 group-hover:opacity-100 transition-opacity"
                     />
                   )}
@@ -107,7 +119,7 @@ export const ProcessSection = ({ data, documentId }: ProcessSectionProps) => {
           </div>
         </div>
       </div>
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#051A0E] via-[#051A0E]/80 to-transparent pointer-events-none z-20" />
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-linear-to-t from-[#051A0E] via-[#051A0E]/80 to-transparent pointer-events-none z-20" />
     </section>
   );
 };

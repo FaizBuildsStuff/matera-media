@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Mail, Instagram, Twitter, Linkedin, Youtube } from 'lucide-react';
 import { EditableText } from './visual-editing/EditableText';
 import { EditableButton } from './visual-editing/EditableButton';
+import { AddRemoveControls } from './visual-editing/AddRemoveControls';
 
 interface FooterSettings {
     _id?: string;
@@ -85,19 +86,34 @@ export const Footer = ({ settings }: { settings?: FooterSettings }) => {
                     {/* Minimalist Navigation Grid */}
                     <div className="flex flex-wrap justify-center gap-x-10 gap-y-4 mb-16">
                         {links.map((item) => (
-                            <div key={item._key || item.label}>
+                            <div key={item._key || item.label} className="group/link relative">
                                 {documentId ? (
-                                    <EditableButton
-                                        id={documentId}
-                                        textField={`footerLinks[_key == "${item._key}"].label`}
-                                        linkField={`footerLinks[_key == "${item._key}"].href`}
-                                        text={item.label}
-                                        link={item.href}
-                                    >
-                                        <div className="text-white/30 hover:text-white transition-all duration-300 text-[11px] font-bold uppercase tracking-[0.25em] cursor-pointer">
-                                            {item.label}
-                                        </div>
-                                    </EditableButton>
+                                    <>
+                                        <EditableButton
+                                            id={documentId}
+                                            textField={`footerLinks[_key == "${item._key}"].label`}
+                                            linkField={`footerLinks[_key == "${item._key}"].href`}
+                                            text={item.label}
+                                            link={item.href}
+                                        >
+                                            <div className="text-white/30 hover:text-white transition-all duration-300 text-[11px] font-bold uppercase tracking-[0.25em] cursor-pointer">
+                                                {item.label}
+                                            </div>
+                                        </EditableButton>
+                                            <div className="absolute -top-4 left-1/2 -translate-x-1/2 opacity-0 group-hover/link:opacity-100 transition-opacity">
+                                                <AddRemoveControls 
+                                                    id={documentId} 
+                                                    field="footerLinks" 
+                                                    itemKey={item._key} 
+                                                    label="Link"
+                                                    initialData={item}
+                                                    fields={[
+                                                        { name: "label", label: "Label", type: "string", placeholder: "Home" },
+                                                        { name: "href", label: "URL", type: "string", placeholder: "/" }
+                                                    ]}
+                                                />
+                                            </div>
+                                    </>
                                 ) : (
                                     <Link
                                         href={item.href}
@@ -108,24 +124,50 @@ export const Footer = ({ settings }: { settings?: FooterSettings }) => {
                                 )}
                             </div>
                         ))}
+                        {documentId && (
+                            <AddRemoveControls 
+                                id={documentId} 
+                                field="footerLinks" 
+                                label="Link" 
+                                fields={[
+                                    { name: "label", label: "Label", type: "string", placeholder: "Home" },
+                                    { name: "href", label: "URL", type: "string", placeholder: "/" }
+                                ]}
+                            />
+                        )}
                     </div>
 
                     {/* Social Circle Links - High Contrast */}
                     <div className="flex gap-5">
                         {socials.map((social, idx) => (
-                            <div key={social._key || idx}>
+                            <div key={social._key || idx} className="group/social relative">
                                 {documentId ? (
-                                    <EditableButton
-                                        id={documentId}
-                                        textField={`socialLinks[_key == "${social._key}"].platform`} // This is a bit weird but allows editing
-                                        linkField={`socialLinks[_key == "${social._key}"].url`}
-                                        text={social.platform}
-                                        link={social.url}
-                                    >
-                                        <div className="w-12 h-12 flex items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/40 hover:bg-white hover:text-black hover:border-white transition-all duration-700 transform hover:-translate-y-1 cursor-pointer">
-                                            {getSocialIcon(social.platform)}
-                                        </div>
-                                    </EditableButton>
+                                    <>
+                                        <EditableButton
+                                            id={documentId}
+                                            textField={`socialLinks[_key == "${social._key}"].platform`}
+                                            linkField={`socialLinks[_key == "${social._key}"].url`}
+                                            text={social.platform}
+                                            link={social.url}
+                                        >
+                                            <div className="w-12 h-12 flex items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/40 hover:bg-white hover:text-black hover:border-white transition-all duration-700 transform hover:-translate-y-1 cursor-pointer">
+                                                {getSocialIcon(social.platform)}
+                                            </div>
+                                        </EditableButton>
+                                            <div className="absolute -top-4 left-1/2 -translate-x-1/2 opacity-0 group-hover/social:opacity-100 transition-opacity">
+                                                <AddRemoveControls 
+                                                    id={documentId} 
+                                                    field="socialLinks" 
+                                                    itemKey={social._key} 
+                                                    label="Social"
+                                                    initialData={social}
+                                                    fields={[
+                                                        { name: "platform", label: "Platform", type: "string", placeholder: "twitter" },
+                                                        { name: "url", label: "URL", type: "string", placeholder: "https://..." }
+                                                    ]}
+                                                />
+                                            </div>
+                                    </>
                                 ) : (
                                     <Link
                                         href={social.url}
@@ -136,6 +178,17 @@ export const Footer = ({ settings }: { settings?: FooterSettings }) => {
                                 )}
                             </div>
                         ))}
+                        {documentId && (
+                            <AddRemoveControls 
+                                id={documentId} 
+                                field="socialLinks" 
+                                label="Social" 
+                                fields={[
+                                    { name: "platform", label: "Platform", type: "string", placeholder: "twitter" },
+                                    { name: "url", label: "URL", type: "string", placeholder: "https://..." }
+                                ]}
+                            />
+                        )}
                     </div>
                 </div>
 

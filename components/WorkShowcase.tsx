@@ -5,7 +5,9 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Play, Sparkles, X } from "lucide-react";
 import Image from "next/image";
+import { useVisualEditing } from "./visual-editing/VisualEditingProvider";
 import { EditableText } from "./visual-editing/EditableText";
+import { AddRemoveControls } from "./visual-editing/AddRemoveControls";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -87,9 +89,13 @@ export const WorkShowcase = ({
   const highlightedWord = content?.highlightedWord ?? "Works";
   const description = content?.description ?? "Shorts & reels that drive results. Filter by category.";
 
+  const { getLiveItems } = useVisualEditing();
+  const originalItems = content?.items || [];
+  const items = getLiveItems(documentId || "", sectionKey ? `sections[_key == "${sectionKey}"].items` : "items", originalItems);
+
   const works: WorkItem[] = (
-    content?.items && content.items.length > 0
-      ? content.items.map((i, idx) => ({
+    items.length > 0
+      ? items.map((i: any, idx: number) => ({
         id: i._key || String(idx),
         title: i.title ?? "",
         category: i.category ?? "Ad Creatives",
@@ -203,6 +209,21 @@ export const WorkShowcase = ({
               description
             )}
           </div>
+          {documentId && (
+            <div className="mt-8">
+              <AddRemoveControls 
+                id={documentId} 
+                field={sectionKey ? `sections[_key == "${sectionKey}"].items` : "items"} 
+                label="Work Item" 
+                fields={[
+                  { name: "title", label: "Title", type: "string", placeholder: "e.g. Meta UGC Ad" },
+                  { name: "category", label: "Category", type: "string", placeholder: "e.g. Ad Creatives" },
+                  { name: "videoUrl", label: "YouTube URL", type: "string", placeholder: "https://..." },
+                  { name: "videoSource", label: "Source (file or youtube)", type: "string", placeholder: "youtube" }
+                ]}
+              />
+            </div>
+          )}
         </div>
 
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
@@ -380,6 +401,23 @@ function ReelCard({
                   />
                 ) : work.title}
               </h3>
+              {documentId && (
+                <div className="pt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <AddRemoveControls 
+                    id={documentId} 
+                    field={sectionKey ? `sections[_key == "${sectionKey}"].items` : "items"} 
+                    itemKey={work.id} 
+                    label="Work Item"
+                    initialData={work}
+                    fields={[
+                      { name: "title", label: "Title", type: "string", placeholder: "e.g. Meta UGC Ad" },
+                      { name: "category", label: "Category", type: "string", placeholder: "e.g. Ad Creatives" },
+                      { name: "videoUrl", label: "YouTube URL", type: "string", placeholder: "https://..." },
+                      { name: "videoSource", label: "Source (file or youtube)", type: "string", placeholder: "youtube" }
+                    ]}
+                  />
+                </div>
+              )}
             </div>
           </>
         )}

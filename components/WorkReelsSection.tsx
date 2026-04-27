@@ -3,6 +3,7 @@
 import React, { useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Play, Volume2 } from "lucide-react";
 import Image from "next/image";
+import { useVisualEditing } from "./visual-editing/VisualEditingProvider";
 import { EditableText } from "./visual-editing/EditableText";
 import { EditableButton } from "./visual-editing/EditableButton";
 import { AddRemoveControls } from "./visual-editing/AddRemoveControls";
@@ -45,7 +46,7 @@ const ReelCard = ({ item, isPlaying, onToggle, documentId }: { item: any; isPlay
         )}
       </div>
 
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent z-10" />
+      <div className="absolute inset-0 bg-linear-to-t from-black/90 via-transparent to-transparent z-10" />
 
       <div className="absolute inset-0 flex items-center justify-center z-20">
         {!isPlaying && (
@@ -57,7 +58,19 @@ const ReelCard = ({ item, isPlaying, onToggle, documentId }: { item: any; isPlay
 
       {documentId && (
         <div className="absolute top-4 right-4 z-40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-2">
-          <AddRemoveControls id={documentId} field="work.items" itemKey={item._key} label="Reel" />
+          <AddRemoveControls 
+            id={documentId} 
+            field="work.items" 
+            itemKey={item._key} 
+            label="Reel" 
+            initialData={item}
+            fields={[
+              { name: "title", label: "Reel Title", type: "string", placeholder: "e.g. Performance Ad" },
+              { name: "category", label: "Category", type: "string", placeholder: "e.g. Motion Design" },
+              { name: "videoUrl", label: "Video URL (YouTube or Direct)", type: "string", placeholder: "https://youtube.com/..." },
+              { name: "videoSource", label: "Source Type (file or youtube)", type: "string", placeholder: "file" }
+            ]}
+          />
           <EditableButton 
             id={documentId} 
             textField={`work.items[_key == "${item._key}"].videoUrl`} 
@@ -114,15 +127,18 @@ export const WorkReelsSection = ({ workData, documentId }: { workData?: any; doc
     }
   };
 
+  const { getLiveItems } = useVisualEditing();
+
   const title = workData?.title || "Our Work";
   const label = workData?.description || "Industry-leading production.";
-  const items = workData?.items || [];
+  const originalItems = workData?.items || [];
+  const items = getLiveItems(documentId || "", "work.items", originalItems);
 
   return (
-    <section className="relative -mt-[1px] pt-24 pb-20 px-6 bg-[#051A0E] overflow-hidden border-none z-10">
-      <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
-      <div className="absolute top-[10%] left-[-15%] w-[50%] h-[50%] bg-white/[0.02] blur-[160px] rounded-full pointer-events-none z-0" />
-      <div className="absolute bottom-[20%] right-[-10%] w-[40%] h-[40%] bg-white/[0.02] blur-[140px] rounded-full pointer-events-none z-0" />
+    <section className="relative -mt-px pt-24 pb-20 px-6 bg-[#051A0E] overflow-hidden border-none z-10">
+      <div className="absolute top-0 left-0 w-full h-48 bg-linear-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
+      <div className="absolute top-[10%] left-[-15%] w-[50%] h-[50%] bg-white/2 blur-[160px] rounded-full pointer-events-none z-0" />
+      <div className="absolute bottom-[20%] right-[-10%] w-[40%] h-[40%] bg-white/2 blur-[140px] rounded-full pointer-events-none z-0" />
 
       <div className="max-w-7xl mx-auto relative z-30">
         <div className="flex flex-col md:flex-row justify-between items-end mb-10 gap-6">
@@ -139,7 +155,17 @@ export const WorkReelsSection = ({ workData, documentId }: { workData?: any; doc
             </div>
             {documentId && (
               <div className="mt-4">
-                <AddRemoveControls id={documentId} field="work.items" label="Reel" />
+                <AddRemoveControls 
+                  id={documentId} 
+                  field="work.items" 
+                  label="Reel" 
+                  fields={[
+                    { name: "title", label: "Reel Title", type: "string", placeholder: "e.g. Performance Ad" },
+                    { name: "category", label: "Category", type: "string", placeholder: "e.g. Motion Design" },
+                    { name: "videoUrl", label: "Video URL (YouTube or Direct)", type: "string", placeholder: "https://youtube.com/..." },
+                    { name: "videoSource", label: "Source Type (file or youtube)", type: "string", placeholder: "file" }
+                  ]}
+                />
               </div>
             )}
           </div>
@@ -165,7 +191,7 @@ export const WorkReelsSection = ({ workData, documentId }: { workData?: any; doc
           ))}
         </div>
       </div>
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#051A0E] via-[#051A0E]/80 to-transparent pointer-events-none z-20" />
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-linear-to-t from-[#051A0E] via-[#051A0E]/80 to-transparent pointer-events-none z-20" />
     </section>
   );
 };

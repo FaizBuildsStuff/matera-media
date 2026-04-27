@@ -12,6 +12,7 @@ import {
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { useVisualEditing } from "./visual-editing/VisualEditingProvider";
 import { EditableText } from "./visual-editing/EditableText";
 import { AddRemoveControls } from "./visual-editing/AddRemoveControls";
 
@@ -61,7 +62,7 @@ const ProblemGraphic = () => {
           <Users className="w-4 h-4 opacity-40" />
         </div>
         <div className="absolute top-1/2 -left-2 -translate-y-1/2 p-2 bg-red-500/20 rounded-full text-red-500 shadow-[0_0_15px_rgba(239,68,68,0.2)]">
-          <X className="w-3 h-3 stroke-[3]" />
+          <X className="w-3 h-3 stroke-3" />
         </div>
       </div>
     </div>
@@ -92,7 +93,7 @@ const HUDGraphic = () => {
           <Video className="w-4 h-4" />
         </div>
         <div className="absolute bottom-4 right-4 p-1 bg-emerald-500 rounded-full text-black shadow-[0_0_15px_rgba(16,185,129,0.5)]">
-          <Check className="w-3 h-3 stroke-[3]" />
+          <Check className="w-3 h-3 stroke-3" />
         </div>
         <div className="absolute top-1/2 -right-1 -translate-y-1/2 p-1.5 bg-black/40 backdrop-blur-md rounded-xl border border-emerald-500/20 text-emerald-400">
           <Clapperboard className="w-4 h-4" />
@@ -112,8 +113,8 @@ const HUDGraphic = () => {
 };
 
 export const ProblemSolutionComparison = ({
-  problems,
-  solutions,
+  problems: originalProblems,
+  solutions: originalSolutions,
   problemsLabel = "The Problem",
   solutionsLabel = "The Matera Solution",
   problemsTitle = "Old Way",
@@ -122,6 +123,12 @@ export const ProblemSolutionComparison = ({
   _sectionKey
 }: ProblemSolutionComparisonProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { getLiveItems } = useVisualEditing();
+
+  const getPath = (field: string) => _sectionKey ? `sections[_key == "${_sectionKey}"].${field}` : field;
+
+  const problems = getLiveItems(_documentId || "", getPath("problems"), originalProblems);
+  const solutions = getLiveItems(_documentId || "", getPath("solutions"), originalSolutions);
 
   useGSAP(() => {
     gsap.to(".gsap-bg-text", {
@@ -140,8 +147,6 @@ export const ProblemSolutionComparison = ({
     });
   }, { scope: containerRef });
 
-  const getPath = (field: string) => _sectionKey ? `sections[_key == "${_sectionKey}"].${field}` : field;
-
   return (
     <section ref={containerRef} className="relative py-20 px-6 bg-[#051A0E] overflow-hidden" style={{ perspective: "1000px" }}>
       {/* Parallax Background Text */}
@@ -154,8 +159,8 @@ export const ProblemSolutionComparison = ({
       </div>
 
       {/* Central Spine */}
-      <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-[0.5px] bg-gradient-to-b from-transparent via-white/5 to-transparent z-0">
-        <div className="gsap-spine w-full h-full bg-gradient-to-b from-transparent via-emerald-500 to-transparent origin-top shadow-[0_0_15px_rgba(16,185,129,0.5)]" />
+      <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-[0.5px] bg-linear-to-b from-transparent via-white/5 to-transparent z-0">
+        <div className="gsap-spine w-full h-full bg-linear-to-b from-transparent via-emerald-500 to-transparent origin-top shadow-[0_0_15px_rgba(16,185,129,0.5)]" />
       </div>
 
       {/* Ambient Elements */}
@@ -186,7 +191,15 @@ export const ProblemSolutionComparison = ({
                   ) : problemsLabel}
                 </span>
                 {_documentId && (
-                  <AddRemoveControls id={_documentId} field={getPath("problems")} label="Problem" />
+                  <AddRemoveControls 
+                    id={_documentId} 
+                    field={getPath("problems")} 
+                    label="Problem" 
+                    fields={[
+                      { name: "title", label: "Problem Title", type: "string", placeholder: "e.g. Low conversion rates" },
+                      { name: "description", label: "Problem Description", type: "text", placeholder: "Describe the pain point..." }
+                    ]}
+                  />
                 )}
               </div>
               <h2 className="text-2xl md:text-3xl font-black text-white tracking-tighter mb-6">
@@ -196,7 +209,7 @@ export const ProblemSolutionComparison = ({
               </h2>
 
               <ul className="space-y-4">
-                {problems.map((item, i) => (
+                {problems.map((item: any, i: number) => (
                   <li key={item._key || i} className="gsap-problem-item flex items-start gap-4 p-3 rounded-2xl bg-red-950/20 border border-red-500/5 hover:border-red-500/20 transition-all duration-300 group/item">
                     <div className="mt-1 w-6 h-6 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center shrink-0 text-red-400">
                       <X className="w-3 h-3" />
@@ -209,7 +222,18 @@ export const ProblemSolutionComparison = ({
                           ) : item.title}
                         </h4>
                         {_documentId && (
-                          <AddRemoveControls id={_documentId} field={getPath("problems")} itemKey={item._key} className="opacity-0 group-hover/item:opacity-100 transition-opacity shrink-0" />
+                          <AddRemoveControls 
+                            id={_documentId} 
+                            field={getPath("problems")} 
+                            itemKey={item._key} 
+                            label="Problem"
+                            initialData={item}
+                            fields={[
+                              { name: "title", label: "Problem Title", type: "string", placeholder: "e.g. Low conversion rates" },
+                              { name: "description", label: "Problem Description", type: "text", placeholder: "Describe the pain point..." }
+                            ]}
+                            className="opacity-0 group-hover/item:opacity-100 transition-opacity shrink-0" 
+                          />
                         )}
                       </div>
                       {item.description && (
@@ -243,7 +267,15 @@ export const ProblemSolutionComparison = ({
                   ) : solutionsLabel}
                 </span>
                 {_documentId && (
-                  <AddRemoveControls id={_documentId} field={getPath("solutions")} label="Solution" />
+                  <AddRemoveControls 
+                    id={_documentId} 
+                    field={getPath("solutions")} 
+                    label="Solution" 
+                    fields={[
+                      { name: "title", label: "Solution Title", type: "string", placeholder: "e.g. High-performance creative" },
+                      { name: "description", label: "Solution Description", type: "text", placeholder: "Describe how we solve it..." }
+                    ]}
+                  />
                 )}
               </div>
               <h2 className="text-2xl md:text-3xl font-black text-white tracking-tighter mb-6">
@@ -253,7 +285,7 @@ export const ProblemSolutionComparison = ({
               </h2>
 
               <ul className="space-y-4">
-                {solutions.map((item, i) => (
+                {solutions.map((item: any, i: number) => (
                   <li key={item._key || i} className="gsap-solution-item flex items-start gap-4 p-3 rounded-2xl bg-emerald-950/30 border border-emerald-500/10 hover:border-emerald-500/30 hover:bg-emerald-900/20 transition-all duration-300 group/item">
                     <div className="mt-1 w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.3)]">
                       <Check className="w-3 h-3 text-emerald-400" />
@@ -266,7 +298,18 @@ export const ProblemSolutionComparison = ({
                           ) : item.title}
                         </h4>
                         {_documentId && (
-                          <AddRemoveControls id={_documentId} field={getPath("solutions")} itemKey={item._key} className="opacity-0 group-hover/item:opacity-100 transition-opacity shrink-0" />
+                          <AddRemoveControls 
+                            id={_documentId} 
+                            field={getPath("solutions")} 
+                            itemKey={item._key} 
+                            label="Solution"
+                            initialData={item}
+                            fields={[
+                              { name: "title", label: "Solution Title", type: "string", placeholder: "e.g. High-performance creative" },
+                              { name: "description", label: "Solution Description", type: "text", placeholder: "Describe how we solve it..." }
+                            ]}
+                            className="opacity-0 group-hover/item:opacity-100 transition-opacity shrink-0" 
+                          />
                         )}
                       </div>
                       {item.description && (

@@ -4,6 +4,7 @@ import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Card, CardContent } from '@/components/ui/card'
 import { Star } from 'lucide-react'
+import { useVisualEditing } from "./visual-editing/VisualEditingProvider";
 import { EditableText } from "./visual-editing/EditableText";
 import { EditableImage } from "./visual-editing/EditableImage";
 import { AddRemoveControls } from "./visual-editing/AddRemoveControls";
@@ -17,12 +18,12 @@ type Testimonial = {
 }
 
 const DEFAULT_TESTIMONIALS: Testimonial[] = [
-    { name: 'Sarah Chen', role: 'VP Marketing', image: 'https://randomuser.me/api/portraits/women/1.jpg', quote: 'Matera Media transformed our ad creative. Our motion ads drove 3x higher CTR.' },
-    { name: 'Marcus Webb', role: 'Head of Brand', image: 'https://randomuser.me/api/portraits/men/1.jpg', quote: 'From concept to launch, the team understood our vision perfectly.' },
-    { name: 'Elena Rodriguez', role: 'Creator', image: 'https://randomuser.me/api/portraits/women/2.jpg', quote: 'Their production quality and understanding of what converts made the difference.' },
-    { name: 'David Park', role: 'CMO, Enterprise', image: 'https://randomuser.me/api/portraits/men/2.jpg', quote: 'Our CAC dropped 25% after we switched to their formats. Unmatched performance.' },
-    { name: 'Alexandra Foster', role: 'Director', image: 'https://randomuser.me/api/portraits/women/3.jpg', quote: 'Finally, a partner who gets both creativity and performance. Game-changer.' },
-    { name: 'Sebastian G.', role: 'Entrepreneur', image: 'https://randomuser.me/api/portraits/men/3.jpg', quote: 'Worked with the squad a few times—never missed. Every drop felt bespoke.' },
+    { _key: 'default-1', name: 'Sarah Chen', role: 'VP Marketing', image: 'https://randomuser.me/api/portraits/women/1.jpg', quote: 'Matera Media transformed our ad creative. Our motion ads drove 3x higher CTR.' },
+    { _key: 'default-2', name: 'Marcus Webb', role: 'Head of Brand', image: 'https://randomuser.me/api/portraits/men/1.jpg', quote: 'From concept to launch, the team understood our vision perfectly.' },
+    { _key: 'default-3', name: 'Elena Rodriguez', role: 'Creator', image: 'https://randomuser.me/api/portraits/women/2.jpg', quote: 'Their production quality and understanding of what converts made the difference.' },
+    { _key: 'default-4', name: 'David Park', role: 'CMO, Enterprise', image: 'https://randomuser.me/api/portraits/men/2.jpg', quote: 'Our CAC dropped 25% after we switched to their formats. Unmatched performance.' },
+    { _key: 'default-5', name: 'Alexandra Foster', role: 'Director', image: 'https://randomuser.me/api/portraits/women/3.jpg', quote: 'Finally, a partner who gets both creativity and performance. Game-changer.' },
+    { _key: 'default-6', name: 'Sebastian G.', role: 'Entrepreneur', image: 'https://randomuser.me/api/portraits/men/3.jpg', quote: 'Worked with the squad a few times—never missed. Every drop felt bespoke.' },
 ]
 
 
@@ -38,6 +39,7 @@ const chunkArray = (array: Testimonial[], chunkSize: number): Testimonial[][] =>
 export default function WallOfLoveSection({ content }: { content?: any }) {
     const documentId = content?._documentId;
     const sectionKey = content?._sectionKey;
+    const { getLiveItems } = useVisualEditing();
 
     // 1. Dynamic Data from Sanity with Fallbacks
     const label = content?.label ?? "Client Success";
@@ -45,9 +47,11 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
     const description = content?.description ?? "Results-driven production for high-growth B2B brands and creators.";
 
     // Use Sanity items if they exist, otherwise use defaults
-    const testimonialsData = content?.items && content.items.length > 0
+    const originalTestimonials = content?.items && content.items.length > 0
         ? content.items
         : DEFAULT_TESTIMONIALS;
+
+    const testimonialsData = getLiveItems<Testimonial>(documentId || "", sectionKey ? `sections[_key == "${sectionKey}"].items` : "items", originalTestimonials);
 
     const testimonialChunks = chunkArray(testimonialsData, Math.ceil(testimonialsData.length / 3));
 
@@ -88,7 +92,12 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
                                 id={documentId}
                                 field={sectionKey ? `sections[_key == "${sectionKey}"].items` : "items"}
                                 label="Testimonial"
-                                newItemTemplate={{ name: "New Client", role: "Title", quote: "Amazing results.", image: "" }}
+                                fields={[
+                                    { name: "name", label: "Client Name", type: "string", placeholder: "e.g. Sarah Chen" },
+                                    { name: "role", label: "Role/Title", type: "string", placeholder: "e.g. VP Marketing" },
+                                    { name: "image", label: "Image URL", type: "string", placeholder: "https://..." },
+                                    { name: "quote", label: "Testimonial Quote", type: "text", placeholder: "Enter the testimonial here..." }
+                                ]}
                             />
                         </div>
                     )}
@@ -97,24 +106,29 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
                 {/* --- CLEAN GRID --- */}
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                     {testimonialChunks.map((chunk, chunkIndex) => (
-                        <div key={chunkIndex} className={`space-y-3 ${chunkIndex === 1 ? 'lg:pt-6' : ''}`}>
-                            {chunk.map(({ name, role, quote, image, _key }, index: number) => {
-                                const itemId = _key || `${chunkIndex}-${index}`;
+                        <div key={chunkIndex} className={`space-y-5 ${chunkIndex === 1 ? 'lg:pt-6' : ''}`}>
+                            {chunk.map((testimonial: Testimonial, i: number) => {
+                                const itemId = testimonial._key || `${chunkIndex}-${i}`;
                                 return (
-                                    <Card
-                                        key={itemId}
-                                        className="bg-white/[0.01] border border-white/[0.04] backdrop-blur-md hover:border-white/20 transition-all duration-700 rounded-xl group shadow-none overflow-hidden relative"
-                                    >
-                                        {documentId && (
-                                            <div className="absolute top-3 right-3 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                <AddRemoveControls
-                                                    id={documentId}
-                                                    field={sectionKey ? `sections[_key == "${sectionKey}"].items` : "items"}
-                                                    itemKey={_key}
-                                                />
-                                            </div>
-                                        )}
-                                        <CardContent className="p-6 relative z-10">
+                                    <Card key={itemId} className="bg-white/1 border-white/4 rounded-[2rem] transition-all duration-500 hover:border-emerald-500/20 group">
+                                        <CardContent className="p-8">
+                                            {documentId && (
+                                                <div className="absolute top-3 right-3 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    <AddRemoveControls
+                                                        id={documentId}
+                                                        field={sectionKey ? `sections[_key == "${sectionKey}"].items` : "items"}
+                                                        itemKey={testimonial._key}
+                                                        label="Testimonial"
+                                                        initialData={testimonial}
+                                                        fields={[
+                                                            { name: "name", label: "Client Name", type: "string", placeholder: "e.g. Sarah Chen" },
+                                                            { name: "role", label: "Role/Title", type: "string", placeholder: "e.g. VP Marketing" },
+                                                            { name: "image", label: "Image URL", type: "string", placeholder: "https://..." },
+                                                            { name: "quote", label: "Testimonial Quote", type: "text", placeholder: "Enter the testimonial here..." }
+                                                        ]}
+                                                    />
+                                                </div>
+                                            )}
                                             <div className="flex gap-1 mb-4">
                                                 {[...Array(5)].map((_, i) => (
                                                     <Star key={i} className="size-3 text-white fill-white opacity-40 group-hover:opacity-80 transition-opacity" />
@@ -125,30 +139,30 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
                                                 {documentId ? (
                                                     <EditableText 
                                                         id={documentId} 
-                                                        field={`items[_key == "${itemId}"].quote`} 
-                                                        sectionKey={sectionKey} 
-                                                        value={quote} 
+                                                        field={`${sectionKey ? `sections[_key == "${sectionKey}"].` : ""}items[_key == "${itemId}"].quote`} 
+                                                        value={testimonial.quote} 
                                                     />
                                                 ) : (
-                                                    `"${quote}"`
+                                                    `"${testimonial.quote}"`
                                                 )}
                                             </div>
 
-                                            <div className="flex items-center gap-2 pt-4 border-t border-white/[0.03]">
-                                                <div className="size-7 grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700">
+                                            <div className="flex items-center gap-4 pt-4 border-t border-white/5">
+                                                <div className="size-10 grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700">
                                                     {documentId ? (
                                                         <EditableImage 
                                                             id={documentId} 
-                                                            field={`items[_key == "${itemId}"].image`} 
-                                                            sectionKey={sectionKey} 
-                                                            value={image} 
+                                                            field={`${sectionKey ? `sections[_key == "${sectionKey}"].` : ""}items[_key == "${itemId}"].image`} 
+                                                            value={testimonial.image} 
                                                             className="rounded-full w-full h-full object-cover"
-                                                            alt={name}
+                                                            alt={testimonial.name}
                                                         />
                                                     ) : (
-                                                        <Avatar className="size-7 grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700">
-                                                            <AvatarImage src={image} alt={name} />
-                                                            <AvatarFallback className="text-[8px] font-bold">{name ? name[0] : '?'}</AvatarFallback>
+                                                        <Avatar className="size-10">
+                                                            <AvatarImage src={testimonial.image} alt={testimonial.name} />
+                                                            <AvatarFallback className="bg-emerald-500 text-black text-xs font-black">
+                                                                {testimonial.name.slice(0, 2).toUpperCase()}
+                                                            </AvatarFallback>
                                                         </Avatar>
                                                     )}
                                                 </div>
@@ -158,23 +172,21 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
                                                         {documentId ? (
                                                             <EditableText 
                                                                 id={documentId} 
-                                                                field={`items[_key == "${itemId}"].name`} 
-                                                                sectionKey={sectionKey} 
-                                                                value={name} 
+                                                                field={`${sectionKey ? `sections[_key == "${sectionKey}"].` : ""}items[_key == "${itemId}"].name`} 
+                                                                value={testimonial.name} 
                                                                 as="span" 
                                                             />
-                                                        ) : name}
+                                                        ) : testimonial.name}
                                                     </h3>
                                                     <span className="text-emerald-400/80 text-[10px] font-bold uppercase tracking-widest mt-0.5">
                                                         {documentId ? (
                                                             <EditableText 
                                                                 id={documentId} 
-                                                                field={`items[_key == "${itemId}"].role`} 
-                                                                sectionKey={sectionKey} 
-                                                                value={role} 
+                                                                field={`${sectionKey ? `sections[_key == "${sectionKey}"].` : ""}items[_key == "${itemId}"].role`} 
+                                                                value={testimonial.role} 
                                                                 as="span" 
                                                             />
-                                                        ) : role}
+                                                        ) : testimonial.role}
                                                     </span>
                                                 </div>
                                             </div>
@@ -184,9 +196,31 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
                             })}
                         </div>
                     ))}
+                    {documentId && (
+                        <div className="flex items-center justify-center h-full min-h-[300px]">
+                            <div className="w-full h-full flex flex-col items-center justify-center gap-4 rounded-[2rem] border-2 border-dashed border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 hover:border-emerald-500/40 transition-all group/big-add p-12">
+                                <AddRemoveControls
+                                    id={documentId}
+                                    field={sectionKey ? `sections[_key == "${sectionKey}"].items` : "items"}
+                                    label="Testimonial"
+                                    className="scale-150"
+                                    fields={[
+                                        { name: "name", label: "Client Name", type: "string", placeholder: "e.g. Sarah Chen" },
+                                        { name: "role", label: "Role/Title", type: "string", placeholder: "e.g. VP Marketing" },
+                                        { name: "image", label: "Image URL", type: "string", placeholder: "https://..." },
+                                        { name: "quote", label: "Testimonial Quote", type: "text", placeholder: "Enter the testimonial here..." }
+                                    ]}
+                                />
+                                <span className="text-emerald-400 font-bold uppercase tracking-widest text-xs opacity-40 group-hover/big-add:opacity-100 transition-opacity text-center">
+                                    Add New Success Story
+                                </span>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
-            <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#05180D] to-transparent pointer-events-none z-20" />
+            <div className="absolute top-0 left-0 w-full h-40 bg-linear-to-b from-[#05180D] via-[#05180D] to-transparent z-20 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-full h-40 bg-linear-to-t from-[#05180D] via-[#05180D] to-transparent z-20 pointer-events-none" />
         </section>
     );
 }

@@ -9,6 +9,9 @@ import Pricing from "@/components/pricing";
 import { CalendlyWidget } from "@/components/CalendlyWidget";
 import Testimonials from "./testimonials";
 import { CareersSection } from "@/components/career";
+import { ResultsSection } from "@/components/ResultsSection";
+import { ProcessSection } from "@/components/ProcessSection";
+import { AddRemoveControls } from "./visual-editing/AddRemoveControls";
 
 // --- TYPES ---
 
@@ -112,6 +115,18 @@ type HeroSection = {
   videoUrl?: string;
 };
 
+type ResultsSectionType = {
+  resultsLabel?: string;
+  resultsTitle?: string;
+  results?: any[];
+};
+
+type ProcessSectionType = {
+  processLabel?: string;
+  processTitle?: string;
+  processSteps?: any[];
+};
+
 export type SectionBlock =
   | ({ _type: "hero"; _key: string } & HeroSection)
   | ({ _type: "workShowcase"; _key: string } & WorkShowcaseSection)
@@ -120,7 +135,9 @@ export type SectionBlock =
   | ({ _type: "careers"; _key: string } & CareersSectionType)
   | ({ _type: "faq"; _key: string } & FAQSection)
   | ({ _type: "calendlyWidget"; _key: string } & CalendlySection)
-  | ({ _type: "testimonials"; _key: string } & TestimonialsSection);
+  | ({ _type: "testimonials"; _key: string } & TestimonialsSection)
+  | ({ _type: "resultsSection"; _key: string } & ResultsSectionType)
+  | ({ _type: "processSection"; _key: string } & ProcessSectionType);
 
 interface SectionRendererProps {
   sections: SectionBlock[] | null | undefined;
@@ -135,9 +152,51 @@ export function SectionRenderer({ sections, documentId }: SectionRendererProps) 
       {!sections || sections.length === 0 ? (
         <DefaultSections />
       ) : (
-        sections.map((section) => (
-          <RenderBlock key={section._key} section={section} documentId={documentId} />
+        sections.map((section, index) => (
+          <div key={section._key} className="relative group/section">
+            <RenderBlock section={section} documentId={documentId} />
+            
+            {/* Section-level Controls */}
+            {documentId && (
+              <div className="absolute top-4 right-4 z-50 opacity-0 group-hover/section:opacity-100 transition-opacity">
+                <AddRemoveControls 
+                  id={documentId} 
+                  field="sections" 
+                  itemKey={section._key} 
+                  label="Section"
+                  className="bg-black/80 backdrop-blur-md p-2 rounded-full border border-white/10 shadow-2xl"
+                  newItemTemplate={{ _type: "hero", _key: Math.random().toString(36).substring(7) }}
+                  fields={[
+                    { 
+                      name: "_type", 
+                      label: "Section Type", 
+                      type: "string", 
+                      placeholder: "hero, workShowcase, howItWorks, pricing, faq, calendlyWidget, testimonials, resultsSection, processSection" 
+                    }
+                  ]}
+                />
+              </div>
+            )}
+          </div>
         ))
+      )}
+      {documentId && (
+        <div className="flex justify-center py-10 border-t border-white/5 bg-[#05180D]">
+          <AddRemoveControls 
+            id={documentId} 
+            field="sections" 
+            label="Section" 
+            newItemTemplate={{ _type: "hero", _key: Math.random().toString(36).substring(7) }}
+            fields={[
+              { 
+                name: "_type", 
+                label: "Section Type", 
+                type: "string", 
+                placeholder: "hero, workShowcase, howItWorks, pricing, faq, calendlyWidget, testimonials, resultsSection, processSection" 
+              }
+            ]}
+          />
+        </div>
       )}
     </main>
   );
@@ -162,6 +221,22 @@ function RenderBlock({ section, documentId }: { section: SectionBlock; documentI
       return <FAQ content={{ ...section, _documentId: documentId, _sectionKey: section._key }} />;
     case "calendlyWidget":
       return <CalendlyWidget content={{ ...section, _documentId: documentId, _sectionKey: section._key }} />;
+    case "resultsSection":
+      return <ResultsSection 
+        items={section.results || []} 
+        label={section.resultsLabel} 
+        title={section.resultsTitle || ""} 
+        documentId={documentId} 
+      />;
+    case "processSection":
+      return <ProcessSection 
+        data={{
+          processSteps: section.processSteps || [],
+          processLabel: section.processLabel,
+          processTitle: section.processTitle
+        }}
+        documentId={documentId} 
+      />;
     default:
       return null;
   }

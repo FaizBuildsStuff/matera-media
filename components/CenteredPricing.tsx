@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useVisualEditing } from "./visual-editing/VisualEditingProvider";
 import { EditableText } from "./visual-editing/EditableText";
 import { AddRemoveControls } from "./visual-editing/AddRemoveControls";
 
@@ -17,9 +18,11 @@ interface CenteredPricingProps {
 }
 
 export const CenteredPricing = ({ data, documentId }: CenteredPricingProps) => {
-  const label = data?.plansLabel || "Investment";
-  const title = data?.plansTitle || "Plans built for scale.";
-  const plans = data?.plans || [];
+  const { getLiveItems, getLiveValue } = useVisualEditing();
+  const label = getLiveValue(documentId || "", "plansLabel", data?.plansLabel || "Investment");
+  const title = getLiveValue(documentId || "", "plansTitle", data?.plansTitle || "Plans built for scale.");
+  const originalPlans = data?.plans || [];
+  const plans = getLiveItems(documentId || "", "plans", originalPlans);
 
   const isSinglePlan = plans.length === 1;
   const isTwoPlans = plans.length === 2;
@@ -44,7 +47,17 @@ export const CenteredPricing = ({ data, documentId }: CenteredPricingProps) => {
         </h2>
         {documentId && (
           <div className="mt-8">
-            <AddRemoveControls id={documentId} field="plans" label="Plan" />
+            <AddRemoveControls 
+              id={documentId} 
+              field="plans" 
+              label="Plan" 
+              fields={[
+                { name: "name", label: "Plan Name", type: "string", placeholder: "e.g. Creator Plus" },
+                { name: "description", label: "Description / Price", type: "string", placeholder: "e.g. $1,500/mo" },
+                { name: "features", label: "Features", type: "array", placeholder: "Add a feature" },
+                { name: "popular", label: "Most Popular", type: "boolean", placeholder: "Highlight this plan" }
+              ]}
+            />
           </div>
         )}
       </div>
@@ -60,7 +73,19 @@ export const CenteredPricing = ({ data, documentId }: CenteredPricingProps) => {
             >
               {documentId && (
                 <div className="absolute top-4 right-4 z-40 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <AddRemoveControls id={documentId} field="plans" itemKey={plan._key} />
+                  <AddRemoveControls 
+                    id={documentId} 
+                    field="plans" 
+                    itemKey={plan._key} 
+                    label="Plan"
+                    initialData={plan}
+                    fields={[
+                      { name: "name", label: "Plan Name", type: "string", placeholder: "e.g. Creator Plus" },
+                      { name: "description", label: "Description / Price", type: "string", placeholder: "e.g. $1,500/mo" },
+                      { name: "features", label: "Features", type: "array", placeholder: "Add a feature" },
+                      { name: "popular", label: "Most Popular", type: "boolean", placeholder: "Highlight this plan" }
+                    ]}
+                  />
                 </div>
               )}
               {plan.popular && (

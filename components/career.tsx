@@ -15,8 +15,10 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useVisualEditing } from "./visual-editing/VisualEditingProvider";
 import { EditableText } from "./visual-editing/EditableText";
 import { EditableButton } from "./visual-editing/EditableButton";
+import { AddRemoveControls } from "./visual-editing/AddRemoveControls";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -96,9 +98,12 @@ export const CareersSection = ({ content }: { content?: CareersSectionType & { _
   const highlightedWord = content?.highlightedWord ?? "Future.";
   const description = content?.description ?? "We’re hiring high-performance individuals to help us build the next generation of SaaS growth systems.";
 
-  const roles = content?.items && content.items.length > 0
+  const { getLiveItems } = useVisualEditing();
+  const originalRoles = content?.items && content.items.length > 0
     ? content.items
     : OPEN_ROLES_FALLBACK;
+
+  const roles = getLiveItems<any>(documentId || "", sectionKey ? `sections[_key == "${sectionKey}"].items` : "items", originalRoles);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -184,6 +189,22 @@ export const CareersSection = ({ content }: { content?: CareersSectionType & { _
               <EditableText id={documentId} field="description" sectionKey={sectionKey} value={description} />
             ) : description}
           </div>
+          {documentId && (
+            <div className="mt-8 flex justify-center">
+              <AddRemoveControls 
+                id={documentId} 
+                field={sectionKey ? `sections[_key == "${sectionKey}"].items` : "items"} 
+                label="Role" 
+                fields={[
+                  { name: "title", label: "Title", type: "string", placeholder: "e.g. Senior Editor" },
+                  { name: "department", label: "Department", type: "string", placeholder: "Creative" },
+                  { name: "location", label: "Location", type: "string", placeholder: "Remote" },
+                  { name: "type", label: "Type", type: "string", placeholder: "Full-Time" },
+                  { name: "link", label: "Apply Link", type: "string", placeholder: "https://..." }
+                ]}
+              />
+            </div>
+          )}
         </div>
 
         {/* --- CULTURE GRID --- */}
@@ -258,10 +279,24 @@ export const CareersSection = ({ content }: { content?: CareersSectionType & { _
                   </div>
                 </Link>
                 {documentId && (
-                  <div className="absolute top-2 right-2 z-30">
+                  <div className="absolute top-2 right-2 z-30 flex gap-2">
                     <EditableButton id={documentId} textField={`items[_key == "${role._key}"].link`} linkField={`items[_key == "${role._key}"].link`} sectionKey={sectionKey} text="Link" link={role.link}>
                       <button className="text-[8px] text-white/20 hover:text-emerald-400">Edit Link</button>
                     </EditableButton>
+                    <AddRemoveControls 
+                      id={documentId} 
+                      field={sectionKey ? `sections[_key == "${sectionKey}"].items` : "items"} 
+                      itemKey={role._key} 
+                      label="Role"
+                      initialData={role}
+                      fields={[
+                        { name: "title", label: "Title", type: "string", placeholder: "e.g. Senior Editor" },
+                        { name: "department", label: "Department", type: "string", placeholder: "Creative" },
+                        { name: "location", label: "Location", type: "string", placeholder: "Remote" },
+                        { name: "type", label: "Type", type: "string", placeholder: "Full-Time" },
+                        { name: "link", label: "Apply Link", type: "string", placeholder: "https://..." }
+                      ]}
+                    />
                   </div>
                 )}
               </div>

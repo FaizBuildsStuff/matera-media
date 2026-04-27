@@ -27,6 +27,10 @@ interface VisualEditingContextType {
   addChange: (id: string, field: string, value: any) => void;
   addItem: (id: string, field: string, item: any) => void;
   removeItem: (id: string, field: string, key: string) => void;
+  moveItem: (id: string, field: string, key: string, direction: 'up' | 'down') => void;
+  updateItem: (id: string, field: string, key: string, data: Record<string, any>) => void;
+  getLiveItems: <T>(id: string, field: string, originalItems: T[] | null | undefined) => T[];
+  getLiveValue: <T>(id: string, field: string, defaultValue: T) => T;
   saveChanges: () => Promise<void>;
   isSaving: boolean;
   hasChanges: boolean;
@@ -91,6 +95,86 @@ export function VisualEditingProvider({
     });
   }, []);
 
+  const moveItem = useCallback((id: string, field: string, key: string, direction: 'up' | 'down') => {
+    setPendingChanges((prev) => {
+      return [...prev, {
+        id,
+        move: { path: `${field}[_key == "${key}"]`, direction } as any
+      }];
+    });
+  }, []);
+
+  const updateItem = useCallback((id: string, field: string, key: string, data: Record<string, any>) => {
+    setPendingChanges((prev) => {
+      const setPatches: Record<string, any> = {};
+      Object.entries(data).forEach(([attr, value]) => {
+        setPatches[`${field}[_key == "${key}"].${attr}`] = value;
+      });
+      return [...prev, { id, set: setPatches }];
+    });
+  }, []);
+
+  const getLiveItems = useCallback(<T,>(id: string, field: string, originalItems: T[] | null | undefined): T[] => {
+    let items = originalItems ? [...originalItems] : [];
+    
+    // Apply patches for this id
+    pendingChanges.filter(p => p.id === id).forEach(patch => {
+      if (patch.insert && (patch.insert as any).after === `${field}[-1]`) {
+        items = [...items, ...(patch.insert as any).items];
+      }
+      if (patch.set) {
+        Object.entries(patch.set).forEach(([path, value]) => {
+          if (path.startsWith(field)) {
+            const keyMatch = path.match(/_key == "([^"]+)"/);
+            if (keyMatch) {
+              const key = keyMatch[1];
+              const attr = path.split("].").pop();
+              if (attr) {
+                items = items.map((item: any) => 
+                  item._key === key ? { ...item, [attr]: value } : item
+                );
+              }
+            }
+          }
+        });
+      }
+      if (patch.unset) {
+        patch.unset.forEach(path => {
+          if (path.startsWith(field)) {
+            const keyMatch = path.match(/_key == "([^"]+)"/);
+            if (keyMatch) {
+              const key = keyMatch[1];
+              items = items.filter((item: any) => item._key !== key);
+            }
+          }
+        });
+      }
+      if ((patch as any).move && (patch as any).move.path.startsWith(field)) {
+        const movePath = (patch as any).move.path;
+        const direction = (patch as any).move.direction;
+        const keyMatch = movePath.match(/_key == "([^"]+)"/);
+        if (keyMatch) {
+          const key = keyMatch[1];
+          const index = items.findIndex((item: any) => item._key === key);
+          if (index !== -1) {
+            const newIndex = direction === 'up' ? index - 1 : index + 1;
+            if (newIndex >= 0 && newIndex < items.length) {
+              const [movedItem] = items.splice(index, 1);
+              items.splice(newIndex, 0, movedItem);
+            }
+          }
+        }
+      }
+    });
+    
+    return items;
+  }, [pendingChanges]);
+
+  const getLiveValue = useCallback(<T,>(id: string, field: string, defaultValue: T): T => {
+    const patch = pendingChanges.find(p => p.id === id && p.set && p.set[field] !== undefined);
+    return patch ? patch.set![field] : defaultValue;
+  }, [pendingChanges]);
+
   const saveChanges = useCallback(async () => {
     if (pendingChanges.length === 0) return;
 
@@ -138,6 +222,10 @@ export function VisualEditingProvider({
         addChange,
         addItem,
         removeItem,
+        moveItem,
+        updateItem,
+        getLiveItems,
+        getLiveValue,
         saveChanges,
         isSaving,
         hasChanges: pendingChanges.length > 0,

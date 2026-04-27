@@ -79,14 +79,28 @@ export function EditableButton({
       </div>
 
       <div className={className}>
-        <span
-          contentEditable
-          suppressContentEditableWarning
-          onBlur={handleTextChange}
-          className="outline-none cursor-text"
-        >
-          {localText}
-        </span>
+        {children ? (
+          <div className="relative group/edit">
+            {children}
+            <span
+              contentEditable
+              suppressContentEditableWarning
+              onBlur={handleTextChange}
+              className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/edit:opacity-100 bg-emerald-500/80 text-black font-black text-xs uppercase tracking-widest cursor-text rounded-full backdrop-blur-sm z-30 transition-all"
+            >
+              {localText}
+            </span>
+          </div>
+        ) : (
+          <span
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={handleTextChange}
+            className="outline-none cursor-text text-inherit"
+          >
+            {localText}
+          </span>
+        )}
       </div>
     </div>
   );

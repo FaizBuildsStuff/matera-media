@@ -9,6 +9,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useVisualEditing } from "./visual-editing/VisualEditingProvider";
 import { EditableText } from "./visual-editing/EditableText";
 import { AddRemoveControls } from "./visual-editing/AddRemoveControls";
 
@@ -16,11 +17,11 @@ import { AddRemoveControls } from "./visual-editing/AddRemoveControls";
 gsap.registerPlugin(ScrollTrigger);
 
 const DEFAULT_FAQS = [
-    { id: "item-1", question: "What is your typical turnaround time?", answer: "Our standard turnaround for most projects is 2-4 weeks, depending on complexity. For expedited deliveries, we offer rush options upon request." },
-    { id: "item-2", question: "Do you offer revisions?", answer: "Absolutely. We include 3 rounds of revisions in our standard packages to ensure the final output aligns perfectly with your vision." },
-    { id: "item-3", question: "How does the payment structure work?", answer: "We typically require a 50% deposit to commence work, with the remaining 50% due upon final delivery. We also offer milestone-based payment plans for larger projects." },
-    { id: "item-4", question: "Can you help with strategy, not just production?", answer: "Yes. Strategy is at the core of what we do. We don't just make things look good; we ensure they perform by aligning creative with your business goals." },
-    { id: "item-5", question: "What assets do I need to provide?", answer: "It depends on the project. Generally, we'll need your brand guidelines, logo files, and any specific footage or copy you want included. We can handle the rest." },
+    { _key: "item-1", question: "What is your typical turnaround time?", answer: "Our standard turnaround for most projects is 2-4 weeks, depending on complexity. For expedited deliveries, we offer rush options upon request." },
+    { _key: "item-2", question: "Do you offer revisions?", answer: "Absolutely. We include 3 rounds of revisions in our standard packages to ensure the final output aligns perfectly with your vision." },
+    { _key: "item-3", question: "How does the payment structure work?", answer: "We typically require a 50% deposit to commence work, with the remaining 50% due upon final delivery. We also offer milestone-based payment plans for larger projects." },
+    { _key: "item-4", question: "Can you help with strategy, not just production?", answer: "Yes. Strategy is at the core of what we do. We don't just make things look good; we ensure they perform by aligning creative with your business goals." },
+    { _key: "item-5", question: "What assets do I need to provide?", answer: "It depends on the project. Generally, we'll need your brand guidelines, logo files, and any specific footage or copy you want included. We can handle the rest." },
 ];
 
 type FAQContent = {
@@ -33,18 +34,19 @@ type FAQContent = {
 export const FAQ = ({ content }: { content?: FAQContent & { _documentId?: string; _sectionKey?: string } }) => {
     const documentId = content?._documentId;
     const sectionKey = content?._sectionKey;
+    const { getLiveItems } = useVisualEditing();
 
     const label = content?.label ?? "Common Questions";
     const titleText = content?.title ?? "Everything you need to Know.";
     const highlightedWord = content?.highlightedWord ?? "Know.";
-    const faqs = (content?.items && content.items.length > 0
-        ? content.items.map((i, idx) => ({
-            id: i._key || `item-${idx + 1}`,
-            question: i.question ?? "",
-            answer: i.answer ?? "",
-        }))
-        : DEFAULT_FAQS
-    ).filter((f) => f.question);
+    
+    const faqs = getLiveItems<any>(documentId || "", sectionKey ? `sections[_key == "${sectionKey}"].items` : "faqItems", 
+        (content?.items && content.items.length > 0 ? content.items : DEFAULT_FAQS)
+    ).map((i: any, idx: number) => ({
+        id: i._key || `item-${idx + 1}`,
+        question: i.question ?? "",
+        answer: i.answer ?? "",
+    })).filter((f: any) => f.question);
 
     const sectionRef = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLDivElement>(null);
@@ -90,8 +92,8 @@ export const FAQ = ({ content }: { content?: FAQContent & { _documentId?: string
             <link href="https://api.fontshare.com/v2/css?f[]=satoshi@401&display=swap" rel="stylesheet" />
 
             {/* --- SEAMLESS MASK OVERLAYS (Tightened) --- */}
-            <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-[#05180D] to-transparent z-20 pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-[#05180D] to-transparent z-20 pointer-events-none" />
+            <div className="absolute top-0 left-0 w-full h-24 bg-linear-to-b from-[#05180D] to-transparent z-20 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-full h-24 bg-linear-to-t from-[#05180D] to-transparent z-20 pointer-events-none" />
 
             {/* Background Logo Overlay with Masked Bottom */}
             <div
@@ -127,15 +129,23 @@ export const FAQ = ({ content }: { content?: FAQContent & { _documentId?: string
                     </h2>
                     {documentId && (
                         <div className="flex justify-center mt-4">
-                            <AddRemoveControls id={documentId} field={sectionKey ? `sections[_key == "${sectionKey}"].items` : "faqItems"} label="FAQ Item" />
+                            <AddRemoveControls 
+                                id={documentId} 
+                                field={sectionKey ? `sections[_key == "${sectionKey}"].items` : "faqItems"} 
+                                label="FAQ Item" 
+                                fields={[
+                                    { name: "question", label: "Question", type: "string", placeholder: "e.g. What is your typical turnaround time?" },
+                                    { name: "answer", label: "Answer", type: "text", placeholder: "Enter the detailed answer here..." }
+                                ]}
+                            />
                         </div>
                     )}
                 </div>
 
                 {/* FAQ Accordion */}
-                <div ref={accordionRef} className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 md:p-8 backdrop-blur-sm">
+                <div ref={accordionRef} className="bg-white/3 border border-white/10 rounded-2xl p-6 md:p-8 backdrop-blur-sm">
                     <Accordion type="single" collapsible className="w-full">
-                        {faqs.map((faq) => (
+                        {faqs.map((faq: any) => (
                             <AccordionItem key={faq.id} value={faq.id} className="border-white/10 last:border-b-0 group/faq">
                                 <AccordionTrigger className="text-white hover:text-emerald-400 hover:no-underline text-lg font-medium text-left py-5 whitespace-pre-wrap">
                                     <div className="flex justify-between items-center gap-4 w-full pr-2">
@@ -155,6 +165,12 @@ export const FAQ = ({ content }: { content?: FAQContent & { _documentId?: string
                                                     id={documentId} 
                                                     field={sectionKey ? `sections[_key == "${sectionKey}"].faqItems` : "faqItems"} 
                                                     itemKey={faq.id} 
+                                                    label="FAQ Item"
+                                                    initialData={faqs.find((f: any) => (f._key || f.id) === faq.id)}
+                                                    fields={[
+                                                        { name: "question", label: "Question", type: "string", placeholder: "e.g. What is your typical turnaround time?" },
+                                                        { name: "answer", label: "Answer", type: "text", placeholder: "Enter the detailed answer here..." }
+                                                    ]}
                                                 />
                                             </div>
                                         )}

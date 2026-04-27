@@ -57,7 +57,7 @@ export function EditableImage({ id, field, sectionKey, value, className, alt, wi
 
       <div className="absolute -top-6 left-0 hidden group-hover:block z-20">
         <span className="rounded bg-blue-500 px-2 py-0.5 text-[10px] font-bold text-white uppercase tracking-tight">
-          Edit {field}
+          Edit Image
         </span>
       </div>
     </div>

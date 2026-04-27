@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Search, Calendar, Camera, LucideIcon } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
+import { useVisualEditing } from "./visual-editing/VisualEditingProvider";
 import { EditableText } from "./visual-editing/EditableText";
 import { AddRemoveControls } from "./visual-editing/AddRemoveControls";
 
@@ -54,8 +55,10 @@ interface HowItWorksSimpleProps {
 
 export const HowItWorksSimple = ({ data, _documentId, _sectionKey }: HowItWorksSimpleProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { getLiveItems } = useVisualEditing();
 
-  const { badge, title, highlight, subtitle, steps } = data || {};
+  const { badge, title, highlight, subtitle, steps: originalSteps } = data || {};
+  const steps = getLiveItems(_documentId || "", _sectionKey ? `sections[_key == "${_sectionKey}"].howItWorksSimple.steps` : "howItWorksSimple.steps", originalSteps);
 
   useGSAP(() => {
     // 1. Staggered Card Reveal
@@ -142,7 +145,15 @@ export const HowItWorksSimple = ({ data, _documentId, _sectionKey }: HowItWorksS
         {/* Add Step Control */}
         {_documentId && (
           <div className="flex justify-center mb-10">
-            <AddRemoveControls id={_documentId} field="howItWorksSimple.steps" label="Step" />
+            <AddRemoveControls 
+              id={_documentId} 
+              field="howItWorksSimple.steps" 
+              label="Step" 
+              fields={[
+                { name: "title", label: "Step Title", type: "string", placeholder: "e.g. Strategy Phase" },
+                { name: "description", label: "Step Description", type: "text", placeholder: "Describe what happens..." }
+              ]}
+            />
           </div>
         )}
 
@@ -152,7 +163,7 @@ export const HowItWorksSimple = ({ data, _documentId, _sectionKey }: HowItWorksS
             { title: "Brand Audit", description: "We get to know you—your voice, your vision, and what kind of content will actually move the needle.", icon: "search" },
             { title: "Content Calendar", description: "We build a tailored content roadmap + fill your calendar with viral-ready ideas and scripts that sound like you.", icon: "calendar" },
             { title: "Full Production", description: "You record—we turn it into scroll-stopping videos, publish across all platforms, and fuel it with SEO.", icon: "camera" }
-          ]).map((step, i) => {
+          ]).map((step: any, i: number) => {
             return (
               <div
                 key={step._key || i}
@@ -169,7 +180,17 @@ export const HowItWorksSimple = ({ data, _documentId, _sectionKey }: HowItWorksS
                   </div>
                   {_documentId && (
                     <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                      <AddRemoveControls id={_documentId} field="howItWorksSimple.steps" itemKey={step._key} />
+                      <AddRemoveControls 
+                        id={_documentId} 
+                        field="howItWorksSimple.steps" 
+                        itemKey={step._key} 
+                        label="Step"
+                        initialData={step}
+                        fields={[
+                          { name: "title", label: "Step Title", type: "string", placeholder: "e.g. Strategy Phase" },
+                          { name: "description", label: "Step Description", type: "text", placeholder: "Describe what happens..." }
+                        ]}
+                      />
                     </div>
                   )}
                 </div>
