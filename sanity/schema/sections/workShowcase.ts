@@ -1,4 +1,4 @@
-import { defineField, defineType } from "sanity";
+import { defineField, defineType, defineArrayMember } from "sanity";
 
 export const workItem = defineType({
   name: "workItem",
@@ -14,22 +14,9 @@ export const workItem = defineType({
     }),
     defineField({
       name: "category",
-      title: "Category",
+      title: "Category Slug",
       type: "string",
-      description: "Category name (should match one of the defined categories)",
-    }),
-    defineField({
-      name: "tags",
-      title: "Tags",
-      type: "array",
-      of: [{ type: "string" }],
-    }),
-    defineField({
-      name: "image",
-      title: "Thumbnail / Cover Image",
-      type: "image",
-      options: { hotspot: true },
-      description: "This shows as the preview or if no video is provided.",
+      description: "Must match one of the categories defined in the Showcase section.",
     }),
     defineField({
       name: "videoSource",
@@ -37,55 +24,44 @@ export const workItem = defineType({
       type: "string",
       options: {
         list: [
-          { title: "Direct Upload (UploadThing)", value: "uploadthing" },
-          { title: "YouTube URL", value: "youtube" },
-          { title: "Upload Video (Sanity File)", value: "file" },
-          { title: "None (Image Only)", value: "none" },
+          { title: "UploadThing (Direct)", value: "uploadthing" },
+          { title: "YouTube / URL", value: "youtube" },
+          { title: "Sanity File", value: "file" },
+          { title: "None (Static)", value: "none" },
         ],
-        layout: "radio",
       },
-      initialValue: "uploadthing",
     }),
     defineField({
       name: "uploadThingUrl",
-      title: "UploadThing Video URL",
+      title: "UploadThing URL",
       type: "string",
-      description: "The URL from UploadThing.",
-      hidden: ({ parent }) => parent?.videoSource !== "uploadthing",
-    }),
-    defineField({
-      name: "videoFile",
-      title: "Sanity Video Upload",
-      type: "file",
-      description: "Upload MP4/WebM videos directly to Sanity.",
-      options: {
-        accept: "video/*",
-      },
-      hidden: ({ parent }) => parent?.videoSource !== "file",
+      description: "Direct URL from UploadThing.",
     }),
     defineField({
       name: "videoUrl",
-      title: "YouTube URL",
-      type: "url",
-      description: "e.g., https://www.youtube.com/watch?v=...",
-      hidden: ({ parent }) => parent?.videoSource !== "youtube",
+      title: "Video URL",
+      type: "string",
+      description: "YouTube or direct MP4 link.",
     }),
     defineField({
-      name: "link",
-      title: "External Link",
-      type: "url",
-      description: "Optional link when clicking the item",
+      name: "videoFile",
+      title: "Video File",
+      type: "file",
+      options: { accept: "video/*" },
+    }),
+    defineField({
+      name: "image",
+      title: "Thumbnail / Static Image",
+      type: "image",
+      options: { hotspot: true },
+    }),
+    defineField({
+      name: "tags",
+      title: "Tags",
+      type: "array",
+      of: [{ type: "string" }],
     }),
   ],
-  preview: {
-    select: { title: "title", media: "image" },
-    prepare({ title, media }) {
-      return { 
-        title: title || "Work Item",
-        media: media 
-      };
-    },
-  },
 });
 
 export default defineType({
@@ -94,8 +70,14 @@ export default defineType({
   type: "object",
   fields: [
     defineField({
+      name: "label",
+      title: "Badge Label",
+      type: "string",
+      initialValue: "Portfolio",
+    }),
+    defineField({
       name: "title",
-      title: "Section Title",
+      title: "Headline Title",
       type: "text",
       rows: 2,
       initialValue: "Our Work",
@@ -120,7 +102,7 @@ export default defineType({
       title: "Categories",
       type: "array",
       of: [
-        defineType({
+        {
           name: "categoryItem",
           title: "Category Item",
           type: "object",
@@ -128,7 +110,7 @@ export default defineType({
             { name: "title", title: "Title", type: "string" },
             { name: "slug", title: "Slug", type: "string" },
           ],
-        }),
+        },
       ],
       description: "Define the categories available for filtering.",
     }),
