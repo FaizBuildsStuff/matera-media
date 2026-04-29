@@ -16,14 +16,7 @@ export const workItem = defineType({
       name: "category",
       title: "Category",
       type: "string",
-      options: {
-        list: [
-          { title: "Ad Creatives", value: "Ad Creatives" },
-          { title: "Organic Content / YouTube", value: "Organic Content" },
-          { title: "SaaS Videos", value: "SaaS Videos" },
-          { title: "Motion Graphics", value: "Motion Graphics" },
-        ],
-      },
+      description: "Category name (should match one of the defined categories)",
     }),
     defineField({
       name: "tags",
@@ -44,19 +37,27 @@ export const workItem = defineType({
       type: "string",
       options: {
         list: [
-          { title: "Upload Video (Direct from PC)", value: "file" },
+          { title: "Direct Upload (UploadThing)", value: "uploadthing" },
           { title: "YouTube URL", value: "youtube" },
+          { title: "Upload Video (Sanity File)", value: "file" },
           { title: "None (Image Only)", value: "none" },
         ],
         layout: "radio",
       },
-      initialValue: "file",
+      initialValue: "uploadthing",
+    }),
+    defineField({
+      name: "uploadThingUrl",
+      title: "UploadThing Video URL",
+      type: "string",
+      description: "The URL from UploadThing.",
+      hidden: ({ parent }) => parent?.videoSource !== "uploadthing",
     }),
     defineField({
       name: "videoFile",
-      title: "Video Upload",
+      title: "Sanity Video Upload",
       type: "file",
-      description: "Upload MP4/WebM videos directly from your computer.",
+      description: "Upload MP4/WebM videos directly to Sanity.",
       options: {
         accept: "video/*",
       },
@@ -113,6 +114,23 @@ export default defineType({
       type: "text",
       rows: 2,
       description: "Short italic tagline shown below the section title (e.g. 'High-converting SaaS video content.')",
+    }),
+    defineField({
+      name: "categories",
+      title: "Categories",
+      type: "array",
+      of: [
+        defineType({
+          name: "categoryItem",
+          title: "Category Item",
+          type: "object",
+          fields: [
+            { name: "title", title: "Title", type: "string" },
+            { name: "slug", title: "Slug", type: "string" },
+          ],
+        }),
+      ],
+      description: "Define the categories available for filtering.",
     }),
     defineField({
       name: "items",

@@ -125,7 +125,8 @@ export function VisualEditingProvider({
       if (patch.set) {
         Object.entries(patch.set).forEach(([path, value]) => {
           if (path.startsWith(field)) {
-            const keyMatch = path.match(/_key == "([^"]+)"/);
+            const subPath = path.substring(field.length);
+            const keyMatch = subPath.match(/\[_key == "([^"]+)"\]/);
             if (keyMatch) {
               const key = keyMatch[1];
               const attr = path.split("].").pop();
@@ -141,7 +142,8 @@ export function VisualEditingProvider({
       if (patch.unset) {
         patch.unset.forEach(path => {
           if (path.startsWith(field)) {
-            const keyMatch = path.match(/_key == "([^"]+)"/);
+            const subPath = path.substring(field.length);
+            const keyMatch = subPath.match(/\[_key == "([^"]+)"\]/);
             if (keyMatch) {
               const key = keyMatch[1];
               items = items.filter((item: any) => item._key !== key);
@@ -152,7 +154,8 @@ export function VisualEditingProvider({
       if ((patch as any).move && (patch as any).move.path.startsWith(field)) {
         const movePath = (patch as any).move.path;
         const direction = (patch as any).move.direction;
-        const keyMatch = movePath.match(/_key == "([^"]+)"/);
+        const subPath = movePath.substring(field.length);
+        const keyMatch = subPath.match(/\[_key == "([^"]+)"\]/);
         if (keyMatch) {
           const key = keyMatch[1];
           const index = items.findIndex((item: any) => item._key === key);

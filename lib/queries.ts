@@ -23,6 +23,10 @@ export const pageQuery = `*[_type == "page" && (_id == $slug || slug.current == 
       title,
       highlightedWord,
       description,
+      categories[]{
+        title,
+        slug
+      },
       items[]{
         _key,
         title,
@@ -31,6 +35,7 @@ export const pageQuery = `*[_type == "page" && (_id == $slug || slug.current == 
         "image": image.asset->url,
         videoSource,
         videoUrl,
+        uploadThingUrl,
         "directVideoUrl": videoFile.asset->url, // Resolves the PC upload path
         link
       }
@@ -112,6 +117,10 @@ export const servicePageQuery = `*[_type == "servicePage" && (slug == $slug || _
     title,
     highlightedWord,
     description,
+    categories[]{
+      title,
+      slug
+    },
     items[]{
       _key,
       title,
@@ -120,6 +129,7 @@ export const servicePageQuery = `*[_type == "servicePage" && (slug == $slug || _
       "image": image.asset->url,
       videoSource,
       videoUrl,
+      uploadThingUrl,
       "directVideoUrl": videoFile.asset->url,
       link
     }

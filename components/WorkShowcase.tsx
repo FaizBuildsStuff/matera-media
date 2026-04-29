@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Play, Sparkles, X } from "lucide-react";
+import { Play, Sparkles, X, Settings } from "lucide-react";
 import Image from "next/image";
 import { useVisualEditing } from "./visual-editing/VisualEditingProvider";
 import { EditableText } from "./visual-editing/EditableText";
@@ -11,13 +11,11 @@ import { AddRemoveControls } from "./visual-editing/AddRemoveControls";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const CATEGORIES = [
-  { id: "ad-creatives", label: "Ad Creatives", slug: "ad-creatives" },
-  { id: "organic-content", label: "Organic Content / YouTube", slug: "organic-content" },
-  { id: "saas-videos", label: "SaaS Videos", slug: "saas-videos" },
-] as const;
-
-type CategorySlug = (typeof CATEGORIES)[number]["slug"];
+const DEFAULT_CATEGORIES = [
+  { title: "Ad Creatives", slug: "ad-creatives" },
+  { title: "Organic Content / YouTube", slug: "organic-content" },
+  { title: "SaaS Videos", slug: "saas-videos" },
+];
 
 function getYouTubeVideoId(url: string): string | null {
   if (!url) return null;
@@ -32,35 +30,33 @@ function getYouTubeVideoId(url: string): string | null {
   return null;
 }
 
-function mapCategoryToSlug(category: string): CategorySlug {
-  const c = category?.toLowerCase() || "";
-  if (c.includes("ad") || c.includes("creative")) return "ad-creatives";
-  if (c.includes("organic") || c.includes("youtube") || c.includes("content")) return "organic-content";
-  if (c.includes("saas") || c.includes("software")) return "saas-videos";
-  return "ad-creatives";
+interface Category {
+  title: string;
+  slug: string;
 }
 
 interface WorkItem {
   id: string;
   title: string;
   category: string;
-  categorySlug: CategorySlug;
   tags: string[];
   image?: string;
   videoUrl?: string; // YouTube
+  uploadThingUrl?: string; // UploadThing
   directVideoUrl?: string; // Sanity Upload
-  videoSource?: "file" | "youtube" | "none";
+  videoSource?: "file" | "youtube" | "none" | "uploadthing";
   link?: string;
 }
 
 const DEFAULT_WORKS: WorkItem[] = [
-  { id: "1", title: "Meta UGC Ad", category: "Ad Creatives", categorySlug: "ad-creatives", tags: ["UGC", "15s"], videoUrl: "https://www.youtube.com/shorts/dQw4w9WgXcQ" },
+  { id: "1", title: "Meta UGC Ad", category: "Ad Creatives", tags: ["UGC", "15s"], videoUrl: "https://www.youtube.com/shorts/dQw4w9WgXcQ" },
 ];
 
 type WorkShowcaseContent = {
   title?: string;
   highlightedWord?: string;
   description?: string;
+  categories?: Category[];
   items?: Array<{
     _key: string;
     title?: string;
@@ -68,8 +64,9 @@ type WorkShowcaseContent = {
     tags?: string[];
     image?: string;
     videoUrl?: string;
-    directVideoUrl?: string; // Mapped from videoFile.asset->url in GROQ
-    videoSource?: "file" | "youtube" | "none";
+    uploadThingUrl?: string;
+    directVideoUrl?: string;
+    videoSource?: "file" | "youtube" | "none" | "uploadthing";
     link?: string;
   }>;
 };
@@ -80,7 +77,7 @@ export const WorkShowcase = ({
   initialCategory,
 }: {
   content?: WorkShowcaseContent & { _documentId?: string; _sectionKey?: string };
-  initialCategory?: CategorySlug;
+  initialCategory?: string;
 }) => {
   const documentId = content?._documentId;
   const sectionKey = content?._sectionKey;
@@ -89,20 +86,38 @@ export const WorkShowcase = ({
   const highlightedWord = content?.highlightedWord ?? "Works";
   const description = content?.description ?? "Shorts & reels that drive results. Filter by category.";
 
-  const { getLiveItems } = useVisualEditing();
+  const { getLiveItems, isEditMode } = useVisualEditing();
+  
+  // Get Categories
+  const rawCategories = content?.categories || [];
+  const categories: Category[] = getLiveItems(
+    documentId || "", 
+    sectionKey ? `sections[_key == "${sectionKey}"].categories` : "categories", 
+    rawCategories
+  ).length > 0 ? getLiveItems(
+    documentId || "", 
+    sectionKey ? `sections[_key == "${sectionKey}"].categories` : "categories", 
+    rawCategories
+  ) : DEFAULT_CATEGORIES;
+
+  // Get Items
   const originalItems = content?.items || [];
-  const items = getLiveItems(documentId || "", sectionKey ? `sections[_key == "${sectionKey}"].items` : "items", originalItems);
+  const items = getLiveItems(
+    documentId || "", 
+    sectionKey ? `sections[_key == "${sectionKey}"].items` : "items", 
+    originalItems
+  );
 
   const works: WorkItem[] = (
     items.length > 0
       ? items.map((i: any, idx: number) => ({
         id: i._key || String(idx),
         title: i.title ?? "",
-        category: i.category ?? "Ad Creatives",
-        categorySlug: mapCategoryToSlug(i.category ?? "Ad Creatives"),
+        category: i.category ?? (categories[0]?.title || "Ad Creatives"),
         tags: i.tags ?? [],
         image: i.image,
         videoUrl: i.videoUrl,
+        uploadThingUrl: i.uploadThingUrl,
         directVideoUrl: i.directVideoUrl,
         videoSource: i.videoSource,
         link: i.link,
@@ -110,7 +125,7 @@ export const WorkShowcase = ({
       : DEFAULT_WORKS
   ).filter((w) => w.title);
 
-  const [activeCategory, setActiveCategory] = useState<CategorySlug>(initialCategory ?? "ad-creatives");
+  const [activeCategory, setActiveCategory] = useState<string>(initialCategory ?? categories[0]?.slug ?? "ad-creatives");
   const [isInitialMount, setIsInitialMount] = useState(true);
   const sectionRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -119,9 +134,10 @@ export const WorkShowcase = ({
   const reelContainerRef = useRef<HTMLDivElement>(null);
   const gridWrapperRef = useRef<HTMLDivElement>(null);
 
-  const filteredWorks = works.filter((w) => w.categorySlug === activeCategory);
+  const activeCategoryTitle = categories.find(c => c.slug === activeCategory)?.title || categories[0]?.title;
+  const filteredWorks = works.filter((w) => w.category === activeCategoryTitle);
 
-  const handleCategoryClick = (slug: CategorySlug) => {
+  const handleCategoryClick = (slug: string) => {
     if (slug === activeCategory) return;
     setActiveCategory(slug);
   };
@@ -141,13 +157,13 @@ export const WorkShowcase = ({
     const items = reelContainerRef.current.querySelectorAll(".reel-item");
     const emptyState = reelContainerRef.current.querySelector(".reel-empty-state");
     const wrapper = gridWrapperRef.current;
-    const targets = items.length > 0 ? items : emptyState;
-    if (!targets || (Array.isArray(targets) && targets.length === 0)) return;
+    const targets = items.length > 0 ? Array.from(items) : emptyState ? [emptyState] : [];
+    if (targets.length === 0) return;
 
     if (isInitialMount) {
       setIsInitialMount(false);
       const ctx = gsap.context(() => {
-        gsap.fromTo(targets, { x: -60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.8, stagger: Array.isArray(targets) ? 0.06 : 0, ease: "power3.out", scrollTrigger: { trigger: wrapper, start: "top 88%", end: "top 50%", scrub: 1.5 } });
+        gsap.fromTo(targets, { x: -60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.8, stagger: 0.06, ease: "power3.out", scrollTrigger: { trigger: wrapper, start: "top 88%", end: "top 50%", scrub: 1.5 } });
       }, reelContainerRef);
       return () => ctx.revert();
     }
@@ -165,6 +181,30 @@ export const WorkShowcase = ({
 
     return () => tl.kill();
   }, [activeCategory, filteredWorks.length, isInitialMount]);
+
+  const workItemFields = [
+    { name: "title", label: "Title", type: "string" as const, placeholder: "e.g. Meta UGC Ad" },
+    { 
+      name: "category", 
+      label: "Category", 
+      type: "select" as const, 
+      options: categories.map(c => ({ label: c.title, value: c.title })) 
+    },
+    { 
+      name: "videoSource", 
+      label: "Video Source", 
+      type: "select" as const, 
+      options: [
+        { label: "UploadThing", value: "uploadthing" },
+        { label: "YouTube", value: "youtube" },
+        { label: "Sanity File", value: "file" },
+        { label: "None", value: "none" },
+      ]
+    },
+    { name: "uploadThingUrl", label: "Upload Video (UploadThing)", type: "video-upload" as const },
+    { name: "videoUrl", label: "YouTube URL", type: "string" as const, placeholder: "https://..." },
+    { name: "tags", label: "Tags", type: "array" as const, placeholder: "e.g. UGC" },
+  ];
 
   return (
     <section ref={sectionRef} id="work" className="py-32 px-6 bg-[#05180D] relative overflow-hidden min-h-screen font-satoshi">
@@ -215,12 +255,7 @@ export const WorkShowcase = ({
                 id={documentId} 
                 field={sectionKey ? `sections[_key == "${sectionKey}"].items` : "items"} 
                 label="Work Item" 
-                fields={[
-                  { name: "title", label: "Title", type: "string", placeholder: "e.g. Meta UGC Ad" },
-                  { name: "category", label: "Category", type: "string", placeholder: "e.g. Ad Creatives" },
-                  { name: "videoUrl", label: "YouTube URL", type: "string", placeholder: "https://..." },
-                  { name: "videoSource", label: "Source (file or youtube)", type: "string", placeholder: "youtube" }
-                ]}
+                fields={workItemFields}
               />
             </div>
           )}
@@ -229,17 +264,60 @@ export const WorkShowcase = ({
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
           <aside ref={leftRef} className="lg:w-72 shrink-0">
             <nav className="sticky top-32 space-y-2">
-              <p className="text-white/20 text-[9px] font-bold tracking-[0.4em] uppercase mb-8 pl-1">Filter by category</p>
-              {CATEGORIES.map((cat) => (
+              <div className="flex items-center justify-between mb-8 pl-1">
+                <p className="text-white/20 text-[9px] font-bold tracking-[0.4em] uppercase">Filter by category</p>
+                {documentId && isEditMode && (
+                  <div className="group relative">
+                    <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-widest hover:bg-emerald-500 hover:text-black transition-all shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+                      <Settings className="w-3 h-3" />
+                      Manage
+                    </button>
+                    <div className="absolute left-0 top-full mt-2 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                      <div className="bg-[#051A0E] border border-white/10 rounded-xl p-4 shadow-2xl min-w-[200px]">
+                        <p className="text-[10px] font-black uppercase tracking-widest text-emerald-400/70 mb-4">Manage Categories</p>
+                        <AddRemoveControls 
+                          id={documentId} 
+                          field={sectionKey ? `sections[_key == "${sectionKey}"].categories` : "categories"} 
+                          label="Category" 
+                          fields={[
+                            { name: "title", label: "Title", type: "string", placeholder: "e.g. Motion Graphics" },
+                            { name: "slug", label: "Slug", type: "string", placeholder: "e.g. motion-graphics" },
+                          ]}
+                        />
+                        <div className="mt-4 space-y-3">
+                          {categories.map((cat, idx) => (
+                            <div key={idx} className="flex items-center justify-between group/cat bg-white/5 p-2 rounded-lg border border-white/5 hover:border-emerald-500/20 transition-all">
+                              <span className="text-xs font-medium text-white/60">{cat.title}</span>
+                              <AddRemoveControls 
+                                id={documentId} 
+                                field={sectionKey ? `sections[_key == "${sectionKey}"].categories` : "categories"} 
+                                itemKey={(cat as any)._key} 
+                                label="Category"
+                                initialData={cat}
+                                fields={[
+                                  { name: "title", label: "Title", type: "string", placeholder: "e.g. Motion Graphics" },
+                                  { name: "slug", label: "Slug", type: "string", placeholder: "e.g. motion-graphics" },
+                                ]}
+                                className="scale-90 origin-right"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+              {categories.map((cat) => (
                 <button
-                  key={cat.id}
+                  key={cat.slug}
                   onClick={() => handleCategoryClick(cat.slug)}
                   className={`relative block w-full text-left px-7 py-4 rounded-full text-[13px] font-bold tracking-tight transition-all duration-300 active:scale-[0.98] ${activeCategory === cat.slug
                     ? "text-black bg-white shadow-[0_0_30px_rgba(255,255,255,0.1)]"
                     : "text-white/40 hover:text-white/70 hover:bg-white/[0.04] border border-white/5"
                     }`}
                 >
-                  <span className="relative">{cat.label}</span>
+                  <span className="relative">{cat.title}</span>
                 </button>
               ))}
             </nav>
@@ -255,6 +333,7 @@ export const WorkShowcase = ({
                       work={work} 
                       documentId={documentId} 
                       sectionKey={sectionKey} 
+                      categories={categories}
                     />
                   ))
                 ) : (
@@ -277,14 +356,16 @@ export const WorkShowcase = ({
 function ReelCard({ 
   work, 
   documentId, 
-  sectionKey 
+  sectionKey,
+  categories
 }: { 
   work: WorkItem; 
   documentId?: string; 
   sectionKey?: string; 
+  categories: Category[];
 }) {
+  const { isEditMode } = useVisualEditing();
   const [isCurrentlyPlaying, setIsCurrentlyPlaying] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const youtubeVideoId = work.videoUrl ? getYouTubeVideoId(work.videoUrl) : null;
 
   // Handle Play Action
@@ -299,6 +380,30 @@ function ReelCard({
     setIsCurrentlyPlaying(false);
   };
 
+  const workItemFields = [
+    { name: "title", label: "Title", type: "string" as const, placeholder: "e.g. Meta UGC Ad" },
+    { 
+      name: "category", 
+      label: "Category", 
+      type: "select" as const, 
+      options: categories.map(c => ({ label: c.title, value: c.title })) 
+    },
+    { 
+      name: "videoSource", 
+      label: "Video Source", 
+      type: "select" as const, 
+      options: [
+        { label: "UploadThing", value: "uploadthing" },
+        { label: "YouTube", value: "youtube" },
+        { label: "Sanity File", value: "file" },
+        { label: "None", value: "none" },
+      ]
+    },
+    { name: "uploadThingUrl", label: "Video Upload (UploadThing)", type: "video-upload" as const },
+    { name: "videoUrl", label: "YouTube URL", type: "string" as const, placeholder: "https://..." },
+    { name: "tags", label: "Tags", type: "array" as const, placeholder: "e.g. UGC" },
+  ];
+
   return (
     <div className="reel-item group relative">
       <div
@@ -309,7 +414,16 @@ function ReelCard({
         {/* --- IN-PLACE VIDEO PLAYER --- */}
         {isCurrentlyPlaying ? (
           <div className="absolute inset-0 size-full bg-black animate-in fade-in duration-500">
-            {work.videoSource === "file" && work.directVideoUrl ? (
+            {work.videoSource === "uploadthing" && work.uploadThingUrl ? (
+              <video
+                src={work.uploadThingUrl}
+                className="size-full object-cover"
+                controls
+                autoPlay
+                loop
+                playsInline
+              />
+            ) : work.videoSource === "file" && work.directVideoUrl ? (
               <video
                 src={work.directVideoUrl}
                 className="size-full object-cover"
@@ -340,7 +454,17 @@ function ReelCard({
         ) : (
           /* --- THUMBNAIL / PREVIEW LAYER --- */
           <>
-            {work.videoSource === "file" && work.directVideoUrl ? (
+            {work.videoSource === "uploadthing" && work.uploadThingUrl ? (
+              <div className="absolute inset-0 size-full">
+                <video
+                  src={`${work.uploadThingUrl}#t=0.1`}
+                  preload="metadata"
+                  muted
+                  playsInline
+                  className="size-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                />
+              </div>
+            ) : work.videoSource === "file" && work.directVideoUrl ? (
               <div className="absolute inset-0 size-full">
                 <video
                   src={`${work.directVideoUrl}#t=0.1`}
@@ -401,27 +525,27 @@ function ReelCard({
                   />
                 ) : work.title}
               </h3>
-              {documentId && (
-                <div className="pt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            </div>
+
+            {/* Edit Controls Overlay */}
+            {documentId && (
+              <div className={`absolute top-4 right-4 z-40 transition-opacity ${isEditMode ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}>
+                <div className="bg-black/60 backdrop-blur-md p-1.5 rounded-xl border border-white/10 shadow-xl">
                   <AddRemoveControls 
                     id={documentId} 
                     field={sectionKey ? `sections[_key == "${sectionKey}"].items` : "items"} 
                     itemKey={work.id} 
                     label="Work Item"
                     initialData={work}
-                    fields={[
-                      { name: "title", label: "Title", type: "string", placeholder: "e.g. Meta UGC Ad" },
-                      { name: "category", label: "Category", type: "string", placeholder: "e.g. Ad Creatives" },
-                      { name: "videoUrl", label: "YouTube URL", type: "string", placeholder: "https://..." },
-                      { name: "videoSource", label: "Source (file or youtube)", type: "string", placeholder: "youtube" }
-                    ]}
+                    fields={workItemFields}
                   />
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </>
         )}
       </div>
     </div>
   );
-}
+}
+

@@ -11,11 +11,12 @@ import { AddRemoveControls } from "./visual-editing/AddRemoveControls";
 // --- Reel Card Component ---
 const ReelCard = ({ item, isPlaying, onToggle, documentId }: { item: any; isPlaying: boolean; onToggle: () => void; documentId?: string }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const { isEditMode } = useVisualEditing();
 
   React.useEffect(() => {
     if (videoRef.current) {
       if (isPlaying) {
-        videoRef.current.play();
+        videoRef.current.play().catch(e => console.log("Auto-play blocked", e));
         videoRef.current.muted = false;
       } else {
         videoRef.current.pause();
@@ -24,16 +25,38 @@ const ReelCard = ({ item, isPlaying, onToggle, documentId }: { item: any; isPlay
     }
   }, [isPlaying]);
 
+  const videoUrl = item.videoSource === "uploadthing" ? item.uploadThingUrl : (item.videoSource === "file" ? item.directVideoUrl : null);
+  const youtubeVideoId = item.videoSource === "youtube" ? item.videoUrl?.split('v=')[1]?.split('&')[0] : null;
+
+  const workItemFields = [
+    { name: "title", label: "Reel Title", type: "string" as const, placeholder: "e.g. Performance Ad" },
+    { name: "category", label: "Category", type: "string" as const, placeholder: "e.g. Motion Design" },
+    { 
+      name: "videoSource", 
+      label: "Video Source", 
+      type: "select" as const, 
+      options: [
+        { label: "UploadThing", value: "uploadthing" },
+        { label: "YouTube", value: "youtube" },
+        { label: "Sanity File", value: "file" },
+        { label: "None", value: "none" },
+      ]
+    },
+    { name: "uploadThingUrl", label: "Upload Video (UploadThing)", type: "video-upload" as const },
+    { name: "videoUrl", label: "YouTube URL", type: "string" as const, placeholder: "https://youtube.com/..." },
+    { name: "tags", label: "Tags", type: "array" as const, placeholder: "e.g. UGC" },
+  ];
+
   return (
     <div
       onClick={onToggle}
-      className="snap-center shrink-0 w-[240px] md:w-[280px] h-[440px] md:h-[500px] bg-white/2 rounded-[2rem] border border-white/10 relative overflow-hidden group cursor-pointer"
+      className="snap-center shrink-0 w-[240px] md:w-[280px] h-[440px] md:h-[500px] bg-white/2 rounded-[2rem] border border-white/10 relative overflow-hidden group cursor-pointer shadow-2xl transition-all duration-500 hover:border-emerald-500/20"
     >
       <div className="absolute inset-0 z-0">
-        {item.videoSource === "file" && item.directVideoUrl ? (
+        {videoUrl ? (
           <video
             ref={videoRef}
-            src={item.directVideoUrl + "#t=0.1"}
+            src={videoUrl + "#t=0.1"}
             className={`w-full h-full object-cover transition-opacity duration-500 ${isPlaying ? 'opacity-100' : 'opacity-50 group-hover:opacity-70'}`}
             preload="metadata"
             loop
@@ -41,55 +64,50 @@ const ReelCard = ({ item, isPlaying, onToggle, documentId }: { item: any; isPlay
           />
         ) : item.image ? (
           <Image src={item.image} alt={item.title} fill className="object-cover opacity-50 group-hover:opacity-70 transition-opacity" />
+        ) : youtubeVideoId ? (
+          <img 
+            src={`https://img.youtube.com/vi/${youtubeVideoId}/maxresdefault.jpg`}
+            className="w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-opacity"
+            alt=""
+            onError={(e) => (e.currentTarget.src = `https://img.youtube.com/vi/${youtubeVideoId}/hqdefault.jpg`)}
+          />
         ) : (
-          <div className="w-full h-full bg-emerald-950/50" />
+          <div className="w-full h-full bg-emerald-950/20" />
         )}
       </div>
 
-      <div className="absolute inset-0 bg-linear-to-t from-black/90 via-transparent to-transparent z-10" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent z-10" />
 
       <div className="absolute inset-0 flex items-center justify-center z-20">
         {!isPlaying && (
-          <div className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
+          <div className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100 duration-300">
             <Play className="fill-current w-4 h-4 ml-1" />
           </div>
         )}
       </div>
 
       {documentId && (
-        <div className="absolute top-4 right-4 z-40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-2">
-          <AddRemoveControls 
-            id={documentId} 
-            field="work.items" 
-            itemKey={item._key} 
-            label="Reel" 
-            initialData={item}
-            fields={[
-              { name: "title", label: "Reel Title", type: "string", placeholder: "e.g. Performance Ad" },
-              { name: "category", label: "Category", type: "string", placeholder: "e.g. Motion Design" },
-              { name: "videoUrl", label: "Video URL (YouTube or Direct)", type: "string", placeholder: "https://youtube.com/..." },
-              { name: "videoSource", label: "Source Type (file or youtube)", type: "string", placeholder: "file" }
-            ]}
-          />
-          <EditableButton 
-            id={documentId} 
-            textField={`work.items[_key == "${item._key}"].videoUrl`} 
-            linkField={`work.items[_key == "${item._key}"].videoUrl`} 
-            text="Edit URL" 
-            link={item.videoUrl}
-          >
-            <div className="bg-white/10 p-1 rounded-md text-[8px] text-white">URL</div>
-          </EditableButton>
+        <div className={`absolute top-4 right-4 z-40 transition-opacity ${isEditMode ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}>
+          <div className="bg-black/60 backdrop-blur-md p-1.5 rounded-xl border border-white/10 shadow-xl">
+            <AddRemoveControls 
+              id={documentId} 
+              field="work.items" 
+              itemKey={item._key} 
+              label="Reel" 
+              initialData={item}
+              fields={workItemFields}
+            />
+          </div>
         </div>
       )}
 
-      <div className="absolute bottom-8 left-8 z-20">
-        <p className="text-emerald-400 text-[9px] font-black tracking-widest mb-1.5">
+      <div className="absolute bottom-8 left-8 right-8 z-20 pointer-events-none">
+        <p className="text-emerald-400 text-[9px] font-black uppercase tracking-widest mb-1.5">
           {documentId ? (
             <EditableText id={documentId} field={`work.items[_key == "${item._key}"].category`} value={item.category} as="span" />
           ) : item.category}
         </p>
-        <h4 className="text-white text-lg font-bold tracking-tight mb-2">
+        <h4 className="text-white text-lg font-bold tracking-tight mb-2 leading-tight">
           {documentId ? (
             <EditableText id={documentId} field={`work.items[_key == "${item._key}"].title`} value={item.title} as="span" />
           ) : item.title}
@@ -102,10 +120,10 @@ const ReelCard = ({ item, isPlaying, onToggle, documentId }: { item: any; isPlay
         )}
       </div>
 
-      {isPlaying && item.videoSource === "youtube" && (
+      {isPlaying && youtubeVideoId && (
         <div className="absolute inset-0 z-40 bg-black">
           <iframe
-            src={`https://www.youtube.com/embed/${item.videoUrl?.split('v=')[1]?.split('&')[0]}?autoplay=1&mute=0&controls=0&loop=1&playlist=${item.videoUrl?.split('v=')[1]?.split('&')[0]}`}
+            src={`https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&mute=0&controls=0&loop=1&playlist=${youtubeVideoId}`}
             className="w-full h-full"
             allow="autoplay"
           />
@@ -160,10 +178,22 @@ export const WorkReelsSection = ({ workData, documentId }: { workData?: any; doc
                   field="work.items" 
                   label="Reel" 
                   fields={[
-                    { name: "title", label: "Reel Title", type: "string", placeholder: "e.g. Performance Ad" },
-                    { name: "category", label: "Category", type: "string", placeholder: "e.g. Motion Design" },
-                    { name: "videoUrl", label: "Video URL (YouTube or Direct)", type: "string", placeholder: "https://youtube.com/..." },
-                    { name: "videoSource", label: "Source Type (file or youtube)", type: "string", placeholder: "file" }
+                    { name: "title", label: "Reel Title", type: "string" as const, placeholder: "e.g. Performance Ad" },
+                    { name: "category", label: "Category", type: "string" as const, placeholder: "e.g. Motion Design" },
+                    { 
+                      name: "videoSource", 
+                      label: "Video Source", 
+                      type: "select" as const, 
+                      options: [
+                        { label: "UploadThing", value: "uploadthing" },
+                        { label: "YouTube", value: "youtube" },
+                        { label: "Sanity File", value: "file" },
+                        { label: "None", value: "none" },
+                      ]
+                    },
+                    { name: "uploadThingUrl", label: "Upload Video (UploadThing)", type: "video-upload" as const },
+                    { name: "videoUrl", label: "YouTube URL", type: "string" as const, placeholder: "https://youtube.com/..." },
+                    { name: "tags", label: "Tags", type: "array" as const, placeholder: "e.g. UGC" },
                   ]}
                 />
               </div>

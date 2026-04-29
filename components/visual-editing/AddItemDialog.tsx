@@ -14,14 +14,16 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Plus } from "lucide-react";
+import { Plus, Video, CheckCircle2, Loader2 } from "lucide-react";
+import { UploadButton } from "@/lib/uploadthing";
 
 export interface Field {
   name: string;
   label: string;
-  type: "string" | "text" | "number" | "boolean" | "array";
+  type: "string" | "text" | "number" | "boolean" | "array" | "select" | "video-upload" | "image-upload";
   placeholder?: string;
   defaultValue?: any;
+  options?: { label: string; value: string }[];
 }
 
 interface AddItemDialogProps {
@@ -44,6 +46,7 @@ export function AddItemDialog({
   initialData,
 }: AddItemDialogProps) {
   const [formData, setFormData] = useState<Record<string, any>>({});
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -68,7 +71,7 @@ export function AddItemDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-[500px] bg-[#051A0E] border-white/10 text-white shadow-[0_0_50px_rgba(16,185,129,0.1)]">
+      <DialogContent className="sm:max-w-[500px] bg-[#051A0E] border-white/10 text-white shadow-[0_0_50px_rgba(16,185,129,0.1)] max-h-[90vh] overflow-y-auto custom-scrollbar">
         <DialogHeader>
           <DialogTitle className="text-2xl font-black tracking-tight text-white flex items-center gap-2">
             <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
@@ -107,8 +110,89 @@ export function AddItemDialog({
                     placeholder={field.placeholder}
                     value={formData[field.name] || ""}
                     onChange={(e) => handleChange(field.name, e.target.value)}
-                    className="bg-white/5 border-white/10 focus:border-emerald-500/50 min-h-[100px] transition-all resize-none"
+                    className="bg-white/5 border-white/10 focus:border-emerald-500/50 min-h-[100px] transition-all resize-none text-white"
                   />
+                ) : field.type === "select" ? (
+                  <div className="relative">
+                    <select
+                      id={field.name}
+                      value={formData[field.name] || ""}
+                      onChange={(e) => handleChange(field.name, e.target.value)}
+                      className="w-full bg-white/5 border border-white/10 rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500/50 transition-all appearance-none"
+                    >
+                      <option value="" disabled className="bg-[#051A0E]">Select {field.label}</option>
+                      {field.options?.map((opt) => (
+                        <option key={opt.value} value={opt.value} className="bg-[#051A0E]">
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                      <svg className="w-4 h-4 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </div>
+                ) : field.type === "video-upload" || field.type === "image-upload" ? (
+                  <div className="space-y-3">
+                    {formData[field.name] ? (
+                      <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-md flex items-center justify-between">
+                        <div className="flex items-center gap-2 overflow-hidden">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                          <span className="text-xs text-white/80 truncate font-medium">
+                            {field.type === "video-upload" ? "Video" : "Image"} uploaded successfully
+                          </span>
+                        </div>
+                        <Button 
+                          type="button" 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={() => handleChange(field.name, "")}
+                          className="h-7 text-[10px] text-red-400 hover:text-red-300 hover:bg-red-400/10"
+                        >
+                          Remove
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-center justify-center p-8 border-2 border-dashed border-white/10 rounded-xl bg-white/[0.02] hover:bg-white/[0.04] hover:border-emerald-500/30 transition-all">
+                        <div className="mb-4 p-3 rounded-full bg-white/5 text-white/40">
+                          {isUploading ? (
+                            <Loader2 className="w-6 h-6 animate-spin text-emerald-400" />
+                          ) : field.type === "video-upload" ? (
+                            <Video className="w-6 h-6" />
+                          ) : (
+                            <Plus className="w-6 h-6" />
+                          )}
+                        </div>
+                        <UploadButton
+                          endpoint={field.type === "video-upload" ? "videoUploader" : "imageUploader"}
+                          onUploadProgress={() => setIsUploading(true)}
+                          onClientUploadComplete={(res) => {
+                            if (res?.[0]) {
+                              // Use ufsUrl if available (new standard), fallback to url
+                              const fileUrl = (res[0] as any).ufsUrl || res[0].url;
+                              handleChange(field.name, fileUrl);
+                            }
+                            setIsUploading(false);
+                          }}
+                          onUploadError={(error: Error) => {
+                            alert(`ERROR! ${error.message}`);
+                            setIsUploading(false);
+                          }}
+                          appearance={{
+                            button: "bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs py-2 px-4 rounded-lg shadow-lg transition-all",
+                            allowedContent: "text-[10px] text-white/30 uppercase tracking-widest mt-2",
+                          }}
+                        />
+                      </div>
+                    )}
+                    <Input
+                      placeholder={`Or paste direct ${field.type === "video-upload" ? "video" : "image"} URL here...`}
+                      value={formData[field.name] || ""}
+                      onChange={(e) => handleChange(field.name, e.target.value)}
+                      className="bg-white/5 border-white/10 focus:border-emerald-500/50 transition-all text-xs text-white"
+                    />
+                  </div>
                 ) : field.type === "array" ? (
                   <div className="space-y-2">
                     {(formData[field.name] || []).map((val: string, idx: number) => (
@@ -120,8 +204,8 @@ export function AddItemDialog({
                             newArr[idx] = e.target.value;
                             handleChange(field.name, newArr);
                           }}
-                          className="bg-white/5 border-white/10"
-                          placeholder={`Feature ${idx + 1}`}
+                          className="bg-white/5 border-white/10 text-white"
+                          placeholder={`Item ${idx + 1}`}
                         />
                         <Button
                           type="button"
@@ -143,7 +227,7 @@ export function AddItemDialog({
                         const newArr = [...(formData[field.name] || []), ""];
                         handleChange(field.name, newArr);
                       }}
-                      className="w-full bg-white/5 border-white/10 text-xs py-1 h-8"
+                      className="w-full bg-white/5 border-white/10 text-xs py-1 h-8 text-white/60 hover:text-white"
                     >
                       + Add Item
                     </Button>
@@ -155,7 +239,7 @@ export function AddItemDialog({
                     placeholder={field.placeholder}
                     value={formData[field.name] || ""}
                     onChange={(e) => handleChange(field.name, e.target.value)}
-                    className="bg-white/5 border-white/10 focus:border-emerald-500/50 transition-all"
+                    className="bg-white/5 border-white/10 focus:border-emerald-500/50 transition-all text-white"
                   />
                 )}
               </div>
@@ -173,9 +257,10 @@ export function AddItemDialog({
             </Button>
             <Button
               type="submit"
-              className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-8 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all active:scale-95"
+              disabled={isUploading}
+              className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-8 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all active:scale-95 disabled:opacity-50"
             >
-              {initialData ? "Save Changes" : `Add ${title.replace("Add ", "")}`}
+              {isUploading ? "Uploading..." : initialData ? "Save Changes" : `Add ${title.replace("Add ", "")}`}
             </Button>
           </DialogFooter>
         </form>
@@ -183,3 +268,4 @@ export function AddItemDialog({
     </Dialog>
   );
 }
+

@@ -196,27 +196,7 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
                             })}
                         </div>
                     ))}
-                    {documentId && (
-                        <div className="flex items-center justify-center h-full min-h-[300px]">
-                            <div className="w-full h-full flex flex-col items-center justify-center gap-4 rounded-[2rem] border-2 border-dashed border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 hover:border-emerald-500/40 transition-all group/big-add p-12">
-                                <AddRemoveControls
-                                    id={documentId}
-                                    field={sectionKey ? `sections[_key == "${sectionKey}"].items` : "items"}
-                                    label="Testimonial"
-                                    className="scale-150"
-                                    fields={[
-                                        { name: "name", label: "Client Name", type: "string", placeholder: "e.g. Sarah Chen" },
-                                        { name: "role", label: "Role/Title", type: "string", placeholder: "e.g. VP Marketing" },
-                                        { name: "image", label: "Image URL", type: "string", placeholder: "https://..." },
-                                        { name: "quote", label: "Testimonial Quote", type: "text", placeholder: "Enter the testimonial here..." }
-                                    ]}
-                                />
-                                <span className="text-emerald-400 font-bold uppercase tracking-widest text-xs opacity-40 group-hover/big-add:opacity-100 transition-opacity text-center">
-                                    Add New Success Story
-                                </span>
-                            </div>
-                        </div>
-                    )}
+                    
                 </div>
             </div>
             <div className="absolute top-0 left-0 w-full h-40 bg-linear-to-b from-[#05180D] via-[#05180D] to-transparent z-20 pointer-events-none" />

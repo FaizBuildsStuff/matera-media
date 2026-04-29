@@ -46,6 +46,12 @@ export default defineType({
       type: "image",
       options: { hotspot: true },
     }),
+    defineField({
+      name: "uploadThingUrl",
+      title: "Upload Video Proof (UploadThing)",
+      type: "string",
+      description: "Optional video proof instead of an image.",
+    }),
   ],
   preview: {
     select: { title: "title", value: "value", image: "image" },
