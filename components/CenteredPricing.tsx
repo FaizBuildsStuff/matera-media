@@ -72,7 +72,7 @@ export const CenteredPricing = ({ data, documentId }: CenteredPricingProps) => {
               `}
             >
               {documentId && (
-                <div className="absolute top-4 right-4 z-40 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute top-4 right-4 z-40 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                   <AddRemoveControls 
                     id={documentId} 
                     field="plans" 

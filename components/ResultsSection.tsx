@@ -92,7 +92,7 @@ export const ResultsSection = ({ items: originalItems, title, documentId, label 
               )}
               
               {documentId && (
-                <div className="absolute top-4 right-4 z-40 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute top-3 right-3 z-40 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                   <div className="bg-black/60 backdrop-blur-md p-1.5 rounded-xl border border-white/10 shadow-xl">
                     <AddRemoveControls 
                       id={documentId} 

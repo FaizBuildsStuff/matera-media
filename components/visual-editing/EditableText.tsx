@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 interface EditableTextProps {
   id: string;
   field: string;
-  sectionKey?: string; // If provided, updates a section in an array
+  sectionKey?: string;
   value: string;
   className?: string;
   as?: React.ElementType;
@@ -39,15 +39,17 @@ export function EditableText({ id, field, sectionKey, value, className, as: Comp
 
   return (
     <div className="group relative">
+      {/* Border: always shown on mobile (touch), hover-only on desktop */}
       <div
         className={cn(
-          "absolute -inset-2 z-10 hidden rounded-md border-2 border-dashed border-blue-400 bg-blue-50/5 pointer-events-none group-hover:block",
-          isEditMode && "border-solid border-blue-500"
+          "absolute -inset-1 z-10 rounded-md border-2 border-dashed border-blue-500/40 bg-blue-50/5 pointer-events-none",
+          "opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
         )}
       />
-      <div className="absolute -top-6 left-0 hidden group-hover:block z-20">
-        <span className="rounded bg-blue-500 px-2 py-0.5 text-[10px] font-bold text-white uppercase tracking-tight shadow-lg">
-          Edit
+      {/* Edit badge: always shown on mobile, hover-only on desktop */}
+      <div className="absolute -top-5 left-0 z-20 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+        <span className="rounded bg-blue-500 px-1.5 py-0.5 text-[9px] font-bold text-white uppercase tracking-tight shadow-lg">
+          Tap to edit
         </span>
       </div>
       <Component
@@ -57,8 +59,7 @@ export function EditableText({ id, field, sectionKey, value, className, as: Comp
         onBlur={handleBlur}
         className={cn(
           className,
-          "outline-none transition-all focus:ring-2 focus:ring-blue-500 focus:rounded-sm",
-          isEditMode && "cursor-text hover:bg-slate-50/50"
+          "outline-none transition-all focus:ring-2 focus:ring-blue-500 focus:rounded-sm cursor-text"
         )}
       >
         {localValue}

@@ -110,10 +110,10 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
                             {chunk.map((testimonial: Testimonial, i: number) => {
                                 const itemId = testimonial._key || `${chunkIndex}-${i}`;
                                 return (
-                                    <Card key={itemId} className="bg-white/1 border-white/4 rounded-[2rem] transition-all duration-500 hover:border-emerald-500/20 group">
+                                    <Card key={itemId} className="bg-white/1 border-white/4 rounded-[2rem] transition-all duration-500 hover:border-emerald-500/20 group relative">
                                         <CardContent className="p-8">
                                             {documentId && (
-                                                <div className="absolute top-3 right-3 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <div className="absolute top-3 right-3 z-20 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                                                     <AddRemoveControls
                                                         id={documentId}
                                                         field={sectionKey ? `sections[_key == "${sectionKey}"].items` : "items"}
@@ -148,7 +148,7 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
                                             </div>
 
                                             <div className="flex items-center gap-4 pt-4 border-t border-white/5">
-                                                <div className="size-10 grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700">
+                                                <div className="size-10 grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 md:grayscale md:opacity-40 md:group-hover:grayscale-0 md:group-hover:opacity-100 transition-all duration-700">
                                                     {documentId ? (
                                                         <EditableImage 
                                                             id={documentId} 

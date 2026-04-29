@@ -87,7 +87,7 @@ const ReelCard = ({ item, isPlaying, onToggle, documentId }: { item: any; isPlay
       </div>
 
       {documentId && (
-        <div className={`absolute top-4 right-4 z-40 transition-opacity ${isEditMode ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}>
+        <div className={`absolute top-3 right-3 z-40 transition-opacity ${isEditMode ? "opacity-100" : "opacity-0 group-hover:opacity-100 md:group-hover:opacity-100"}`}>
           <div className="bg-black/60 backdrop-blur-md p-1.5 rounded-xl border border-white/10 shadow-xl">
             <AddRemoveControls 
               id={documentId} 
@@ -159,53 +159,57 @@ export const WorkReelsSection = ({ workData, documentId }: { workData?: any; doc
       <div className="absolute bottom-[20%] right-[-10%] w-[40%] h-[40%] bg-white/2 blur-[140px] rounded-full pointer-events-none z-0" />
 
       <div className="max-w-7xl mx-auto relative z-30">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-10 gap-6">
-          <div className="max-w-2xl">
-            <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-3">
-              {documentId ? (
-                <EditableText id={documentId} field="work.title" value={title} as="span" />
-              ) : title}
-            </h2>
-            <div className="text-emerald-400 text-lg italic font-semibold opacity-80">
-              {documentId ? (
-                <EditableText id={documentId} field="work.description" value={label} />
-              ) : label}
-            </div>
-            {documentId && (
-              <div className="mt-4">
-                <AddRemoveControls 
-                  id={documentId} 
-                  field="work.items" 
-                  label="Reel" 
-                  fields={[
-                    { name: "title", label: "Reel Title", type: "string" as const, placeholder: "e.g. Performance Ad" },
-                    { name: "category", label: "Category", type: "string" as const, placeholder: "e.g. Motion Design" },
-                    { 
-                      name: "videoSource", 
-                      label: "Video Source", 
-                      type: "select" as const, 
-                      options: [
-                        { label: "UploadThing", value: "uploadthing" },
-                        { label: "YouTube", value: "youtube" },
-                        { label: "Sanity File", value: "file" },
-                        { label: "None", value: "none" },
-                      ]
-                    },
-                    { name: "uploadThingUrl", label: "Upload Video (UploadThing)", type: "video-upload" as const },
-                    { name: "videoUrl", label: "YouTube URL", type: "string" as const, placeholder: "https://youtube.com/..." },
-                    { name: "tags", label: "Tags", type: "array" as const, placeholder: "e.g. UGC" },
-                  ]}
-                />
+        <div className="mb-10">
+          {/* Heading — always left-aligned */}
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            <div className="max-w-2xl">
+              <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-3">
+                {documentId ? (
+                  <EditableText id={documentId} field="work.title" value={title} as="span" />
+                ) : title}
+              </h2>
+              <div className="text-emerald-400 text-lg italic font-semibold opacity-80">
+                {documentId ? (
+                  <EditableText id={documentId} field="work.description" value={label} />
+                ) : label}
               </div>
-            )}
-          </div>
-          <div className="flex gap-3">
-            <button onClick={() => scroll('left')} className="p-4 rounded-full border border-white/10 text-white hover:bg-white hover:text-black transition-all">
-              <ArrowLeft className="w-5 h-5" />
-            </button>
-            <button onClick={() => scroll('right')} className="p-4 rounded-full border border-white/10 text-white hover:bg-white hover:text-black transition-all">
-              <ArrowRight className="w-5 h-5" />
-            </button>
+              {documentId && (
+                <div className="mt-4">
+                  <AddRemoveControls 
+                    id={documentId} 
+                    field="work.items" 
+                    label="Reel" 
+                    fields={[
+                      { name: "title", label: "Reel Title", type: "string" as const, placeholder: "e.g. Performance Ad" },
+                      { name: "category", label: "Category", type: "string" as const, placeholder: "e.g. Motion Design" },
+                      { 
+                        name: "videoSource", 
+                        label: "Video Source", 
+                        type: "select" as const, 
+                        options: [
+                          { label: "UploadThing", value: "uploadthing" },
+                          { label: "YouTube", value: "youtube" },
+                          { label: "Sanity File", value: "file" },
+                          { label: "None", value: "none" },
+                        ]
+                      },
+                      { name: "uploadThingUrl", label: "Upload Video (UploadThing)", type: "video-upload" as const },
+                      { name: "videoUrl", label: "YouTube URL", type: "string" as const, placeholder: "https://youtube.com/..." },
+                      { name: "tags", label: "Tags", type: "array" as const, placeholder: "e.g. UGC" },
+                    ]}
+                  />
+                </div>
+              )}
+            </div>
+            {/* Arrow nav — right on sm+, below heading on xs */}
+            <div className="flex gap-3 shrink-0">
+              <button onClick={() => scroll('left')} className="p-4 rounded-full border border-white/10 text-white hover:bg-white hover:text-black transition-all">
+                <ArrowLeft className="w-5 h-5" />
+              </button>
+              <button onClick={() => scroll('right')} className="p-4 rounded-full border border-white/10 text-white hover:bg-white hover:text-black transition-all">
+                <ArrowRight className="w-5 h-5" />
+              </button>
+            </div>
           </div>
         </div>
 

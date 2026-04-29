@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { EditableButton } from "./visual-editing/EditableButton";
 import { AddRemoveControls } from "./visual-editing/AddRemoveControls";
 import { EditableText } from "./visual-editing/EditableText";
+import { useVisualEditing } from "./visual-editing/VisualEditingProvider";
 
 interface HeaderSettings {
     logo?: string;
@@ -18,6 +19,7 @@ interface HeaderSettings {
 export const Header = ({ settings }: { settings?: HeaderSettings }) => {
     const pathname = usePathname();
     const [mobileOpen, setMobileOpen] = useState(false);
+    const { isEditMode } = useVisualEditing();
 
     const defaultLinks = [
         { _key: "1", label: "Ad Creatives", href: "/ad-creatives" },
@@ -162,19 +164,34 @@ export const Header = ({ settings }: { settings?: HeaderSettings }) => {
                         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                         className="lg:hidden absolute top-[calc(100%+16px)] left-4 right-4 max-w-6xl mx-auto rounded-[2rem] bg-[#051A0E]/95 backdrop-blur-3xl border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.8)] overflow-hidden z-40"
                     >
-                        <div className="flex flex-col p-8 gap-6 justify-center">
+                        <div className="flex flex-col p-8 gap-4 justify-center">
+                            {(settings as any)?._id && isEditMode && (
+                                <div className="mb-2 pb-4 border-b border-white/10">
+                                    <p className="text-[9px] text-white/30 uppercase tracking-widest font-bold mb-3">Edit Navigation Links</p>
+                                    <AddRemoveControls 
+                                        id={(settings as any)?._id} 
+                                        field="headerLinks" 
+                                        label="Link" 
+                                        fields={[
+                                            { name: "label", label: "Label", type: "string", placeholder: "Home" },
+                                            { name: "href", label: "URL", type: "string", placeholder: "/" }
+                                        ]}
+                                    />
+                                </div>
+                            )}
                             {links.map((item, idx) => (
                                 <motion.div
-                                    key={item.href}
+                                    key={item._key || item.href}
                                     initial={{ opacity: 0, x: -20 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, x: -20 }}
                                     transition={{ duration: 0.4, delay: idx * 0.05, ease: "easeOut" }}
+                                    className="flex items-center gap-3 group/mobilelink"
                                 >
                                     <Link
                                         href={item.href}
                                         onClick={() => setMobileOpen(false)}
-                                        className={`block text-xl uppercase font-black tracking-widest transition-all ${
+                                        className={`flex-1 block text-xl uppercase font-black tracking-widest transition-all ${
                                             pathname === item.href 
                                             ? "text-emerald-400 pl-4 border-l-2 border-emerald-400" 
                                             : "text-white/60 hover:text-white hover:pl-2"
@@ -182,6 +199,21 @@ export const Header = ({ settings }: { settings?: HeaderSettings }) => {
                                     >
                                         {item.label}
                                     </Link>
+                                    {(settings as any)?._id && isEditMode && (
+                                        <div className="opacity-0 group-hover/mobilelink:opacity-100 transition-opacity">
+                                            <AddRemoveControls 
+                                                id={(settings as any)?._id} 
+                                                field="headerLinks" 
+                                                itemKey={item._key} 
+                                                label="Link"
+                                                initialData={item}
+                                                fields={[
+                                                    { name: "label", label: "Label", type: "string", placeholder: "Home" },
+                                                    { name: "href", label: "URL", type: "string", placeholder: "/" }
+                                                ]}
+                                            />
+                                        </div>
+                                    )}
                                 </motion.div>
                             ))}
                             

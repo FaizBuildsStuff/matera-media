@@ -61,15 +61,16 @@ export function EditableButton({
   return (
     <div className="group relative inline-block">
       <div className={cn(
-        "absolute -inset-1 z-10 hidden rounded-md border border-dashed border-blue-400 bg-blue-50/5 pointer-events-none group-hover:block",
-        isEditMode && "border-solid border-blue-500"
+        "absolute -inset-1 z-10 rounded-md border border-dashed border-blue-500/50 bg-blue-50/5 pointer-events-none",
+        "opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
       )} />
       
-      <div className="absolute -top-7 right-0 hidden group-hover:flex gap-1 z-20">
+      {/* Edit controls: always visible on mobile, hover-only on desktop */}
+      <div className="absolute -top-7 right-0 flex gap-1 z-20 opacity-100 md:opacity-0 md:group-hover:flex transition-opacity">
         <button
           onClick={handleLinkChange}
           className="rounded bg-blue-600 p-1 text-white hover:bg-blue-700 transition-colors"
-          title="Edit Link"
+          title="Edit Link URL"
         >
           <Link2 className="h-3 w-3" />
         </button>
@@ -86,7 +87,7 @@ export function EditableButton({
               contentEditable
               suppressContentEditableWarning
               onBlur={handleTextChange}
-              className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/edit:opacity-100 bg-emerald-500/80 text-black font-black text-xs uppercase tracking-widest cursor-text rounded-full backdrop-blur-sm z-30 transition-all"
+              className="absolute inset-0 flex items-center justify-center opacity-100 md:opacity-0 md:group-hover/edit:opacity-100 bg-emerald-500/80 text-black font-black text-xs uppercase tracking-widest cursor-text rounded-full backdrop-blur-sm z-30 transition-all"
             >
               {localText}
             </span>
