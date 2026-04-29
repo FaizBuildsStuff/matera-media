@@ -10,6 +10,7 @@ import { EditableButton } from "./visual-editing/EditableButton";
 import { AddRemoveControls } from "./visual-editing/AddRemoveControls";
 import { EditableText } from "./visual-editing/EditableText";
 import { useVisualEditing } from "./visual-editing/VisualEditingProvider";
+import { TripleTapLogin } from "./visual-editing/TripleTapLogin";
 
 interface HeaderSettings {
     logo?: string;
@@ -38,7 +39,8 @@ export const Header = ({ settings }: { settings?: HeaderSettings }) => {
 
             <div className="max-w-[90%] xl:max-w-[1400px] mx-auto relative h-16 bg-[#05180D]/80 border border-white/10 rounded-full px-5 md:px-10 flex items-center justify-between shadow-2xl backdrop-blur-xl z-50">
 
-                {/* LEFT: LOGO */}
+                {/* LEFT: LOGO — Triple-tap to open admin login */}
+                <TripleTapLogin>
                 <Link
                     href="/"
                     className="flex items-center gap-2.5 group"
@@ -56,6 +58,7 @@ export const Header = ({ settings }: { settings?: HeaderSettings }) => {
                         Matera Media
                     </span>
                 </Link>
+                </TripleTapLogin>
 
                 {/* RIGHT CLUSTER */}
                 <div className="flex items-center gap-8">
