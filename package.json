@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "concurrently \"next start\" \"npm run studio\"",
-    "studio": "env-cmd -f .env npx sanity dev",
+    "start": "next start",
     "seed:sanity": "env-cmd -f .env npx tsx scripts/seed-sanity.ts"
   },
   "dependencies": {
@@ -15,7 +14,6 @@
     "@gsap/react": "^2.1.2",
     "@radix-ui/react-accordion": "^1.2.12",
     "@sanity/image-url": "^2.0.3",
-    "@sanity/vision": "^5.11.0",
     "@uploadthing/react": "^7.3.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -29,7 +27,6 @@
     "radix-ui": "^1.4.3",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "sanity": "^5.11.0",
     "styled-components": "^6.3.10",
     "tailwind-merge": "^3.4.1",
     "uploadthing": "^7.7.4"
