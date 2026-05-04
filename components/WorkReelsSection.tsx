@@ -31,10 +31,10 @@ const ReelCard = ({ item, isPlaying, onToggle, documentId }: { item: any; isPlay
   const workItemFields = [
     { name: "title", label: "Reel Title", type: "string" as const, placeholder: "e.g. Performance Ad" },
     { name: "category", label: "Category", type: "string" as const, placeholder: "e.g. Motion Design" },
-    { 
-      name: "videoSource", 
-      label: "Video Source", 
-      type: "select" as const, 
+    {
+      name: "videoSource",
+      label: "Video Source",
+      type: "select" as const,
       options: [
         { label: "UploadThing", value: "uploadthing" },
         { label: "YouTube", value: "youtube" },
@@ -65,7 +65,7 @@ const ReelCard = ({ item, isPlaying, onToggle, documentId }: { item: any; isPlay
         ) : item.image ? (
           <Image src={item.image} alt={item.title} fill className="object-cover opacity-50 group-hover:opacity-70 transition-opacity" />
         ) : youtubeVideoId ? (
-          <img 
+          <img
             src={`https://img.youtube.com/vi/${youtubeVideoId}/maxresdefault.jpg`}
             className="w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-opacity"
             alt=""
@@ -76,7 +76,7 @@ const ReelCard = ({ item, isPlaying, onToggle, documentId }: { item: any; isPlay
         )}
       </div>
 
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent z-10" />
+      <div className="absolute inset-0 bg-linear-to-t from-black/90 via-transparent to-transparent z-10" />
 
       <div className="absolute inset-0 flex items-center justify-center z-20">
         {!isPlaying && (
@@ -89,11 +89,11 @@ const ReelCard = ({ item, isPlaying, onToggle, documentId }: { item: any; isPlay
       {documentId && (
         <div className={`absolute top-3 right-3 z-40 transition-opacity ${isEditMode ? "opacity-100" : "opacity-0 group-hover:opacity-100 md:group-hover:opacity-100"}`}>
           <div className="bg-black/60 backdrop-blur-md p-1.5 rounded-xl border border-white/10 shadow-xl">
-            <AddRemoveControls 
-              id={documentId} 
-              field="work.items" 
-              itemKey={item._key} 
-              label="Reel" 
+            <AddRemoveControls
+              id={documentId}
+              field="work.items"
+              itemKey={item._key}
+              label="Reel"
               initialData={item}
               fields={workItemFields}
             />
@@ -175,17 +175,17 @@ export const WorkReelsSection = ({ workData, documentId }: { workData?: any; doc
               </div>
               {documentId && (
                 <div className="mt-4">
-                  <AddRemoveControls 
-                    id={documentId} 
-                    field="work.items" 
-                    label="Reel" 
+                  <AddRemoveControls
+                    id={documentId}
+                    field="work.items"
+                    label="Reel"
                     fields={[
                       { name: "title", label: "Reel Title", type: "string" as const, placeholder: "e.g. Performance Ad" },
                       { name: "category", label: "Category", type: "string" as const, placeholder: "e.g. Motion Design" },
-                      { 
-                        name: "videoSource", 
-                        label: "Video Source", 
-                        type: "select" as const, 
+                      {
+                        name: "videoSource",
+                        label: "Video Source",
+                        type: "select" as const,
                         options: [
                           { label: "UploadThing", value: "uploadthing" },
                           { label: "YouTube", value: "youtube" },

@@ -46,7 +46,6 @@ export default function OrganicContentYouTubeClient({ data }: { data: any }) {
           documentId={documentId}
           label={data?.resultsLabel}
         />
-        <ProcessSection data={data} documentId={documentId} />
         <CenteredPricing data={data} documentId={documentId} />
         <ServiceCalendly content={{
           title: data?.calendlyTitle,

@@ -25,15 +25,6 @@ export default function SaasVideosClient({ data }: { data: any }) {
           _documentId={documentId}
         />
         <WorkReelsSection workData={data?.work} documentId={documentId} />
-        <ProblemSolutionComparison
-          problems={data?.problems || []}
-          solutions={data?.solutions || []}
-          problemsLabel={data?.problemsLabel || "The Problem"}
-          problemsTitle={data?.problemsTitle || "The Old Way"}
-          solutionsLabel={data?.solutionsLabel || "The Matera Solution"}
-          solutionsTitle={data?.solutionsTitle || "SaaS That Converts"}
-          _documentId={documentId}
-        />
         <ResultsSection
           title={data?.resultsTitle || "Our Results"}
           items={data?.results || []}

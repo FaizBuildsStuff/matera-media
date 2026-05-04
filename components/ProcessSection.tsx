@@ -59,9 +59,9 @@ export const ProcessSection = ({ data, documentId }: ProcessSectionProps) => {
               ) : label}
             </div>
             {documentId && (
-              <AddRemoveControls 
-                id={documentId} 
-                field="processSteps" 
+              <AddRemoveControls
+                id={documentId}
+                field="processSteps"
                 label="Step"
                 fields={[
                   { name: "name", label: "Step Name", type: "string", placeholder: "e.g. Discovery Call" },
@@ -85,14 +85,14 @@ export const ProcessSection = ({ data, documentId }: ProcessSectionProps) => {
             {steps.map((step: any, i: number) => (
               <div key={step._key || i} className="pt-10 md:pt-14 relative group pl-8 md:pl-0">
                 <div className="absolute top-0 left-[-7px] md:left-0 md:-translate-y-1/2 w-3.5 h-3.5 rounded-full bg-emerald-500 border-4 border-[#051A0E] z-20 group-hover:scale-125 transition-transform shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
-                
+
                 <div className="flex justify-between items-start mb-3">
                   <span className="text-emerald-500 font-bold text-[9px] tracking-widest block uppercase opacity-50 group-hover:opacity-100 transition-opacity">Step 0{i + 1}</span>
                   {documentId && (
-                    <AddRemoveControls 
-                      id={documentId} 
-                      field="processSteps" 
-                      itemKey={step._key} 
+                    <AddRemoveControls
+                      id={documentId}
+                      field="processSteps"
+                      itemKey={step._key}
                       label="Step"
                       initialData={step}
                       fields={[

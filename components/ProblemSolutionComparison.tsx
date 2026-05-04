@@ -41,15 +41,15 @@ const ProblemGraphic = () => {
   useGSAP(() => {
     gsap.to(".prob-ring", { rotation: -180, duration: 12, repeat: -1, yoyo: true, ease: "sine.inOut" });
     gsap.to(".prob-ring-inner", { rotation: 360, duration: 20, repeat: -1, ease: "none" });
-    gsap.to(".prob-pulse", { scale: 1.15, opacity: 0.4, duration: 0.15, repeat: -1, yoyo: true, ease: "steps(2)" });
+    // Removed blinking animation
   }, { scope: hudRef });
 
   return (
     <div ref={hudRef} className="relative w-full aspect-square max-w-[200px] mx-auto flex items-center justify-center">
       <div className="relative z-20 w-20 h-20 bg-red-500/5 rounded-full border border-red-500/20 flex items-center justify-center shadow-[0_0_30px_rgba(239,68,68,0.15)] backdrop-blur-sm">
-        <div className="prob-pulse absolute inset-0 rounded-full bg-red-500/10 blur-xl" />
+        <div className="absolute inset-0 rounded-full bg-red-500/10 blur-xl" />
         <div className="relative z-30 w-12 h-12 flex items-center justify-center text-red-500/60">
-          <X className="w-8 h-8 stroke-[2.5] prob-pulse" />
+          <X className="w-8 h-8 stroke-[2.5]" />
         </div>
       </div>
       <div className="prob-ring absolute w-[140px] h-[140px] border border-dashed border-red-500/20 rounded-full" />
@@ -139,36 +139,65 @@ export const ProblemSolutionComparison = ({
       scaleY: 1, ease: "none",
       scrollTrigger: { trigger: containerRef.current, start: "top 60%", end: "bottom 30%", scrub: true }
     });
-    gsap.utils.toArray('.gsap-ambient').forEach((el: any, i) => {
+    gsap.utils.toArray('.gsap-orb').forEach((el: any, i) => {
       gsap.to(el, {
-        yPercent: -50 * (i + 1), ease: "none",
-        scrollTrigger: { trigger: containerRef.current, start: "top bottom", end: "bottom top", scrub: true }
+        x: "random(-100, 100)",
+        y: "random(-100, 100)",
+        duration: "random(10, 20)",
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
       });
     });
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} className="relative py-20 px-6 bg-[#051A0E] overflow-hidden" style={{ perspective: "1000px" }}>
-      {/* Parallax Background Text */}
-      <div className="absolute inset-0 flex flex-col justify-around pointer-events-none z-0 overflow-hidden opacity-[0.02] select-none" style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)' }}>
-        {[1, 2, 3, 4, 5].map((_, i) => (
-          <div key={i} className={`gsap-bg-text whitespace-nowrap font-black text-[10vh] md:text-[15vh] leading-none text-white uppercase tracking-tighter ${i % 2 === 0 ? 'ml-[10%]' : 'ml-[-10%]'}`} style={{ willChange: 'transform', backfaceVisibility: 'hidden' }}>
-            MATERA MEDIA • DOMINATE YOUR MARKET • MATERA MEDIA • DOMINATE YOUR MARKET
-          </div>
-        ))}
+    <section ref={containerRef} className="relative py-24 px-6 bg-[#05180D] overflow-hidden" style={{ perspective: "1000px" }}>
+      {/* Top & Bottom Glowing Border Mixers */}
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-linear-to-r from-transparent via-emerald-500/20 to-transparent z-10" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[40px] bg-emerald-500/5 blur-[30px] rounded-full z-10 pointer-events-none" />
+
+      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-linear-to-r from-transparent via-emerald-500/20 to-transparent z-10" />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-[40px] bg-emerald-500/5 blur-[30px] rounded-full z-10 pointer-events-none" />
+
+      {/* Background Elements Container with Vertical Masking */}
+      <div className="absolute inset-0 z-0 pointer-events-none"
+        style={{
+          maskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)',
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)'
+        }}>
+
+        {/* Technical Grid Overlay */}
+        <div className="absolute inset-0 opacity-40"
+          style={{
+            backgroundImage: `linear-gradient(to right, rgba(16,185,129,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(16,185,129,0.05) 1px, transparent 1px)`,
+            backgroundSize: '40px 40px',
+          }}
+        />
+
+        {/* Dynamic Ambient Orbs */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="gsap-orb absolute top-[10%] left-[10%] w-[500px] h-[500px] bg-emerald-500/15 blur-[120px] rounded-full" />
+          <div className="gsap-orb absolute bottom-[10%] right-[10%] w-[600px] h-[600px] bg-emerald-400/10 blur-[150px] rounded-full" />
+          <div className="gsap-orb absolute top-[40%] right-[20%] w-[300px] h-[300px] bg-emerald-600/5 blur-[100px] rounded-full" />
+        </div>
+
+        {/* Parallax Background Text */}
+        <div className="absolute inset-0 flex flex-col justify-around overflow-hidden opacity-[0.03] select-none">
+          {[1, 2, 3].map((_, i) => (
+            <div key={i} className={`gsap-bg-text whitespace-nowrap font-black text-[12vh] md:text-[18vh] leading-none text-white uppercase tracking-[0.1em] ${i % 2 === 0 ? 'ml-[-20%]' : 'ml-[20%]'}`} style={{ willChange: 'transform', backfaceVisibility: 'hidden' }}>
+              MATERA MEDIA • DOMINATE YOUR MARKET • MATERA MEDIA • DOMINATE YOUR MARKET
+            </div>
+          ))}
+        </div>
+
+        {/* Subtle Grain Overlay */}
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] mix-blend-overlay" />
       </div>
 
-      {/* Central Spine */}
-      <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-[0.5px] bg-linear-to-b from-transparent via-white/5 to-transparent z-0">
-        <div className="gsap-spine w-full h-full bg-linear-to-b from-transparent via-emerald-500 to-transparent origin-top shadow-[0_0_15px_rgba(16,185,129,0.5)]" />
-      </div>
-
-      {/* Ambient Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="gsap-ambient absolute top-[40%] right-[10%] w-[300px] h-[300px] bg-emerald-500/10 blur-[80px] rounded-full" />
-        <div className="gsap-ambient absolute top-[60%] left-[5%] w-[250px] h-[250px] bg-red-500/5 blur-[70px] rounded-full" />
-        <div className="gsap-ambient absolute top-[80%] left-[20%] text-white/5 text-2xl font-light">+</div>
-        <div className="gsap-ambient absolute top-[30%] right-[25%] text-emerald-500/10 text-3xl font-light">+</div>
+      {/* Central Spine (The 'Middle' Separator) */}
+      <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-[1px] bg-white/5 z-0 -translate-x-1/2">
+        <div className="gsap-spine w-full h-full bg-linear-to-b from-transparent via-emerald-500/30 to-transparent origin-top shadow-[0_0_20px_rgba(16,185,129,0.1)]" />
       </div>
 
       <div className="max-w-5xl mx-auto relative z-10">
@@ -191,10 +220,10 @@ export const ProblemSolutionComparison = ({
                   ) : problemsLabel}
                 </span>
                 {_documentId && (
-                  <AddRemoveControls 
-                    id={_documentId} 
-                    field={getPath("problems")} 
-                    label="Problem" 
+                  <AddRemoveControls
+                    id={_documentId}
+                    field={getPath("problems")}
+                    label="Problem"
                     fields={[
                       { name: "title", label: "Problem Title", type: "string", placeholder: "e.g. Low conversion rates" },
                       { name: "description", label: "Problem Description", type: "text", placeholder: "Describe the pain point..." }
@@ -222,17 +251,17 @@ export const ProblemSolutionComparison = ({
                           ) : item.title}
                         </h4>
                         {_documentId && (
-                          <AddRemoveControls 
-                            id={_documentId} 
-                            field={getPath("problems")} 
-                            itemKey={item._key} 
+                          <AddRemoveControls
+                            id={_documentId}
+                            field={getPath("problems")}
+                            itemKey={item._key}
                             label="Problem"
                             initialData={item}
                             fields={[
                               { name: "title", label: "Problem Title", type: "string", placeholder: "e.g. Low conversion rates" },
                               { name: "description", label: "Problem Description", type: "text", placeholder: "Describe the pain point..." }
                             ]}
-                            className="opacity-0 group-hover/item:opacity-100 transition-opacity shrink-0" 
+                            className="opacity-0 group-hover/item:opacity-100 transition-opacity shrink-0"
                           />
                         )}
                       </div>
@@ -267,10 +296,10 @@ export const ProblemSolutionComparison = ({
                   ) : solutionsLabel}
                 </span>
                 {_documentId && (
-                  <AddRemoveControls 
-                    id={_documentId} 
-                    field={getPath("solutions")} 
-                    label="Solution" 
+                  <AddRemoveControls
+                    id={_documentId}
+                    field={getPath("solutions")}
+                    label="Solution"
                     fields={[
                       { name: "title", label: "Solution Title", type: "string", placeholder: "e.g. High-performance creative" },
                       { name: "description", label: "Solution Description", type: "text", placeholder: "Describe how we solve it..." }
@@ -298,17 +327,17 @@ export const ProblemSolutionComparison = ({
                           ) : item.title}
                         </h4>
                         {_documentId && (
-                          <AddRemoveControls 
-                            id={_documentId} 
-                            field={getPath("solutions")} 
-                            itemKey={item._key} 
+                          <AddRemoveControls
+                            id={_documentId}
+                            field={getPath("solutions")}
+                            itemKey={item._key}
                             label="Solution"
                             initialData={item}
                             fields={[
                               { name: "title", label: "Solution Title", type: "string", placeholder: "e.g. High-performance creative" },
                               { name: "description", label: "Solution Description", type: "text", placeholder: "Describe how we solve it..." }
                             ]}
-                            className="opacity-0 group-hover/item:opacity-100 transition-opacity shrink-0" 
+                            className="opacity-0 group-hover/item:opacity-100 transition-opacity shrink-0"
                           />
                         )}
                       </div>

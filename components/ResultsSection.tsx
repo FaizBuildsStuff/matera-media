@@ -47,10 +47,10 @@ export const ResultsSection = ({ items: originalItems, title, documentId, label 
           </h2>
           {documentId && (
             <div className="mt-8">
-              <AddRemoveControls 
-                id={documentId} 
-                field="results" 
-                label="Result" 
+              <AddRemoveControls
+                id={documentId}
+                field="results"
+                label="Result"
                 fields={resultFields}
               />
             </div>
@@ -90,14 +90,14 @@ export const ResultsSection = ({ items: originalItems, title, documentId, label 
               ) : (
                 <div className="absolute inset-0 bg-emerald-950/20" />
               )}
-              
+
               {documentId && (
                 <div className="absolute top-3 right-3 z-40 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                   <div className="bg-black/60 backdrop-blur-md p-1.5 rounded-xl border border-white/10 shadow-xl">
-                    <AddRemoveControls 
-                      id={documentId} 
-                      field="results" 
-                      itemKey={item._key} 
+                    <AddRemoveControls
+                      id={documentId}
+                      field="results"
+                      itemKey={item._key}
                       label="Result"
                       initialData={item}
                       fields={resultFields}
@@ -107,14 +107,14 @@ export const ResultsSection = ({ items: originalItems, title, documentId, label 
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-6 text-left pointer-events-none">
                 <p className="text-white font-bold text-lg">
-                    {documentId ? (
-                        <EditableText id={documentId} field={`results[_key == "${item._key}"].label`} value={item.label} as="span" />
-                    ) : item.label}
+                  {documentId ? (
+                    <EditableText id={documentId} field={`results[_key == "${item._key}"].label`} value={item.label} as="span" />
+                  ) : item.label}
                 </p>
                 <p className="text-emerald-400 font-bold text-2xl">
-                    {documentId ? (
-                        <EditableText id={documentId} field={`results[_key == "${item._key}"].value`} value={item.value} as="span" />
-                    ) : item.value}
+                  {documentId ? (
+                    <EditableText id={documentId} field={`results[_key == "${item._key}"].value`} value={item.value} as="span" />
+                  ) : item.value}
                 </p>
               </div>
             </div>

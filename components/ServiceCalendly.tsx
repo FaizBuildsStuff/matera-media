@@ -72,13 +72,13 @@ export function ServiceCalendly({ content }: ServiceCalendlyProps) {
               content?.highlightedWord ? (
                 subtitle.split(new RegExp("(" + content.highlightedWord + ")", "gi")).map((part, i) =>
                   part.toLowerCase() === content.highlightedWord!.toLowerCase() ? (
-                    <span 
-                      key={i} 
-                      className="text-emerald-400 font-medium" 
-                      style={{ 
-                        fontFamily: "'Satoshi', sans-serif", 
-                        fontStyle: "italic", 
-                        textShadow: "0 0 25px rgba(52, 211, 153, 0.25)" 
+                    <span
+                      key={i}
+                      className="text-emerald-400 font-medium"
+                      style={{
+                        fontFamily: "'Satoshi', sans-serif",
+                        fontStyle: "italic",
+                        textShadow: "0 0 25px rgba(52, 211, 153, 0.25)"
                       }}>
                       {part}
                     </span>
@@ -93,11 +93,11 @@ export function ServiceCalendly({ content }: ServiceCalendlyProps) {
           </div>
           {documentId && (
             <div className="mt-4">
-              <EditableButton 
-                id={documentId} 
+              <EditableButton
+                id={documentId}
                 textField="calendlyUrl" // Reusing text field for simplicity in UI, but it's the URL
-                linkField="calendlyUrl" 
-                text="Edit Calendly URL" 
+                linkField="calendlyUrl"
+                text="Edit Calendly URL"
                 link={calendlyUrl}
               >
                 <button className="text-[10px] text-emerald-500/40 uppercase font-black tracking-widest hover:text-emerald-500 transition-colors">
@@ -122,10 +122,10 @@ export function ServiceCalendly({ content }: ServiceCalendlyProps) {
           <div
             className="calendly-inline-widget w-full relative z-10"
             data-url={calendlyUrl}
-            style={{ 
-              minWidth: "320px", 
-              height: "960px", 
-              overflow: "hidden" 
+            style={{
+              minWidth: "320px",
+              height: "960px",
+              overflow: "hidden"
             }}
           />
         </div>
