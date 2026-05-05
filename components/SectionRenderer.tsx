@@ -148,30 +148,30 @@ interface SectionRendererProps {
 
 export function SectionRenderer({ sections, documentId }: SectionRendererProps) {
   return (
-    <main className="bg-[#05180D] min-h-screen flex flex-col">
+    <main className="bg-[#050505] min-h-screen flex flex-col">
       {!sections || sections.length === 0 ? (
         <DefaultSections />
       ) : (
         sections.map((section, index) => (
           <div key={section._key} className="relative group/section">
             <RenderBlock section={section} documentId={documentId} />
-            
+
             {/* Section-level Controls */}
             {documentId && (
               <div className="absolute top-4 right-4 z-50 opacity-0 group-hover/section:opacity-100 transition-opacity">
-                <AddRemoveControls 
-                  id={documentId} 
-                  field="sections" 
-                  itemKey={section._key} 
+                <AddRemoveControls
+                  id={documentId}
+                  field="sections"
+                  itemKey={section._key}
                   label="Section"
                   className="bg-black/80 backdrop-blur-md p-2 rounded-full border border-white/10 shadow-2xl"
                   newItemTemplate={{ _type: "hero", _key: Math.random().toString(36).substring(7) }}
                   fields={[
-                    { 
-                      name: "_type", 
-                      label: "Section Type", 
-                      type: "string", 
-                      placeholder: "hero, workShowcase, howItWorks, pricing, faq, calendlyWidget, testimonials, resultsSection, processSection" 
+                    {
+                      name: "_type",
+                      label: "Section Type",
+                      type: "string",
+                      placeholder: "hero, workShowcase, howItWorks, pricing, faq, calendlyWidget, testimonials, resultsSection, processSection"
                     }
                   ]}
                 />
@@ -181,18 +181,18 @@ export function SectionRenderer({ sections, documentId }: SectionRendererProps) 
         ))
       )}
       {documentId && (
-        <div className="flex justify-center py-10 border-t border-white/5 bg-[#05180D]">
-          <AddRemoveControls 
-            id={documentId} 
-            field="sections" 
-            label="Section" 
+        <div className="flex justify-center py-10 border-t border-white/5 bg-[#050505]">
+          <AddRemoveControls
+            id={documentId}
+            field="sections"
+            label="Section"
             newItemTemplate={{ _type: "hero", _key: Math.random().toString(36).substring(7) }}
             fields={[
-              { 
-                name: "_type", 
-                label: "Section Type", 
-                type: "string", 
-                placeholder: "hero, workShowcase, howItWorks, pricing, faq, calendlyWidget, testimonials, resultsSection, processSection" 
+              {
+                name: "_type",
+                label: "Section Type",
+                type: "string",
+                placeholder: "hero, workShowcase, howItWorks, pricing, faq, calendlyWidget, testimonials, resultsSection, processSection"
               }
             ]}
           />
@@ -222,20 +222,20 @@ function RenderBlock({ section, documentId }: { section: SectionBlock; documentI
     case "calendlyWidget":
       return <CalendlyWidget content={{ ...section, _documentId: documentId, _sectionKey: section._key }} />;
     case "resultsSection":
-      return <ResultsSection 
-        items={section.results || []} 
-        label={section.resultsLabel} 
-        title={section.resultsTitle || ""} 
-        documentId={documentId} 
+      return <ResultsSection
+        items={section.results || []}
+        label={section.resultsLabel}
+        title={section.resultsTitle || ""}
+        documentId={documentId}
       />;
     case "processSection":
-      return <ProcessSection 
+      return <ProcessSection
         data={{
           processSteps: section.processSteps || [],
           processLabel: section.processLabel,
           processTitle: section.processTitle
         }}
-        documentId={documentId} 
+        documentId={documentId}
       />;
     default:
       return null;

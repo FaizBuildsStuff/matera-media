@@ -45,15 +45,16 @@ export const ProcessSection = ({ data, documentId }: ProcessSectionProps) => {
   const steps = getLiveItems(documentId || "", "processSteps", originalSteps);
 
   return (
-    <section ref={container} className="relative -mt-px py-24 px-6 bg-[#051A0E] overflow-hidden border-none z-10">
-      <div className="absolute top-0 left-0 w-full h-48 bg-linear-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
-      <div className="absolute top-[10%] left-[-10%] w-[45%] h-[50%] bg-white/2 blur-[160px] rounded-full pointer-events-none z-0" />
-      <div className="absolute bottom-[10%] right-[-15%] w-[40%] h-[50%] bg-white/2 blur-[140px] rounded-full pointer-events-none z-0" />
+    <section ref={container} className="relative -mt-px py-12 md:py-16 px-6  border-none z-10">
+      {/* Fades disabled to allow glow bleed */}
+      <div className="absolute top-[10%] left-[-10%] w-[45%] h-[50%] bg-blue-600/[0.12] blur-[160px] rounded-full pointer-events-none z-0" />
+      <div className="absolute top-[40%] right-[-5%] w-[35%] h-[45%] bg-purple-500/[0.12] blur-[150px] rounded-full pointer-events-none z-0" />
+      <div className="absolute bottom-[10%] left-[20%] w-[40%] h-[50%] bg-emerald-500/[0.12] blur-[140px] rounded-full pointer-events-none z-0" />
 
       <div className="max-w-7xl mx-auto relative z-30">
         <div className="mb-16 md:mb-20">
           <div className="flex justify-between items-center mb-3">
-            <div className="text-emerald-500 text-[10px] font-bold tracking-[0.4em] uppercase">
+            <div className="text-white text-[10px] font-bold tracking-[0.4em] uppercase">
               {documentId ? (
                 <EditableText id={documentId} field="processLabel" value={label} as="span" />
               ) : label}
@@ -78,16 +79,16 @@ export const ProcessSection = ({ data, documentId }: ProcessSectionProps) => {
         </div>
 
         <div className="relative">
-          <div ref={lineRef} className="absolute top-0 left-0 md:w-full md:h-px w-[2px] h-full bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.8)] z-10" />
+          <div ref={lineRef} className="absolute top-0 left-0 md:w-full md:h-px w-[2px] h-full bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.8)] z-10" />
           <div className="absolute top-0 left-0 md:w-full md:h-px w-[2px] h-full bg-white/5" />
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-12">
             {steps.map((step: any, i: number) => (
               <div key={step._key || i} className="pt-10 md:pt-14 relative group pl-8 md:pl-0">
-                <div className="absolute top-0 left-[-7px] md:left-0 md:-translate-y-1/2 w-3.5 h-3.5 rounded-full bg-emerald-500 border-4 border-[#051A0E] z-20 group-hover:scale-125 transition-transform shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
+                <div className="absolute top-0 left-[-7px] md:left-0 md:-translate-y-1/2 w-3.5 h-3.5 rounded-full bg-white text-black border-4 border-[#051A0E] z-20 group-hover:scale-125 transition-transform shadow-[0_0_10px_rgba(255,255,255,0.5)]" />
 
                 <div className="flex justify-between items-start mb-3">
-                  <span className="text-emerald-500 font-bold text-[9px] tracking-widest block uppercase opacity-50 group-hover:opacity-100 transition-opacity">Step 0{i + 1}</span>
+                  <span className="text-white font-bold text-[9px] tracking-widest block uppercase opacity-50 group-hover:opacity-100 transition-opacity">Step 0{i + 1}</span>
                   {documentId && (
                     <AddRemoveControls
                       id={documentId}
@@ -104,7 +105,7 @@ export const ProcessSection = ({ data, documentId }: ProcessSectionProps) => {
                   )}
                 </div>
 
-                <h3 className="text-white text-xl md:text-2xl font-bold mb-4 tracking-tight group-hover:text-emerald-400 transition-colors whitespace-pre-wrap">
+                <h3 className="text-white text-xl md:text-2xl font-bold mb-4 tracking-tight group-hover:text-white/80 transition-colors whitespace-pre-wrap">
                   {documentId ? (
                     <EditableText id={documentId} field={`processSteps[_key == "${step._key}"].name`} value={step.name} as="span" />
                   ) : step.name}
@@ -119,7 +120,7 @@ export const ProcessSection = ({ data, documentId }: ProcessSectionProps) => {
           </div>
         </div>
       </div>
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-linear-to-t from-[#051A0E] via-[#051A0E]/80 to-transparent pointer-events-none z-20" />
+      {/* Bottom fade disabled to allow glow bleed */}
     </section>
   );
 };

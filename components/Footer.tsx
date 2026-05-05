@@ -53,7 +53,7 @@ export const Footer = ({ settings }: { settings?: FooterSettings }) => {
     };
 
     return (
-        <footer className="w-full bg-[#05180D] border-t border-white/5 relative overflow-hidden">
+        <footer className="w-full bg-[#050505] relative overflow-hidden">
             {/* --- BACKGROUND DESIGN ELEMENTS --- */}
             <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden select-none">
                 {/* Large Scale Subtle Watermark */}
@@ -64,14 +64,14 @@ export const Footer = ({ settings }: { settings?: FooterSettings }) => {
                 </h2>
 
                 {/* Depth Glows */}
-                <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px]" />
+                <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-white/5 rounded-full blur-[120px]" />
                 <div className="absolute top-[-10%] right-[-5%] w-[400px] h-[400px] bg-white/5 rounded-full blur-[100px]" />
             </div>
 
             <div className="max-w-7xl mx-auto px-6 relative z-10">
 
                 {/* --- CENTERED BRANDING & NAVIGATION --- */}
-                <div className="py-24 flex flex-col items-center">
+                <div className="pt-12 pb-24 flex flex-col items-center">
                     {/* Centered Logo with Refined Treatment */}
                     <Link href="/" className="mb-12 hover:opacity-80 transition-opacity duration-500">
                         <Image

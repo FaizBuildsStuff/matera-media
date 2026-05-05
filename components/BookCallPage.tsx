@@ -105,18 +105,18 @@ export function BookCallPage({ content }: { content?: BookingPageContent }) {
       <main
         ref={containerRef}
         className="min-h-screen relative px-6 py-24 md:py-32 overflow-hidden font-satoshi"
-        style={{ background: "#05180D" }}
+        style={{ background: "#050505" }}
       >
         {/* Atmospheric Layers */}
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none" />
-        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-emerald-500/10 blur-[150px] rounded-full pointer-events-none" />
-        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-emerald-900/20 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-white/10 blur-[150px] rounded-full pointer-events-none" />
+        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-white/5 blur-[120px] rounded-full pointer-events-none" />
 
         <div className="relative z-10 max-w-6xl mx-auto grid lg:grid-cols-[1fr,1.2fr] gap-16 lg:gap-24 items-center">
 
           {/* CONTENT SECTION */}
           <div ref={leftRef} className="space-y-10">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/5 bg-white/[0.03] text-[10px] uppercase font-bold tracking-[0.2em] text-emerald-400 backdrop-blur-md">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/5 bg-white/[0.03] text-[10px] uppercase font-bold tracking-[0.2em] text-white/80 backdrop-blur-md">
               <Sparkles className="size-3" />
               Strategic Booking
             </div>
@@ -138,8 +138,8 @@ export function BookCallPage({ content }: { content?: BookingPageContent }) {
             <div className="space-y-4 max-w-md">
               {benefits.map((benefit, i) => (
                 <div key={i} className="benefit-item group flex items-center gap-4 p-4 rounded-2xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-colors duration-500">
-                  <div className="size-8 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 group-hover:scale-110 transition-transform">
-                    <CheckCircle2 className="size-4 text-emerald-400" />
+                  <div className="size-8 rounded-full bg-white/10 flex items-center justify-center border border-white/20 group-hover:scale-110 transition-transform">
+                    <CheckCircle2 className="size-4 text-white/80" />
                   </div>
                   <div className="text-white/70 text-sm font-medium whitespace-pre-wrap">
                     {documentId ? (
@@ -159,7 +159,7 @@ export function BookCallPage({ content }: { content?: BookingPageContent }) {
                   text="Edit Calendly URL" 
                   link={calendlyUrl}
                 >
-                  <button className="text-[10px] text-emerald-500/40 uppercase font-black tracking-widest hover:text-emerald-500 transition-colors">
+                  <button className="text-[10px] text-white/40 uppercase font-black tracking-widest hover:text-white transition-colors">
                     Config URL
                   </button>
                 </EditableButton>
@@ -169,7 +169,7 @@ export function BookCallPage({ content }: { content?: BookingPageContent }) {
 
           {/* CALENDLY SECTION */}
           <div ref={rightRef} className="relative group">
-            <div className="absolute -inset-4 bg-emerald-500/5 blur-3xl rounded-[40px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+            <div className="absolute -inset-4 bg-white/5 blur-3xl rounded-[40px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
             
             <Card
               className="relative rounded-[32px] overflow-hidden border border-white/10 backdrop-blur-2xl shadow-2xl"

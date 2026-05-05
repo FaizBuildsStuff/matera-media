@@ -83,26 +83,26 @@ const HUDGraphic = () => {
       <div className="relative z-20 w-20 h-20 bg-emerald-500/5 rounded-full border border-emerald-500/20 flex items-center justify-center shadow-[0_0_30px_rgba(16,185,129,0.15)] backdrop-blur-sm">
         <div className="hud-pulse absolute inset-0 rounded-full bg-emerald-500/10 blur-xl" />
         <div className="relative z-30 w-12 h-12 flex items-center justify-center">
-          <img src="/Logo.png" alt="Logo" className="w-full h-full object-contain drop-shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
+          <img src="/Logo.png" alt="Logo" className="w-full h-full object-contain grayscale brightness-200 drop-shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
         </div>
       </div>
       <div className="hud-ring absolute w-[140px] h-[140px] border border-dashed border-emerald-500/20 rounded-full" />
       <div className="hud-ring-inner absolute w-[110px] h-[110px] border border-emerald-500/10 border-t-emerald-500/40 rounded-full" />
       <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
         <div className="absolute top-4 left-4 p-1.5 bg-black/40 backdrop-blur-md rounded-xl border border-emerald-500/20 text-emerald-400">
-          <Video className="w-4 h-4" />
+          <Video className="w-4 h-4 opacity-70" />
         </div>
-        <div className="absolute bottom-4 right-4 p-1 bg-emerald-500 rounded-full text-black shadow-[0_0_15px_rgba(16,185,129,0.5)]">
+        <div className="absolute bottom-4 right-4 p-1 bg-emerald-500 text-white rounded-full shadow-[0_0_15px_rgba(16,185,129,0.5)]">
           <Check className="w-3 h-3 stroke-3" />
         </div>
         <div className="absolute top-1/2 -right-1 -translate-y-1/2 p-1.5 bg-black/40 backdrop-blur-md rounded-xl border border-emerald-500/20 text-emerald-400">
-          <Clapperboard className="w-4 h-4" />
+          <Clapperboard className="w-4 h-4 opacity-70" />
         </div>
         <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 flex items-center gap-1">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="w-5 h-5 rounded-full border border-emerald-500/30 bg-emerald-950/50 overflow-hidden">
+            <div key={i} className="w-5 h-5 rounded-full border border-emerald-500/20 bg-emerald-500/5 overflow-hidden">
               <div className="w-full h-full bg-emerald-500/10 flex items-center justify-center">
-                <Users className="w-2.5 h-2.5 text-emerald-500/40" />
+                <Users className="w-2.5 h-2.5 text-emerald-400/40" />
               </div>
             </div>
           ))}
@@ -152,13 +152,13 @@ export const ProblemSolutionComparison = ({
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} className="relative py-24 px-6 bg-[#05180D] overflow-hidden" style={{ perspective: "1000px" }}>
+    <section ref={containerRef} className="relative py-24 px-6 " style={{ perspective: "1000px" }}>
       {/* Top & Bottom Glowing Border Mixers */}
-      <div className="absolute top-0 left-0 right-0 h-[1px] bg-linear-to-r from-transparent via-emerald-500/20 to-transparent z-10" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[40px] bg-emerald-500/5 blur-[30px] rounded-full z-10 pointer-events-none" />
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent z-10" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[40px] bg-white/5 blur-[30px] rounded-full z-10 pointer-events-none" />
 
-      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-linear-to-r from-transparent via-emerald-500/20 to-transparent z-10" />
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-[40px] bg-emerald-500/5 blur-[30px] rounded-full z-10 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent z-10" />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-[40px] bg-white/5 blur-[30px] rounded-full z-10 pointer-events-none" />
 
       {/* Background Elements Container with Vertical Masking */}
       <div className="absolute inset-0 z-0 pointer-events-none"
@@ -170,16 +170,16 @@ export const ProblemSolutionComparison = ({
         {/* Technical Grid Overlay */}
         <div className="absolute inset-0 opacity-40"
           style={{
-            backgroundImage: `linear-gradient(to right, rgba(16,185,129,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(16,185,129,0.05) 1px, transparent 1px)`,
+            backgroundImage: `linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)`,
             backgroundSize: '40px 40px',
           }}
         />
 
         {/* Dynamic Ambient Orbs */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="gsap-orb absolute top-[10%] left-[10%] w-[500px] h-[500px] bg-emerald-500/15 blur-[120px] rounded-full" />
-          <div className="gsap-orb absolute bottom-[10%] right-[10%] w-[600px] h-[600px] bg-emerald-400/10 blur-[150px] rounded-full" />
-          <div className="gsap-orb absolute top-[40%] right-[20%] w-[300px] h-[300px] bg-emerald-600/5 blur-[100px] rounded-full" />
+        <div className="absolute inset-0">
+          <div className="gsap-orb absolute top-[10%] left-[-5%] w-[500px] h-[500px] bg-red-600/[0.1] blur-[140px] rounded-full" />
+          <div className="gsap-orb absolute bottom-[10%] right-[-5%] w-[600px] h-[600px] bg-emerald-500/[0.12] blur-[150px] rounded-full" />
+          <div className="gsap-orb absolute top-[40%] right-[10%] w-[400px] h-[400px] bg-emerald-600/[0.08] blur-[130px] rounded-full" />
         </div>
 
         {/* Parallax Background Text */}
@@ -197,7 +197,7 @@ export const ProblemSolutionComparison = ({
 
       {/* Central Spine (The 'Middle' Separator) */}
       <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-[1px] bg-white/5 z-0 -translate-x-1/2">
-        <div className="gsap-spine w-full h-full bg-linear-to-b from-transparent via-emerald-500/30 to-transparent origin-top shadow-[0_0_20px_rgba(16,185,129,0.1)]" />
+        <div className="gsap-spine w-full h-full bg-gradient-to-b from-transparent via-white/30 to-transparent origin-top shadow-[0_0_20px_rgba(255,255,255,0.1)]" />
       </div>
 
       <div className="max-w-5xl mx-auto relative z-10">
@@ -280,9 +280,9 @@ export const ProblemSolutionComparison = ({
           </div>
 
           {/* --- SOLUTION CARD --- */}
-          <div className="gsap-solution-card group relative flex flex-col p-6 md:p-8 rounded-[2rem] bg-emerald-950/20 border border-emerald-500/20 shadow-[0_0_80px_rgba(16,185,129,0.05)] overflow-hidden">
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] mix-blend-overlay rounded-[2.5rem] pointer-events-none" />
-            <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-emerald-500/10 blur-[80px] rounded-full pointer-events-none" />
+          <div className="gsap-solution-card group relative flex flex-col p-6 md:p-8 rounded-[2rem] bg-emerald-950/20 border border-emerald-500/10 shadow-[0_0_80px_rgba(16,185,129,0.05)] hover:border-emerald-500/20 transition-all duration-300 overflow-hidden">
+            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay rounded-[2.5rem] pointer-events-none" />
+            <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-emerald-500/5 blur-[80px] rounded-full pointer-events-none" />
 
             <div className="h-40 md:h-48 flex items-center justify-center relative z-10 mix-blend-screen">
               <HUDGraphic />
@@ -290,7 +290,7 @@ export const ProblemSolutionComparison = ({
 
             <div className="mt-8 relative z-10">
               <div className="flex justify-between items-center mb-3">
-                <span className="text-emerald-400 text-[10px] font-black tracking-[0.3em] block uppercase border border-emerald-500/20 rounded-full px-3 py-1 w-fit bg-emerald-500/5 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+                <span className="text-emerald-500 text-[10px] font-black tracking-[0.3em] block uppercase border border-emerald-500/20 rounded-full px-3 py-1 w-fit bg-emerald-500/5 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
                   {_documentId ? (
                     <EditableText id={_documentId} field={getPath("solutionsLabel")} value={solutionsLabel} as="span" />
                   ) : solutionsLabel}
@@ -315,8 +315,8 @@ export const ProblemSolutionComparison = ({
 
               <ul className="space-y-4">
                 {solutions.map((item: any, i: number) => (
-                  <li key={item._key || i} className="gsap-solution-item flex items-start gap-4 p-3 rounded-2xl bg-emerald-950/30 border border-emerald-500/10 hover:border-emerald-500/30 hover:bg-emerald-900/20 transition-all duration-300 group/item">
-                    <div className="mt-1 w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.3)]">
+                  <li key={item._key || i} className="gsap-solution-item flex items-start gap-4 p-3 rounded-2xl bg-emerald-950/20 border border-emerald-500/5 hover:border-emerald-500/20 transition-all duration-300 group/item">
+                    <div className="mt-1 w-6 h-6 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.3)]">
                       <Check className="w-3 h-3 text-emerald-400" />
                     </div>
                     <div className="flex-1">

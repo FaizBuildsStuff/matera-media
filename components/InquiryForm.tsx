@@ -67,12 +67,12 @@ export function InquiryForm({ title, subtitle, sourcePage }: InquiryFormProps) {
     return (
       <section
         id="schedule"
-        className="relative py-40 px-6 bg-[#05180D] overflow-hidden"
+        className="relative py-40 px-6  overflow-hidden"
       >
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] bg-[size:60px_60px]" />
-        <div className="absolute top-1/2 left-1/2 w-[600px] h-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[160px] bg-emerald-500/15 pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 w-[600px] h-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[160px] bg-white/10 pointer-events-none" />
         <div className="relative z-10 max-w-2xl mx-auto text-center">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-emerald-500/20 text-emerald-400 mb-8">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/20 text-white/80 mb-8">
             <Check className="w-10 h-10" strokeWidth={2} />
           </div>
           <h2 className="text-3xl md:text-4xl font-semibold text-white mb-4">
@@ -93,11 +93,11 @@ export function InquiryForm({ title, subtitle, sourcePage }: InquiryFormProps) {
   return (
     <section
       id="schedule"
-      className="relative py-40 px-6 bg-[#05180D] overflow-hidden"
+      className="relative py-40 px-6  overflow-hidden"
     >
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] bg-[size:60px_60px]" />
-      <div className="absolute top-1/2 left-1/2 w-[700px] h-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[180px] bg-emerald-500/12 pointer-events-none" />
-      <div className="absolute top-20 right-20 w-[280px] h-[280px] bg-teal-400/8 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 w-[700px] h-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[180px] bg-white/5 pointer-events-none" />
+      <div className="absolute top-20 right-20 w-[280px] h-[280px] bg-white/5 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="relative z-10 max-w-2xl mx-auto">
         <div className="flex justify-center mb-10">
@@ -127,9 +127,9 @@ export function InquiryForm({ title, subtitle, sourcePage }: InquiryFormProps) {
                 className={cn(
                   "w-9 h-9 rounded-full flex items-center justify-center text-sm font-medium transition-colors",
                   step > s.id
-                    ? "bg-emerald-500/30 text-emerald-300"
+                    ? "bg-white/30 text-white/70"
                     : step === s.id
-                      ? "bg-emerald-500/25 text-white ring-2 ring-emerald-400/50"
+                      ? "bg-white/5 text-white ring-2 ring-white/20"
                       : "bg-white/5 text-white/40"
                 )}
               >
@@ -139,7 +139,7 @@ export function InquiryForm({ title, subtitle, sourcePage }: InquiryFormProps) {
                 <div
                   className={cn(
                     "w-8 h-0.5 mx-0.5 rounded transition-colors",
-                    step > s.id ? "bg-emerald-500/40" : "bg-white/10"
+                    step > s.id ? "bg-white/5" : "bg-white/10"
                   )}
                 />
               )}
@@ -152,26 +152,26 @@ export function InquiryForm({ title, subtitle, sourcePage }: InquiryFormProps) {
             <div className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-white/80 mb-2">
-                  Full name <span className="text-emerald-400">*</span>
+                  Full name <span className="text-white/80">*</span>
                 </label>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(e) => update("name", e.target.value)}
                   placeholder="John Smith"
-                  className="w-full h-12 px-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/35 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/30 transition-all"
+                  className="w-full h-12 px-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/35 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/20 transition-all"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-white/80 mb-2">
-                  Work email <span className="text-emerald-400">*</span>
+                  Work email <span className="text-white/80">*</span>
                 </label>
                 <input
                   type="email"
                   value={formData.email}
                   onChange={(e) => update("email", e.target.value)}
                   placeholder="john@company.com"
-                  className="w-full h-12 px-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/35 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/30 transition-all"
+                  className="w-full h-12 px-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/35 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/20 transition-all"
                 />
               </div>
               <div>
@@ -183,7 +183,7 @@ export function InquiryForm({ title, subtitle, sourcePage }: InquiryFormProps) {
                   value={formData.company}
                   onChange={(e) => update("company", e.target.value)}
                   placeholder="Acme Inc."
-                  className="w-full h-12 px-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/35 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/30 transition-all"
+                  className="w-full h-12 px-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/35 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/20 transition-all"
                 />
               </div>
               <div>
@@ -195,7 +195,7 @@ export function InquiryForm({ title, subtitle, sourcePage }: InquiryFormProps) {
                   value={formData.phone}
                   onChange={(e) => update("phone", e.target.value)}
                   placeholder="+1 (555) 000-0000"
-                  className="w-full h-12 px-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/35 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/30 transition-all"
+                  className="w-full h-12 px-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/35 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/20 transition-all"
                 />
               </div>
             </div>
@@ -205,12 +205,12 @@ export function InquiryForm({ title, subtitle, sourcePage }: InquiryFormProps) {
             <div className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-white/80 mb-2">
-                  Service interest <span className="text-emerald-400">*</span>
+                  Service interest <span className="text-white/80">*</span>
                 </label>
                 <select
                   value={formData.serviceInterest}
                   onChange={(e) => update("serviceInterest", e.target.value)}
-                  className="w-full h-12 px-4 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/30 transition-all [&>option]:bg-[#05180D]"
+                  className="w-full h-12 px-4 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/20 transition-all [&>option]:"
                 >
                   <option value="">Select a service</option>
                   <option value="ad-creatives">Ad Creatives</option>
@@ -225,7 +225,7 @@ export function InquiryForm({ title, subtitle, sourcePage }: InquiryFormProps) {
                 <select
                   value={formData.budget}
                   onChange={(e) => update("budget", e.target.value)}
-                  className="w-full h-12 px-4 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/30 transition-all [&>option]:bg-[#05180D]"
+                  className="w-full h-12 px-4 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/20 transition-all [&>option]:"
                 >
                   <option value="">Select budget</option>
                   <option value="under-2k">Under $2k/mo</option>
@@ -242,7 +242,7 @@ export function InquiryForm({ title, subtitle, sourcePage }: InquiryFormProps) {
                 <select
                   value={formData.timeline}
                   onChange={(e) => update("timeline", e.target.value)}
-                  className="w-full h-12 px-4 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/30 transition-all [&>option]:bg-[#05180D]"
+                  className="w-full h-12 px-4 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/20 transition-all [&>option]:"
                 >
                   <option value="">Select timeline</option>
                   <option value="asap">ASAP</option>
@@ -266,7 +266,7 @@ export function InquiryForm({ title, subtitle, sourcePage }: InquiryFormProps) {
                   onChange={(e) => update("message", e.target.value)}
                   placeholder="Goals, challenges, or anything you'd like us to know..."
                   rows={5}
-                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/35 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/30 transition-all resize-none"
+                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/35 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/20 transition-all resize-none"
                 />
               </div>
             </div>
@@ -298,7 +298,7 @@ export function InquiryForm({ title, subtitle, sourcePage }: InquiryFormProps) {
                 (step === 1 && !canProceedStep1) ||
                 (step === 2 && !canProceedStep2)
               }
-              className="h-12 px-8 rounded-xl bg-emerald-500 text-[#05180D] hover:bg-emerald-400 transition-colors flex-1"
+              className="h-12 px-8 rounded-xl bg-white text-black text-[#05180D] hover:bg-white/90 transition-colors flex-1"
             >
               {status === "submitting" ? (
                 <Loader2 className="w-5 h-5 animate-spin" />

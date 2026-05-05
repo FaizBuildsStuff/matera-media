@@ -136,18 +136,19 @@ export default function CareersPageClient({ content }: CareersPageProps) {
   }, [content]);
 
   return (
-    <div ref={sectionRef} className="relative overflow-hidden pt-16 md:pt-24 bg-[#05180D]">
-      {/* Atmospheric Background */}
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[800px] bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.08),transparent_70%)] pointer-events-none" />
+    <div ref={sectionRef} className="relative overflow-hidden pt-16 md:pt-24 ">
+      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none z-0" />
+      <div className="absolute top-[-10%] left-[-5%] w-[500px] h-[500px] bg-blue-600/[0.15] rounded-full blur-[140px] pointer-events-none z-0" />
+      <div className="absolute top-[20%] right-[-10%] w-[600px] h-[600px] bg-purple-500/[0.12] rounded-full blur-[150px] pointer-events-none z-0" />
+      <div className="absolute bottom-[-10%] left-[20%] w-[700px] h-[700px] bg-emerald-500/[0.12] rounded-full blur-[160px] pointer-events-none z-0" />
 
       <div className="max-w-5xl mx-auto relative z-10 py-20 px-6">
         
         {/* --- HEADER --- */}
         <div ref={headerRef} className="mb-20 md:mb-32 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/5 border border-emerald-500/10 mb-6 md:mb-10">
-            <Users className="size-3 text-emerald-400" />
-            <span className="text-[9px] md:text-[10px] text-emerald-400 font-bold uppercase tracking-[0.3em] font-satoshi">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 mb-6 md:mb-10">
+            <Users className="size-3 text-white/80" />
+            <span className="text-[9px] md:text-[10px] text-white/80 font-bold uppercase tracking-[0.3em] font-satoshi">
               {documentId ? (
                 <EditableText id={documentId} field="label" value={label} as="span" />
               ) : label}
@@ -163,7 +164,7 @@ export default function CareersPageClient({ content }: CareersPageProps) {
                   {titleText.split(highlightedWord)[0]}
                   <span 
                     style={{ fontFamily: "'Satoshi', sans-serif", fontStyle: "italic", fontWeight: 700 }} 
-                    className="text-emerald-400 block sm:inline"
+                    className="text-white/80 block sm:inline"
                   >
                     {highlightedWord}
                   </span>
@@ -186,7 +187,7 @@ export default function CareersPageClient({ content }: CareersPageProps) {
         <div className="culture-grid grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-32">
           {CULTURE_PILLARS.map((pillar, i) => (
             <div key={i} className="culture-card p-8 rounded-[2rem] bg-white/[0.01] border border-white/5 backdrop-blur-3xl transition-all duration-500 group">
-              <div className="size-12 rounded-2xl bg-emerald-500/5 flex items-center justify-center mb-6 border border-emerald-500/10 group-hover:bg-emerald-500 group-hover:text-black transition-all duration-500">
+              <div className="size-12 rounded-2xl bg-white/5 flex items-center justify-center mb-6 border border-white/10 group-hover:bg-white text-black group-hover:text-black transition-all duration-500">
                 <pillar.icon className="size-4" />
               </div>
               <h3 className="text-white text-lg font-medium mb-3 font-satoshi">{pillar.title}</h3>
@@ -199,7 +200,7 @@ export default function CareersPageClient({ content }: CareersPageProps) {
         <div ref={rolesRef} className="space-y-6">
           <div className="flex items-center justify-between mb-10 px-2 border-b border-white/5 pb-6">
             <h3 className="text-white text-lg md:text-xl font-medium flex items-center gap-3 font-satoshi">
-              <Briefcase className="size-4 text-emerald-400" />
+              <Briefcase className="size-4 text-white/80" />
               Open Positions
             </h3>
             <span className="text-white/20 text-[9px] font-bold uppercase tracking-widest bg-white/5 px-3 py-1 rounded-full">
@@ -211,13 +212,13 @@ export default function CareersPageClient({ content }: CareersPageProps) {
             {roles.map((role, i) => (
               <div key={role._key || i} className="role-row group relative">
                 <Link href={role.link || "#"} className="block" target="_blank">
-                  <div className="relative p-6 md:p-10 rounded-[2.5rem] bg-white/[0.01] border border-white/5 hover:border-emerald-500/30 transition-all duration-700 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className="relative p-6 md:p-10 rounded-[2.5rem] bg-white/[0.01] border border-white/5 hover:border-white/20 transition-all duration-700 overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-tr from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                     
                     <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-8">
                       <div className="space-y-4">
                         <div className="flex items-center gap-2">
-                          <span className="px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 text-[8px] font-bold uppercase tracking-widest font-satoshi">
+                          <span className="px-2.5 py-1 rounded-md bg-white/10 text-white/80 text-[8px] font-bold uppercase tracking-widest font-satoshi">
                             {documentId ? (
                               <EditableText id={documentId} field={`items[_key == "${role._key}"].department`} value={role.department} as="span" />
                             ) : role.department}
@@ -228,7 +229,7 @@ export default function CareersPageClient({ content }: CareersPageProps) {
                             ) : role.type}
                           </span>
                         </div>
-                        <h2 className="text-2xl md:text-4xl font-medium text-white tracking-tight group-hover:text-emerald-400 transition-colors duration-500 font-satoshi">
+                        <h2 className="text-2xl md:text-4xl font-medium text-white tracking-tight group-hover:text-white/80 transition-colors duration-500 font-satoshi">
                           {documentId ? (
                             <EditableText id={documentId} field={`items[_key == "${role._key}"].title`} value={role.title} as="span" />
                           ) : role.title}
@@ -238,16 +239,16 @@ export default function CareersPageClient({ content }: CareersPageProps) {
                       <div className="flex items-center justify-between gap-6 border-t border-white/5 pt-6 md:border-0 md:pt-0">
                         <div className="text-left md:text-right text-white/30 text-[11px] font-satoshi space-y-1">
                           <div className="flex items-center md:justify-end gap-2">
-                            <MapPin className="size-3 text-emerald-500/50" />
+                            <MapPin className="size-3 text-white/50" />
                             {documentId ? (
                               <EditableText id={documentId} field={`items[_key == "${role._key}"].location`} value={role.location} as="span" />
                             ) : role.location}
                           </div>
                           <div className="flex items-center md:justify-end gap-2">
-                            <Clock className="size-3 text-emerald-500/50" /> Instant Start
+                            <Clock className="size-3 text-white/50" /> Instant Start
                           </div>
                         </div>
-                        <div className="size-14 rounded-full border border-white/10 flex items-center justify-center bg-white/[0.02] group-hover:bg-emerald-500 group-hover:border-emerald-500 transition-all duration-500 shadow-2xl shadow-emerald-500/0 group-hover:shadow-emerald-500/20">
+                        <div className="size-14 rounded-full border border-white/10 flex items-center justify-center bg-white/[0.02] group-hover:bg-white text-black group-hover:border-white/20 transition-all duration-500 shadow-2xl shadow-white/0 group-hover:shadow-white/20">
                           <ArrowUpRight className="size-6 text-white group-hover:text-black transition-transform duration-500 group-hover:scale-110" />
                         </div>
                       </div>
@@ -257,7 +258,7 @@ export default function CareersPageClient({ content }: CareersPageProps) {
                 {documentId && (
                   <div className="absolute top-2 right-2 z-30">
                     <EditableButton id={documentId} textField={`items[_key == "${role._key}"].link`} linkField={`items[_key == "${role._key}"].link`} text="Link" link={role.link}>
-                      <button className="text-[8px] text-white/20 hover:text-emerald-400">Edit Link</button>
+                      <button className="text-[8px] text-white/20 hover:text-white/80">Edit Link</button>
                     </EditableButton>
                   </div>
                 )}
@@ -268,7 +269,7 @@ export default function CareersPageClient({ content }: CareersPageProps) {
 
         {/* --- CALL TO ACTION --- */}
         <div className="mt-32 p-8 md:p-16 rounded-[3rem] bg-gradient-to-b from-white/[0.03] to-transparent border border-white/5 flex flex-col items-center text-center relative overflow-hidden">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1/2 bg-emerald-500/5 blur-[100px] pointer-events-none" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1/2 bg-white/5 blur-[100px] pointer-events-none" />
           <h4 className="text-white text-2xl md:text-3xl font-medium mb-4 font-satoshi tracking-tight">Don't see your role?</h4>
           <p className="text-white/40 text-sm md:text-base mb-10 max-w-sm font-light font-satoshi leading-relaxed">We’re always looking for obsessed creators and strategists to join our orbit.</p>
           
@@ -277,7 +278,7 @@ export default function CareersPageClient({ content }: CareersPageProps) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Button className="h-14 px-10 rounded-full bg-white text-black font-bold uppercase tracking-[0.15em] text-[10px] hover:bg-emerald-400 hover:scale-105 transition-all duration-500 shadow-xl shadow-black/20">
+            <Button className="h-14 px-10 rounded-full bg-white text-black font-bold uppercase tracking-[0.15em] text-[10px] hover:bg-white/90 hover:scale-105 transition-all duration-500 shadow-xl shadow-black/20">
               Get in touch
             </Button>
           </Link>

@@ -71,11 +71,11 @@ export function AddItemDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-[500px] bg-[#051A0E] border-white/10 text-white shadow-[0_0_50px_rgba(16,185,129,0.1)] max-h-[90vh] overflow-y-auto custom-scrollbar">
+      <DialogContent className="sm:max-w-[500px]  border-white/10 text-white shadow-[0_0_50px_rgba(255,255,255,0.1)] max-h-[90vh] overflow-y-auto custom-scrollbar">
         <DialogHeader>
           <DialogTitle className="text-2xl font-black tracking-tight text-white flex items-center gap-2">
-            <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
-              <Plus className="w-5 h-5 text-emerald-400" />
+            <div className="p-2 rounded-xl bg-white/10 border border-white/20">
+              <Plus className="w-5 h-5 text-white/80" />
             </div>
             {title}
           </DialogTitle>
@@ -90,7 +90,7 @@ export function AddItemDialog({
           <div className="grid gap-5">
             {fields.map((field) => (
               <div key={field.name} className="grid gap-2">
-                <Label htmlFor={field.name} className="text-xs font-black uppercase tracking-widest text-emerald-400/70">
+                <Label htmlFor={field.name} className="text-xs font-black uppercase tracking-widest text-white/80/70">
                   {field.label}
                 </Label>
                 {field.type === "boolean" ? (
@@ -110,7 +110,7 @@ export function AddItemDialog({
                     placeholder={field.placeholder}
                     value={formData[field.name] || ""}
                     onChange={(e) => handleChange(field.name, e.target.value)}
-                    className="bg-white/5 border-white/10 focus:border-emerald-500/50 min-h-[100px] transition-all resize-none text-white"
+                    className="bg-white/5 border-white/10 focus:border-white/20/50 min-h-[100px] transition-all resize-none text-white"
                   />
                 ) : field.type === "select" ? (
                   <div className="relative">
@@ -118,11 +118,11 @@ export function AddItemDialog({
                       id={field.name}
                       value={formData[field.name] || ""}
                       onChange={(e) => handleChange(field.name, e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500/50 transition-all appearance-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:border-white/20/50 transition-all appearance-none"
                     >
-                      <option value="" disabled className="bg-[#051A0E]">Select {field.label}</option>
+                      <option value="" disabled className="">Select {field.label}</option>
                       {field.options?.map((opt) => (
-                        <option key={opt.value} value={opt.value} className="bg-[#051A0E]">
+                        <option key={opt.value} value={opt.value} className="">
                           {opt.label}
                         </option>
                       ))}
@@ -136,9 +136,9 @@ export function AddItemDialog({
                 ) : field.type === "video-upload" || field.type === "image-upload" ? (
                   <div className="space-y-3">
                     {formData[field.name] ? (
-                      <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-md flex items-center justify-between">
+                      <div className="p-3 bg-white/10 border border-white/20 rounded-md flex items-center justify-between">
                         <div className="flex items-center gap-2 overflow-hidden">
-                          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                          <CheckCircle2 className="w-4 h-4 text-white/80 shrink-0" />
                           <span className="text-xs text-white/80 truncate font-medium">
                             {field.type === "video-upload" ? "Video" : "Image"} uploaded successfully
                           </span>
@@ -154,10 +154,10 @@ export function AddItemDialog({
                         </Button>
                       </div>
                     ) : (
-                      <div className="flex flex-col items-center justify-center p-8 border-2 border-dashed border-white/10 rounded-xl bg-white/[0.02] hover:bg-white/[0.04] hover:border-emerald-500/30 transition-all">
+                      <div className="flex flex-col items-center justify-center p-8 border-2 border-dashed border-white/10 rounded-xl bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/20 transition-all">
                         <div className="mb-4 p-3 rounded-full bg-white/5 text-white/40">
                           {isUploading ? (
-                            <Loader2 className="w-6 h-6 animate-spin text-emerald-400" />
+                            <Loader2 className="w-6 h-6 animate-spin text-white/80" />
                           ) : field.type === "video-upload" ? (
                             <Video className="w-6 h-6" />
                           ) : (
@@ -180,7 +180,7 @@ export function AddItemDialog({
                             setIsUploading(false);
                           }}
                           appearance={{
-                            button: "bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs py-2 px-4 rounded-lg shadow-lg transition-all",
+                            button: "bg-white text-black hover:bg-white/90 text-black font-bold text-xs py-2 px-4 rounded-lg shadow-lg transition-all",
                             allowedContent: "text-[10px] text-white/30 uppercase tracking-widest mt-2",
                           }}
                         />
@@ -190,7 +190,7 @@ export function AddItemDialog({
                       placeholder={`Or paste direct ${field.type === "video-upload" ? "video" : "image"} URL here...`}
                       value={formData[field.name] || ""}
                       onChange={(e) => handleChange(field.name, e.target.value)}
-                      className="bg-white/5 border-white/10 focus:border-emerald-500/50 transition-all text-xs text-white"
+                      className="bg-white/5 border-white/10 focus:border-white/20/50 transition-all text-xs text-white"
                     />
                   </div>
                 ) : field.type === "array" ? (
@@ -239,7 +239,7 @@ export function AddItemDialog({
                     placeholder={field.placeholder}
                     value={formData[field.name] || ""}
                     onChange={(e) => handleChange(field.name, e.target.value)}
-                    className="bg-white/5 border-white/10 focus:border-emerald-500/50 transition-all text-white"
+                    className="bg-white/5 border-white/10 focus:border-white/20/50 transition-all text-white"
                   />
                 )}
               </div>
@@ -258,7 +258,7 @@ export function AddItemDialog({
             <Button
               type="submit"
               disabled={isUploading}
-              className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-8 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all active:scale-95 disabled:opacity-50"
+              className="bg-white text-black hover:bg-white/90 text-black font-bold px-8 rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all active:scale-95 disabled:opacity-50"
             >
               {isUploading ? "Uploading..." : initialData ? "Save Changes" : `Add ${title.replace("Add ", "")}`}
             </Button>

@@ -87,13 +87,11 @@ export const FAQ = ({ content }: { content?: FAQContent & { _documentId?: string
     }, []);
 
     return (
-        <section ref={sectionRef} id="faq" className="py-20 px-6 bg-[#05180D] relative overflow-hidden font-satoshi">
+        <section ref={sectionRef} id="faq" className="py-12 md:py-16 px-6  relative font-satoshi">
             {/* Fontshare Import */}
             <link href="https://api.fontshare.com/v2/css?f[]=satoshi@401&display=swap" rel="stylesheet" />
 
-            {/* --- SEAMLESS MASK OVERLAYS (Tightened) --- */}
-            <div className="absolute top-0 left-0 w-full h-24 bg-linear-to-b from-[#05180D] to-transparent z-20 pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-full h-24 bg-linear-to-t from-[#05180D] to-transparent z-20 pointer-events-none" />
+            {/* --- SEAMLESS MASK OVERLAYS (Disabled) --- */}
 
             {/* Background Logo Overlay with Masked Bottom */}
             <div
@@ -109,7 +107,7 @@ export const FAQ = ({ content }: { content?: FAQContent & { _documentId?: string
             <div className="max-w-3xl mx-auto relative z-30">
                 {/* Header */}
                 <div ref={headerRef} className="text-center mb-12">
-                    <p className="text-emerald-400 font-medium tracking-widest uppercase text-[10px] mb-4">
+                    <p className="text-white/80 font-medium tracking-widest uppercase text-[10px] mb-4">
                         {documentId ? (
                             <EditableText id={documentId} field="label" sectionKey={sectionKey} value={label} as="span" />
                         ) : label}
@@ -120,7 +118,7 @@ export const FAQ = ({ content }: { content?: FAQContent & { _documentId?: string
                         ) : (
                             <>
                                 {titleText.split(highlightedWord)[0]}
-                                <span className="text-emerald-400 italic font-medium px-1">
+                                <span className="text-white/80 italic font-medium px-1">
                                     {highlightedWord}
                                 </span>
                                 {titleText.split(highlightedWord)[1] || ""}
@@ -147,7 +145,7 @@ export const FAQ = ({ content }: { content?: FAQContent & { _documentId?: string
                     <Accordion type="single" collapsible className="w-full">
                         {faqs.map((faq: any) => (
                             <AccordionItem key={faq.id} value={faq.id} className="border-white/10 last:border-b-0 group/faq">
-                                <AccordionTrigger className="text-white hover:text-emerald-400 hover:no-underline text-lg font-medium text-left py-5 whitespace-pre-wrap">
+                                <AccordionTrigger className="text-white hover:text-white/80 hover:no-underline text-lg font-medium text-left py-5 whitespace-pre-wrap">
                                     <div className="flex justify-between items-center gap-4 w-full pr-2">
                                         <span className="flex-1">
                                             {documentId ? (
@@ -192,4 +190,4 @@ export const FAQ = ({ content }: { content?: FAQContent & { _documentId?: string
             </div>
         </section>
     );
-};
+};

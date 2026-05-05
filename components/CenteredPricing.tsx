@@ -28,13 +28,15 @@ export const CenteredPricing = ({ data, documentId }: CenteredPricingProps) => {
   const isTwoPlans = plans.length === 2;
 
   return (
-    <section className="relative -mt-[1px] py-24 px-6 bg-[#051A0E] overflow-hidden border-none z-10">
-      <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
-      <div className="absolute top-[10%] right-[-5%] w-[40%] h-[40%] bg-white/[0.03] blur-[160px] rounded-full pointer-events-none z-0" />
+    <section className="relative -mt-[1px] py-24 px-6  border-none z-10">
+      {/* Top fade removed for glow bleed */}
+      <div className="absolute top-[10%] right-[-5%] w-[40%] h-[40%] bg-blue-600/[0.12] blur-[160px] rounded-full pointer-events-none z-0" />
+      <div className="absolute top-[40%] left-[-10%] w-[35%] h-[45%] bg-purple-500/[0.12] blur-[140px] rounded-full pointer-events-none z-0" />
+      <div className="absolute bottom-[10%] right-[20%] w-[40%] h-[40%] bg-emerald-500/[0.12] blur-[150px] rounded-full pointer-events-none z-0" />
 
       <div className="max-w-7xl mx-auto relative z-30 text-center mb-16">
         <div className="flex justify-between items-center w-full max-w-xs mx-auto mb-4">
-          <div className="text-emerald-500 text-[10px] font-bold tracking-[0.4em] uppercase mx-auto">
+          <div className="text-white text-[10px] font-bold tracking-[0.4em] uppercase mx-auto">
             {documentId ? (
               <EditableText id={documentId} field="plansLabel" value={label} as="span" />
             ) : label}
@@ -68,7 +70,7 @@ export const CenteredPricing = ({ data, documentId }: CenteredPricingProps) => {
             <div
               key={plan._key || i}
               className={`flex flex-col p-8 md:p-10 rounded-[2.5rem] border backdrop-blur-3xl transition-all duration-700 w-full group relative
-                ${plan.popular ? "border-emerald-500/40 bg-white/5 shadow-[0_0_80px_rgba(16,185,129,0.12)] scale-105 z-20" : "border-white/10 bg-white/5 opacity-80 scale-100"}
+                ${plan.popular ? "border-white/20 bg-white/5 shadow-[0_0_80px_rgba(255,255,255,0.12)] scale-105 z-20" : "border-white/10 bg-white/5 opacity-80 scale-100"}
               `}
             >
               {documentId && (
@@ -89,11 +91,11 @@ export const CenteredPricing = ({ data, documentId }: CenteredPricingProps) => {
                 </div>
               )}
               {plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-emerald-500 text-black text-[9px] font-black uppercase tracking-widest shadow-[0_0_20px_rgba(16,185,129,0.4)]">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-white text-black text-black text-[9px] font-black uppercase tracking-widest shadow-[0_0_20px_rgba(255,255,255,0.4)]">
                   Most Popular
                 </div>
               )}
-              <div className={`${plan.popular ? 'text-emerald-400' : 'text-white/40'} text-[10px] font-bold tracking-widest mb-2 whitespace-pre-wrap`}>
+              <div className={`${plan.popular ? 'text-white/80' : 'text-white/40'} text-[10px] font-bold tracking-widest mb-2 whitespace-pre-wrap`}>
                 {documentId ? (
                   <EditableText id={documentId} field={`plans[_key == "${plan._key}"].description`} value={plan.description} as="span" />
                 ) : plan.description}
@@ -106,7 +108,7 @@ export const CenteredPricing = ({ data, documentId }: CenteredPricingProps) => {
               <ul className="space-y-4 mb-10 flex-1">
                 {plan.features?.map((f: string, idx: number) => (
                   <li key={idx} className={`flex items-center gap-2.5 text-sm ${plan.popular ? 'text-white' : 'text-white/60'}`}>
-                    <Check className={`w-3.5 h-3.5 ${plan.popular ? 'text-emerald-500' : 'text-emerald-800'}`} />
+                    <Check className={`w-3.5 h-3.5 ${plan.popular ? 'text-white' : 'text-white'}`} />
                     {documentId ? (
                       <EditableText id={documentId} field={`plans[_key == "${plan._key}"].features[${idx}]`} value={f} as="span" />
                     ) : f}
@@ -115,7 +117,7 @@ export const CenteredPricing = ({ data, documentId }: CenteredPricingProps) => {
               </ul>
               <Link href="#schedule" className="block mt-auto">
                 <Button className={`w-full h-12 rounded-full font-black uppercase tracking-widest text-[9px] transition-all
-                  ${plan.popular ? 'bg-white text-black hover:bg-emerald-500 hover:text-white' : 'bg-white/5 border border-white/10 text-white hover:bg-white hover:text-black'}
+                  ${plan.popular ? 'bg-white text-black hover:bg-white text-black hover:text-white' : 'bg-white/5 border border-white/10 text-white hover:bg-white hover:text-black'}
                 `}>
                   I Need This
                 </Button>
@@ -124,7 +126,7 @@ export const CenteredPricing = ({ data, documentId }: CenteredPricingProps) => {
           ))}
         </div>
       </div>
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#051A0E] via-[#051A0E]/80 to-transparent pointer-events-none z-20" />
+      {/* Bottom fade removed for glow bleed */}
     </section>
   );
 };

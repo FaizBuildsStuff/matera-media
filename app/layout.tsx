@@ -49,7 +49,7 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${instrumentSans.variable} ${instrumentSerif.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${instrumentSans.variable} ${instrumentSerif.variable} antialiased overflow-x-hidden`}
         suppressHydrationWarning
       >
         <VisualEditingProvider isAdmin={isAdmin}>

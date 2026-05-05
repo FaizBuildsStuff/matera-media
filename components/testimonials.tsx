@@ -55,22 +55,22 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
     const testimonialChunks = chunkArray(currentItems, chunkSize);
 
     return (
-        <section className="relative w-full py-20 px-6 bg-[#05180D] overflow-hidden font-satoshi">
+        <section className="relative w-full py-12 md:py-16 px-6  font-satoshi">
             {/* --- RESTORED TECHNICAL BACKGROUND --- */}
-            <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" 
-                 style={{ 
-                   backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-                 }} 
+            <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none"
+                style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                }}
             />
-            <div className="absolute top-[20%] left-[10%] w-[400px] h-[400px] bg-emerald-500/10 blur-[120px] rounded-full animate-pulse pointer-events-none" />
-            <div className="absolute bottom-[20%] right-[10%] w-[500px] h-[500px] bg-emerald-400/5 blur-[150px] rounded-full animate-pulse pointer-events-none" style={{ animationDelay: '2s' }} />
+            <div className="absolute top-[20%] left-[10%] w-[400px] h-[400px] bg-white/10 blur-[120px] rounded-full animate-pulse pointer-events-none" />
+            <div className="absolute bottom-[20%] right-[10%] w-[500px] h-[500px] bg-white/5 blur-[150px] rounded-full animate-pulse pointer-events-none" style={{ animationDelay: '2s' }} />
 
             <div className="mx-auto max-w-6xl relative z-10">
                 {/* --- HEADER --- */}
                 <div className="flex flex-col items-center text-center mb-16">
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/5 mb-5 backdrop-blur-md">
-                        <Zap size={10} className="text-emerald-500" />
-                        <span className="text-[9px] uppercase tracking-[0.3em] text-emerald-500 font-black">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/20 bg-white/5 mb-5 backdrop-blur-md">
+                        <Zap size={10} className="text-white" />
+                        <span className="text-[9px] uppercase tracking-[0.3em] text-white font-black">
                             {documentId ? (
                                 <EditableText id={documentId} field="label" sectionKey={sectionKey} value={label} as="span" />
                             ) : label}
@@ -84,8 +84,8 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
                             ) : title}
                         </h2>
                         {/* Decorative Crosshairs - Adjusted to be truly around the heading */}
-                        <div className="absolute -top-2 -right-6 size-2 border-t-2 border-r-2 border-emerald-500/30 hidden md:block" />
-                        <div className="absolute -bottom-2 -left-6 size-2 border-b-2 border-l-2 border-emerald-500/30 hidden md:block" />
+                        <div className="absolute -top-2 -right-6 size-2 border-t-2 border-r-2 border-white/20 hidden md:block" />
+                        <div className="absolute -bottom-2 -left-6 size-2 border-b-2 border-l-2 border-white/20 hidden md:block" />
                     </div>
 
                     <p className="text-white/20 text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] max-w-xl mx-auto italic mt-2">
@@ -114,23 +114,21 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
                 {/* --- GRID --- */}
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {testimonialChunks.map((chunk, chunkIndex) => (
-                        <div 
-                            key={chunkIndex} 
-                            className={`flex flex-col gap-4 ${
-                                chunkIndex === 1 ? 'lg:translate-y-8' : 
-                                chunkIndex === 2 ? 'lg:translate-y-4' : ''
-                            }`}
+                        <div
+                            key={chunkIndex}
+                            className={`flex flex-col gap-4 ${chunkIndex === 1 ? 'lg:translate-y-8' :
+                                    chunkIndex === 2 ? 'lg:translate-y-4' : ''
+                                }`}
                         >
                             {chunk.map((testimonial: Testimonial, i: number) => {
                                 const itemId = testimonial._key || `${chunkIndex}-${i}`;
                                 const isFeatured = (chunkIndex + i) % 4 === 0;
-                                
+
                                 return (
-                                    <Card 
-                                        key={itemId} 
-                                        className={`group relative bg-[#0a2313]/30 border-white/5 rounded-[1.5rem] transition-all duration-700 hover:scale-[1.01] hover:-rotate-0.5 hover:border-emerald-500/30 overflow-hidden backdrop-blur-sm ${
-                                            isFeatured ? 'border-emerald-500/10' : ''
-                                        }`}
+                                    <Card
+                                        key={itemId}
+                                        className={`group relative bg-[#0a2313]/30 border-white/5 rounded-[1.5rem] transition-all duration-700 hover:scale-[1.01] hover:-rotate-0.5 hover:border-white/20 overflow-hidden backdrop-blur-sm ${isFeatured ? 'border-white/10' : ''
+                                            }`}
                                     >
                                         <CardContent className="p-6 md:p-8 relative z-10">
                                             {documentId && (
@@ -153,19 +151,19 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
 
                                             {/* --- AUTHOR --- */}
                                             <div className="flex items-center gap-3 mb-6">
-                                                <div className="size-9 rounded-full overflow-hidden border border-white/10 group-hover:border-emerald-500/40 transition-colors p-0.5">
+                                                <div className="size-9 rounded-full overflow-hidden border border-white/10 group-hover:border-white/20 transition-colors p-0.5">
                                                     {documentId ? (
-                                                        <EditableImage 
-                                                            id={documentId} 
-                                                            field={`${sectionKey ? `sections[_key == "${sectionKey}"].` : ""}items[_key == "${itemId}"].image`} 
-                                                            value={testimonial.image} 
+                                                        <EditableImage
+                                                            id={documentId}
+                                                            field={`${sectionKey ? `sections[_key == "${sectionKey}"].` : ""}items[_key == "${itemId}"].image`}
+                                                            value={testimonial.image}
                                                             className="w-full h-full object-cover rounded-full"
                                                             alt={testimonial.name}
                                                         />
                                                     ) : (
                                                         <Avatar className="size-full">
                                                             <AvatarImage src={testimonial.image} alt={testimonial.name} />
-                                                            <AvatarFallback className="bg-emerald-500 text-black text-[9px] font-black">
+                                                            <AvatarFallback className="bg-white text-black text-black text-[9px] font-black">
                                                                 {testimonial.name.slice(0, 2).toUpperCase()}
                                                             </AvatarFallback>
                                                         </Avatar>
@@ -174,21 +172,21 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
                                                 <div className="flex flex-col">
                                                     <h3 className="font-black text-white text-xs tracking-tight uppercase leading-none mb-1">
                                                         {documentId ? (
-                                                            <EditableText 
-                                                                id={documentId} 
-                                                                field={`${sectionKey ? `sections[_key == "${sectionKey}"].` : ""}items[_key == "${itemId}"].name`} 
-                                                                value={testimonial.name} 
-                                                                as="span" 
+                                                            <EditableText
+                                                                id={documentId}
+                                                                field={`${sectionKey ? `sections[_key == "${sectionKey}"].` : ""}items[_key == "${itemId}"].name`}
+                                                                value={testimonial.name}
+                                                                as="span"
                                                             />
                                                         ) : testimonial.name}
                                                     </h3>
                                                     <span className="text-white/30 text-[9px] font-bold uppercase tracking-widest">
                                                         {documentId ? (
-                                                            <EditableText 
-                                                                id={documentId} 
-                                                                field={`${sectionKey ? `sections[_key == "${sectionKey}"].` : ""}items[_key == "${itemId}"].role`} 
-                                                                value={testimonial.role} 
-                                                                as="span" 
+                                                            <EditableText
+                                                                id={documentId}
+                                                                field={`${sectionKey ? `sections[_key == "${sectionKey}"].` : ""}items[_key == "${itemId}"].role`}
+                                                                value={testimonial.role}
+                                                                as="span"
                                                             />
                                                         ) : testimonial.role}
                                                     </span>
@@ -198,16 +196,16 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
                                             {/* --- STARS --- */}
                                             <div className="flex gap-1 mb-4">
                                                 {[...Array(5)].map((_, i) => (
-                                                    <Star key={i} className="size-2.5 text-emerald-500 fill-emerald-500 opacity-60" />
+                                                    <Star key={i} className="size-2.5 text-white fill-white opacity-60" />
                                                 ))}
                                             </div>
 
                                             <div className="text-white/70 text-[13px] md:text-sm leading-relaxed font-medium tracking-tight italic">
                                                 {documentId ? (
-                                                    <EditableText 
-                                                        id={documentId} 
-                                                        field={`${sectionKey ? `sections[_key == "${sectionKey}"].` : ""}items[_key == "${itemId}"].quote`} 
-                                                        value={testimonial.quote} 
+                                                    <EditableText
+                                                        id={documentId}
+                                                        field={`${sectionKey ? `sections[_key == "${sectionKey}"].` : ""}items[_key == "${itemId}"].quote`}
+                                                        value={testimonial.quote}
                                                     />
                                                 ) : (
                                                     `"${testimonial.quote}"`
@@ -226,9 +224,9 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
                 {/* --- SHOW MORE --- */}
                 {!showAll && testimonialsData.length > 9 && (
                     <div className="mt-20 text-center relative z-20">
-                        <button 
+                        <button
                             onClick={() => setShowAll(true)}
-                            className="px-8 py-3 rounded-full border border-white/10 bg-[#0a2313]/40 text-white font-black text-[10px] hover:bg-emerald-500 hover:text-black transition-all duration-300 uppercase tracking-[0.2em] backdrop-blur-md"
+                            className="px-8 py-3 rounded-full border border-white/10 bg-[#0a2313]/40 text-white font-black text-[10px] hover:bg-white text-black hover:text-black transition-all duration-300 uppercase tracking-[0.2em] backdrop-blur-md"
                         >
                             Expand Wall
                         </button>
@@ -236,9 +234,7 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
                 )}
             </div>
 
-            {/* Fades */}
-            <div className="absolute top-0 left-0 w-full h-40 bg-linear-to-b from-[#05180D] to-transparent z-20 pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-full h-40 bg-linear-to-t from-[#05180D] to-transparent z-20 pointer-events-none" />
+            {/* Fades disabled to allow glow bleed */}
         </section>
     );
 }

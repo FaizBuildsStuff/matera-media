@@ -146,20 +146,20 @@ export const CareersSection = ({ content }: { content?: CareersSectionType & { _
     <section
       ref={sectionRef}
       id="careers"
-      className="py-32 px-6 bg-[#05180D] relative overflow-hidden border-t border-white/5"
+      className="py-32 px-6  relative overflow-hidden border-t border-white/5"
     >
       <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,401,700,701&display=swap" rel="stylesheet" />
 
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02] pointer-events-none" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_-10%,rgba(16,185,129,0.05),transparent_60%)] pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_-10%,rgba(255,255,255,0.05),transparent_60%)] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto relative z-10">
 
         {/* --- DYNAMIC HEADER --- */}
         <div ref={headerRef} className="mb-24 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/5 border border-emerald-500/10 mb-8">
-            <Users className="size-3 text-emerald-400" />
-            <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-[0.2em] font-satoshi">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-8">
+            <Users className="size-3 text-white/80" />
+            <span className="text-[10px] text-white/80 font-bold uppercase tracking-[0.2em] font-satoshi">
               {documentId ? (
                 <EditableText id={documentId} field="label" sectionKey={sectionKey} value={label} as="span" />
               ) : label}
@@ -173,7 +173,7 @@ export const CareersSection = ({ content }: { content?: CareersSectionType & { _
               titleText.includes(highlightedWord) ? (
                 <>
                   {titleText.split(highlightedWord)[0]}
-                  <span style={{ fontFamily: "'Satoshi', sans-serif", fontStyle: "italic", fontWeight: 700 }} className="text-emerald-400">
+                  <span style={{ fontFamily: "'Satoshi', sans-serif", fontStyle: "italic", fontWeight: 700 }} className="text-white/80">
                     {highlightedWord}
                   </span>
                   {titleText.split(highlightedWord)[1]}
@@ -210,8 +210,8 @@ export const CareersSection = ({ content }: { content?: CareersSectionType & { _
         {/* --- CULTURE GRID --- */}
         <div className="grid md:grid-cols-3 gap-6 mb-32">
           {CULTURE_PILLARS.map((pillar, i) => (
-            <div key={i} className="p-8 rounded-3xl bg-white/[0.02] border border-white/5 hover:border-emerald-500/20 transition-all duration-500 group">
-              <div className="size-10 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-6 border border-emerald-500/20 group-hover:bg-emerald-500 group-hover:text-black transition-all">
+            <div key={i} className="p-8 rounded-3xl bg-white/[0.02] border border-white/5 hover:border-white/20 transition-all duration-500 group">
+              <div className="size-10 rounded-xl bg-white/10 flex items-center justify-center mb-6 border border-white/20 group-hover:bg-white text-black group-hover:text-black transition-all">
                 <pillar.icon className="size-4" />
               </div>
               <h3 className="text-white text-lg font-medium mb-3 font-satoshi">{pillar.title}</h3>
@@ -224,7 +224,7 @@ export const CareersSection = ({ content }: { content?: CareersSectionType & { _
         <div ref={rolesRef} className="space-y-4">
           <div className="flex items-center justify-between mb-8 px-4 border-b border-white/5 pb-4">
             <h3 className="text-white text-xl font-medium flex items-center gap-3 font-satoshi">
-              <Briefcase className="size-4 text-emerald-500" />
+              <Briefcase className="size-4 text-white" />
               Open Positions
             </h3>
             <span className="text-white/20 text-[10px] font-bold uppercase tracking-widest">{roles.length} active roles</span>
@@ -240,7 +240,7 @@ export const CareersSection = ({ content }: { content?: CareersSectionType & { _
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <div className="space-y-3">
                       <div className="flex items-center gap-3">
-                        <span className="text-emerald-500 text-[9px] font-bold uppercase tracking-[0.2em] font-satoshi">
+                        <span className="text-white text-[9px] font-bold uppercase tracking-[0.2em] font-satoshi">
                           {documentId ? (
                             <EditableText id={documentId} field={`items[_key == "${role._key}"].department`} sectionKey={sectionKey} value={role.department} as="span" />
                           ) : role.department}
@@ -252,7 +252,7 @@ export const CareersSection = ({ content }: { content?: CareersSectionType & { _
                           ) : role.type}
                         </span>
                       </div>
-                      <h4 className="text-white text-3xl md:text-4xl font-medium tracking-tight group-hover:text-emerald-400 transition-colors font-satoshi">
+                      <h4 className="text-white text-3xl md:text-4xl font-medium tracking-tight group-hover:text-white/80 transition-colors font-satoshi">
                         {documentId ? (
                           <EditableText id={documentId} field={`items[_key == "${role._key}"].title`} sectionKey={sectionKey} value={role.title} as="span" />
                         ) : role.title}
@@ -272,7 +272,7 @@ export const CareersSection = ({ content }: { content?: CareersSectionType & { _
                           Instant Start Available
                         </div>
                       </div>
-                      <div className="size-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-emerald-500 group-hover:border-emerald-500 transition-all duration-500">
+                      <div className="size-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white text-black group-hover:border-white/20 transition-all duration-500">
                         <ArrowUpRight className="size-5 text-white group-hover:text-black transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                       </div>
                     </div>
@@ -281,7 +281,7 @@ export const CareersSection = ({ content }: { content?: CareersSectionType & { _
                 {documentId && (
                   <div className="absolute top-2 right-2 z-30 flex gap-2">
                     <EditableButton id={documentId} textField={`items[_key == "${role._key}"].link`} linkField={`items[_key == "${role._key}"].link`} sectionKey={sectionKey} text="Link" link={role.link}>
-                      <button className="text-[8px] text-white/20 hover:text-emerald-400">Edit Link</button>
+                      <button className="text-[8px] text-white/20 hover:text-white/80">Edit Link</button>
                     </EditableButton>
                     <AddRemoveControls 
                       id={documentId} 
@@ -308,7 +308,7 @@ export const CareersSection = ({ content }: { content?: CareersSectionType & { _
         <div className="mt-24 p-12 rounded-[2.5rem] bg-gradient-to-br from-white/[0.03] to-transparent border border-white/5 flex flex-col items-center text-center relative overflow-hidden">
           <h4 className="text-white text-2xl font-medium mb-4 font-satoshi tracking-tight">Don't see your specific role?</h4>
           <p className="text-white/40 text-sm mb-10 max-w-sm font-light font-satoshi">We’re always interested in meeting exceptional creative and technical talent.</p>
-          <Button className="h-12 px-10 rounded-full bg-white text-black font-bold uppercase tracking-widest text-[10px] hover:bg-emerald-400 transition-all active:scale-95 shadow-xl">
+          <Button className="h-12 px-10 rounded-full bg-white text-black font-bold uppercase tracking-widest text-[10px] hover:bg-white/90 transition-all active:scale-95 shadow-xl">
             Send General Application
           </Button>
         </div>

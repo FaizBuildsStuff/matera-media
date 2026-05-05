@@ -24,7 +24,7 @@ export function EditControls() {
               <button
                 onClick={saveChanges}
                 disabled={isSaving}
-                className="flex h-12 items-center gap-2 rounded-full bg-emerald-500 px-6 font-medium text-white shadow-lg transition-all hover:bg-emerald-600 active:scale-95 disabled:opacity-50"
+                className="flex h-12 items-center gap-2 rounded-full bg-white text-black px-6 font-medium text-white shadow-lg transition-all hover:bg-white/90 active:scale-95 disabled:opacity-50"
               >
                 {isSaving ? (
                   <Loader2 className="h-5 w-5 animate-spin" />

@@ -34,17 +34,17 @@ export const StackedResults = ({ items, title = "Real Results, Real Money", labe
   const topCard = cards[0];
 
   return (
-    <section className="relative -mt-[1px] py-16 md:py-20 px-6 bg-[#05180D] overflow-hidden border-none z-10 w-full">
+    <section className="relative -mt-[1px] py-16 md:py-20 px-6  border-none z-10 w-full">
       {/* Background Lighting */}
-      <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#051A0E] via-[#05180D] to-transparent pointer-events-none z-20" />
-      <div className="absolute top-[20%] left-[-10%] w-[50%] h-[50%] bg-emerald-500/[0.03] blur-[140px] rounded-full pointer-events-none z-0" />
-      <div className="absolute top-1/2 right-[-5%] w-[40%] h-[60%] bg-emerald-500/[0.02] blur-[120px] rounded-full pointer-events-none z-0" />
+      {/* Top fade removed for glow bleed */}
+      <div className="absolute top-[20%] left-[-10%] w-[50%] h-[50%] bg-white/5 blur-[140px] rounded-full pointer-events-none z-0" />
+      <div className="absolute top-1/2 right-[-5%] w-[40%] h-[60%] bg-white/5 blur-[120px] rounded-full pointer-events-none z-0" />
 
       <div className="max-w-3xl mx-auto relative z-30 flex flex-col items-center">
         
         {/* Header - Centered */}
         <div className="mb-10 text-center flex flex-col items-center">
-          <p className="text-emerald-500 text-xs md:text-sm font-semibold tracking-widest uppercase mb-2">{label}</p>
+          <p className="text-white text-xs md:text-sm font-semibold tracking-widest uppercase mb-2">{label}</p>
           <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">{title}</h2>
         </div>
 
@@ -90,11 +90,11 @@ export const StackedResults = ({ items, title = "Real Results, Real Money", labe
                           fill
                           className="object-cover pointer-events-none transition-opacity duration-500"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-tr from-[#05180D]/20 to-transparent pointer-events-none mix-blend-overlay" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#05180D]/40 via-transparent to-transparent pointer-events-none" />
+                        <div className="absolute inset-0 bg-gradient-to-tr from-[#050505]/20 to-transparent pointer-events-none mix-blend-overlay" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/40 via-transparent to-transparent pointer-events-none" />
                       </div>
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-emerald-950/20 text-white/30 font-medium text-sm">
+                      <div className="w-full h-full flex items-center justify-center bg-white/5 text-white/30 font-medium text-sm">
                         No Case Study Image
                       </div>
                     )}
@@ -134,7 +134,7 @@ export const StackedResults = ({ items, title = "Real Results, Real Money", labe
                         </div>
                       )}
                       {topCard.clientName && (
-                        <span className="text-emerald-400 font-semibold text-base tracking-tight">{topCard.clientName}</span>
+                        <span className="text-white/80 font-semibold text-base tracking-tight">{topCard.clientName}</span>
                       )}
                     </div>
                   )}
@@ -152,12 +152,12 @@ export const StackedResults = ({ items, title = "Real Results, Real Money", labe
                   {/* Action Link */}
                   <button 
                     onClick={moveToNext}
-                    className="group flex items-center gap-2 text-emerald-500 font-medium tracking-wide text-sm transition-colors"
+                    className="group flex items-center gap-2 text-white font-medium tracking-wide text-sm transition-colors"
                   >
-                    <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center group-hover:bg-emerald-400 group-hover:scale-110 transition-all">
+                    <div className="w-6 h-6 rounded-full bg-white text-black flex items-center justify-center group-hover:bg-white/90 group-hover:scale-110 transition-all">
                       <ArrowRight className="w-3 h-3 text-[#05180D] stroke-[3]" />
                     </div>
-                    <span className="group-hover:text-emerald-400 transition-colors">See Next Result</span>
+                    <span className="group-hover:text-white/80 transition-colors">See Next Result</span>
                   </button>
                 </motion.div>
               </AnimatePresence>
@@ -169,7 +169,7 @@ export const StackedResults = ({ items, title = "Real Results, Real Money", labe
       </div>
 
       {/* Bottom Mask */}
-      <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-[#051A0E] via-[#05180D]/80 to-transparent pointer-events-none z-20" />
+      {/* Bottom fade removed for glow bleed */}
     </section>
   );
 };

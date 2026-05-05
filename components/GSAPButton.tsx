@@ -53,12 +53,12 @@ export const GSAPButton = ({ href, text }: GSAPButtonProps) => {
   return (
     <Link href={href} className="inline-block relative focus:outline-none">
       {/* Outer ambient soft glow */}
-      <div className="absolute -inset-1.5 bg-gradient-to-r from-emerald-600 via-[#10B981] to-emerald-600 rounded-full blur-xl opacity-30 group-hover:opacity-60 transition-opacity duration-700 pointer-events-none" />
+      <div className="absolute -inset-1.5 bg-gradient-to-r from-white/30 via-white/50 to-white/30 rounded-full blur-xl opacity-30 group-hover:opacity-60 transition-opacity duration-700 pointer-events-none" />
 
       {/* Main Button Container */}
       <div
         ref={containerRef}
-        className="relative px-8 md:px-12 h-14 md:h-16 rounded-full border border-white/10 bg-[#051A0E] overflow-hidden cursor-pointer shadow-[0_0_30px_rgba(16,185,129,0.15)] flex items-center justify-center group"
+        className="relative px-8 md:px-12 h-14 md:h-16 rounded-full border border-white/10  overflow-hidden cursor-pointer shadow-[0_0_30px_rgba(255,255,255,0.15)] flex items-center justify-center group"
       >
         {/* GSAP Fill Layer (slips up on hover) */}
         <div
@@ -73,7 +73,7 @@ export const GSAPButton = ({ href, text }: GSAPButtonProps) => {
           <div className="relative flex items-center h-5 w-auto overflow-hidden">
              {/* Primary Text */}
             <span ref={textPrimaryRef} className="absolute inset-0 flex items-center gap-2 font-bold text-[10px] md:text-xs uppercase tracking-[0.25em] text-white whitespace-nowrap">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+              <Sparkles className="w-3.5 h-3.5 text-white/80" />
               {text}
             </span>
             {/* Hover Text */}
@@ -89,7 +89,7 @@ export const GSAPButton = ({ href, text }: GSAPButtonProps) => {
               <ArrowRight className="w-4 h-4 stroke-[3]" />
             </div>
              {/* Hover Icon Box */}
-            <div ref={iconHoverRef} className="absolute inset-0 flex items-center justify-center rounded-full bg-[#051A0E] text-emerald-400 opacity-0">
+            <div ref={iconHoverRef} className="absolute inset-0 flex items-center justify-center rounded-full  text-white/80 opacity-0">
               <ArrowRight className="w-4 h-4 stroke-[3]" />
             </div>
           </div>

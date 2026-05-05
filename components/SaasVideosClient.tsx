@@ -13,8 +13,8 @@ export default function SaasVideosClient({ data }: { data: any }) {
   const documentId = data?._id;
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#05180D] selection:bg-emerald-500/30">
-      <main className="grow">
+    <div className="flex flex-col min-h-screen bg-[#050505] selection:bg-white/30 overflow-x-hidden">
+      <main className="grow flex flex-col gap-12 lg:gap-20">
         <HeroCentered
           sectionLabel={data?.sectionLabel}
           title={data?.headlineTitle || "SaaS videos that"}

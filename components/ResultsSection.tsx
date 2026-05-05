@@ -26,15 +26,16 @@ export const ResultsSection = ({ items: originalItems, title, documentId, label 
   ];
 
   return (
-    <section className="relative -mt-px py-24 px-6 bg-[#051A0E] overflow-hidden text-center border-none z-10">
-      <div className="absolute top-0 left-0 w-full h-48 bg-linear-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
-      <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[60%] h-[50%] bg-white/3 blur-[160px] rounded-full pointer-events-none z-0" />
-      <div className="absolute bottom-[20%] right-[-5%] w-[30%] h-[40%] bg-white/2 blur-[120px] rounded-full pointer-events-none z-0" />
+    <section className="relative -mt-px py-12 md:py-16 px-6  text-center border-none z-10">
+      {/* Fades disabled to allow glow bleed */}
+      <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[60%] h-[50%] bg-blue-600/[0.12] blur-[160px] rounded-full pointer-events-none z-0" />
+      <div className="absolute top-[40%] left-[-10%] w-[40%] h-[40%] bg-purple-500/[0.12] blur-[140px] rounded-full pointer-events-none z-0" />
+      <div className="absolute bottom-[20%] right-[-5%] w-[30%] h-[40%] bg-emerald-500/[0.12] blur-[120px] rounded-full pointer-events-none z-0" />
 
       <div className="max-w-7xl mx-auto relative z-30">
         <div className="flex flex-col items-center mb-16">
           <div className="flex justify-between items-center w-full max-w-xs mb-4">
-            <span className="text-emerald-500 text-[10px] font-bold tracking-[0.4em] uppercase mx-auto">
+            <span className="text-white text-[10px] font-bold tracking-[0.4em] uppercase mx-auto">
               {documentId ? (
                 <EditableText id={documentId} field="resultsLabel" value={label} as="span" />
               ) : label}
@@ -88,7 +89,7 @@ export const ResultsSection = ({ items: originalItems, title, documentId, label 
                   className="object-cover opacity-70 transition-all duration-700 group-hover:opacity-100 group-hover:scale-105"
                 />
               ) : (
-                <div className="absolute inset-0 bg-emerald-950/20" />
+                <div className="absolute inset-0 bg-white/5" />
               )}
 
               {documentId && (
@@ -111,7 +112,7 @@ export const ResultsSection = ({ items: originalItems, title, documentId, label 
                     <EditableText id={documentId} field={`results[_key == "${item._key}"].label`} value={item.label} as="span" />
                   ) : item.label}
                 </p>
-                <p className="text-emerald-400 font-bold text-2xl">
+                <p className="text-white/80 font-bold text-2xl">
                   {documentId ? (
                     <EditableText id={documentId} field={`results[_key == "${item._key}"].value`} value={item.value} as="span" />
                   ) : item.value}
@@ -121,7 +122,7 @@ export const ResultsSection = ({ items: originalItems, title, documentId, label 
           ))}
         </div>
       </div>
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-linear-to-t from-[#051A0E] via-[#051A0E]/80 to-transparent pointer-events-none z-20" />
+      {/* Bottom fade disabled to allow glow bleed */}
     </section>
   );
 };

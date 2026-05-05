@@ -87,7 +87,7 @@ export const CalendlyWidget = ({ content }: { content?: CalendlyContent }) => {
     <section
       ref={sectionRef}
       id="schedule"
-      className="relative py-32 px-6 bg-[#05180D] overflow-hidden font-satoshi"
+      className="relative py-16 md:py-20 px-6  font-satoshi"
     >
       {/* --- THE GRID WITH FADED EDGES --- */}
       <div
@@ -98,11 +98,9 @@ export const CalendlyWidget = ({ content }: { content?: CalendlyContent }) => {
         }}
       />
 
-      {/* --- SMOOTH SECTION BLENDING --- */}
-      <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-[#05180D] to-transparent z-10 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-[#05180D] to-transparent z-10 pointer-events-none" />
+      {/* --- SMOOTH SECTION BLENDING (Disabled to allow glow bleed) --- */}
 
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/[0.04] blur-[140px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-white/5 blur-[140px] rounded-full pointer-events-none" />
 
       <div className="relative z-20 max-w-7xl mx-auto">
 
@@ -141,7 +139,7 @@ export const CalendlyWidget = ({ content }: { content?: CalendlyContent }) => {
                 text="Edit Calendly URL" 
                 link={calendlyUrl}
               >
-                <button className="text-[10px] text-emerald-500/40 uppercase font-black tracking-widest hover:text-emerald-500 transition-colors">
+                <button className="text-[10px] text-white/40 uppercase font-black tracking-widest hover:text-white transition-colors">
                   Config URL
                 </button>
               </EditableButton>
@@ -153,17 +151,17 @@ export const CalendlyWidget = ({ content }: { content?: CalendlyContent }) => {
         <div ref={widgetRef} className="w-full relative min-h-[700px]">
           {/* Professional Minimalist Loader */}
           <div className="absolute inset-0 flex flex-col items-center justify-center z-0 pointer-events-none">
-            <div className="w-8 h-8 border-2 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin mb-4" />
-            <span className="text-[10px] uppercase tracking-[0.3em] text-emerald-500/40 font-bold">Loading System</span>
+            <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin mb-4" />
+            <span className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-bold">Loading System</span>
           </div>
 
           <div
             className="calendly-inline-widget w-full relative z-10"
             data-url={calendlyUrl}
-            style={{ minWidth: "320px", height: "950px" }}
+            style={{ minWidth: "320px", height: "700px" }}
           />
         </div>
       </div>
     </section>
   );
-};
+};

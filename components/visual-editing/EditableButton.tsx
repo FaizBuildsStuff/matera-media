@@ -87,7 +87,7 @@ export function EditableButton({
               contentEditable
               suppressContentEditableWarning
               onBlur={handleTextChange}
-              className="absolute inset-0 flex items-center justify-center opacity-100 md:opacity-0 md:group-hover/edit:opacity-100 bg-emerald-500/80 text-black font-black text-xs uppercase tracking-widest cursor-text rounded-full backdrop-blur-sm z-30 transition-all"
+              className="absolute inset-0 flex items-center justify-center opacity-100 md:opacity-0 md:group-hover/edit:opacity-100 bg-white/80 text-black font-black text-xs uppercase tracking-widest cursor-text rounded-full backdrop-blur-sm z-30 transition-all"
             >
               {localText}
             </span>

@@ -106,10 +106,10 @@ export function TripleTapLogin({ children, className }: TripleTapLoginProps) {
                 {/* Header */}
                 <div className="px-8 pt-8 pb-6 border-b border-white/5">
                   <div className="flex items-center gap-3 mb-1">
-                    <div className="w-8 h-8 rounded-full bg-emerald-500/15 flex items-center justify-center">
-                      <Lock className="w-4 h-4 text-emerald-400" />
+                    <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
+                      <Lock className="w-4 h-4 text-white/80" />
                     </div>
-                    <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest">Admin Access</span>
+                    <span className="text-[10px] text-white/80 font-bold uppercase tracking-widest">Admin Access</span>
                   </div>
                   <h2 className="text-white font-bold text-xl tracking-tight">Enter password</h2>
                   <p className="text-white/30 text-xs mt-1">Your device will be remembered for 30 days.</p>
@@ -124,7 +124,7 @@ export function TripleTapLogin({ children, className }: TripleTapLoginProps) {
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="Password"
                       autoFocus
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/20 outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30 transition-all"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/20 outline-none focus:border-white/20/50 focus:ring-1 focus:ring-white/20 transition-all"
                     />
                   </div>
 
@@ -132,7 +132,7 @@ export function TripleTapLogin({ children, className }: TripleTapLoginProps) {
                     type="submit"
                     disabled={status === "loading" || status === "success" || !password}
                     className="w-full h-12 rounded-xl font-bold text-sm uppercase tracking-widest transition-all disabled:opacity-50
-                      bg-emerald-500 text-black hover:bg-emerald-400 active:scale-95 flex items-center justify-center gap-2"
+                      bg-white text-black text-black hover:bg-white/90 active:scale-95 flex items-center justify-center gap-2"
                   >
                     {status === "loading" && <Loader2 className="w-4 h-4 animate-spin" />}
                     {status === "success" && <CheckCircle2 className="w-4 h-4" />}

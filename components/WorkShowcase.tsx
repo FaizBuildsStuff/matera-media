@@ -87,24 +87,24 @@ export const WorkShowcase = ({
   const description = content?.description ?? "Shorts & reels that drive results. Filter by category.";
 
   const { getLiveItems, isEditMode } = useVisualEditing();
-  
+
   // Get Categories
   const rawCategories = content?.categories || [];
   const categories: Category[] = getLiveItems(
-    documentId || "", 
-    sectionKey ? `sections[_key == "${sectionKey}"].categories` : "categories", 
+    documentId || "",
+    sectionKey ? `sections[_key == "${sectionKey}"].categories` : "categories",
     rawCategories
   ).length > 0 ? getLiveItems(
-    documentId || "", 
-    sectionKey ? `sections[_key == "${sectionKey}"].categories` : "categories", 
+    documentId || "",
+    sectionKey ? `sections[_key == "${sectionKey}"].categories` : "categories",
     rawCategories
   ) : DEFAULT_CATEGORIES;
 
   // Get Items
   const originalItems = content?.items || [];
   const items = getLiveItems(
-    documentId || "", 
-    sectionKey ? `sections[_key == "${sectionKey}"].items` : "items", 
+    documentId || "",
+    sectionKey ? `sections[_key == "${sectionKey}"].items` : "items",
     originalItems
   );
 
@@ -184,16 +184,16 @@ export const WorkShowcase = ({
 
   const workItemFields = [
     { name: "title", label: "Title", type: "string" as const, placeholder: "e.g. Meta UGC Ad" },
-    { 
-      name: "category", 
-      label: "Category", 
-      type: "select" as const, 
-      options: categories.map(c => ({ label: c.title, value: c.title })) 
+    {
+      name: "category",
+      label: "Category",
+      type: "select" as const,
+      options: categories.map(c => ({ label: c.title, value: c.title }))
     },
-    { 
-      name: "videoSource", 
-      label: "Video Source", 
-      type: "select" as const, 
+    {
+      name: "videoSource",
+      label: "Video Source",
+      type: "select" as const,
       options: [
         { label: "UploadThing", value: "uploadthing" },
         { label: "YouTube", value: "youtube" },
@@ -207,15 +207,15 @@ export const WorkShowcase = ({
   ];
 
   return (
-    <section ref={sectionRef} id="work" className="py-32 px-6 bg-[#05180D] relative overflow-hidden min-h-screen font-satoshi">
+    <section ref={sectionRef} id="work" className="py-16 md:py-20 px-6  relative min-h-screen font-satoshi">
 
-      {/* --- SEAMLESS MASK OVERLAYS --- */}
-      <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#05180D] to-transparent z-20 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-[#05180D] to-transparent z-20 pointer-events-none" />
+      {/* --- SEAMLESS MASK OVERLAYS (Disabled to allow glow bleed) --- */}
       <link href="https://api.fontshare.com/v2/css?f[]=satoshi@700,701&display=swap" rel="stylesheet" />
 
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-emerald-900/10 rounded-full blur-[150px] pointer-events-none" />
-      <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none" />
+      {/* Centered Multi-color Cloud Glow */}
+      <div className="absolute top-[30%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-emerald-500/10 rounded-full blur-[140px] pointer-events-none mix-blend-screen" />
+      <div className="absolute top-[45%] left-[40%] -translate-x-1/2 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[150px] pointer-events-none mix-blend-screen" />
+      <div className="absolute top-[50%] left-[60%] -translate-x-1/2 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[150px] pointer-events-none mix-blend-screen" />
       <div className="absolute -left-20 top-40 opacity-[0.02] pointer-events-none select-none">
         <img src="/Logo.png" alt="Matera Media" className="w-[600px] h-auto object-contain" />
       </div>
@@ -223,7 +223,7 @@ export const WorkShowcase = ({
       <div className="max-w-7xl mx-auto relative z-30">
         <div ref={headerRef} className="mb-20">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tighter font-satoshi flex items-center gap-3 md:gap-4 whitespace-pre-wrap leading-[1.05]">
-            <Sparkles className="w-6 h-6 md:w-8 md:h-8 text-emerald-400/80 animate-pulse shrink-0" />
+            <Sparkles className="w-6 h-6 md:w-8 md:h-8 text-white/80/80 animate-pulse shrink-0" />
 
             <span className="relative flex items-center">
               {documentId ? (
@@ -232,7 +232,7 @@ export const WorkShowcase = ({
                 title
               )}
               {highlightedWord && (
-                <span className="text-emerald-400 italic font-medium ml-2 md:ml-3 px-1">
+                <span className="text-white/80 italic font-medium ml-2 md:ml-3 px-1">
                   {documentId ? (
                     <EditableText id={documentId} field="highlightedWord" sectionKey={sectionKey} value={highlightedWord} as="span" />
                   ) : (
@@ -251,10 +251,10 @@ export const WorkShowcase = ({
           </div>
           {documentId && (
             <div className="mt-8">
-              <AddRemoveControls 
-                id={documentId} 
-                field={sectionKey ? `sections[_key == "${sectionKey}"].items` : "items"} 
-                label="Work Item" 
+              <AddRemoveControls
+                id={documentId}
+                field={sectionKey ? `sections[_key == "${sectionKey}"].items` : "items"}
+                label="Work Item"
                 fields={workItemFields}
               />
             </div>
@@ -268,17 +268,17 @@ export const WorkShowcase = ({
                 <p className="text-white/20 text-[9px] font-bold tracking-[0.4em] uppercase">Filter by category</p>
                 {documentId && isEditMode && (
                   <div className="group relative">
-                    <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-widest hover:bg-emerald-500 hover:text-black transition-all shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+                    <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 text-white/80 text-[10px] font-bold uppercase tracking-widest hover:bg-white text-black hover:text-black transition-all shadow-[0_0_15px_rgba(255,255,255,0.1)]">
                       <Settings className="w-3 h-3" />
                       Manage
                     </button>
                     <div className="absolute left-0 top-full mt-2 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                      <div className="bg-[#051A0E] border border-white/10 rounded-xl p-4 shadow-2xl min-w-[200px]">
-                        <p className="text-[10px] font-black uppercase tracking-widest text-emerald-400/70 mb-4">Manage Categories</p>
-                        <AddRemoveControls 
-                          id={documentId} 
-                          field={sectionKey ? `sections[_key == "${sectionKey}"].categories` : "categories"} 
-                          label="Category" 
+                      <div className=" border border-white/10 rounded-xl p-4 shadow-2xl min-w-[200px]">
+                        <p className="text-[10px] font-black uppercase tracking-widest text-white/80/70 mb-4">Manage Categories</p>
+                        <AddRemoveControls
+                          id={documentId}
+                          field={sectionKey ? `sections[_key == "${sectionKey}"].categories` : "categories"}
+                          label="Category"
                           fields={[
                             { name: "title", label: "Title", type: "string", placeholder: "e.g. Motion Graphics" },
                             { name: "slug", label: "Slug", type: "string", placeholder: "e.g. motion-graphics" },
@@ -286,12 +286,12 @@ export const WorkShowcase = ({
                         />
                         <div className="mt-4 space-y-3">
                           {categories.map((cat, idx) => (
-                            <div key={idx} className="flex items-center justify-between group/cat bg-white/5 p-2 rounded-lg border border-white/5 hover:border-emerald-500/20 transition-all">
+                            <div key={idx} className="flex items-center justify-between group/cat bg-white/5 p-2 rounded-lg border border-white/5 hover:border-white/20 transition-all">
                               <span className="text-xs font-medium text-white/60">{cat.title}</span>
-                              <AddRemoveControls 
-                                id={documentId} 
-                                field={sectionKey ? `sections[_key == "${sectionKey}"].categories` : "categories"} 
-                                itemKey={(cat as any)._key} 
+                              <AddRemoveControls
+                                id={documentId}
+                                field={sectionKey ? `sections[_key == "${sectionKey}"].categories` : "categories"}
+                                itemKey={(cat as any)._key}
                                 label="Category"
                                 initialData={cat}
                                 fields={[
@@ -328,11 +328,11 @@ export const WorkShowcase = ({
               <div ref={reelContainerRef} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-8">
                 {filteredWorks.length > 0 ? (
                   filteredWorks.map((work) => (
-                    <ReelCard 
-                      key={work.id} 
-                      work={work} 
-                      documentId={documentId} 
-                      sectionKey={sectionKey} 
+                    <ReelCard
+                      key={work.id}
+                      work={work}
+                      documentId={documentId}
+                      sectionKey={sectionKey}
                       categories={categories}
                     />
                   ))
@@ -353,15 +353,15 @@ export const WorkShowcase = ({
   );
 };
 
-function ReelCard({ 
-  work, 
-  documentId, 
+function ReelCard({
+  work,
+  documentId,
   sectionKey,
   categories
-}: { 
-  work: WorkItem; 
-  documentId?: string; 
-  sectionKey?: string; 
+}: {
+  work: WorkItem;
+  documentId?: string;
+  sectionKey?: string;
   categories: Category[];
 }) {
   const { isEditMode } = useVisualEditing();
@@ -382,16 +382,16 @@ function ReelCard({
 
   const workItemFields = [
     { name: "title", label: "Title", type: "string" as const, placeholder: "e.g. Meta UGC Ad" },
-    { 
-      name: "category", 
-      label: "Category", 
-      type: "select" as const, 
-      options: categories.map(c => ({ label: c.title, value: c.title })) 
+    {
+      name: "category",
+      label: "Category",
+      type: "select" as const,
+      options: categories.map(c => ({ label: c.title, value: c.title }))
     },
-    { 
-      name: "videoSource", 
-      label: "Video Source", 
-      type: "select" as const, 
+    {
+      name: "videoSource",
+      label: "Video Source",
+      type: "select" as const,
       options: [
         { label: "UploadThing", value: "uploadthing" },
         { label: "YouTube", value: "youtube" },
@@ -407,7 +407,7 @@ function ReelCard({
   return (
     <div className="reel-item group relative">
       <div
-        className="relative aspect-[9/16] rounded-[1.5rem] overflow-hidden bg-white/5 border border-white/10 cursor-pointer transition-all duration-500 group-hover:border-emerald-500/30"
+        className="relative aspect-[9/16] rounded-[1.5rem] overflow-hidden bg-white/5 border border-white/10 cursor-pointer transition-all duration-500 group-hover:border-white/20"
         onClick={!isCurrentlyPlaying ? handlePlayClick : undefined}
       >
 
@@ -484,16 +484,16 @@ function ReelCard({
                 onError={(e) => ((e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${youtubeVideoId}/hqdefault.jpg`)}
               />
             ) : (
-              <div className="absolute inset-0 bg-emerald-950/20" />
+              <div className="absolute inset-0 bg-white/5" />
             )}
 
             {/* Glass Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#05180D] via-transparent to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-70" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-70" />
 
             {/* Center Play Icon */}
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="flex size-14 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-xl opacity-0 scale-50 transition-all duration-500 group-hover:opacity-100 group-hover:scale-100">
-                <Play className="ml-1 size-6 fill-emerald-400 text-emerald-400" />
+                <Play className="ml-1 size-6 fill-white text-white/80" />
               </div>
             </div>
 
@@ -503,12 +503,12 @@ function ReelCard({
                 {work.tags?.slice(0, 2).map((tag, idx) => (
                   <span key={idx} className="px-2 py-0.5 rounded-md bg-white/10 text-[8px] font-bold uppercase tracking-widest text-white/50">
                     {documentId ? (
-                      <EditableText 
-                        id={documentId} 
-                        field={`items[_key == "${work.id}"].tags[${idx}]`} 
-                        sectionKey={sectionKey} 
-                        value={tag} 
-                        as="span" 
+                      <EditableText
+                        id={documentId}
+                        field={`items[_key == "${work.id}"].tags[${idx}]`}
+                        sectionKey={sectionKey}
+                        value={tag}
+                        as="span"
                       />
                     ) : tag}
                   </span>
@@ -516,12 +516,12 @@ function ReelCard({
               </div>
               <h3 className="text-sm font-bold tracking-tight text-white leading-tight whitespace-pre-wrap">
                 {documentId ? (
-                  <EditableText 
-                    id={documentId} 
-                    field={`items[_key == "${work.id}"].title`} 
-                    sectionKey={sectionKey} 
-                    value={work.title} 
-                    as="span" 
+                  <EditableText
+                    id={documentId}
+                    field={`items[_key == "${work.id}"].title`}
+                    sectionKey={sectionKey}
+                    value={work.title}
+                    as="span"
                   />
                 ) : work.title}
               </h3>
@@ -531,10 +531,10 @@ function ReelCard({
             {documentId && (
               <div className={`absolute top-4 right-4 z-40 transition-opacity ${isEditMode ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}>
                 <div className="bg-black/60 backdrop-blur-md p-1.5 rounded-xl border border-white/10 shadow-xl">
-                  <AddRemoveControls 
-                    id={documentId} 
-                    field={sectionKey ? `sections[_key == "${sectionKey}"].items` : "items"} 
-                    itemKey={work.id} 
+                  <AddRemoveControls
+                    id={documentId}
+                    field={sectionKey ? `sections[_key == "${sectionKey}"].items` : "items"}
+                    itemKey={work.id}
                     label="Work Item"
                     initialData={work}
                     fields={workItemFields}
@@ -548,4 +548,4 @@ function ReelCard({
     </div>
   );
 }
-
+

@@ -87,7 +87,7 @@ export function AddRemoveControls({
         <button
           onClick={handleAddClick}
           className={cn(
-            "flex items-center gap-1 rounded-full bg-emerald-500/20 px-3 py-1.5 text-[10px] font-bold text-emerald-400 uppercase tracking-tighter hover:bg-emerald-500 hover:text-black transition-all group/add shadow-[0_0_15px_rgba(16,185,129,0.1)] hover:shadow-[0_0_20px_rgba(16,185,129,0.3)]",
+            "flex items-center gap-1 rounded-full bg-white/20 px-3 py-1.5 text-[10px] font-bold text-white/80 uppercase tracking-tighter hover:bg-white text-black hover:text-black transition-all group/add shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]",
             className
           )}
         >
@@ -115,7 +115,7 @@ export function AddRemoveControls({
         <>
           <button
             onClick={(e) => { e.stopPropagation(); setIsEditDialogOpen(true); }}
-            className="flex items-center justify-center w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500 hover:text-black transition-all shadow-[0_0_10px_rgba(16,185,129,0.1)]"
+            className="flex items-center justify-center w-6 h-6 rounded-full bg-white/20 text-white/80 hover:bg-white text-black hover:text-black transition-all shadow-[0_0_10px_rgba(255,255,255,0.1)]"
             title="Edit Details"
           >
             <Settings2 className="w-3 h-3" />

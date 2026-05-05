@@ -40,13 +40,14 @@ export function ServiceCalendly({ content }: ServiceCalendlyProps) {
   return (
     <section
       id="schedule"
-      className="relative py-40 px-6 bg-[#05180D] overflow-hidden"
+      className="relative py-40 px-6 "
     >
       <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700,900&display=swap" rel="stylesheet" />
       {/* Background Patterns */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] bg-[size:60px_60px]" />
-      <div className="absolute top-1/2 left-1/2 w-[700px] h-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[180px] bg-emerald-500/12 pointer-events-none" />
-      <div className="absolute top-20 right-20 w-[280px] h-[280px] bg-teal-400/8 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 w-[700px] h-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[180px] bg-purple-500/[0.1] pointer-events-none" />
+      <div className="absolute top-20 right-20 w-[400px] h-[400px] bg-blue-600/[0.12] rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-20 left-20 w-[400px] h-[400px] bg-emerald-500/[0.12] rounded-full blur-[140px] pointer-events-none" />
 
       <div className="relative z-10 max-w-4xl mx-auto">
         <div className="flex justify-center mb-10">
@@ -74,7 +75,7 @@ export function ServiceCalendly({ content }: ServiceCalendlyProps) {
                   part.toLowerCase() === content.highlightedWord!.toLowerCase() ? (
                     <span
                       key={i}
-                      className="text-emerald-400 font-medium"
+                      className="text-white/80 font-medium"
                       style={{
                         fontFamily: "'Satoshi', sans-serif",
                         fontStyle: "italic",
@@ -100,7 +101,7 @@ export function ServiceCalendly({ content }: ServiceCalendlyProps) {
                 text="Edit Calendly URL"
                 link={calendlyUrl}
               >
-                <button className="text-[10px] text-emerald-500/40 uppercase font-black tracking-widest hover:text-emerald-500 transition-colors">
+                <button className="text-[10px] text-white/40 uppercase font-black tracking-widest hover:text-white transition-colors">
                   Config URL
                 </button>
               </EditableButton>
@@ -112,8 +113,8 @@ export function ServiceCalendly({ content }: ServiceCalendlyProps) {
         <div className="relative min-h-[960px] overflow-hidden">
           {/* Loading State */}
           <div className="absolute inset-0 flex flex-col items-center justify-center z-0 pointer-events-none">
-            <div className="w-8 h-8 border-2 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin mb-4" />
-            <span className="text-[10px] uppercase tracking-[0.3em] text-emerald-500/40 font-bold">
+            <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin mb-4" />
+            <span className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-bold">
               Loading Calendar
             </span>
           </div>

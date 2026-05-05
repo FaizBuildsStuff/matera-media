@@ -42,30 +42,24 @@ export const Hero = ({ content }: { content?: any }) => {
   return (
     <section
       ref={containerRef}
-      className="relative w-full flex flex-col items-center justify-start pt-20 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-24 px-4 sm:px-6 overflow-hidden font-satoshi"
+      className="relative w-full flex flex-col items-center justify-start pt-20 sm:pt-24 md:pt-28 pb-8 sm:pb-12 md:pb-16 px-4 sm:px-6 font-satoshi z-10"
     >
       {/* ── Background ── */}
-      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        {/* Soft green gradient bloom */}
-        <div className="absolute top-[-10%] left-[-5%] w-[60%] h-[70%] bg-emerald-500/[0.06] blur-[120px] rounded-full" />
-        <div className="absolute top-[5%] right-[-15%] w-[50%] h-[60%] bg-emerald-400/[0.04] blur-[120px] rounded-full" />
+      <div className="absolute inset-0 pointer-events-none z-0">
+        {/* Deep Atmospheric Base */}
+        <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[80%] bg-blue-600/[0.15] blur-[160px] rounded-full animate-pulse" />
+        <div className="absolute top-[10%] right-[-15%] w-[60%] h-[70%] bg-emerald-500/[0.12] blur-[140px] rounded-full animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute bottom-[-10%] left-[20%] w-[50%] h-[50%] bg-purple-500/[0.12] blur-[150px] rounded-full" />
 
-        {/* Subtle geometric shard lines */}
-        <div className="absolute top-0 left-0 w-full h-[700px] opacity-[0.08]">
-          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-            <line x1="0%" y1="25%" x2="38%" y2="0%" stroke="#00E676" strokeWidth="1" />
-            <line x1="72%" y1="0%" x2="100%" y2="35%" stroke="#00E676" strokeWidth="0.5" />
-            <line x1="62%" y1="100%" x2="82%" y2="28%" stroke="#00E676" strokeWidth="1" />
-            <line x1="18%" y1="100%" x2="48%" y2="55%" stroke="#00E676" strokeWidth="0.5" />
-          </svg>
-        </div>
+        {/* Global Grid System */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_80%)]" />
 
         {/* Dot matrix — fades in from bottom */}
         <div
-          className="absolute bottom-0 left-0 w-full h-[300px] sm:h-[360px] bg-[image:radial-gradient(rgba(16,185,129,0.12)_1.5px,transparent_1.5px)] [background-size:26px_26px] opacity-60"
+          className="absolute inset-0 bg-[image:radial-gradient(rgba(255,255,255,0.1)_1px,transparent_1px)] [background-size:20px_20px] opacity-30"
           style={{
-            maskImage: "linear-gradient(to bottom, transparent 0%, black 100%)",
-            WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 100%)",
+            maskImage: "radial-gradient(circle at 50% 50%, black, transparent 70%)",
+            WebkitMaskImage: "radial-gradient(circle at 50% 50%, black, transparent 70%)",
           }}
         />
       </div>
@@ -73,21 +67,30 @@ export const Hero = ({ content }: { content?: any }) => {
       <div className="relative z-20 w-full max-w-[56rem] mx-auto flex flex-col items-center text-center mt-4 sm:mt-6 md:mt-8 mb-8 md:mb-12">
 
         {/* Top Label */}
-        <div className="hero-reveal text-[#00ff66] font-bold text-[10px] sm:text-xs md:text-sm tracking-widest uppercase mb-5 sm:mb-7 md:mb-8 px-2">
-          {documentId ? (
-            <EditableText id={documentId} field="topText" sectionKey={sectionKey} value={topText} />
-          ) : (
-            topText
-          )}
+        <div className="hero-reveal mb-8 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md flex items-center gap-3">
+          <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
+          <span className="text-white font-bold text-[9px] sm:text-[10px] tracking-[0.3em] uppercase">
+            {documentId ? (
+              <EditableText id={documentId} field="topText" sectionKey={sectionKey} value={topText} as="span" />
+            ) : (
+              topText
+            )}
+          </span>
         </div>
 
+        {/* ── Modern Heading Bloom ── */}
+        <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[80%] h-[40%] bg-blue-600/[0.1] blur-[120px] rounded-full pointer-events-none z-0" />
+        <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-[50%] h-[30%] bg-purple-500/[0.08] blur-[80px] rounded-full pointer-events-none z-0 animate-pulse duration-[4000ms]" />
+
         {/* Main Headline */}
-        <h1 className="hero-reveal text-[1.75rem] sm:text-4xl md:text-[3.5rem] font-bold leading-[1.15] sm:leading-[1.12] tracking-tight text-white mb-6 sm:mb-8 w-full max-w-[48rem] px-1">
-          {documentId ? (
-            <EditableText id={documentId} field="headline" sectionKey={sectionKey} value={headline} />
-          ) : (
-            headline
-          )}
+        <h1 className="hero-reveal text-[1.75rem] sm:text-4xl md:text-[3.5rem] font-black leading-[1.1] tracking-tighter text-white mb-10 w-full max-w-[48rem] px-1 relative z-10">
+          <span className="bg-clip-text text-transparent bg-gradient-to-b from-white via-white/90 to-white/70">
+            {documentId ? (
+              <EditableText id={documentId} field="headline" sectionKey={sectionKey} value={headline} as="span" />
+            ) : (
+              headline
+            )}
+          </span>
         </h1>
 
         {/* CTA Section */}
@@ -102,22 +105,22 @@ export const Hero = ({ content }: { content?: any }) => {
               link={ctaLink}
               className="group"
             >
-              <div className="flex items-center bg-white rounded-full p-1 sm:p-1.5 pr-5 sm:pr-8 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.15)]">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 md:w-[3.25rem] md:h-[3.25rem] bg-[#00e65c] rounded-full flex items-center justify-center mr-3 sm:mr-5 group-hover:bg-[#00ff66] transition-colors shadow-[0_0_15px_rgba(0,230,92,0.4)]">
-                  <ArrowRight className="w-4 h-4 sm:w-[1.125rem] sm:h-[1.125rem] text-[#030b06] stroke-[2.5]" />
+              <div className="flex items-center bg-white rounded-full p-1 sm:p-1.5 pr-5 sm:pr-8 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-[0_20px_50px_rgba(255,255,255,0.15)] group">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 md:w-[3.25rem] md:h-[3.25rem] bg-black rounded-full flex items-center justify-center mr-3 sm:mr-5 group-hover:bg-blue-600 transition-all duration-500">
+                  <ArrowRight className="w-4 h-4 sm:w-[1.125rem] sm:h-[1.125rem] text-white stroke-[2.5] group-hover:rotate-[-45deg] transition-transform" />
                 </div>
-                <span className="text-[#030b06] font-bold text-[0.85rem] sm:text-[0.95rem] md:text-base tracking-wide mr-1 sm:mr-2">
+                <span className="text-black font-bold text-[0.85rem] sm:text-[0.95rem] md:text-base tracking-wide uppercase">
                   {ctaPrimary}
                 </span>
               </div>
             </EditableButton>
           ) : (
             <Link href={ctaLink}>
-              <div className="flex items-center bg-white rounded-full p-1 sm:p-1.5 pr-5 sm:pr-8 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.15)] group">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 md:w-[3.25rem] md:h-[3.25rem] bg-[#00e65c] rounded-full flex items-center justify-center mr-3 sm:mr-5 group-hover:bg-[#00ff66] transition-colors shadow-[0_0_15px_rgba(0,230,92,0.4)]">
-                  <ArrowRight className="w-4 h-4 sm:w-[1.125rem] sm:h-[1.125rem] text-[#030b06] stroke-[2.5]" />
+              <div className="flex items-center bg-white rounded-full p-1 sm:p-1.5 pr-5 sm:pr-8 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-[0_20px_50px_rgba(255,255,255,0.15)] group">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 md:w-[3.25rem] md:h-[3.25rem] bg-black rounded-full flex items-center justify-center mr-3 sm:mr-5 group-hover:bg-blue-600 transition-all duration-500">
+                  <ArrowRight className="w-4 h-4 sm:w-[1.125rem] sm:h-[1.125rem] text-white stroke-[2.5] group-hover:rotate-[-45deg] transition-transform" />
                 </div>
-                <span className="text-[#030b06] font-bold text-[0.85rem] sm:text-[0.95rem] md:text-base tracking-wide mr-1 sm:mr-2">
+                <span className="text-black font-bold text-[0.85rem] sm:text-[0.95rem] md:text-base tracking-wide uppercase">
                   {ctaPrimary}
                 </span>
               </div>
@@ -125,25 +128,33 @@ export const Hero = ({ content }: { content?: any }) => {
           )}
         </div>
 
-        {/* Video Player Card (Optional if passed via prop) */}
+        {/* Video Player Card (Next-Level Glass Styling) */}
         {videoUrl && (
-          <div className="hero-reveal relative w-full aspect-video rounded-xl sm:rounded-2xl md:rounded-[2.5rem] overflow-hidden border border-white/5 shadow-2xl bg-black group mb-8 sm:mb-10">
-            {!isVideoPlaying ? (
-              <div className="absolute inset-0 flex items-center justify-center cursor-pointer z-10" onClick={() => setIsVideoPlaying(true)}>
-                {thumbnailUrl && (
-                  <img
-                    src={thumbnailUrl}
-                    alt="Preview"
-                    className="absolute inset-0 w-full h-full object-cover opacity-40 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
-                  />
-                )}
-                <div className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-white/5 backdrop-blur-3xl border border-white/10 flex items-center justify-center group-hover:bg-[#00ff66] group-hover:border-[#00ff66] transition-all duration-500">
-                  <Play className="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:text-[#030b06] fill-current ml-1" />
+          <div className="hero-reveal relative w-full aspect-video rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.8)] bg-black/40 backdrop-blur-2xl group mb-8 p-1 sm:p-2">
+            <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none z-10" />
+            <div className="relative w-full h-full rounded-[2rem] md:rounded-[3rem] overflow-hidden bg-black">
+              {!isVideoPlaying ? (
+                <div className="absolute inset-0 flex items-center justify-center cursor-pointer z-20" onClick={() => setIsVideoPlaying(true)}>
+                  {thumbnailUrl && (
+                    <img
+                      src={thumbnailUrl}
+                      alt="Preview"
+                      className="absolute inset-0 w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
+                    />
+                  )}
+                  {/* Modern Play Button HUD */}
+                  <div className="relative w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 rounded-full flex items-center justify-center group-hover:scale-110 transition-all duration-700">
+                    <div className="absolute inset-0 bg-white/10 backdrop-blur-3xl rounded-full border border-white/20 animate-[ping_3s_infinite]" />
+                    <div className="absolute inset-2 bg-white/20 backdrop-blur-2xl rounded-full border border-white/30" />
+                    <div className="relative z-30 w-12 h-12 sm:w-16 sm:h-16 bg-white rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.5)]">
+                      <Play className="w-5 h-5 sm:w-7 sm:h-7 text-black fill-current ml-1" />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <iframe className="absolute inset-0 w-full h-full" src={videoUrl} allow="autoplay; fullscreen" allowFullScreen />
-            )}
+              ) : (
+                <iframe className="absolute inset-0 w-full h-full" src={videoUrl} allow="autoplay; fullscreen" allowFullScreen />
+              )}
+            </div>
           </div>
         )}
       </div>

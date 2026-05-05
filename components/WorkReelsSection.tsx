@@ -50,7 +50,7 @@ const ReelCard = ({ item, isPlaying, onToggle, documentId }: { item: any; isPlay
   return (
     <div
       onClick={onToggle}
-      className="snap-center shrink-0 w-[240px] md:w-[280px] h-[440px] md:h-[500px] bg-white/2 rounded-[2rem] border border-white/10 relative overflow-hidden group cursor-pointer shadow-2xl transition-all duration-500 hover:border-emerald-500/20"
+      className="snap-center shrink-0 w-full md:w-[280px] h-[500px] md:h-[500px] bg-white/2 rounded-[2rem] border border-white/10 relative overflow-hidden group cursor-pointer shadow-2xl transition-all duration-500 hover:border-white/20"
     >
       <div className="absolute inset-0 z-0">
         {videoUrl ? (
@@ -72,11 +72,11 @@ const ReelCard = ({ item, isPlaying, onToggle, documentId }: { item: any; isPlay
             onError={(e) => (e.currentTarget.src = `https://img.youtube.com/vi/${youtubeVideoId}/hqdefault.jpg`)}
           />
         ) : (
-          <div className="w-full h-full bg-emerald-950/20" />
+          <div className="w-full h-full bg-white/5" />
         )}
       </div>
 
-      <div className="absolute inset-0 bg-linear-to-t from-black/90 via-transparent to-transparent z-10" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent z-10" />
 
       <div className="absolute inset-0 flex items-center justify-center z-20">
         {!isPlaying && (
@@ -102,7 +102,7 @@ const ReelCard = ({ item, isPlaying, onToggle, documentId }: { item: any; isPlay
       )}
 
       <div className="absolute bottom-8 left-8 right-8 z-20 pointer-events-none">
-        <p className="text-emerald-400 text-[9px] font-black uppercase tracking-widest mb-1.5">
+        <p className="text-white/80 text-[9px] font-black uppercase tracking-widest mb-1.5">
           {documentId ? (
             <EditableText id={documentId} field={`work.items[_key == "${item._key}"].category`} value={item.category} as="span" />
           ) : item.category}
@@ -114,7 +114,7 @@ const ReelCard = ({ item, isPlaying, onToggle, documentId }: { item: any; isPlay
         </h4>
         {isPlaying && (
           <div className="flex items-center gap-2 text-white/50 text-[8px] uppercase tracking-widest font-bold">
-            <Volume2 className="w-2.5 h-2.5 text-emerald-400" />
+            <Volume2 className="w-2.5 h-2.5 text-white/80" />
             Playing
           </div>
         )}
@@ -153,10 +153,10 @@ export const WorkReelsSection = ({ workData, documentId }: { workData?: any; doc
   const items = getLiveItems(documentId || "", "work.items", originalItems);
 
   return (
-    <section className="relative -mt-px pt-24 pb-20 px-6 bg-[#051A0E] overflow-hidden border-none z-10">
-      <div className="absolute top-0 left-0 w-full h-48 bg-linear-to-b from-[#051A0E] via-[#051A0E] to-transparent pointer-events-none z-20" />
-      <div className="absolute top-[10%] left-[-15%] w-[50%] h-[50%] bg-white/2 blur-[160px] rounded-full pointer-events-none z-0" />
-      <div className="absolute bottom-[20%] right-[-10%] w-[40%] h-[40%] bg-white/2 blur-[140px] rounded-full pointer-events-none z-0" />
+    <section className="relative -mt-px pt-24 pb-20 px-6  border-none z-10">
+      {/* Top fade removed for glow bleed */}
+      <div className="absolute top-[10%] left-[-5%] w-[500px] h-[500px] bg-purple-500/[0.12] blur-[160px] rounded-full pointer-events-none z-0" />
+      <div className="absolute bottom-[20%] right-[-5%] w-[600px] h-[600px] bg-blue-600/[0.12] blur-[140px] rounded-full pointer-events-none z-0" />
 
       <div className="max-w-7xl mx-auto relative z-30">
         <div className="mb-10">
@@ -168,7 +168,7 @@ export const WorkReelsSection = ({ workData, documentId }: { workData?: any; doc
                   <EditableText id={documentId} field="work.title" value={title} as="span" />
                 ) : title}
               </h2>
-              <div className="text-emerald-400 text-lg italic font-semibold opacity-80">
+              <div className="text-white/80 text-lg italic font-semibold opacity-80">
                 {documentId ? (
                   <EditableText id={documentId} field="work.description" value={label} />
                 ) : label}
@@ -213,7 +213,7 @@ export const WorkReelsSection = ({ workData, documentId }: { workData?: any; doc
           </div>
         </div>
 
-        <div ref={scrollRef} className="flex gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-4">
+        <div ref={scrollRef} className="grid grid-cols-1 md:flex md:gap-6 md:overflow-x-auto no-scrollbar md:snap-x md:snap-mandatory gap-6">
           {items.map((item: any, i: number) => (
             <ReelCard
               key={item._key || i}
@@ -225,7 +225,7 @@ export const WorkReelsSection = ({ workData, documentId }: { workData?: any; doc
           ))}
         </div>
       </div>
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-linear-to-t from-[#051A0E] via-[#051A0E]/80 to-transparent pointer-events-none z-20" />
+      {/* Bottom fade removed for glow bleed */}
     </section>
   );
 };

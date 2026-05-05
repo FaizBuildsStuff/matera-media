@@ -95,10 +95,9 @@ export default function Pricing({ content }: { content?: any }) {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-32 px-6 bg-[#05180D] relative overflow-hidden font-satoshi selection:bg-emerald-500/30">
+    <section ref={sectionRef} className="py-16 md:py-20 px-6  relative font-satoshi selection:bg-white/30">
 
-      <div className="absolute top-0 left-0 w-full h-40 bg-linear-to-b from-[#05180D] to-transparent z-20 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-full h-40 bg-linear-to-t from-[#05180D] to-transparent z-20 pointer-events-none" />
+      {/* Fades disabled to allow glow bleed */}
 
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none z-0" />
       <div className="absolute top-[5%] right-[10%] w-[50%] h-[50%] bg-[#10B981]/5 blur-[120px] rounded-full pointer-events-none z-0" />
@@ -116,7 +115,7 @@ export default function Pricing({ content }: { content?: any }) {
                 return (
                   <span
                     key={i}
-                    className={isHighlight ? "text-emerald-400 italic font-medium px-1" : ""}
+                    className={isHighlight ? "text-white/80 italic font-medium px-1" : ""}
                     style={isHighlight ? { textShadow: "0 0 30px rgba(52, 211, 153, 0.15)" } : {}}
                   >
                     {word}{" "}
@@ -164,12 +163,12 @@ export default function Pricing({ content }: { content?: any }) {
                   onMouseMove={(e) => handleMouseMove(e, idx)}
                   onMouseLeave={() => handleMouseLeave(idx)}
                   className={`pricing-card group relative flex flex-col p-10 rounded-[3rem] border transition-all duration-700 backdrop-blur-3xl overflow-hidden ${isHighlighted
-                    ? "bg-white/5 border-[#10B981]/40 shadow-[0_40px_120px_-20px_rgba(16,185,129,0.3)] z-30"
+                    ? "bg-white/5 border-[#10B981]/40 shadow-[0_40px_120px_-20px_rgba(255,255,255,0.3)] z-30"
                     : "bg-white/2 border-white/5 hover:border-white/10 z-10 opacity-80 hover:opacity-100"
                     }`}
                 >
                   {isHighlighted && (
-                    <div className="absolute top-0 right-10 px-6 py-2 bg-emerald-500 text-black text-[9px] font-black uppercase tracking-[0.2em] rounded-b-2xl shadow-lg">
+                    <div className="absolute top-0 right-10 px-6 py-2 bg-white text-black text-black text-[9px] font-black uppercase tracking-[0.2em] rounded-b-2xl shadow-lg">
                       MOST DEMANDED
                     </div>
                   )}
@@ -196,7 +195,7 @@ export default function Pricing({ content }: { content?: any }) {
                   )}
 
                   <div className={`glow-${idx} pointer-events-none absolute -inset-px opacity-0 rounded-[3rem] transition-opacity duration-500`}
-                    style={{ background: `radial-gradient(600px circle at var(--x) var(--y), rgba(16,185,129,0.15), transparent 40%)`, transform: 'translate(-50%, -50%)', left: 0, top: 0, width: '1200px', height: '1200px' }} />
+                    style={{ background: `radial-gradient(600px circle at var(--x) var(--y), rgba(255,255,255,0.15), transparent 40%)`, transform: 'translate(-50%, -50%)', left: 0, top: 0, width: '1200px', height: '1200px' }} />
 
                   <div className="relative z-10 flex flex-col h-full">
                     <div className="mb-7">
@@ -292,4 +291,4 @@ export default function Pricing({ content }: { content?: any }) {
       </div>
     </section>
   );
-}
+}
