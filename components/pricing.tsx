@@ -45,7 +45,7 @@ export default function Pricing({ content }: { content?: any }) {
   const title = content?.title ?? "Built for Absolute Velocity.";
   const highlightedWord = content?.highlightedWord ?? "Absolute";
   const subtitle = content?.subtitle ?? "Choose the creative discipline that aligns with your revenue infrastructure.";
-  
+
   const originalPlans = content?.plans?.length > 0 ? content.plans : DEFAULT_SOLUTIONS;
   const plans = getLiveItems(documentId || "", sectionKey ? `sections[_key == "${sectionKey}"].plans` : "plans", originalPlans);
 
@@ -99,8 +99,22 @@ export default function Pricing({ content }: { content?: any }) {
 
       {/* Fades disabled to allow glow bleed */}
 
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none z-0" />
-      <div className="absolute top-[5%] right-[10%] w-[50%] h-[50%] bg-[#10B981]/5 blur-[120px] rounded-full pointer-events-none z-0" />
+      {/* ── Powerful Static Fractal Rift Velocity Background ── */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        {/* Horizontal Header Beam */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[95%] md:w-[85%] h-[2px] bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent blur-[1px] z-10" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] md:w-[70%] h-[40px] bg-emerald-500/[0.1] blur-[30px] rounded-full z-0" />
+
+        {/* Multi-layered Static Velocity Rifts */}
+        <div className="absolute top-[15%] left-[-15%] w-[120%] h-[500px] bg-emerald-600/[0.08] blur-[160px] rounded-[100%] rotate-[-12deg] z-0" />
+        <div className="absolute bottom-[-10%] right-[-15%] w-[110%] h-[600px] bg-lime-500/[0.06] blur-[140px] rounded-[100%] rotate-[18deg] z-0" />
+        
+        {/* Central Core Static Radiance */}
+        <div className="absolute top-[35%] left-[10%] w-[400px] h-[400px] bg-emerald-400/[0.12] blur-[110px] rounded-full z-0" />
+
+        {/* Global Grid System */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(16,185,129,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(16,185,129,0.015)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_85%)]" />
+      </div>
 
       <div className="max-w-7xl mx-auto relative z-30">
 
@@ -168,17 +182,17 @@ export default function Pricing({ content }: { content?: any }) {
                     }`}
                 >
                   {isHighlighted && (
-                    <div className="absolute top-0 right-10 px-6 py-2 bg-white text-black text-black text-[9px] font-black uppercase tracking-[0.2em] rounded-b-2xl shadow-lg">
+                    <div className="absolute top-0 right-10 px-6 py-2 bg-emerald-500 text-black text-[9px] font-black uppercase tracking-[0.2em] rounded-b-2xl shadow-[0_0_30px_rgba(16,185,129,0.4)] z-50">
                       MOST DEMANDED
                     </div>
                   )}
 
                   {documentId && (
                     <div className="absolute top-3 right-3 z-30 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <AddRemoveControls 
-                        id={documentId} 
-                        field={sectionKey ? `sections[_key == "${sectionKey}"].plans` : "plans"} 
-                        itemKey={planId} 
+                      <AddRemoveControls
+                        id={documentId}
+                        field={sectionKey ? `sections[_key == "${sectionKey}"].plans` : "plans"}
+                        itemKey={planId}
                         label="Plan"
                         initialData={plan}
                         fields={[
@@ -201,12 +215,12 @@ export default function Pricing({ content }: { content?: any }) {
                     <div className="mb-7">
                       <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#10B981] opacity-80">
                         {documentId ? (
-                          <EditableText 
-                            id={documentId} 
-                            field={`plans[_key == "${planId}"].tagline`} 
-                            sectionKey={sectionKey} 
-                            value={plan.tagline} 
-                            as="span" 
+                          <EditableText
+                            id={documentId}
+                            field={`plans[_key == "${planId}"].tagline`}
+                            sectionKey={sectionKey}
+                            value={plan.tagline}
+                            as="span"
                           />
                         ) : plan.tagline}
                       </span>
@@ -214,22 +228,22 @@ export default function Pricing({ content }: { content?: any }) {
 
                     <h3 className="text-3xl font-bold text-white mb-4 tracking-tight">
                       {documentId ? (
-                        <EditableText 
-                          id={documentId} 
-                          field={`plans[_key == "${planId}"].name`} 
-                          sectionKey={sectionKey} 
-                          value={plan.name} 
-                          as="span" 
+                        <EditableText
+                          id={documentId}
+                          field={`plans[_key == "${planId}"].name`}
+                          sectionKey={sectionKey}
+                          value={plan.name}
+                          as="span"
                         />
                       ) : plan.name}
                     </h3>
                     <div className="text-white/40 text-[13px] font-normal leading-relaxed mb-10 whitespace-pre-wrap">
                       {documentId ? (
-                        <EditableText 
-                          id={documentId} 
-                          field={`plans[_key == "${planId}"].description`} 
-                          sectionKey={sectionKey} 
-                          value={plan.description} 
+                        <EditableText
+                          id={documentId}
+                          field={`plans[_key == "${planId}"].description`}
+                          sectionKey={sectionKey}
+                          value={plan.description}
                         />
                       ) : plan.description}
                     </div>
@@ -240,12 +254,12 @@ export default function Pricing({ content }: { content?: any }) {
                           <Check className="size-3 text-[#10B981]" />
                           <span className="text-sm font-normal text-white/50 group-hover:text-white/80 transition-colors">
                             {documentId ? (
-                              <EditableText 
-                                id={documentId} 
-                                field={`plans[_key == "${planId}"].features[${fIdx}]`} 
-                                sectionKey={sectionKey} 
-                                value={feature} 
-                                as="span" 
+                              <EditableText
+                                id={documentId}
+                                field={`plans[_key == "${planId}"].features[${fIdx}]`}
+                                sectionKey={sectionKey}
+                                value={feature}
+                                as="span"
                               />
                             ) : feature}
                           </span>

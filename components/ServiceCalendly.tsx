@@ -45,9 +45,9 @@ export function ServiceCalendly({ content }: ServiceCalendlyProps) {
       <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700,900&display=swap" rel="stylesheet" />
       {/* Background Patterns */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] bg-[size:60px_60px]" />
-      <div className="absolute top-1/2 left-1/2 w-[700px] h-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[180px] bg-purple-500/[0.1] pointer-events-none" />
-      <div className="absolute top-20 right-20 w-[400px] h-[400px] bg-blue-600/[0.12] rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-20 left-20 w-[400px] h-[400px] bg-emerald-500/[0.12] rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[95%] h-[400px] bg-emerald-600/[0.15] blur-[220px] rounded-[100%] pointer-events-none" />
+      <div className="absolute top-[40%] right-[-10%] w-[60%] h-[500px] bg-lime-500/[0.1] blur-[180px] rounded-[100%] pointer-events-none" />
+      <div className="absolute bottom-[0%] left-[-10%] w-[60%] h-[400px] bg-green-500/[0.1] blur-[200px] rounded-[100%] pointer-events-none" />
 
       <div className="relative z-10 max-w-4xl mx-auto">
         <div className="flex justify-center mb-10">
@@ -92,21 +92,7 @@ export function ServiceCalendly({ content }: ServiceCalendlyProps) {
               )
             )}
           </div>
-          {documentId && (
-            <div className="mt-4">
-              <EditableButton
-                id={documentId}
-                textField="calendlyUrl" // Reusing text field for simplicity in UI, but it's the URL
-                linkField="calendlyUrl"
-                text="Edit Calendly URL"
-                link={calendlyUrl}
-              >
-                <button className="text-[10px] text-white/40 uppercase font-black tracking-widest hover:text-white transition-colors">
-                  Config URL
-                </button>
-              </EditableButton>
-            </div>
-          )}
+          
         </div>
 
         {/* --- SCROLLBAR FIX WRAPPER --- */}

@@ -103,133 +103,150 @@ export const HowItWorks = ({ content }: { content?: any }) => {
 
     return (
         <section ref={sectionRef} id="process" className="py-16 md:py-20 px-6  relative font-satoshi selection:bg-white/30">
-    {/* Seamless Blending Masks (Disabled to allow glow bleed) */}
+            {/* Seamless Blending Masks (Disabled to allow glow bleed) */}
 
-    {/* Background FX */}
-    <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute inset-0 opacity-[0.04] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-        <div className="absolute inset-0">
-            <div className="ambient-glow absolute top-[5%] -right-[10%] w-[60vw] h-[60vw] bg-white/10 blur-[150px] rounded-full" />
-            <div className="ambient-glow absolute bottom-[5%] -left-[10%] w-[50vw] h-[50vw] bg-white/5 blur-[130px] rounded-full" />
-        </div>
-    </div>
+            {/* Background FX */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+                <div className="absolute inset-0 opacity-[0.04] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+                <div className="absolute inset-0">
+                    {/* ── Powerful Static Fractal Rift Process Background ── */}
+                    {/* Digital Horizon (Top Edge) */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[95%] md:w-[70%] h-[2px] bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent blur-[1px] z-10" />
 
-    <div className="max-w-6xl mx-auto relative z-30">
-        {/* Header Section - The "Sweet Spot" Size */}
-        <div className="text-center mb-24">
-            <div className="flex items-center justify-center gap-4 mb-6">
-                <div className="h-px w-10 bg-white/20" />
-                <span className="text-white text-[10px] font-bold tracking-[0.4em] uppercase">
-                    {documentId ? (
-                        <EditableText id={documentId} field="label" sectionKey={sectionKey} value={label} as="span" />
-                    ) : (
-                        label
-                    )}
-                </span>
-                <div className="h-px w-10 bg-white/20" />
-            </div>
-            
-            <h2 className="text-5xl md:text-6xl font-bold text-white tracking-tight leading-[1.1] flex flex-wrap justify-center">
-                {documentId ? (
-                    <EditableText id={documentId} field="title" sectionKey={sectionKey} value={titleText} />
-                ) : (
-                    titleText.split(' ').map((word: string, i: number) => {
-                        const isLast = i === titleText.split(' ').length - 1;
-                        return (
-                            <span 
-                                key={i} 
-                                className={isLast ? "text-white/80 italic font-semibold px-1" : ""}
-                            >
-                                {word}{" "}
-                            </span>
-                        );
-                    })
-                )}
-            </h2>
-            {documentId && (
-                <div className="mt-6 flex justify-center">
-                    <AddRemoveControls 
-                        id={documentId} 
-                        field={sectionKey ? `sections[_key == "${sectionKey}"].steps` : "steps"} 
-                        label="Step" 
-                        fields={[
-                            { name: "id", label: "Phase Number", type: "string", placeholder: "e.g. 01" },
-                            { name: "title", label: "Title", type: "string", placeholder: "e.g. Strategy" },
-                            { name: "description", label: "Description", type: "text", placeholder: "..." }
-                        ]}
-                    />
+                    {/* Vertical Flow Shaft */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1px] h-full bg-gradient-to-b from-emerald-500/20 via-transparent to-emerald-500/20 z-0" />
+
+                    {/* Multi-layered Static Rifts */}
+                    <div className="ambient-glow absolute top-[-5%] left-[-15%] w-[120%] h-[500px] bg-emerald-600/[0.1] blur-[160px] rounded-[100%] rotate-[15deg] z-0" />
+                    <div className="ambient-glow absolute bottom-[5%] right-[-15%] w-[110%] h-[400px] bg-lime-500/[0.08] blur-[140px] rounded-[100%] rotate-[-20deg] z-0" />
+                    
+                    {/* Core Energy Radiance (Static) */}
+                    <div className="ambient-glow absolute top-[35%] left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-emerald-400/[0.15] blur-[100px] rounded-full z-0" />
+
+                    {/* Bottom Bleed Rift */}
+                    <div className="absolute bottom-[-100px] left-[-5%] w-[80%] h-[300px] bg-emerald-500/[0.05] blur-[110px] rounded-[100%] rotate-[15deg] z-0" />
+
+                    {/* Grid Sub-texture */}
+                    <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(16,185,129,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(16,185,129,0.03)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)] opacity-40" />
                 </div>
-            )}
-        </div>
-
-        <div className="relative">
-            <div
-                ref={lineRef}
-                className="absolute left-1/2 -translate-x-1/2 top-0 w-[1px] h-full bg-white/20 origin-top z-20 hidden md:block"
-                style={{
-                    maskImage: 'linear-gradient(to bottom, transparent, black 5%, black 95%, transparent)',
-                    WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 5%, black 95%, transparent)'
-                }}
-            />
-
-            <div className="space-y-24 md:space-y-0">
-                {steps.map((step: any, i: number) => {
-                    const isEven = i % 2 === 0;
-                    return (
-                        <div key={step._key || step.id} className="process-row relative md:h-[280px] flex items-center">
-                            <div className="absolute left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-white text-black z-30 hidden md:block shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
-
-                            <div className={`row-content w-full md:w-[46%] ${isEven ? 'md:pr-14 md:text-right' : 'md:pl-14 md:text-left md:ml-[54%]'} space-y-4`}>
-                                <div className={`flex items-center gap-3 ${isEven ? 'md:justify-end' : 'md:justify-start'}`}>
-                                    <span className="text-white/60 font-bold text-[10px] tracking-[0.3em] uppercase">
-                                        Phase {step.id}
-                                    </span>
-                                </div>
-
-                                <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight leading-tight">
-                                    {documentId ? (
-                                        <EditableText 
-                                            id={documentId} 
-                                            field={`steps[_key == "${step._key || step.id}"].title`} 
-                                            sectionKey={sectionKey} 
-                                            value={step.title} 
-                                            as="span" 
-                                        />
-                                    ) : step.title}
-                                </h3>
-
-                                <div className="text-white/40 text-base leading-relaxed font-normal max-w-md mx-auto md:mx-0 whitespace-pre-wrap">
-                                    {documentId ? (
-                                        <EditableText 
-                                            id={documentId} 
-                                            field={`steps[_key == "${step._key || step.id}"].description`} 
-                                            sectionKey={sectionKey} 
-                                            value={step.description} 
-                                        />
-                                    ) : step.description}
-                                </div>
-                                {documentId && (
-                                    <div className={`mt-4 flex ${isEven ? 'md:justify-end' : 'md:justify-start'}`}>
-                                        <AddRemoveControls 
-                                            id={documentId} 
-                                            field={sectionKey ? `sections[_key == "${sectionKey}"].steps` : "steps"} 
-                                            itemKey={step._key || step.id} 
-                                            label="Step"
-                                            initialData={step}
-                                            fields={[
-                                                { name: "title", label: "Step Title", type: "string", placeholder: "e.g. Discovery Call" },
-                                                { name: "description", label: "Step Description", type: "text", placeholder: "Describe what happens..." }
-                                            ]}
-                                        />
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    );
-                })}
             </div>
-        </div>
-    </div>
-</section>
+
+            <div className="max-w-6xl mx-auto relative z-30">
+                {/* Header Section - The "Sweet Spot" Size */}
+                <div className="text-center mb-24">
+                    <div className="flex items-center justify-center gap-4 mb-6">
+                        <div className="h-px w-10 bg-white/20" />
+                        <span className="text-white text-[10px] font-bold tracking-[0.4em] uppercase">
+                            {documentId ? (
+                                <EditableText id={documentId} field="label" sectionKey={sectionKey} value={label} as="span" />
+                            ) : (
+                                label
+                            )}
+                        </span>
+                        <div className="h-px w-10 bg-white/20" />
+                    </div>
+
+                    <h2 className="text-5xl md:text-6xl font-bold text-white tracking-tight leading-[1.1] flex flex-wrap justify-center">
+                        {documentId ? (
+                            <EditableText id={documentId} field="title" sectionKey={sectionKey} value={titleText} />
+                        ) : (
+                            titleText.split(' ').map((word: string, i: number) => {
+                                const isLast = i === titleText.split(' ').length - 1;
+                                return (
+                                    <span
+                                        key={i}
+                                        className={isLast ? "text-white/80 italic font-semibold px-1" : ""}
+                                    >
+                                        {word}{" "}
+                                    </span>
+                                );
+                            })
+                        )}
+                    </h2>
+                    {documentId && (
+                        <div className="mt-6 flex justify-center">
+                            <AddRemoveControls
+                                id={documentId}
+                                field={sectionKey ? `sections[_key == "${sectionKey}"].steps` : "steps"}
+                                label="Step"
+                                fields={[
+                                    { name: "id", label: "Phase Number", type: "string", placeholder: "e.g. 01" },
+                                    { name: "title", label: "Title", type: "string", placeholder: "e.g. Strategy" },
+                                    { name: "description", label: "Description", type: "text", placeholder: "..." }
+                                ]}
+                            />
+                        </div>
+                    )}
+                </div>
+
+                <div className="relative">
+                    <div
+                        ref={lineRef}
+                        className="absolute left-1/2 -translate-x-1/2 top-0 w-[1px] h-full bg-emerald-400/30 origin-top z-20 hidden md:block"
+                        style={{
+                            maskImage: 'linear-gradient(to bottom, transparent, black 5%, black 95%, transparent)',
+                            WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 5%, black 95%, transparent)'
+                        }}
+                    />
+
+                    <div className="space-y-24 md:space-y-0">
+                        {steps.map((step: any, i: number) => {
+                            const isEven = i % 2 === 0;
+                            return (
+                                <div key={step._key || step.id} className="process-row relative md:h-[280px] flex items-center">
+                                    <div className="absolute left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-emerald-400 z-30 hidden md:block shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
+
+                                    <div className={`row-content w-full md:w-[46%] ${isEven ? 'md:pr-14 md:text-right' : 'md:pl-14 md:text-left md:ml-[54%]'} space-y-4`}>
+                                        <div className={`flex items-center gap-3 ${isEven ? 'md:justify-end' : 'md:justify-start'}`}>
+                                            <span className="text-emerald-400 font-bold text-[10px] tracking-[0.3em] uppercase">
+                                                Phase {step.id}
+                                            </span>
+                                        </div>
+
+                                        <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight leading-tight">
+                                            {documentId ? (
+                                                <EditableText
+                                                    id={documentId}
+                                                    field={`steps[_key == "${step._key || step.id}"].title`}
+                                                    sectionKey={sectionKey}
+                                                    value={step.title}
+                                                    as="span"
+                                                />
+                                            ) : step.title}
+                                        </h3>
+
+                                        <div className="text-white/40 text-base leading-relaxed font-normal max-w-md mx-auto md:mx-0 whitespace-pre-wrap">
+                                            {documentId ? (
+                                                <EditableText
+                                                    id={documentId}
+                                                    field={`steps[_key == "${step._key || step.id}"].description`}
+                                                    sectionKey={sectionKey}
+                                                    value={step.description}
+                                                />
+                                            ) : step.description}
+                                        </div>
+                                        {documentId && (
+                                            <div className={`mt-4 flex ${isEven ? 'md:justify-end' : 'md:justify-start'}`}>
+                                                <AddRemoveControls
+                                                    id={documentId}
+                                                    field={sectionKey ? `sections[_key == "${sectionKey}"].steps` : "steps"}
+                                                    itemKey={step._key || step.id}
+                                                    label="Step"
+                                                    initialData={step}
+                                                    fields={[
+                                                        { name: "title", label: "Step Title", type: "string", placeholder: "e.g. Discovery Call" },
+                                                        { name: "description", label: "Step Description", type: "text", placeholder: "Describe what happens..." }
+                                                    ]}
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            </div>
+        </section>
     );
 };

@@ -102,7 +102,7 @@ const ReelCard = ({ item, isPlaying, onToggle, documentId }: { item: any; isPlay
       )}
 
       <div className="absolute bottom-8 left-8 right-8 z-20 pointer-events-none">
-        <p className="text-white/80 text-[9px] font-black uppercase tracking-widest mb-1.5">
+        <p className="text-emerald-400 text-[9px] font-black uppercase tracking-widest mb-1.5">
           {documentId ? (
             <EditableText id={documentId} field={`work.items[_key == "${item._key}"].category`} value={item.category} as="span" />
           ) : item.category}
@@ -154,9 +154,10 @@ export const WorkReelsSection = ({ workData, documentId }: { workData?: any; doc
 
   return (
     <section className="relative -mt-px pt-24 pb-20 px-6  border-none z-10">
-      {/* Top fade removed for glow bleed */}
-      <div className="absolute top-[10%] left-[-5%] w-[500px] h-[500px] bg-purple-500/[0.12] blur-[160px] rounded-full pointer-events-none z-0" />
-      <div className="absolute bottom-[20%] right-[-5%] w-[600px] h-[600px] bg-blue-600/[0.12] blur-[140px] rounded-full pointer-events-none z-0" />
+      {/* Intense Nebula Beam Design */}
+      <div className="absolute top-[5%] left-[-10%] w-[120%] h-[550px] bg-emerald-500/[0.1] blur-[160px] rounded-[100%] rotate-[-10deg] pointer-events-none z-0" />
+      <div className="absolute bottom-[0%] right-[-10%] w-[90%] h-[450px] bg-lime-400/[0.08] blur-[140px] rounded-[100%] rotate-[15deg] pointer-events-none z-0" />
+      <div className="absolute top-[30%] left-[10%] w-[350px] h-[350px] bg-emerald-400/[0.12] blur-[110px] rounded-full pointer-events-none z-0 animate-pulse" />
 
       <div className="max-w-7xl mx-auto relative z-30">
         <div className="mb-10">

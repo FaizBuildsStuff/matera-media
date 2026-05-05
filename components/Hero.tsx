@@ -44,24 +44,23 @@ export const Hero = ({ content }: { content?: any }) => {
       ref={containerRef}
       className="relative w-full flex flex-col items-center justify-start pt-20 sm:pt-24 md:pt-28 pb-8 sm:pb-12 md:pb-16 px-4 sm:px-6 font-satoshi z-10"
     >
-      {/* ── Background ── */}
+      {/* ── Powerful Static Nebula Rift Background ── */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        {/* Deep Atmospheric Base */}
-        <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[80%] bg-blue-600/[0.15] blur-[160px] rounded-full animate-pulse" />
-        <div className="absolute top-[10%] right-[-15%] w-[60%] h-[70%] bg-emerald-500/[0.12] blur-[140px] rounded-full animate-pulse" style={{ animationDelay: '2s' }} />
-        <div className="absolute bottom-[-10%] left-[20%] w-[50%] h-[50%] bg-purple-500/[0.12] blur-[150px] rounded-full" />
 
-        {/* Global Grid System */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_80%)]" />
+        {/* Angled "Rift" Beams (Static) */}
+        <div className="absolute top-[5%] left-[-10%] w-[100%] h-[400px] bg-emerald-600/[0.1] blur-[140px] rounded-[100%] rotate-[-25deg] z-0" />
+        <div className="absolute top-[15%] right-[-10%] w-[80%] h-[500px] bg-lime-500/[0.08] blur-[120px] rounded-[100%] rotate-[15deg] z-0" />
+        
+        {/* Secondary Cross-Beams */}
+        <div className="absolute top-[40%] left-[10%] w-[60%] h-[200px] bg-emerald-400/[0.05] blur-[100px] rounded-[100%] rotate-[35deg] z-0" />
+        <div className="absolute top-[50%] right-[10%] w-[50%] h-[300px] bg-cyan-500/[0.04] blur-[110px] rounded-[100%] rotate-[-45deg] z-0" />
 
-        {/* Dot matrix — fades in from bottom */}
-        <div
-          className="absolute inset-0 bg-[image:radial-gradient(rgba(255,255,255,0.1)_1px,transparent_1px)] [background-size:20px_20px] opacity-30"
-          style={{
-            maskImage: "radial-gradient(circle at 50% 50%, black, transparent 70%)",
-            WebkitMaskImage: "radial-gradient(circle at 50% 50%, black, transparent 70%)",
-          }}
-        />
+        {/* Bottom Bleed Rift */}
+        <div className="absolute bottom-[-100px] left-1/2 -translate-x-1/2 w-[120%] h-[400px] bg-emerald-500/[0.06] blur-[140px] rounded-[100%] rotate-[-5deg] z-0" />
+
+        {/* Global Textures */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(16,185,129,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(16,185,129,0.03)_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_at_center,black,transparent:85%)]" />
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay" />
       </div>
 
       <div className="relative z-20 w-full max-w-[56rem] mx-auto flex flex-col items-center text-center mt-4 sm:mt-6 md:mt-8 mb-8 md:mb-12">
@@ -79,8 +78,8 @@ export const Hero = ({ content }: { content?: any }) => {
         </div>
 
         {/* ── Modern Heading Bloom ── */}
-        <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[80%] h-[40%] bg-blue-600/[0.1] blur-[120px] rounded-full pointer-events-none z-0" />
-        <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-[50%] h-[30%] bg-purple-500/[0.08] blur-[80px] rounded-full pointer-events-none z-0 animate-pulse duration-[4000ms]" />
+        <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[80%] h-[40%] bg-emerald-500/[0.1] blur-[120px] rounded-full pointer-events-none z-0" />
+        <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-[50%] h-[30%] bg-lime-500/[0.08] blur-[80px] rounded-full pointer-events-none z-0" />
 
         {/* Main Headline */}
         <h1 className="hero-reveal text-[1.75rem] sm:text-4xl md:text-[3.5rem] font-black leading-[1.1] tracking-tighter text-white mb-10 w-full max-w-[48rem] px-1 relative z-10">
@@ -106,7 +105,7 @@ export const Hero = ({ content }: { content?: any }) => {
               className="group"
             >
               <div className="flex items-center bg-white rounded-full p-1 sm:p-1.5 pr-5 sm:pr-8 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-[0_20px_50px_rgba(255,255,255,0.15)] group">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 md:w-[3.25rem] md:h-[3.25rem] bg-black rounded-full flex items-center justify-center mr-3 sm:mr-5 group-hover:bg-blue-600 transition-all duration-500">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 md:w-[3.25rem] md:h-[3.25rem] bg-black rounded-full flex items-center justify-center mr-3 sm:mr-5 group-hover:bg-emerald-500 transition-all duration-500">
                   <ArrowRight className="w-4 h-4 sm:w-[1.125rem] sm:h-[1.125rem] text-white stroke-[2.5] group-hover:rotate-[-45deg] transition-transform" />
                 </div>
                 <span className="text-black font-bold text-[0.85rem] sm:text-[0.95rem] md:text-base tracking-wide uppercase">
@@ -117,7 +116,7 @@ export const Hero = ({ content }: { content?: any }) => {
           ) : (
             <Link href={ctaLink}>
               <div className="flex items-center bg-white rounded-full p-1 sm:p-1.5 pr-5 sm:pr-8 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-[0_20px_50px_rgba(255,255,255,0.15)] group">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 md:w-[3.25rem] md:h-[3.25rem] bg-black rounded-full flex items-center justify-center mr-3 sm:mr-5 group-hover:bg-blue-600 transition-all duration-500">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 md:w-[3.25rem] md:h-[3.25rem] bg-black rounded-full flex items-center justify-center mr-3 sm:mr-5 group-hover:bg-emerald-500 transition-all duration-500">
                   <ArrowRight className="w-4 h-4 sm:w-[1.125rem] sm:h-[1.125rem] text-white stroke-[2.5] group-hover:rotate-[-45deg] transition-transform" />
                 </div>
                 <span className="text-black font-bold text-[0.85rem] sm:text-[0.95rem] md:text-base tracking-wide uppercase">

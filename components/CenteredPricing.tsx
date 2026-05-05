@@ -30,13 +30,16 @@ export const CenteredPricing = ({ data, documentId }: CenteredPricingProps) => {
   return (
     <section className="relative -mt-[1px] py-24 px-6  border-none z-10">
       {/* Top fade removed for glow bleed */}
-      <div className="absolute top-[10%] right-[-5%] w-[40%] h-[40%] bg-blue-600/[0.12] blur-[160px] rounded-full pointer-events-none z-0" />
-      <div className="absolute top-[40%] left-[-10%] w-[35%] h-[45%] bg-purple-500/[0.12] blur-[140px] rounded-full pointer-events-none z-0" />
-      <div className="absolute bottom-[10%] right-[20%] w-[40%] h-[40%] bg-emerald-500/[0.12] blur-[150px] rounded-full pointer-events-none z-0" />
+      {/* Intense Nebula Beam Design */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[95%] md:w-[85%] h-[2px] bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent blur-[1px] z-10" />
+      
+      <div className="absolute top-[5%] left-[-10%] w-[130%] md:w-[120%] h-[350px] md:h-[550px] bg-emerald-500/[0.12] blur-[100px] md:blur-[160px] rounded-[100%] rotate-[-12deg] pointer-events-none z-0" />
+      <div className="absolute bottom-[-5%] right-[-10%] w-[90%] md:w-[80%] h-[300px] md:h-[450px] bg-lime-400/[0.1] blur-[90px] md:blur-[140px] rounded-[100%] rotate-[15deg] pointer-events-none z-0" />
+      <div className="absolute top-[30%] left-1/2 -translate-x-1/2 w-[300px] md:w-[450px] h-[300px] md:h-[450px] bg-emerald-400/[0.15] blur-[80px] md:blur-[120px] rounded-full pointer-events-none z-0 animate-pulse" />
 
       <div className="max-w-7xl mx-auto relative z-30 text-center mb-16">
         <div className="flex justify-between items-center w-full max-w-xs mx-auto mb-4">
-          <div className="text-white text-[10px] font-bold tracking-[0.4em] uppercase mx-auto">
+          <div className="text-emerald-400 text-[10px] font-bold tracking-[0.4em] uppercase mx-auto">
             {documentId ? (
               <EditableText id={documentId} field="plansLabel" value={label} as="span" />
             ) : label}
@@ -91,7 +94,7 @@ export const CenteredPricing = ({ data, documentId }: CenteredPricingProps) => {
                 </div>
               )}
               {plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-white text-black text-black text-[9px] font-black uppercase tracking-widest shadow-[0_0_20px_rgba(255,255,255,0.4)]">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-emerald-500 text-black text-[9px] font-black uppercase tracking-widest shadow-[0_0_20px_rgba(16,185,129,0.4)]">
                   Most Popular
                 </div>
               )}

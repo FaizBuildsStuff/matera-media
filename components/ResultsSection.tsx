@@ -28,14 +28,17 @@ export const ResultsSection = ({ items: originalItems, title, documentId, label 
   return (
     <section className="relative -mt-px py-12 md:py-16 px-6  text-center border-none z-10">
       {/* Fades disabled to allow glow bleed */}
-      <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[60%] h-[50%] bg-blue-600/[0.12] blur-[160px] rounded-full pointer-events-none z-0" />
-      <div className="absolute top-[40%] left-[-10%] w-[40%] h-[40%] bg-purple-500/[0.12] blur-[140px] rounded-full pointer-events-none z-0" />
-      <div className="absolute bottom-[20%] right-[-5%] w-[30%] h-[40%] bg-emerald-500/[0.12] blur-[120px] rounded-full pointer-events-none z-0" />
+      {/* Intense Nebula Beam Design */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[70%] h-[2px] bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent blur-[1px] z-10" />
+
+      <div className="absolute top-[10%] right-[-10%] w-[120%] h-[500px] bg-emerald-500/[0.1] blur-[160px] rounded-[100%] rotate-[10deg] pointer-events-none z-0" />
+      <div className="absolute bottom-[0%] left-[-15%] w-[80%] h-[400px] bg-lime-400/[0.06] blur-[120px] rounded-[100%] rotate-[-15deg] pointer-events-none z-0" />
+      <div className="absolute top-[40%] left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-emerald-400/[0.15] blur-[100px] rounded-full pointer-events-none z-0 animate-pulse" />
 
       <div className="max-w-7xl mx-auto relative z-30">
         <div className="flex flex-col items-center mb-16">
           <div className="flex justify-between items-center w-full max-w-xs mb-4">
-            <span className="text-white text-[10px] font-bold tracking-[0.4em] uppercase mx-auto">
+            <span className="text-emerald-400 text-[10px] font-bold tracking-[0.4em] uppercase mx-auto">
               {documentId ? (
                 <EditableText id={documentId} field="resultsLabel" value={label} as="span" />
               ) : label}

@@ -100,19 +100,19 @@ export const Footer = ({ settings }: { settings?: FooterSettings }) => {
                                                 {item.label}
                                             </div>
                                         </EditableButton>
-                                            <div className="absolute -top-4 left-1/2 -translate-x-1/2 opacity-0 group-hover/link:opacity-100 transition-opacity">
-                                                <AddRemoveControls 
-                                                    id={documentId} 
-                                                    field="footerLinks" 
-                                                    itemKey={item._key} 
-                                                    label="Link"
-                                                    initialData={item}
-                                                    fields={[
-                                                        { name: "label", label: "Label", type: "string", placeholder: "Home" },
-                                                        { name: "href", label: "URL", type: "string", placeholder: "/" }
-                                                    ]}
-                                                />
-                                            </div>
+                                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 opacity-0 group-hover/link:opacity-100 transition-opacity">
+                                            <AddRemoveControls
+                                                id={documentId}
+                                                field="footerLinks"
+                                                itemKey={item._key}
+                                                label="Link"
+                                                initialData={item}
+                                                fields={[
+                                                    { name: "label", label: "Label", type: "string", placeholder: "Home" },
+                                                    { name: "href", label: "URL", type: "string", placeholder: "/" }
+                                                ]}
+                                            />
+                                        </div>
                                     </>
                                 ) : (
                                     <Link
@@ -125,10 +125,10 @@ export const Footer = ({ settings }: { settings?: FooterSettings }) => {
                             </div>
                         ))}
                         {documentId && (
-                            <AddRemoveControls 
-                                id={documentId} 
-                                field="footerLinks" 
-                                label="Link" 
+                            <AddRemoveControls
+                                id={documentId}
+                                field="footerLinks"
+                                label="Link"
                                 fields={[
                                     { name: "label", label: "Label", type: "string", placeholder: "Home" },
                                     { name: "href", label: "URL", type: "string", placeholder: "/" }
@@ -154,19 +154,19 @@ export const Footer = ({ settings }: { settings?: FooterSettings }) => {
                                                 {getSocialIcon(social.platform)}
                                             </div>
                                         </EditableButton>
-                                            <div className="absolute -top-4 left-1/2 -translate-x-1/2 opacity-0 group-hover/social:opacity-100 transition-opacity">
-                                                <AddRemoveControls 
-                                                    id={documentId} 
-                                                    field="socialLinks" 
-                                                    itemKey={social._key} 
-                                                    label="Social"
-                                                    initialData={social}
-                                                    fields={[
-                                                        { name: "platform", label: "Platform", type: "string", placeholder: "twitter" },
-                                                        { name: "url", label: "URL", type: "string", placeholder: "https://..." }
-                                                    ]}
-                                                />
-                                            </div>
+                                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 opacity-0 group-hover/social:opacity-100 transition-opacity">
+                                            <AddRemoveControls
+                                                id={documentId}
+                                                field="socialLinks"
+                                                itemKey={social._key}
+                                                label="Social"
+                                                initialData={social}
+                                                fields={[
+                                                    { name: "platform", label: "Platform", type: "string", placeholder: "twitter" },
+                                                    { name: "url", label: "URL", type: "string", placeholder: "https://..." }
+                                                ]}
+                                            />
+                                        </div>
                                     </>
                                 ) : (
                                     <Link
@@ -179,10 +179,10 @@ export const Footer = ({ settings }: { settings?: FooterSettings }) => {
                             </div>
                         ))}
                         {documentId && (
-                            <AddRemoveControls 
-                                id={documentId} 
-                                field="socialLinks" 
-                                label="Social" 
+                            <AddRemoveControls
+                                id={documentId}
+                                field="socialLinks"
+                                label="Social"
                                 fields={[
                                     { name: "platform", label: "Platform", type: "string", placeholder: "twitter" },
                                     { name: "url", label: "URL", type: "string", placeholder: "https://..." }

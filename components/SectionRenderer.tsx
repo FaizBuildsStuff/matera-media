@@ -148,7 +148,7 @@ interface SectionRendererProps {
 
 export function SectionRenderer({ sections, documentId }: SectionRendererProps) {
   return (
-    <main className="bg-[#050505] min-h-screen flex flex-col">
+    <main className="bg-[#050505] min-h-screen flex flex-col overflow-x-clip">
       {!sections || sections.length === 0 ? (
         <DefaultSections />
       ) : (

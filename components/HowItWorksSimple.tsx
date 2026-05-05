@@ -99,12 +99,14 @@ export const HowItWorksSimple = ({ data, _documentId, _sectionKey }: HowItWorksS
       {/* Top fade removed for glow bleed */}
       {/* Bottom fade removed for glow bleed */}
 
-      {/* GSAP Ambient Floating Parallax Graphics */}
+      {/* Intense Nebula Beam Design */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="gsap-how-ambient absolute top-[10%] left-[10%] w-[400px] h-[400px] bg-emerald-500/[0.12] blur-[140px] rounded-full pointer-events-none z-0" />
-        <div className="gsap-how-ambient absolute top-[40%] right-[10%] w-[300px] h-[300px] bg-blue-600/[0.15] blur-[100px] rounded-full pointer-events-none z-0" />
-        <div className="gsap-how-ambient absolute bottom-[10%] left-[30%] w-[500px] h-[500px] bg-purple-500/[0.12] blur-[150px] rounded-full pointer-events-none z-0" />
-        <div className="gsap-how-ambient absolute top-[60%] left-[5%] w-[250px] h-[250px] bg-emerald-500/[0.12] blur-[80px] rounded-full" />
+        <div className="gsap-how-ambient absolute top-[10%] left-[-10%] md:left-[-15%] w-[120%] h-[300px] md:h-[500px] bg-emerald-500/[0.1] blur-[80px] md:blur-[150px] rounded-[100%] rotate-[-12deg] pointer-events-none z-0" />
+        <div className="gsap-how-ambient absolute bottom-[5%] right-[-10%] md:right-[-15%] w-[100%] md:w-[80%] h-[250px] md:h-[400px] bg-lime-400/[0.08] blur-[70px] md:blur-[120px] rounded-[100%] rotate-[15deg] pointer-events-none z-0" />
+        
+        {/* Core Focal Radiance */}
+        <div className="gsap-how-ambient absolute top-[30%] left-1/2 -translate-x-1/2 w-[250px] md:w-[400px] h-[250px] md:h-[400px] bg-emerald-400/[0.15] blur-[70px] md:blur-[100px] rounded-full pointer-events-none z-0 animate-pulse" />
+        
         <div className="gsap-how-ambient absolute top-[20%] left-[20%] text-white/10 text-2xl font-light">+</div>
         <div className="gsap-how-ambient absolute top-[70%] right-[15%] text-white/10 text-3xl font-light">+</div>
       </div>
@@ -116,10 +118,10 @@ export const HowItWorksSimple = ({ data, _documentId, _sectionKey }: HowItWorksS
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="inline-flex items-center px-4 py-1.5 rounded-full border border-white/20 bg-white/5 mb-10 shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+          className="inline-flex items-center px-4 py-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/5 mb-10 shadow-[0_0_20px_rgba(16,185,129,0.1)]"
         >
-          <div className="w-1.5 h-1.5 rounded-full bg-white text-black mr-2.5 animate-pulse shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
-          <span className="text-white text-[10px] font-black tracking-[0.3em] uppercase">
+          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2.5 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
+          <span className="text-emerald-400 text-[10px] font-black tracking-[0.3em] uppercase">
             {_documentId ? (
               <EditableText id={_documentId} field="howItWorksSimple.badge" value={badge || "How it works"} as="span" />
             ) : (badge || "How it works")}
@@ -176,8 +178,8 @@ export const HowItWorksSimple = ({ data, _documentId, _sectionKey }: HowItWorksS
 
                 {/* Step Number Glowing Node + Remove Button */}
                 <div className="absolute top-0 right-10 -translate-y-1/2 flex flex-col items-center gap-2">
-                  <div className="h-20 w-px bg-gradient-to-b from-transparent via-white/20 to-transparent" />
-                  <div className="w-10 h-10 rounded-full bg-[#111] border border-white/20 flex items-center justify-center text-white/80 text-xs font-black z-20 shadow-[0_0_20px_rgba(255,255,255,0.2)] group-hover:scale-110 group-hover:border-white/20/60 transition-transform">
+                  <div className="h-20 w-px bg-gradient-to-b from-transparent via-emerald-500/20 to-transparent" />
+                  <div className="w-10 h-10 rounded-full bg-[#111] border border-emerald-500/40 flex items-center justify-center text-emerald-400 text-xs font-black z-20 shadow-[0_0_20px_rgba(16,185,129,0.2)] group-hover:scale-110 transition-transform">
                     {i + 1}
                   </div>
                   {_documentId && (

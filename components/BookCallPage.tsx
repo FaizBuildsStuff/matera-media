@@ -150,21 +150,6 @@ export function BookCallPage({ content }: { content?: BookingPageContent }) {
               ))}
             </div>
 
-            {documentId && (
-              <div className="pt-4">
-                <EditableButton 
-                  id={documentId} 
-                  textField="calendlyUrl" 
-                  linkField="calendlyUrl" 
-                  text="Edit Calendly URL" 
-                  link={calendlyUrl}
-                >
-                  <button className="text-[10px] text-white/40 uppercase font-black tracking-widest hover:text-white transition-colors">
-                    Config URL
-                  </button>
-                </EditableButton>
-              </div>
-            )}
           </div>
 
           {/* CALENDLY SECTION */}

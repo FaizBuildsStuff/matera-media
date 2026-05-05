@@ -25,7 +25,7 @@ type CalendlyContent = {
 export const CalendlyWidget = ({ content }: { content?: CalendlyContent }) => {
   const documentId = content?._documentId;
   const sectionKey = content?._sectionKey;
-  
+
   const title = content?.title ?? "Architect Your Next Phase.";
   const subtitle = content?.subtitle ?? "Book a strategic discovery call to explore our performance systems.";
   const calendlyUrl = content?.calendlyUrl || DEFAULT_CALENDLY_URL;
@@ -89,18 +89,25 @@ export const CalendlyWidget = ({ content }: { content?: CalendlyContent }) => {
       id="schedule"
       className="relative py-16 md:py-20 px-6  font-satoshi"
     >
-      {/* --- THE GRID WITH FADED EDGES --- */}
-      <div
-        className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] bg-[size:60px_60px]"
-        style={{
-          maskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)',
-          WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)'
-        }}
-      />
+      {/* ── Powerful Static Fractal Rift System Background ── */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        {/* Digital Horizon Lines */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[90%] h-[2px] bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent blur-[1px] z-10" />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[90%] h-[2px] bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent blur-[1px] z-10" />
 
-      {/* --- SMOOTH SECTION BLENDING (Disabled to allow glow bleed) --- */}
+        {/* Multi-layered Static Core Glows */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[700px] bg-emerald-500/[0.1] blur-[160px] rounded-full z-0" />
+        <div className="absolute top-[40%] left-[10%] w-[60%] h-[400px] bg-lime-400/[0.06] blur-[120px] rounded-[100%] rotate-[-15deg] z-0" />
+        <div className="absolute bottom-[20%] right-[10%] w-[70%] h-[500px] bg-emerald-600/[0.08] blur-[140px] rounded-[100%] rotate-[20deg] z-0" />
 
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-white/5 blur-[140px] rounded-full pointer-events-none" />
+        {/* System Grid Texture */}
+        <div className="absolute inset-0 opacity-[0.05] bg-[linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] bg-[size:60px_60px]"
+          style={{
+            maskImage: 'radial-gradient(circle at center, black, transparent 80%)',
+            WebkitMaskImage: 'radial-gradient(circle at center, black, transparent 80%)'
+          }}
+        />
+      </div>
 
       <div className="relative z-20 max-w-7xl mx-auto">
 
@@ -129,22 +136,6 @@ export const CalendlyWidget = ({ content }: { content?: CalendlyContent }) => {
             ) : subtitle}
           </div>
 
-          {documentId && (
-            <div className="mt-6">
-              <EditableButton 
-                id={documentId} 
-                textField="calendlyUrl" 
-                linkField="calendlyUrl" 
-                sectionKey={sectionKey}
-                text="Edit Calendly URL" 
-                link={calendlyUrl}
-              >
-                <button className="text-[10px] text-white/40 uppercase font-black tracking-widest hover:text-white transition-colors">
-                  Config URL
-                </button>
-              </EditableButton>
-            </div>
-          )}
         </div>
 
         {/* Calendly Widget with Loader */}

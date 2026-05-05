@@ -48,9 +48,13 @@ export const HeroCentered = ({
       {/* ── Background ── */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
         {/* Soft green gradient blooms */}
-        <div className="absolute top-[-10%] left-[-5%] w-[60%] h-[70%] bg-blue-600/[0.15] blur-[120px] rounded-full pointer-events-none" />
-        <div className="absolute top-[15%] left-[20%] w-[50%] h-[60%] bg-purple-500/[0.12] blur-[140px] rounded-full pointer-events-none" />
-        <div className="absolute top-[5%] right-[-15%] w-[50%] h-[60%] bg-emerald-500/[0.12] blur-[120px] rounded-full pointer-events-none" />
+        {/* Intense Nebula Beam Design */}
+        <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[160%] md:w-[140%] h-[350px] md:h-[600px] bg-emerald-500/[0.08] blur-[100px] md:blur-[140px] rounded-[100%] rotate-[-15deg] pointer-events-none z-0" />
+        <div className="absolute top-[10%] left-[-10%] w-[100%] md:w-[60%] h-[250px] md:h-[400px] bg-lime-400/[0.1] blur-[80px] md:blur-[120px] rounded-[100%] rotate-[20deg] pointer-events-none z-0" />
+        <div className="absolute top-[0%] right-[-10%] md:right-[-15%] w-[110%] md:w-[70%] h-[300px] md:h-[450px] bg-emerald-400/[0.12] blur-[90px] md:blur-[110px] rounded-[100%] rotate-[-25deg] pointer-events-none z-0" />
+        
+        {/* Focal Radiance Spark */}
+        <div className="absolute top-[25%] left-1/2 -translate-x-1/2 w-[300px] md:w-[400px] h-[300px] md:h-[400px] bg-emerald-500/[0.15] blur-[80px] md:blur-[100px] rounded-full pointer-events-none z-0 animate-pulse" />
 
         {/* Subtle geometric shard lines */}
         <div className="absolute top-0 left-0 w-full h-[700px] opacity-[0.08]">
@@ -77,7 +81,7 @@ export const HeroCentered = ({
 
         {/* Section Label */}
         {sectionLabel && (
-          <div className="hc-reveal text-white font-bold text-[10px] sm:text-xs md:text-sm tracking-widest uppercase mb-5 sm:mb-7 md:mb-8 px-2">
+          <div className="hc-reveal text-emerald-400 font-bold text-[10px] sm:text-xs md:text-sm tracking-widest uppercase mb-5 sm:mb-7 md:mb-8 px-2">
             {_documentId ? (
               <EditableText id={_documentId} field="sectionLabel" sectionKey={_sectionKey} value={sectionLabel} as="span" />
             ) : sectionLabel}

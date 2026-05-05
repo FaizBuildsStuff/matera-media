@@ -62,8 +62,22 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
                     backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
                 }}
             />
-            <div className="absolute top-[20%] left-[10%] w-[400px] h-[400px] bg-white/10 blur-[120px] rounded-full animate-pulse pointer-events-none" />
-            <div className="absolute bottom-[20%] right-[10%] w-[500px] h-[500px] bg-white/5 blur-[150px] rounded-full animate-pulse pointer-events-none" style={{ animationDelay: '2s' }} />
+            {/* ── Powerful Static Fractal Rift Wall Background ── */}
+            <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+                {/* Multi-layered Static Ambient Rifts */}
+                <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[120%] h-[600px] bg-emerald-500/[0.08] blur-[160px] rounded-[100%] rotate-[-15deg] z-0" />
+                <div className="absolute bottom-[10%] right-[-10%] w-[90%] h-[500px] bg-lime-400/[0.06] blur-[140px] rounded-[100%] rotate-[18deg] z-0" />
+                
+                {/* Secondary Static Sparks */}
+                <div className="absolute top-[30%] left-[-10%] w-[400px] h-[400px] bg-emerald-600/[0.1] blur-[120px] rounded-full z-0" />
+                
+                {/* Digital Horizon */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[90%] h-[2px] bg-gradient-to-r from-transparent via-white/10 to-transparent blur-[1px] z-10" />
+                
+                {/* Global Textures */}
+                <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:50px_50px]" />
+            </div>
 
             <div className="mx-auto max-w-6xl relative z-10">
                 {/* --- HEADER --- */}
@@ -117,7 +131,7 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
                         <div
                             key={chunkIndex}
                             className={`flex flex-col gap-4 ${chunkIndex === 1 ? 'lg:translate-y-8' :
-                                    chunkIndex === 2 ? 'lg:translate-y-4' : ''
+                                chunkIndex === 2 ? 'lg:translate-y-4' : ''
                                 }`}
                         >
                             {chunk.map((testimonial: Testimonial, i: number) => {
@@ -193,12 +207,7 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
                                                 </div>
                                             </div>
 
-                                            {/* --- STARS --- */}
-                                            <div className="flex gap-1 mb-4">
-                                                {[...Array(5)].map((_, i) => (
-                                                    <Star key={i} className="size-2.5 text-white fill-white opacity-60" />
-                                                ))}
-                                            </div>
+                                            {/* Stars removed for cleaner aesthetic */}
 
                                             <div className="text-white/70 text-[13px] md:text-sm leading-relaxed font-medium tracking-tight italic">
                                                 {documentId ? (

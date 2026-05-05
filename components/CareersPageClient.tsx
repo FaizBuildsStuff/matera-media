@@ -138,9 +138,12 @@ export default function CareersPageClient({ content }: CareersPageProps) {
   return (
     <div ref={sectionRef} className="relative overflow-hidden pt-16 md:pt-24 ">
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none z-0" />
-      <div className="absolute top-[-10%] left-[-5%] w-[500px] h-[500px] bg-blue-600/[0.15] rounded-full blur-[140px] pointer-events-none z-0" />
-      <div className="absolute top-[20%] right-[-10%] w-[600px] h-[600px] bg-purple-500/[0.12] rounded-full blur-[150px] pointer-events-none z-0" />
-      <div className="absolute bottom-[-10%] left-[20%] w-[700px] h-[700px] bg-emerald-500/[0.12] rounded-full blur-[160px] pointer-events-none z-0" />
+      {/* Intense Nebula Beam Design */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[95%] md:w-[85%] h-[2px] bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent blur-[1px] z-10" />
+      
+      <div className="absolute top-[5%] left-[-10%] md:left-[-15%] w-[130%] md:w-[120%] h-[350px] md:h-[500px] bg-emerald-500/[0.1] blur-[100px] md:blur-[160px] rounded-[100%] rotate-[-12deg] pointer-events-none z-0" />
+      <div className="absolute top-[40%] right-[-10%] md:right-[-15%] w-[100%] md:w-[70%] h-[300px] md:h-[450px] bg-lime-400/[0.08] blur-[80px] md:blur-[140px] rounded-[100%] rotate-[15deg] pointer-events-none z-0" />
+      <div className="absolute bottom-[5%] left-1/2 -translate-x-1/2 w-[300px] md:w-[450px] h-[300px] md:h-[450px] bg-emerald-400/[0.12] blur-[90px] md:blur-[120px] rounded-full pointer-events-none z-0 animate-pulse" />
 
       <div className="max-w-5xl mx-auto relative z-10 py-20 px-6">
         
@@ -187,7 +190,7 @@ export default function CareersPageClient({ content }: CareersPageProps) {
         <div className="culture-grid grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-32">
           {CULTURE_PILLARS.map((pillar, i) => (
             <div key={i} className="culture-card p-8 rounded-[2rem] bg-white/[0.01] border border-white/5 backdrop-blur-3xl transition-all duration-500 group">
-              <div className="size-12 rounded-2xl bg-white/5 flex items-center justify-center mb-6 border border-white/10 group-hover:bg-white text-black group-hover:text-black transition-all duration-500">
+              <div className="size-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-6 border border-emerald-500/20 group-hover:bg-emerald-500 text-emerald-400 group-hover:text-black transition-all duration-500 shadow-[0_0_20px_rgba(52,211,153,0.1)] group-hover:shadow-[0_0_30px_rgba(52,211,153,0.3)]">
                 <pillar.icon className="size-4" />
               </div>
               <h3 className="text-white text-lg font-medium mb-3 font-satoshi">{pillar.title}</h3>
@@ -248,8 +251,8 @@ export default function CareersPageClient({ content }: CareersPageProps) {
                             <Clock className="size-3 text-white/50" /> Instant Start
                           </div>
                         </div>
-                        <div className="size-14 rounded-full border border-white/10 flex items-center justify-center bg-white/[0.02] group-hover:bg-white text-black group-hover:border-white/20 transition-all duration-500 shadow-2xl shadow-white/0 group-hover:shadow-white/20">
-                          <ArrowUpRight className="size-6 text-white group-hover:text-black transition-transform duration-500 group-hover:scale-110" />
+                        <div className="size-14 rounded-full border border-emerald-500/20 flex items-center justify-center bg-emerald-500/10 group-hover:bg-emerald-500 text-emerald-400 group-hover:text-black transition-all duration-500 shadow-[0_0_20px_rgba(52,211,153,0)] group-hover:shadow-[0_0_30px_rgba(52,211,153,0.3)]">
+                          <ArrowUpRight className="size-6 text-emerald-400 group-hover:text-black transition-transform duration-500 group-hover:scale-110" />
                         </div>
                       </div>
                     </div>
