@@ -50,7 +50,7 @@ export const Hero = ({ content }: { content?: any }) => {
         {/* Angled "Rift" Beams (Static) */}
         <div className="absolute top-[5%] left-[-10%] w-[100%] h-[400px] bg-emerald-600/[0.1] blur-[140px] rounded-[100%] rotate-[-25deg] z-0" />
         <div className="absolute top-[15%] right-[-10%] w-[80%] h-[500px] bg-lime-500/[0.08] blur-[120px] rounded-[100%] rotate-[15deg] z-0" />
-        
+
         {/* Secondary Cross-Beams */}
         <div className="absolute top-[40%] left-[10%] w-[60%] h-[200px] bg-emerald-400/[0.05] blur-[100px] rounded-[100%] rotate-[35deg] z-0" />
         <div className="absolute top-[50%] right-[10%] w-[50%] h-[300px] bg-cyan-500/[0.04] blur-[110px] rounded-[100%] rotate-[-45deg] z-0" />

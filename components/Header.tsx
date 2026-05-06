@@ -195,8 +195,8 @@ export const Header = ({ settings }: { settings?: HeaderSettings }) => {
                                         href={item.href}
                                         onClick={() => setMobileOpen(false)}
                                         className={`flex-1 block text-xl uppercase font-black tracking-widest transition-all ${pathname === item.href
-                                                ? "text-white/80 pl-4 border-l-2 border-white/20"
-                                                : "text-white/60 hover:text-white hover:pl-2"
+                                            ? "text-white/80 pl-4 border-l-2 border-white/20"
+                                            : "text-white/60 hover:text-white hover:pl-2"
                                             }`}
                                     >
                                         {item.label}

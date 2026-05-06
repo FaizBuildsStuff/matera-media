@@ -10,6 +10,7 @@ import { useVisualEditing } from "./visual-editing/VisualEditingProvider";
 import { EditableText } from "./visual-editing/EditableText";
 import { EditableButton } from "./visual-editing/EditableButton";
 import { AddRemoveControls } from "./visual-editing/AddRemoveControls";
+import { BorderBeam } from "@/components/ui/BorderBeam";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -108,7 +109,7 @@ export default function Pricing({ content }: { content?: any }) {
         {/* Multi-layered Static Velocity Rifts */}
         <div className="absolute top-[15%] left-[-15%] w-[120%] h-[500px] bg-emerald-600/[0.08] blur-[160px] rounded-[100%] rotate-[-12deg] z-0" />
         <div className="absolute bottom-[-10%] right-[-15%] w-[110%] h-[600px] bg-lime-500/[0.06] blur-[140px] rounded-[100%] rotate-[18deg] z-0" />
-        
+
         {/* Central Core Static Radiance */}
         <div className="absolute top-[35%] left-[10%] w-[400px] h-[400px] bg-emerald-400/[0.12] blur-[110px] rounded-full z-0" />
 
@@ -182,9 +183,18 @@ export default function Pricing({ content }: { content?: any }) {
                     }`}
                 >
                   {isHighlighted && (
-                    <div className="absolute top-0 right-10 px-6 py-2 bg-emerald-500 text-black text-[9px] font-black uppercase tracking-[0.2em] rounded-b-2xl shadow-[0_0_30px_rgba(16,185,129,0.4)] z-50">
-                      MOST DEMANDED
-                    </div>
+                    <>
+                      <div className="absolute top-0 right-10 px-6 py-2 bg-emerald-500 text-black text-[9px] font-black uppercase tracking-[0.2em] rounded-b-2xl shadow-[0_0_30px_rgba(16,185,129,0.4)] z-50">
+                        MOST DEMANDED
+                      </div>
+                      <BorderBeam 
+                        duration={8} 
+                        size={300} 
+                        colorFrom="#10B981" 
+                        colorTo="#FFFFFF" 
+                        borderWidth={2}
+                      />
+                    </>
                   )}
 
                   {documentId && (

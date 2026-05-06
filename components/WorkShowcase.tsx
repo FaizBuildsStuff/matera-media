@@ -219,11 +219,11 @@ export const WorkShowcase = ({
 
         {/* Central Ambient Glow */}
         <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[110%] h-[600px] bg-emerald-500/[0.08] blur-[160px] rounded-[100%] rotate-[-8deg] z-0" />
-        
+
         {/* Opposing High-Intensity Static Rifts */}
         <div className="absolute top-[30%] right-[-10%] w-[80%] h-[500px] bg-lime-400/[0.06] blur-[140px] rounded-[100%] rotate-[18deg] z-0" />
         <div className="absolute bottom-[10%] left-[-15%] w-[90%] h-[600px] bg-emerald-600/[0.08] blur-[150px] rounded-[100%] rotate-[-22deg] z-0" />
-        
+
         {/* Depth Spark */}
         <div className="absolute top-[50%] left-[20%] w-[350px] h-[350px] bg-emerald-400/[0.12] blur-[100px] rounded-full z-0" />
 
@@ -233,7 +233,7 @@ export const WorkShowcase = ({
         {/* Textured Overlays */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(16,185,129,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(16,185,129,0.02)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_80%)]" />
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay" />
-        
+
         <div className="absolute -left-20 top-40 opacity-[0.02] select-none">
           <img src="/Logo.png" alt="Matera Media" className="w-[600px] h-auto object-contain" />
         </div>

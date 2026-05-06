@@ -205,8 +205,13 @@ html.lenis body {
 }
 
 @theme inline {
-  --animate-cell-ripple: cell-ripple var(--duration, 200ms) ease-out none 1
-    var(--delay, 0ms);
+  --animate-border-beam: border-beam calc(var(--duration) * 1s) infinite linear;
+
+  @keyframes border-beam {
+    100% {
+      offset-distance: 100%;
+    }
+  }
 
   @keyframes cell-ripple {
     0% {

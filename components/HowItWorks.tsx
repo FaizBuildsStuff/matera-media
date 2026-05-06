@@ -119,7 +119,7 @@ export const HowItWorks = ({ content }: { content?: any }) => {
                     {/* Multi-layered Static Rifts */}
                     <div className="ambient-glow absolute top-[-5%] left-[-15%] w-[120%] h-[500px] bg-emerald-600/[0.1] blur-[160px] rounded-[100%] rotate-[15deg] z-0" />
                     <div className="ambient-glow absolute bottom-[5%] right-[-15%] w-[110%] h-[400px] bg-lime-500/[0.08] blur-[140px] rounded-[100%] rotate-[-20deg] z-0" />
-                    
+
                     {/* Core Energy Radiance (Static) */}
                     <div className="ambient-glow absolute top-[35%] left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-emerald-400/[0.15] blur-[100px] rounded-full z-0" />
 

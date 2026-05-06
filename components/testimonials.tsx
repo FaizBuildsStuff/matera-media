@@ -8,6 +8,7 @@ import { useVisualEditing } from "./visual-editing/VisualEditingProvider";
 import { EditableText } from "./visual-editing/EditableText";
 import { EditableImage } from "./visual-editing/EditableImage";
 import { AddRemoveControls } from "./visual-editing/AddRemoveControls";
+import { BorderBeam } from "@/components/ui/BorderBeam";
 
 type Testimonial = {
     _key?: string
@@ -67,13 +68,13 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
                 {/* Multi-layered Static Ambient Rifts */}
                 <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[120%] h-[600px] bg-emerald-500/[0.08] blur-[160px] rounded-[100%] rotate-[-15deg] z-0" />
                 <div className="absolute bottom-[10%] right-[-10%] w-[90%] h-[500px] bg-lime-400/[0.06] blur-[140px] rounded-[100%] rotate-[18deg] z-0" />
-                
+
                 {/* Secondary Static Sparks */}
                 <div className="absolute top-[30%] left-[-10%] w-[400px] h-[400px] bg-emerald-600/[0.1] blur-[120px] rounded-full z-0" />
-                
+
                 {/* Digital Horizon */}
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[90%] h-[2px] bg-gradient-to-r from-transparent via-white/10 to-transparent blur-[1px] z-10" />
-                
+
                 {/* Global Textures */}
                 <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:50px_50px]" />
@@ -141,9 +142,18 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
                                 return (
                                     <Card
                                         key={itemId}
-                                        className={`group relative bg-[#0a2313]/30 border-white/5 rounded-[1.5rem] transition-all duration-700 hover:scale-[1.01] hover:-rotate-0.5 hover:border-white/20 overflow-hidden backdrop-blur-sm ${isFeatured ? 'border-white/10' : ''
+                                        className={`group relative bg-emerald-950/20 border-white/5 rounded-[2rem] transition-all duration-500 hover:scale-[1.01] overflow-hidden backdrop-blur-md will-change-transform ${isFeatured ? 'border-emerald-500/20' : ''
                                             }`}
                                     >
+                                        <BorderBeam
+                                            size={250}
+                                            duration={20}
+                                            delay={i * 2}
+                                            colorFrom="#00ffcc"
+                                            colorTo="#33ff00"
+                                            className="opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+                                        />
+
                                         <CardContent className="p-6 md:p-8 relative z-10">
                                             {documentId && (
                                                 <div className="absolute top-3 right-3 z-40 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
@@ -165,26 +175,26 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
 
                                             {/* --- AUTHOR --- */}
                                             <div className="flex items-center gap-3 mb-6">
-                                                <div className="size-9 rounded-full overflow-hidden border border-white/10 group-hover:border-white/20 transition-colors p-0.5">
+                                                <div className="size-10 rounded-full overflow-hidden border border-emerald-500/20 group-hover:border-emerald-500/50 transition-colors p-0.5 bg-emerald-500/5">
                                                     {documentId ? (
                                                         <EditableImage
                                                             id={documentId}
                                                             field={`${sectionKey ? `sections[_key == "${sectionKey}"].` : ""}items[_key == "${itemId}"].image`}
                                                             value={testimonial.image}
-                                                            className="w-full h-full object-cover rounded-full"
+                                                            className="w-full h-full object-cover rounded-full grayscale hover:grayscale-0 transition-all duration-700"
                                                             alt={testimonial.name}
                                                         />
                                                     ) : (
                                                         <Avatar className="size-full">
-                                                            <AvatarImage src={testimonial.image} alt={testimonial.name} />
-                                                            <AvatarFallback className="bg-white text-black text-black text-[9px] font-black">
+                                                            <AvatarImage src={testimonial.image} alt={testimonial.name} className="grayscale hover:grayscale-0 transition-all duration-700" />
+                                                            <AvatarFallback className="bg-emerald-500 text-white text-[9px] font-black">
                                                                 {testimonial.name.slice(0, 2).toUpperCase()}
                                                             </AvatarFallback>
                                                         </Avatar>
                                                     )}
                                                 </div>
                                                 <div className="flex flex-col">
-                                                    <h3 className="font-black text-white text-xs tracking-tight uppercase leading-none mb-1">
+                                                    <h3 className="font-black text-emerald-50 text-xs tracking-tight uppercase leading-none mb-1 group-hover:text-white transition-colors">
                                                         {documentId ? (
                                                             <EditableText
                                                                 id={documentId}
@@ -194,7 +204,7 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
                                                             />
                                                         ) : testimonial.name}
                                                     </h3>
-                                                    <span className="text-white/30 text-[9px] font-bold uppercase tracking-widest">
+                                                    <span className="text-emerald-500/40 text-[9px] font-bold uppercase tracking-widest group-hover:text-emerald-400 transition-colors">
                                                         {documentId ? (
                                                             <EditableText
                                                                 id={documentId}
@@ -209,7 +219,7 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
 
                                             {/* Stars removed for cleaner aesthetic */}
 
-                                            <div className="text-white/70 text-[13px] md:text-sm leading-relaxed font-medium tracking-tight italic">
+                                            <div className="text-emerald-50/70 text-[13px] md:text-sm leading-relaxed font-medium tracking-tight italic group-hover:text-white transition-colors duration-500">
                                                 {documentId ? (
                                                     <EditableText
                                                         id={documentId}
