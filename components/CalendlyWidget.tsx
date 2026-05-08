@@ -90,23 +90,13 @@ export const CalendlyWidget = ({ content }: { content?: CalendlyContent }) => {
       className="relative py-16 md:py-20 px-6  font-satoshi"
     >
       {/* ── Powerful Static Fractal Rift System Background ── */}
-      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        {/* Digital Horizon Lines */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[90%] h-[2px] bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent blur-[1px] z-10" />
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[90%] h-[2px] bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent blur-[1px] z-10" />
-
+      <div className="absolute inset-0 pointer-events-none z-0">
         {/* Multi-layered Static Core Glows */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[700px] bg-emerald-500/[0.1] blur-[160px] rounded-full z-0" />
         <div className="absolute top-[40%] left-[10%] w-[60%] h-[400px] bg-lime-400/[0.06] blur-[120px] rounded-[100%] rotate-[-15deg] z-0" />
         <div className="absolute bottom-[20%] right-[10%] w-[70%] h-[500px] bg-emerald-600/[0.08] blur-[140px] rounded-[100%] rotate-[20deg] z-0" />
 
-        {/* System Grid Texture */}
-        <div className="absolute inset-0 opacity-[0.05] bg-[linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] bg-[size:60px_60px]"
-          style={{
-            maskImage: 'radial-gradient(circle at center, black, transparent 80%)',
-            WebkitMaskImage: 'radial-gradient(circle at center, black, transparent 80%)'
-          }}
-        />
+        {/* Grid removed to connect sections */}
       </div>
 
       <div className="relative z-20 max-w-7xl mx-auto">

@@ -153,12 +153,7 @@ export const ProblemSolutionComparison = ({
 
   return (
     <section ref={containerRef} className="relative py-24 px-6 " style={{ perspective: "1000px" }}>
-      {/* Top & Bottom Glowing Border Mixers */}
-      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent z-10" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[40px] bg-white/5 blur-[30px] rounded-full z-10 pointer-events-none" />
-
-      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent z-10" />
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-[40px] bg-white/5 blur-[30px] rounded-full z-10 pointer-events-none" />
+      {/* Top & Bottom borders removed to connect sections */}
 
       {/* Background Elements Container with Vertical Masking */}
       <div className="absolute inset-0 z-0 pointer-events-none"

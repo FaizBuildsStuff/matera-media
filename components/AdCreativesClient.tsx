@@ -15,7 +15,7 @@ export default function AdCreativesClient({ data }: { data: any }) {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#050505] selection:bg-white/30 overflow-x-hidden">
-      <main className="grow flex flex-col gap-12 lg:gap-20">
+      <main className="grow flex flex-col">
         <HeroCentered
           sectionLabel={data?.sectionLabel}
           title={data?.headlineTitle || "Performance creative that"}

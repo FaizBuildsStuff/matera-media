@@ -90,10 +90,8 @@ export const FAQ = ({ content }: { content?: FAQContent & { _documentId?: string
         <section ref={sectionRef} id="faq" className="py-12 md:py-16 px-6  relative font-satoshi">
             {/* Intense Digital Horizon & Nebula Design */}
             {/* ── Powerful Static Fractal Rift FAQ Background ── */}
-            <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-                {/* Digital Horizon (Top Edge) */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[90%] md:w-[80%] h-[2px] bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent blur-[1px] z-10" />
-
+            <div className="absolute inset-0 pointer-events-none z-0">
+                {/* ── Powerful Static Fractal Rift FAQ Background ── */}
                 {/* Multi-layered Static Rifts */}
                 <div className="absolute top-[10%] left-[-15%] w-[120%] h-[500px] bg-emerald-600/[0.08] blur-[160px] rounded-[100%] rotate-[-12deg] z-0" />
                 <div className="absolute bottom-[-10%] right-[-15%] w-[100%] h-[400px] bg-lime-500/[0.06] blur-[140px] rounded-[100%] rotate-[18deg] z-0" />
@@ -101,8 +99,7 @@ export const FAQ = ({ content }: { content?: FAQContent & { _documentId?: string
                 {/* Core Energy Radiance (Static) */}
                 <div className="absolute top-[35%] left-1/2 -translate-x-1/2 w-[350px] h-[350px] bg-emerald-400/[0.12] blur-[100px] rounded-full z-0" />
 
-                {/* Subtle Grid Texture */}
-                <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(16,185,129,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(16,185,129,0.015)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_80%)]" />
+                {/* Grid removed to connect sections */}
             </div>
 
             {/* Fontshare Import */}

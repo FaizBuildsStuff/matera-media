@@ -64,8 +64,8 @@ export const Footer = ({ settings }: { settings?: FooterSettings }) => {
                 </h2>
 
                 {/* Depth Glows */}
-                <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-white/5 rounded-full blur-[120px]" />
-                <div className="absolute top-[-10%] right-[-5%] w-[400px] h-[400px] bg-white/5 rounded-full blur-[100px]" />
+                <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-emerald-600/[0.08] rounded-full blur-[140px]" />
+                <div className="absolute top-[-10%] right-[-5%] w-[400px] h-[400px] bg-lime-500/[0.05] rounded-full blur-[120px]" />
             </div>
 
             <div className="max-w-7xl mx-auto px-6 relative z-10">

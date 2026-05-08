@@ -146,7 +146,7 @@ export const CareersSection = ({ content }: { content?: CareersSectionType & { _
     <section
       ref={sectionRef}
       id="careers"
-      className="py-32 px-6  relative overflow-hidden border-t border-white/5"
+      className="py-32 px-6  relative overflow-hidden"
     >
       <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,401,700,701&display=swap" rel="stylesheet" />
 

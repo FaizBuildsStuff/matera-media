@@ -58,13 +58,9 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
     return (
         <section className="relative w-full py-12 md:py-16 px-6  font-satoshi">
             {/* --- RESTORED TECHNICAL BACKGROUND --- */}
-            <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none"
-                style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-                }}
-            />
+            {/* Grid removed to connect sections */}
             {/* ── Powerful Static Fractal Rift Wall Background ── */}
-            <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+            <div className="absolute inset-0 pointer-events-none z-0">
                 {/* Multi-layered Static Ambient Rifts */}
                 <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[120%] h-[600px] bg-emerald-500/[0.08] blur-[160px] rounded-[100%] rotate-[-15deg] z-0" />
                 <div className="absolute bottom-[10%] right-[-10%] w-[90%] h-[500px] bg-lime-400/[0.06] blur-[140px] rounded-[100%] rotate-[18deg] z-0" />
@@ -72,20 +68,15 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
                 {/* Secondary Static Sparks */}
                 <div className="absolute top-[30%] left-[-10%] w-[400px] h-[400px] bg-emerald-600/[0.1] blur-[120px] rounded-full z-0" />
 
-                {/* Digital Horizon */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[90%] h-[2px] bg-gradient-to-r from-transparent via-white/10 to-transparent blur-[1px] z-10" />
-
                 {/* Global Textures */}
                 <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
-                <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:50px_50px]" />
             </div>
 
             <div className="mx-auto max-w-6xl relative z-10">
                 {/* --- HEADER --- */}
                 <div className="flex flex-col items-center text-center mb-16">
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/20 bg-white/5 mb-5 backdrop-blur-md">
-                        <Zap size={10} className="text-white" />
-                        <span className="text-[9px] uppercase tracking-[0.3em] text-white font-black">
+                    <div className="flex items-center justify-center mb-5">
+                        <span className="text-emerald-500 font-bold text-[10px] sm:text-[11px] tracking-[0.2em] uppercase">
                             {documentId ? (
                                 <EditableText id={documentId} field="label" sectionKey={sectionKey} value={label} as="span" />
                             ) : label}

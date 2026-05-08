@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useVisualEditing } from "./visual-editing/VisualEditingProvider";
 import { EditableText } from "./visual-editing/EditableText";
 import { AddRemoveControls } from "./visual-editing/AddRemoveControls";
+import { BorderBeam } from "./ui/BorderBeam";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -207,7 +208,7 @@ export const WorkShowcase = ({
   ];
 
   return (
-    <section ref={sectionRef} id="work" className="py-16 md:py-20 px-6  relative min-h-screen font-satoshi">
+    <section ref={sectionRef} id="work" className="pt-16 pb-0 md:pt-20 md:pb-0 px-6  relative font-satoshi">
 
       {/* --- SEAMLESS MASK OVERLAYS (Disabled to allow glow bleed) --- */}
       <link href="https://api.fontshare.com/v2/css?f[]=satoshi@700,701&display=swap" rel="stylesheet" />
@@ -218,20 +219,19 @@ export const WorkShowcase = ({
         <div className="absolute top-[-150px] left-1/2 -translate-x-1/2 w-[120%] h-[400px] bg-emerald-500/[0.06] blur-[140px] rounded-[100%] rotate-[5deg] z-0" />
 
         {/* Central Ambient Glow */}
-        <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[110%] h-[600px] bg-emerald-500/[0.08] blur-[160px] rounded-[100%] rotate-[-8deg] z-0" />
+        <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[110%] h-[600px] bg-emerald-500/[0.12] blur-[160px] rounded-[100%] rotate-[-8deg] z-0 animate-pulse" />
 
         {/* Opposing High-Intensity Static Rifts */}
-        <div className="absolute top-[30%] right-[-10%] w-[80%] h-[500px] bg-lime-400/[0.06] blur-[140px] rounded-[100%] rotate-[18deg] z-0" />
-        <div className="absolute bottom-[10%] left-[-15%] w-[90%] h-[600px] bg-emerald-600/[0.08] blur-[150px] rounded-[100%] rotate-[-22deg] z-0" />
+        <div className="absolute top-[30%] right-[-10%] w-[80%] h-[500px] bg-lime-400/[0.1] blur-[140px] rounded-[100%] rotate-[18deg] z-0" />
+        <div className="absolute bottom-[10%] left-[-15%] w-[90%] h-[600px] bg-emerald-600/[0.12] blur-[150px] rounded-[100%] rotate-[-22deg] z-0" />
 
         {/* Depth Spark */}
-        <div className="absolute top-[50%] left-[20%] w-[350px] h-[350px] bg-emerald-400/[0.12] blur-[100px] rounded-full z-0" />
+        <div className="absolute top-[50%] left-[20%] w-[350px] h-[350px] bg-emerald-400/[0.15] blur-[100px] rounded-full z-0" />
 
         {/* Bottom Bleed Rift */}
-        <div className="absolute bottom-[-150px] left-1/2 -translate-x-1/2 w-[130%] h-[450px] bg-lime-500/[0.04] blur-[130px] rounded-[100%] rotate-[-10deg] z-0" />
+        <div className="absolute bottom-[-150px] left-1/2 -translate-x-1/2 w-[130%] h-[450px] bg-lime-500/[0.08] blur-[130px] rounded-[100%] rotate-[-10deg] z-0" />
 
-        {/* Textured Overlays */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(16,185,129,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(16,185,129,0.02)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_80%)]" />
+        {/* Grid removed to connect sections */}
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay" />
 
         <div className="absolute -left-20 top-40 opacity-[0.02] select-none">
@@ -242,7 +242,7 @@ export const WorkShowcase = ({
       <div className="max-w-7xl mx-auto relative z-30">
         <div ref={headerRef} className="mb-20">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tighter font-satoshi flex items-center gap-3 md:gap-4 whitespace-pre-wrap leading-[1.05]">
-            <Sparkles className="w-6 h-6 md:w-8 md:h-8 text-white/80/80 animate-pulse shrink-0" />
+            <Sparkles className="w-6 h-6 md:w-8 md:h-8 text-emerald-400 animate-pulse shrink-0 drop-shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
 
             <span className="relative flex items-center">
               {documentId ? (
@@ -251,7 +251,7 @@ export const WorkShowcase = ({
                 title
               )}
               {highlightedWord && (
-                <span className="text-white/80 italic font-medium ml-2 md:ml-3 px-1">
+                <span className="text-emerald-400/80 italic font-medium ml-2 md:ml-3 px-1 drop-shadow-[0_0_8px_rgba(52,211,153,0.3)]">
                   {documentId ? (
                     <EditableText id={documentId} field="highlightedWord" sectionKey={sectionKey} value={highlightedWord} as="span" />
                   ) : (
@@ -293,7 +293,7 @@ export const WorkShowcase = ({
                     </button>
                     <div className="absolute left-0 top-full mt-2 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
                       <div className=" border border-white/10 rounded-xl p-4 shadow-2xl min-w-[200px]">
-                        <p className="text-[10px] font-black uppercase tracking-widest text-white/80/70 mb-4">Manage Categories</p>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-white/70 mb-4">Manage Categories</p>
                         <AddRemoveControls
                           id={documentId}
                           field={sectionKey ? `sections[_key == "${sectionKey}"].categories` : "categories"}
@@ -331,12 +331,15 @@ export const WorkShowcase = ({
                 <button
                   key={cat.slug}
                   onClick={() => handleCategoryClick(cat.slug)}
-                  className={`relative block w-full text-left px-7 py-4 rounded-full text-[13px] font-bold tracking-tight transition-all duration-300 active:scale-[0.98] ${activeCategory === cat.slug
-                    ? "text-black bg-white shadow-[0_0_30px_rgba(255,255,255,0.1)]"
-                    : "text-white/40 hover:text-white/70 hover:bg-white/[0.04] border border-white/5"
+                  className={`relative block w-full text-left px-7 py-4 rounded-full text-[13px] font-bold tracking-tight transition-all duration-500 active:scale-[0.98] group/catbtn ${activeCategory === cat.slug
+                    ? "text-black bg-white shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+                    : "text-white/40 hover:text-white/80 hover:bg-white/[0.04] border border-white/5 hover:border-white/10"
                     }`}
                 >
-                  <span className="relative">{cat.title}</span>
+                  <span className="relative z-10">{cat.title}</span>
+                  {activeCategory === cat.slug && (
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-r from-emerald-500/20 to-lime-500/20 blur-md -z-10 animate-pulse" />
+                  )}
                 </button>
               ))}
             </nav>
@@ -426,9 +429,17 @@ function ReelCard({
   return (
     <div className="reel-item group relative">
       <div
-        className="relative aspect-[9/16] rounded-[1.5rem] overflow-hidden bg-white/5 border border-white/10 cursor-pointer transition-all duration-500 group-hover:border-white/20"
+        className="relative aspect-[9/16] rounded-[1.5rem] overflow-hidden bg-white/5 border border-white/10 cursor-pointer transition-all duration-500 group-hover:border-white/20 group-hover:shadow-[0_0_40px_rgba(16,185,129,0.1)]"
         onClick={!isCurrentlyPlaying ? handlePlayClick : undefined}
       >
+        <BorderBeam 
+          size={250} 
+          duration={12} 
+          delay={9} 
+          colorFrom="#10b981" 
+          colorTo="#84cc16" 
+          className="opacity-0 group-hover:opacity-100 transition-opacity duration-500" 
+        />
 
         {/* --- IN-PLACE VIDEO PLAYER --- */}
         {isCurrentlyPlaying ? (
@@ -520,7 +531,7 @@ function ReelCard({
             <div className="absolute bottom-6 left-6 right-6 space-y-2 pointer-events-none">
               <div className="flex flex-wrap gap-1.5">
                 {work.tags?.slice(0, 2).map((tag, idx) => (
-                  <span key={idx} className="px-2 py-0.5 rounded-md bg-white/10 text-[8px] font-bold uppercase tracking-widest text-white/50">
+                  <span key={idx} className="px-2 py-0.5 rounded-md bg-white/10 text-[8px] font-bold uppercase tracking-widest text-white/50 group-hover:text-emerald-400 group-hover:bg-emerald-500/10 transition-colors duration-300">
                     {documentId ? (
                       <EditableText
                         id={documentId}

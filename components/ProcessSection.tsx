@@ -55,11 +55,11 @@ export const ProcessSection = ({ data, documentId }: ProcessSectionProps) => {
       <div className="max-w-7xl mx-auto relative z-30">
         <div className="mb-16 md:mb-20">
           <div className="flex justify-between items-center mb-3">
-            <div className="text-white text-[10px] font-bold tracking-[0.4em] uppercase">
+            <span className="text-emerald-500 font-bold text-[10px] sm:text-[11px] tracking-[0.2em] uppercase">
               {documentId ? (
                 <EditableText id={documentId} field="processLabel" value={label} as="span" />
               ) : label}
-            </div>
+            </span>
             {documentId && (
               <AddRemoveControls
                 id={documentId}

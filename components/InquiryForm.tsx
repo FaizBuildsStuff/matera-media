@@ -69,7 +69,7 @@ export function InquiryForm({ title, subtitle, sourcePage }: InquiryFormProps) {
         id="schedule"
         className="relative py-40 px-6  overflow-hidden"
       >
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] bg-[size:60px_60px]" />
+        {/* Grid removed to connect sections */}
         <div className="absolute top-1/2 left-1/2 w-[600px] h-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[160px] bg-white/10 pointer-events-none" />
         <div className="relative z-10 max-w-2xl mx-auto text-center">
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/20 text-white/80 mb-8">
@@ -95,7 +95,7 @@ export function InquiryForm({ title, subtitle, sourcePage }: InquiryFormProps) {
       id="schedule"
       className="relative py-40 px-6  overflow-hidden"
     >
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] bg-[size:60px_60px]" />
+      {/* Grid removed to connect sections */}
       <div className="absolute top-1/2 left-1/2 w-[700px] h-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[180px] bg-white/5 pointer-events-none" />
       <div className="absolute top-20 right-20 w-[280px] h-[280px] bg-white/5 rounded-full blur-[100px] pointer-events-none" />
 

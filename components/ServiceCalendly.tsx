@@ -43,8 +43,7 @@ export function ServiceCalendly({ content }: ServiceCalendlyProps) {
       className="relative py-40 px-6 "
     >
       <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700,900&display=swap" rel="stylesheet" />
-      {/* Background Patterns */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] bg-[size:60px_60px]" />
+      {/* Background Patterns - Grid removed to connect sections */}
       <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[95%] h-[400px] bg-emerald-600/[0.15] blur-[220px] rounded-[100%] pointer-events-none" />
       <div className="absolute top-[40%] right-[-10%] w-[60%] h-[500px] bg-lime-500/[0.1] blur-[180px] rounded-[100%] pointer-events-none" />
       <div className="absolute bottom-[0%] left-[-10%] w-[60%] h-[400px] bg-green-500/[0.1] blur-[200px] rounded-[100%] pointer-events-none" />

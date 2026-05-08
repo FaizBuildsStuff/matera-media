@@ -101,20 +101,13 @@ export default function Pricing({ content }: { content?: any }) {
       {/* Fades disabled to allow glow bleed */}
 
       {/* ── Powerful Static Fractal Rift Velocity Background ── */}
-      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        {/* Horizontal Header Beam */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[95%] md:w-[85%] h-[2px] bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent blur-[1px] z-10" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] md:w-[70%] h-[40px] bg-emerald-500/[0.1] blur-[30px] rounded-full z-0" />
-
+      <div className="absolute inset-0 pointer-events-none z-0">
         {/* Multi-layered Static Velocity Rifts */}
         <div className="absolute top-[15%] left-[-15%] w-[120%] h-[500px] bg-emerald-600/[0.08] blur-[160px] rounded-[100%] rotate-[-12deg] z-0" />
         <div className="absolute bottom-[-10%] right-[-15%] w-[110%] h-[600px] bg-lime-500/[0.06] blur-[140px] rounded-[100%] rotate-[18deg] z-0" />
 
         {/* Central Core Static Radiance */}
         <div className="absolute top-[35%] left-[10%] w-[400px] h-[400px] bg-emerald-400/[0.12] blur-[110px] rounded-full z-0" />
-
-        {/* Global Grid System */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(16,185,129,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(16,185,129,0.015)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_85%)]" />
       </div>
 
       <div className="max-w-7xl mx-auto relative z-30">
@@ -283,26 +276,24 @@ export default function Pricing({ content }: { content?: any }) {
                         textField={`plans[_key == "${planId}"].buttonText`}
                         linkField={`plans[_key == "${planId}"].buttonLink`}
                         sectionKey={sectionKey}
-                        text={plan.buttonText || "I need this"}
+                        text={plan.buttonText || "I Need This"}
                         link={plan.buttonLink || "/book"}
-                        className="mt-auto"
+                        className="mt-auto block"
                       >
-                        <Button className={`w-full h-16 rounded-full font-black uppercase tracking-[0.2em] text-[10px] transition-all duration-500 flex justify-between px-10 group ${isHighlighted
-                          ? "bg-white text-black hover:scale-[1.02]"
-                          : "bg-white/5 text-white border border-white/10 hover:bg-white hover:text-black hover:scale-[1.02]"
+                        <Button className={`w-full h-12 rounded-full font-black uppercase tracking-widest text-[9px] transition-all duration-300 ${isHighlighted
+                          ? "bg-white text-black hover:scale-[1.02] hover:bg-white/90"
+                          : "bg-white/5 text-white border border-white/10 hover:bg-white/10 hover:text-white hover:scale-[1.02]"
                           }`}>
-                          {plan.buttonText || "I need this"}
-                          <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
+                          {plan.buttonText || "I Need This"}
                         </Button>
                       </EditableButton>
                     ) : (
-                      <Link href="/book" className="mt-auto">
-                        <Button className={`w-full h-16 rounded-full font-black uppercase tracking-[0.2em] text-[10px] transition-all duration-500 flex justify-between px-10 group ${isHighlighted
-                          ? "bg-white text-black hover:scale-[1.02]"
-                          : "bg-white/5 text-white border border-white/10 hover:bg-white hover:text-black hover:scale-[1.02]"
+                      <Link href="/book" className="mt-auto block">
+                        <Button className={`w-full h-12 rounded-full font-black uppercase tracking-widest text-[9px] transition-all duration-300 ${isHighlighted
+                          ? "bg-white text-black hover:scale-[1.02] hover:bg-white/90"
+                          : "bg-white/5 text-white border border-white/10 hover:bg-white/10 hover:text-white hover:scale-[1.02]"
                           }`}>
-                          I need this
-                          <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
+                          I Need This
                         </Button>
                       </Link>
                     )}

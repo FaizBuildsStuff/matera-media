@@ -20,8 +20,8 @@ export const Hero = ({ content }: { content?: any }) => {
   const sectionKey = content?._sectionKey;
 
   const topText = content?.topText || "SERVICE FOUNDERS & INFO ENTREPRENEURS!";
-  const headline = content?.headline || "We Will Build A Paid & Organic Content System That Attracts Leads & Closes Deals (Done-For-You)";
-  const ctaPrimary = content?.ctaPrimary || "Learn More";
+  const headline = content?.headline || "We help B2B Brands and Content Creators scale their revenue through Organic Content and Motion Ad Creatives";
+  const ctaPrimary = content?.ctaPrimary || "Book a Strategy Call";
   const ctaLink = content?.ctaPrimaryLink || "#";
 
   const videoId = getYoutubeId(content?.videoUrl || "");
@@ -58,17 +58,15 @@ export const Hero = ({ content }: { content?: any }) => {
         {/* Bottom Bleed Rift */}
         <div className="absolute bottom-[-100px] left-1/2 -translate-x-1/2 w-[120%] h-[400px] bg-emerald-500/[0.06] blur-[140px] rounded-[100%] rotate-[-5deg] z-0" />
 
-        {/* Global Textures */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(16,185,129,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(16,185,129,0.03)_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_at_center,black,transparent:85%)]" />
+        {/* Grid removed to connect sections */}
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay" />
       </div>
 
       <div className="relative z-20 w-full max-w-[56rem] mx-auto flex flex-col items-center text-center mt-4 sm:mt-6 md:mt-8 mb-8 md:mb-12">
 
         {/* Top Label */}
-        <div className="hero-reveal mb-8 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md flex items-center gap-3">
-          <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
-          <span className="text-white font-bold text-[9px] sm:text-[10px] tracking-[0.3em] uppercase">
+        <div className="hero-reveal mb-8 flex items-center justify-center">
+          <span className="text-emerald-500 font-bold text-[10px] sm:text-[11px] tracking-[0.2em] uppercase">
             {documentId ? (
               <EditableText id={documentId} field="topText" sectionKey={sectionKey} value={topText} as="span" />
             ) : (
@@ -82,14 +80,12 @@ export const Hero = ({ content }: { content?: any }) => {
         <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-[50%] h-[30%] bg-lime-500/[0.08] blur-[80px] rounded-full pointer-events-none z-0" />
 
         {/* Main Headline */}
-        <h1 className="hero-reveal text-[1.75rem] sm:text-4xl md:text-[3.5rem] font-black leading-[1.1] tracking-tighter text-white mb-10 w-full max-w-[48rem] px-1 relative z-10">
-          <span className="bg-clip-text text-transparent bg-gradient-to-b from-white via-white/90 to-white/70">
-            {documentId ? (
-              <EditableText id={documentId} field="headline" sectionKey={sectionKey} value={headline} as="span" />
-            ) : (
-              headline
-            )}
-          </span>
+        <h1 className="hero-reveal text-[2rem] sm:text-4xl md:text-[3.5rem] font-semibold leading-[1.15] tracking-tight text-white mb-10 w-full max-w-[48rem] px-1 relative z-10">
+          {documentId ? (
+            <EditableText id={documentId} field="headline" sectionKey={sectionKey} value={headline} as="span" />
+          ) : (
+            headline
+          )}
         </h1>
 
         {/* CTA Section */}
@@ -104,22 +100,22 @@ export const Hero = ({ content }: { content?: any }) => {
               link={ctaLink}
               className="group"
             >
-              <div className="flex items-center bg-white rounded-full p-1 sm:p-1.5 pr-5 sm:pr-8 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-[0_20px_50px_rgba(255,255,255,0.15)] group">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 md:w-[3.25rem] md:h-[3.25rem] bg-black rounded-full flex items-center justify-center mr-3 sm:mr-5 group-hover:bg-emerald-500 transition-all duration-500">
-                  <ArrowRight className="w-4 h-4 sm:w-[1.125rem] sm:h-[1.125rem] text-white stroke-[2.5] group-hover:rotate-[-45deg] transition-transform" />
+              <div className="flex items-center bg-white rounded-full p-1.5 pr-6 sm:pr-8 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-[0_20px_50px_rgba(16,185,129,0.15)] group">
+                <div className="w-10 h-10 sm:w-11 sm:h-11 bg-emerald-500 rounded-full flex items-center justify-center mr-4 transition-all duration-500">
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-black stroke-[3]" />
                 </div>
-                <span className="text-black font-bold text-[0.85rem] sm:text-[0.95rem] md:text-base tracking-wide uppercase">
+                <span className="text-black font-semibold text-[0.95rem] sm:text-[1.05rem] tracking-tight">
                   {ctaPrimary}
                 </span>
               </div>
             </EditableButton>
           ) : (
             <Link href={ctaLink}>
-              <div className="flex items-center bg-white rounded-full p-1 sm:p-1.5 pr-5 sm:pr-8 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-[0_20px_50px_rgba(255,255,255,0.15)] group">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 md:w-[3.25rem] md:h-[3.25rem] bg-black rounded-full flex items-center justify-center mr-3 sm:mr-5 group-hover:bg-emerald-500 transition-all duration-500">
-                  <ArrowRight className="w-4 h-4 sm:w-[1.125rem] sm:h-[1.125rem] text-white stroke-[2.5] group-hover:rotate-[-45deg] transition-transform" />
+              <div className="flex items-center bg-white rounded-full p-1.5 pr-6 sm:pr-8 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-[0_20px_50px_rgba(16,185,129,0.15)] group">
+                <div className="w-10 h-10 sm:w-11 sm:h-11 bg-emerald-500 rounded-full flex items-center justify-center mr-4 transition-all duration-500">
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-black stroke-[3]" />
                 </div>
-                <span className="text-black font-bold text-[0.85rem] sm:text-[0.95rem] md:text-base tracking-wide uppercase">
+                <span className="text-black font-semibold text-[0.95rem] sm:text-[1.05rem] tracking-tight">
                   {ctaPrimary}
                 </span>
               </div>

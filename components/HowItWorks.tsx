@@ -102,7 +102,7 @@ export const HowItWorks = ({ content }: { content?: any }) => {
     }, [content]);
 
     return (
-        <section ref={sectionRef} id="process" className="py-16 md:py-20 px-6  relative font-satoshi selection:bg-white/30">
+        <section ref={sectionRef} id="process" className="pt-7 pb-16 md:pt-50 md:pb-20 px-6  relative font-satoshi selection:bg-white/30">
             {/* Seamless Blending Masks (Disabled to allow glow bleed) */}
 
             {/* Background FX */}
@@ -110,9 +110,7 @@ export const HowItWorks = ({ content }: { content?: any }) => {
                 <div className="absolute inset-0 opacity-[0.04] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
                 <div className="absolute inset-0">
                     {/* ── Powerful Static Fractal Rift Process Background ── */}
-                    {/* Digital Horizon (Top Edge) */}
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[95%] md:w-[70%] h-[2px] bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent blur-[1px] z-10" />
-
+                    {/* ── Powerful Static Fractal Rift Process Background ── */}
                     {/* Vertical Flow Shaft */}
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1px] h-full bg-gradient-to-b from-emerald-500/20 via-transparent to-emerald-500/20 z-0" />
 
@@ -126,24 +124,21 @@ export const HowItWorks = ({ content }: { content?: any }) => {
                     {/* Bottom Bleed Rift */}
                     <div className="absolute bottom-[-100px] left-[-5%] w-[80%] h-[300px] bg-emerald-500/[0.05] blur-[110px] rounded-[100%] rotate-[15deg] z-0" />
 
-                    {/* Grid Sub-texture */}
-                    <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(16,185,129,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(16,185,129,0.03)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)] opacity-40" />
+                    {/* Grid removed to connect sections */}
                 </div>
             </div>
 
             <div className="max-w-6xl mx-auto relative z-30">
                 {/* Header Section - The "Sweet Spot" Size */}
                 <div className="text-center mb-24">
-                    <div className="flex items-center justify-center gap-4 mb-6">
-                        <div className="h-px w-10 bg-white/20" />
-                        <span className="text-white text-[10px] font-bold tracking-[0.4em] uppercase">
+                    <div className="flex items-center justify-center mb-6">
+                        <span className="text-emerald-500 font-bold text-[10px] sm:text-[11px] tracking-[0.2em] uppercase">
                             {documentId ? (
                                 <EditableText id={documentId} field="label" sectionKey={sectionKey} value={label} as="span" />
                             ) : (
                                 label
                             )}
                         </span>
-                        <div className="h-px w-10 bg-white/20" />
                     </div>
 
                     <h2 className="text-5xl md:text-6xl font-bold text-white tracking-tight leading-[1.1] flex flex-wrap justify-center">

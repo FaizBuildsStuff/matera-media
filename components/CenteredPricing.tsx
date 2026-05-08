@@ -31,7 +31,7 @@ export const CenteredPricing = ({ data, documentId }: CenteredPricingProps) => {
     <section className="relative -mt-[1px] py-24 px-6  border-none z-10">
       {/* Top fade removed for glow bleed */}
       {/* Intense Nebula Beam Design */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[95%] md:w-[85%] h-[2px] bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent blur-[1px] z-10" />
+      {/* Border removed to connect sections */}
       
       <div className="absolute top-[5%] left-[-10%] w-[130%] md:w-[120%] h-[350px] md:h-[550px] bg-emerald-500/[0.12] blur-[100px] md:blur-[160px] rounded-[100%] rotate-[-12deg] pointer-events-none z-0" />
       <div className="absolute bottom-[-5%] right-[-10%] w-[90%] md:w-[80%] h-[300px] md:h-[450px] bg-lime-400/[0.1] blur-[90px] md:blur-[140px] rounded-[100%] rotate-[15deg] pointer-events-none z-0" />
@@ -119,8 +119,8 @@ export const CenteredPricing = ({ data, documentId }: CenteredPricingProps) => {
                 ))}
               </ul>
               <Link href="#schedule" className="block mt-auto">
-                <Button className={`w-full h-12 rounded-full font-black uppercase tracking-widest text-[9px] transition-all
-                  ${plan.popular ? 'bg-white text-black hover:bg-white text-black hover:text-white' : 'bg-white/5 border border-white/10 text-white hover:bg-white hover:text-black'}
+                <Button className={`w-full h-12 rounded-full font-black uppercase tracking-widest text-[9px] transition-all duration-300 hover:scale-[1.02]
+                  ${plan.popular ? 'bg-white text-black hover:bg-white/90 hover:text-black' : 'bg-white/5 border border-white/10 text-white hover:bg-white/10 hover:text-white'}
                 `}>
                   I Need This
                 </Button>
