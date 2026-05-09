@@ -208,36 +208,12 @@ export const WorkShowcase = ({
   ];
 
   return (
-    <section ref={sectionRef} id="work" className="pt-16 pb-0 md:pt-20 md:pb-0 px-6  relative font-satoshi">
+    <section ref={sectionRef} id="work" className="pt-16 pb-0 md:pt-20 md:pb-0 px-6  relative font-satoshi border-none outline-none">
 
       {/* --- SEAMLESS MASK OVERLAYS (Disabled to allow glow bleed) --- */}
       <link href="https://api.fontshare.com/v2/css?f[]=satoshi@700,701&display=swap" rel="stylesheet" />
 
-      {/* ── Powerful Static Fractal Rift Showcase Background ── */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        {/* Top Bleed Rift */}
-        <div className="absolute top-[-150px] left-1/2 -translate-x-1/2 w-[120%] h-[400px] bg-emerald-500/[0.06] blur-[140px] rounded-[100%] rotate-[5deg] z-0" />
 
-        {/* Central Ambient Glow */}
-        <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[110%] h-[600px] bg-emerald-500/[0.12] blur-[160px] rounded-[100%] rotate-[-8deg] z-0 animate-pulse" />
-
-        {/* Opposing High-Intensity Static Rifts */}
-        <div className="absolute top-[30%] right-[-10%] w-[80%] h-[500px] bg-lime-400/[0.1] blur-[140px] rounded-[100%] rotate-[18deg] z-0" />
-        <div className="absolute bottom-[10%] left-[-15%] w-[90%] h-[600px] bg-emerald-600/[0.12] blur-[150px] rounded-[100%] rotate-[-22deg] z-0" />
-
-        {/* Depth Spark */}
-        <div className="absolute top-[50%] left-[20%] w-[350px] h-[350px] bg-emerald-400/[0.15] blur-[100px] rounded-full z-0" />
-
-        {/* Bottom Bleed Rift */}
-        <div className="absolute bottom-[-150px] left-1/2 -translate-x-1/2 w-[130%] h-[450px] bg-lime-500/[0.08] blur-[130px] rounded-[100%] rotate-[-10deg] z-0" />
-
-        {/* Grid removed to connect sections */}
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay" />
-
-        <div className="absolute -left-20 top-40 opacity-[0.02] select-none">
-          <img src="/Logo.png" alt="Matera Media" className="w-[600px] h-auto object-contain" />
-        </div>
-      </div>
 
       <div className="max-w-7xl mx-auto relative z-30">
         <div ref={headerRef} className="mb-20">

@@ -14,6 +14,7 @@ const getYoutubeId = (url: string) => {
 
 import { EditableText } from "./visual-editing/EditableText";
 import { EditableButton } from "./visual-editing/EditableButton";
+import { SectionBackground } from "./SectionBackground";
 
 export const Hero = ({ content }: { content?: any }) => {
   const documentId = content?._documentId;
@@ -43,103 +44,11 @@ export const Hero = ({ content }: { content?: any }) => {
   return (
     <section
       ref={containerRef}
-      className="relative w-full flex flex-col items-center justify-start pt-20 sm:pt-24 md:pt-28 pb-20 sm:pb-24 md:pb-32 px-4 sm:px-6 font-satoshi z-10"
+      className="relative w-full flex flex-col items-center justify-start pt-20 sm:pt-24 md:pt-28 pb-20 sm:pb-24 md:pb-32 px-4 sm:px-6 font-satoshi z-10 border-none outline-none"
     >
-      {/* ── Aurora Glow Background (suraj.dsgn layout) ── */}
-<div className="absolute inset-x-0 top-0 bottom-[-500px] pointer-events-none z-0 overflow-hidden">
+      {/* ── Luxury Moving Cinematic Background ── */}
+      <SectionBackground index={0} variant="hero" />
 
-  {/* BASE — pure black */}
-  <div className="absolute inset-0" style={{ background: "#050505" }} />
-
-  {/* MAIN AURORA GLOW — bottom-left diagonal blob */}
-  <div
-    className="absolute z-0"
-    style={{
-      bottom: "5%",
-      left: "10%",
-      width: "70%",
-      height: "70%",
-      borderRadius: "50%",
-      background: "radial-gradient(ellipse 60% 70% at 45% 55%, rgba(82, 183, 136, 0.85) 0%, rgba(45, 106, 79, 0.55) 25%, rgba(27, 67, 50, 0.3) 50%, rgba(13, 43, 26, 0.1) 70%, transparent 85%)",
-      willChange: "transform, opacity",
-      animation: "auroraDrift 14s ease-in-out infinite",
-    }}
-  />
-
-  {/* HOT CORE — bright minty highlight inside the blob */}
-  <div
-    className="absolute z-0"
-    style={{
-      bottom: "15%",
-      left: "20%",
-      width: "40%",
-      height: "40%",
-      borderRadius: "50%",
-      background: "radial-gradient(ellipse 50% 50% at 50% 50%, rgba(167, 243, 208, 0.55) 0%, rgba(110, 231, 183, 0.25) 35%, transparent 70%)",
-      willChange: "transform, opacity",
-      animation: "coreGlow 10s ease-in-out infinite",
-    }}
-  />
-
-  {/* TOP-RIGHT WHISPER — subtle echo glow in upper area */}
-  <div
-    className="absolute z-0"
-    style={{
-      top: "10%",
-      right: "10%",
-      width: "35%",
-      height: "35%",
-      borderRadius: "50%",
-      background: "radial-gradient(ellipse 60% 60% at 50% 50%, rgba(45, 106, 79, 0.25) 0%, rgba(27, 67, 50, 0.1) 50%, transparent 80%)",
-      willChange: "transform",
-      animation: "whisperFloat 16s ease-in-out infinite",
-    }}
-  />
-
-  {/* HEAVY FILM GRAIN */}
-  <div
-    className="absolute inset-0 z-10 opacity-[0.12]"
-    style={{
-      backgroundImage: `url('https://grainy-gradients.vercel.app/noise.svg')`,
-      mixBlendMode: "overlay",
-      backgroundSize: "200px 200px",
-    }}
-  />
-  <div
-    className="absolute inset-0 z-10 opacity-[0.08]"
-    style={{
-      backgroundImage: `url('https://grainy-gradients.vercel.app/noise.svg')`,
-      mixBlendMode: "screen",
-      backgroundSize: "150px 150px",
-      filter: "contrast(150%) brightness(100%)",
-    }}
-  />
-
-  {/* EDGE VIGNETTE — deepens corners, keeps focus center */}
-  <div
-    className="absolute inset-0 z-20"
-    style={{
-      background: "radial-gradient(ellipse at 30% 70%, transparent 15%, rgba(5, 5, 5, 0.4) 60%, #050505 95%)",
-    }}
-  />
-
-  <style>{`
-    @keyframes auroraDrift {
-      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.95; }
-      33%      { transform: translate(40px, -30px) scale(1.08); opacity: 1; }
-      66%      { transform: translate(-20px, -50px) scale(0.95); opacity: 0.9; }
-    }
-    @keyframes coreGlow {
-      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.85; }
-      50%      { transform: translate(30px, -25px) scale(1.1); opacity: 1; }
-    }
-    @keyframes whisperFloat {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      50%      { transform: translate(-20px, 20px) scale(1.05); }
-    }
-  `}</style>
-
-</div>
 
       <div className="relative z-20 w-full max-w-4xl mx-auto flex flex-col items-center text-center mt-4 sm:mt-6 md:mt-8 mb-0">
 
@@ -200,16 +109,16 @@ export const Hero = ({ content }: { content?: any }) => {
 
         {/* Video Player Section with Epic Glow */}
         {videoUrl && (
-          <div className="hero-reveal relative w-full aspect-video group mb-0">
-            
+          <div className="hero-reveal relative w-full aspect-video group mb-0 overflow-visible">
+
             {/* ── Massive Ambient Glow Behind Video ── */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] h-[90%] bg-emerald-500/40 blur-[100px] md:blur-[140px] rounded-full pointer-events-none z-0 transition-all duration-1000 group-hover:bg-emerald-400/50 group-hover:scale-105" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-white/5 blur-[150px] rounded-full pointer-events-none z-0" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-emerald-500/10 blur-[180px] md:blur-[260px] rounded-full pointer-events-none z-0 transition-all duration-1000 group-hover:bg-emerald-400/15 group-hover:scale-110" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] bg-white/5 blur-[280px] rounded-full pointer-events-none z-0" />
 
             {/* Glass Container */}
             <div className="relative z-10 w-full h-full rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden border border-white/10 group-hover:border-emerald-500/30 transition-colors duration-700 shadow-[0_20px_80px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(16,185,129,0.05)] bg-black/40 backdrop-blur-2xl p-1 sm:p-2">
-              <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none z-10" />
-              
+              <div className="absolute inset-0 bg-linear-to-br from-white/10 via-transparent to-transparent pointer-events-none z-10" />
+
               {/* Inner Video Container */}
               <div className="relative w-full h-full rounded-[2rem] md:rounded-[3rem] overflow-hidden bg-black shadow-inner">
                 {!isVideoPlaying ? (
@@ -219,13 +128,13 @@ export const Hero = ({ content }: { content?: any }) => {
                         <img
                           src={thumbnailUrl}
                           alt="Preview"
-                          className="absolute inset-0 w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-[50%] group-hover:scale-105 transition-all duration-1000"
+                          className="absolute inset-0 w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-50 group-hover:scale-105 transition-all duration-1000"
                         />
                         {/* Inner subtle emerald overlay to match theme */}
                         <div className="absolute inset-0 bg-emerald-900/20 mix-blend-overlay group-hover:opacity-0 transition-opacity duration-1000" />
                       </>
                     )}
-                    
+
                     {/* Modern Play Button HUD */}
                     <div className="relative w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 rounded-full flex items-center justify-center group-hover:scale-110 transition-all duration-700">
                       <div className="absolute inset-0 bg-emerald-500/20 backdrop-blur-3xl rounded-full border border-emerald-400/30 animate-[ping_3s_infinite]" />

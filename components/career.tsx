@@ -150,7 +150,7 @@ export const CareersSection = ({ content }: { content?: CareersSectionType & { _
     >
       <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,401,700,701&display=swap" rel="stylesheet" />
 
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02] pointer-events-none" />
+
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_-10%,rgba(255,255,255,0.05),transparent_60%)] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto relative z-10">

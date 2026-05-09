@@ -87,7 +87,7 @@ export const CalendlyWidget = ({ content }: { content?: CalendlyContent }) => {
     <section
       ref={sectionRef}
       id="schedule"
-      className="relative py-16 md:py-20 px-6  font-satoshi"
+      className="relative pt-16 md:pt-20 pb-0 px-6 font-satoshi"
     >
       {/* ── Powerful Static Fractal Rift System Background ── */}
       <div className="absolute inset-0 pointer-events-none z-0">

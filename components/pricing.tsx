@@ -100,15 +100,7 @@ export default function Pricing({ content }: { content?: any }) {
 
       {/* Fades disabled to allow glow bleed */}
 
-      {/* ── Powerful Static Fractal Rift Velocity Background ── */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        {/* Multi-layered Static Velocity Rifts */}
-        <div className="absolute top-[15%] left-[-15%] w-[120%] h-[500px] bg-emerald-600/[0.08] blur-[160px] rounded-[100%] rotate-[-12deg] z-0" />
-        <div className="absolute bottom-[-10%] right-[-15%] w-[110%] h-[600px] bg-lime-500/[0.06] blur-[140px] rounded-[100%] rotate-[18deg] z-0" />
 
-        {/* Central Core Static Radiance */}
-        <div className="absolute top-[35%] left-[10%] w-[400px] h-[400px] bg-emerald-400/[0.12] blur-[110px] rounded-full z-0" />
-      </div>
 
       <div className="max-w-7xl mx-auto relative z-30">
 

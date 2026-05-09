@@ -6,6 +6,7 @@ import { Mail, Instagram, Twitter, Linkedin, Youtube } from 'lucide-react';
 import { EditableText } from './visual-editing/EditableText';
 import { EditableButton } from './visual-editing/EditableButton';
 import { AddRemoveControls } from './visual-editing/AddRemoveControls';
+import { SectionBackground } from './SectionBackground';
 
 interface FooterSettings {
     _id?: string;
@@ -53,7 +54,10 @@ export const Footer = ({ settings }: { settings?: FooterSettings }) => {
     };
 
     return (
-        <footer className="w-full bg-[#050505] relative overflow-hidden">
+        <footer className="w-full bg-[#05180D] relative overflow-visible">
+            {/* --- VIBRANT BACKGROUND SYSTEM --- */}
+            <SectionBackground index={9} variant="vibrant" />
+
             {/* --- BACKGROUND DESIGN ELEMENTS --- */}
             <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden select-none">
                 {/* Large Scale Subtle Watermark */}
@@ -62,10 +66,6 @@ export const Footer = ({ settings }: { settings?: FooterSettings }) => {
                         <EditableText id={documentId} field="copyright" value={copyright} as="span" />
                     ) : copyright}
                 </h2>
-
-                {/* Depth Glows */}
-                <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-emerald-600/[0.08] rounded-full blur-[140px]" />
-                <div className="absolute top-[-10%] right-[-5%] w-[400px] h-[400px] bg-lime-500/[0.05] rounded-full blur-[120px]" />
             </div>
 
             <div className="max-w-7xl mx-auto px-6 relative z-10">

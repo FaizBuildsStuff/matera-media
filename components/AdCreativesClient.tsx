@@ -8,49 +8,84 @@ import { ProcessSection } from "@/components/ProcessSection";
 import { ResultsSection } from "@/components/ResultsSection";
 import { CenteredPricing } from "@/components/CenteredPricing";
 import { WorkReelsSection } from "@/components/WorkReelsSection";
-
+import { SectionBackground } from "@/components/SectionBackground";
 
 export default function AdCreativesClient({ data }: { data: any }) {
   const documentId = data?._id;
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#050505] selection:bg-white/30 overflow-x-hidden">
+    <div className="flex flex-col min-h-screen bg-[#050505] selection:bg-white/30 overflow-x-clip relative">
       <main className="grow flex flex-col">
-        <HeroCentered
-          sectionLabel={data?.sectionLabel}
-          title={data?.headlineTitle || "Performance creative that"}
-          highlight={data?.headlineHighlight || "earns attention"}
-          titleAfter={data?.headlineTitleAfter || "and converts."}
-          subtitle={data?.headlineSubtitle || "An always-on creative system: hooks, angles, and iterations built for measurable revenue growth."}
-          ctaText={data?.heroCta}
-          _documentId={documentId}
-        />
-        <WorkReelsSection workData={data?.work} documentId={documentId} />
-        <ProblemSolutionComparison
-          problems={data?.problems || []}
-          solutions={data?.solutions || []}
-          problemsLabel={data?.problemsLabel || "The Problem"}
-          problemsTitle={data?.problemsTitle || "Old Way"}
-          solutionsLabel={data?.solutionsLabel || "The Matera Solution"}
-          solutionsTitle={data?.solutionsTitle || "Dominate Media"}
-          _documentId={documentId}
-        />
-        <ResultsSection
-          title={data?.resultsTitle || "Our Results"}
-          items={data?.results || []}
-          documentId={documentId}
-          label={data?.resultsLabel}
-        />
-        <ProcessSection data={data} documentId={documentId} />
-        <CenteredPricing data={data} documentId={documentId} />
-        <ServiceCalendly content={{
-          title: data?.calendlyTitle,
-          subtitle: data?.calendlySubtitle,
-          calendlyUrl: data?.calendlyUrl,
-          highlightedWord: data?.calendlyHighlightedWord,
-          _documentId: documentId
-        }} />
+        {/* HERO SECTION */}
+        <div className="relative overflow-visible -mt-px">
+          <SectionBackground index={0} variant="hero" />
+          <HeroCentered
+            sectionLabel={data?.sectionLabel}
+            title={data?.headlineTitle || "Performance creative that"}
+            highlight={data?.headlineHighlight || "earns attention"}
+            titleAfter={data?.headlineTitleAfter || "and converts."}
+            subtitle={data?.headlineSubtitle || "An always-on creative system: hooks, angles, and iterations built for measurable revenue growth."}
+            ctaText={data?.heroCta}
+            _documentId={documentId}
+          />
+        </div>
+
+        {/* WORK REELS */}
+        <div className="relative overflow-visible -mt-px">
+          <SectionBackground index={1} variant="subtle" />
+          <WorkReelsSection workData={data?.work} documentId={documentId} />
+        </div>
+
+        {/* PROBLEM SOLUTION */}
+        <div className="relative overflow-visible -mt-px">
+          <SectionBackground index={2} variant="subtle" />
+          <ProblemSolutionComparison
+            problems={data?.problems || []}
+            solutions={data?.solutions || []}
+            problemsLabel={data?.problemsLabel || "The Problem"}
+            problemsTitle={data?.problemsTitle || "Old Way"}
+            solutionsLabel={data?.solutionsLabel || "The Matera Solution"}
+            solutionsTitle={data?.solutionsTitle || "Dominate Media"}
+            _documentId={documentId}
+          />
+        </div>
+
+        {/* RESULTS */}
+        <div className="relative overflow-visible -mt-px">
+          <SectionBackground index={3} variant="subtle" />
+          <ResultsSection
+            title={data?.resultsTitle || "Our Results"}
+            items={data?.results || []}
+            documentId={documentId}
+            label={data?.resultsLabel}
+          />
+        </div>
+
+        {/* PROCESS */}
+        <div className="relative overflow-visible -mt-px">
+          <SectionBackground index={4} variant="subtle" />
+          <ProcessSection data={data} documentId={documentId} />
+        </div>
+
+        {/* PRICING */}
+        <div className="relative overflow-visible -mt-px">
+          <SectionBackground index={5} variant="subtle" />
+          <CenteredPricing data={data} documentId={documentId} />
+        </div>
+
+        {/* CALENDLY */}
+        <div className="relative overflow-visible -mt-px">
+          <SectionBackground index={6} variant="subtle" />
+          <ServiceCalendly content={{
+            title: data?.calendlyTitle,
+            subtitle: data?.calendlySubtitle,
+            calendlyUrl: data?.calendlyUrl,
+            highlightedWord: data?.calendlyHighlightedWord,
+            _documentId: documentId
+          }} />
+        </div>
       </main>
+
       <style jsx global>{`
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }

@@ -102,31 +102,10 @@ export const HowItWorks = ({ content }: { content?: any }) => {
     }, [content]);
 
     return (
-        <section ref={sectionRef} id="process" className="pt-7 pb-16 md:pt-50 md:pb-20 px-6  relative font-satoshi selection:bg-white/30">
+        <section ref={sectionRef} id="process" className="pt-7 pb-16 md:pt-50 md:pb-20 px-6  relative font-satoshi selection:bg-white/30 border-none outline-none">
             {/* Seamless Blending Masks (Disabled to allow glow bleed) */}
 
-            {/* Background FX */}
-            <div className="absolute inset-0 z-0 pointer-events-none">
-                <div className="absolute inset-0 opacity-[0.04] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-                <div className="absolute inset-0">
-                    {/* ── Powerful Static Fractal Rift Process Background ── */}
-                    {/* ── Powerful Static Fractal Rift Process Background ── */}
-                    {/* Vertical Flow Shaft */}
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1px] h-full bg-gradient-to-b from-emerald-500/20 via-transparent to-emerald-500/20 z-0" />
 
-                    {/* Multi-layered Static Rifts */}
-                    <div className="ambient-glow absolute top-[-5%] left-[-15%] w-[120%] h-[500px] bg-emerald-600/[0.1] blur-[160px] rounded-[100%] rotate-[15deg] z-0" />
-                    <div className="ambient-glow absolute bottom-[5%] right-[-15%] w-[110%] h-[400px] bg-lime-500/[0.08] blur-[140px] rounded-[100%] rotate-[-20deg] z-0" />
-
-                    {/* Core Energy Radiance (Static) */}
-                    <div className="ambient-glow absolute top-[35%] left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-emerald-400/[0.15] blur-[100px] rounded-full z-0" />
-
-                    {/* Bottom Bleed Rift */}
-                    <div className="absolute bottom-[-100px] left-[-5%] w-[80%] h-[300px] bg-emerald-500/[0.05] blur-[110px] rounded-[100%] rotate-[15deg] z-0" />
-
-                    {/* Grid removed to connect sections */}
-                </div>
-            </div>
 
             <div className="max-w-6xl mx-auto relative z-30">
                 {/* Header Section - The "Sweet Spot" Size */}

@@ -12,6 +12,7 @@ import { CareersSection } from "@/components/career";
 import { ResultsSection } from "@/components/ResultsSection";
 import { ProcessSection } from "@/components/ProcessSection";
 import { AddRemoveControls } from "./visual-editing/AddRemoveControls";
+import { SectionBackground } from "./SectionBackground";
 
 // --- TYPES ---
 
@@ -151,17 +152,17 @@ export function SectionRenderer({ sections, documentId }: SectionRendererProps) 
     <main className="bg-[#050505] min-h-screen flex flex-col overflow-x-clip relative">
       {/* --- GLOBAL ATMOSPHERE LAYER --- */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        {/* Continuous Noise Texture */}
-        <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')] repeat" />
+
         
         {/* Global Technical Grid */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:80px_80px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-size-[80px_80px]" />
       </div>
       {!sections || sections.length === 0 ? (
         <DefaultSections />
       ) : (
         sections.map((section, index) => (
-          <div key={section._key} className="relative group/section">
+          <div key={section._key} className="relative group/section -mt-px border-none outline-none overflow-visible">
+            <SectionBackground index={index} type={section._type} variant={section._type === "hero" ? "hero" : "subtle"} />
             <RenderBlock section={section} documentId={documentId} />
 
             {/* Section-level Controls */}
@@ -189,7 +190,7 @@ export function SectionRenderer({ sections, documentId }: SectionRendererProps) 
         ))
       )}
       {documentId && (
-        <div className="flex justify-center py-10 border-t border-white/5 bg-[#050505]">
+        <div className="relative flex justify-center pb-16 pt-0 bg-transparent -mt-10 overflow-visible">
           <AddRemoveControls
             id={documentId}
             field="sections"
@@ -253,14 +254,21 @@ function RenderBlock({ section, documentId }: { section: SectionBlock; documentI
 function DefaultSections() {
   return (
     <>
-      <Hero />
-      <Testimonials content={undefined} />
-      <WorkShowcase />
-      <HowItWorks />
-      <Pricing />
-      <CareersSection />
-      <FAQ />
-      <CalendlyWidget />
+      {[
+        { component: <Hero />, type: "hero" },
+        { component: <Testimonials content={undefined} />, type: "testimonials" },
+        { component: <WorkShowcase />, type: "workShowcase" },
+        { component: <HowItWorks />, type: "howItWorks" },
+        { component: <Pricing />, type: "pricing" },
+        { component: <CareersSection />, type: "careers" },
+        { component: <FAQ />, type: "faq" },
+        { component: <CalendlyWidget />, type: "calendlyWidget" },
+      ].map((s, i) => (
+        <div key={i} className="relative -mt-px border-none outline-none">
+          <SectionBackground index={i} type={s.type} variant={s.type === "hero" ? "hero" : "subtle"} />
+          {s.component}
+        </div>
+      ))}
     </>
   );
 }
