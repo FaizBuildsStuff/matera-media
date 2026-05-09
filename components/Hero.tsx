@@ -33,6 +33,7 @@ export const Hero = ({ content }: { content?: any }) => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // ── Main Reveal ──
       const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
       tl.fromTo(".hero-reveal", { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 1, stagger: 0.12 });
     }, containerRef);
@@ -44,83 +45,79 @@ export const Hero = ({ content }: { content?: any }) => {
       ref={containerRef}
       className="relative w-full flex flex-col items-center justify-start pt-20 sm:pt-24 md:pt-28 pb-20 sm:pb-24 md:pb-32 px-4 sm:px-6 font-satoshi z-10"
     >
-      {/* ── Deep Green Orb Gradient Background (suraj.dsgn style) ── */}
+      {/* ── 4K Live Spotlight Background ── */}
       <div className="absolute inset-x-0 top-0 bottom-[-500px] pointer-events-none z-0 overflow-visible">
 
-        {/* BASE — Inherit from SectionRenderer to avoid seams */}
-        <div className="absolute inset-0 bg-transparent" />
+        {/* BASE — Synced to global background */}
+        <div className="absolute inset-0" style={{ background: "#050505" }} />
 
-        {/* MAIN ORB — big glowing green mass, bottom-left */}
+        {/* SPOTLIGHT CONE — wide soft outer */}
         <div
-          className="absolute z-0"
+          className="absolute"
           style={{
-            bottom: "15%",
-            left: "-5%",
-            width: "85%",
-            height: "85%",
-            borderRadius: "50%",
-            background: "radial-gradient(ellipse at 40% 60%, #2d6a4f 0%, #1b4332 30%, #0d2b1a 55%, transparent 80%)",
-            filter: "blur(90px)",
-            opacity: 0.95,
+            top: "-20%",
+            left: "50%",
+            width: "70%",
+            height: "140%",
+            transform: "translateX(-50%)",
+            background: "radial-gradient(ellipse 50% 70% at 50% 30%, rgba(45, 106, 79, 0.55) 0%, rgba(27, 67, 50, 0.3) 35%, rgba(13, 43, 26, 0.1) 65%, transparent 85%)",
+            willChange: "opacity, transform",
+            animation: "spotlightPulse 7s ease-in-out infinite",
           }}
         />
 
-        {/* BRIGHT HOT SPOT — lighter center punch */}
+        {/* SPOTLIGHT CORE — bright center */}
         <div
-          className="absolute z-0"
+          className="absolute"
           style={{
-            bottom: "25%",
-            left: "5%",
-            width: "55%",
-            height: "55%",
-            borderRadius: "50%",
-            background: "radial-gradient(ellipse at 45% 55%, #52b788 0%, #40916c 25%, #2d6a4f 50%, transparent 75%)",
-            filter: "blur(70px)",
-            opacity: 0.7,
+            top: "-10%",
+            left: "50%",
+            width: "45%",
+            height: "120%",
+            transform: "translateX(-50%)",
+            background: "radial-gradient(ellipse 45% 60% at 50% 30%, rgba(82, 183, 136, 0.5) 0%, rgba(64, 145, 108, 0.25) 40%, transparent 75%)",
+            willChange: "opacity, transform",
+            animation: "spotlightDrift 9s ease-in-out infinite",
           }}
         />
 
-        {/* SECONDARY SPREAD — fills mid-left atmosphere */}
+        {/* SPOTLIGHT HOT TIP — sharpest brightest point */}
         <div
-          className="absolute z-0"
+          className="absolute"
           style={{
-            top: "20%",
-            left: "-15%",
-            width: "65%",
+            top: "10%",
+            left: "50%",
+            width: "20%",
             height: "60%",
-            borderRadius: "50%",
-            background: "radial-gradient(ellipse at 50% 50%, #1b4332 0%, #081c10 50%, transparent 80%)",
-            filter: "blur(80px)",
-            opacity: 0.8,
+            transform: "translateX(-50%)",
+            background: "radial-gradient(ellipse 50% 50% at 50% 30%, rgba(110, 231, 183, 0.35) 0%, rgba(82, 183, 136, 0.15) 50%, transparent 80%)",
+            willChange: "opacity",
+            animation: "spotlightFlicker 5s ease-in-out infinite",
           }}
         />
 
-        {/* RIGHT SIDE — Radial fade instead of linear to avoid horizontal seams */}
+        {/* EDGE VIGNETTE — Synced to #050505 */}
         <div
-          className="absolute inset-0 z-0"
+          className="absolute inset-0"
           style={{
-            background: "radial-gradient(circle at 100% 50%, #050505 0%, transparent 70%)",
+            background: "radial-gradient(ellipse at center, transparent 30%, rgba(5,5,5,0.6) 80%, #050505 100%)",
           }}
         />
 
-        {/* GRAIN — double layer */}
-        <div
-          className="absolute inset-0 z-10"
-          style={{
-            backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")',
-            opacity: 0.08,
-            mixBlendMode: "overlay",
-          }}
-        />
-        <div
-          className="absolute inset-0 z-10"
-          style={{
-            backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")',
-            opacity: 0.04,
-            mixBlendMode: "screen",
-            backgroundSize: "120px 120px",
-          }}
-        />
+        <style>{`
+          @keyframes spotlightPulse {
+            0%, 100% { opacity: 0.85; transform: translateX(-50%) scale(1); }
+            50%      { opacity: 1;    transform: translateX(-50%) scale(1.05); }
+          }
+          @keyframes spotlightDrift {
+            0%, 100% { opacity: 0.9;  transform: translateX(-52%) scale(1); }
+            50%      { opacity: 1;    transform: translateX(-48%) scale(1.03); }
+          }
+          @keyframes spotlightFlicker {
+            0%, 100% { opacity: 0.75; }
+            50%      { opacity: 1; }
+          }
+        `}</style>
 
       </div>
 
@@ -136,10 +133,6 @@ export const Hero = ({ content }: { content?: any }) => {
             )}
           </span>
         </div>
-
-        {/* ── Modern Heading Bloom ── */}
-        <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[80%] h-[40%] bg-emerald-500/10 blur-[120px] rounded-full pointer-events-none z-0" />
-        <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-[50%] h-[30%] bg-lime-500/8 blur-[80px] rounded-full pointer-events-none z-0" />
 
         {/* Main Headline */}
         <h1 className="hero-reveal text-[2rem] sm:text-4xl md:text-[3.5rem] font-semibold leading-[1.15] tracking-tight text-white mb-10 w-full max-w-3xl px-1 relative z-10">
