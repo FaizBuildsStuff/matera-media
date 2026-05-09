@@ -42,178 +42,89 @@ export const Hero = ({ content }: { content?: any }) => {
   return (
     <section
       ref={containerRef}
-      className="relative w-full flex flex-col items-center justify-start pt-20 sm:pt-24 md:pt-28 pb-8 sm:pb-12 md:pb-16 px-4 sm:px-6 font-satoshi z-10"
+      className="relative w-full flex flex-col items-center justify-start pt-20 sm:pt-24 md:pt-28 pb-0 px-4 sm:px-6 font-satoshi z-10"
     >
-      {/* ── MATERA MEDIA — 4K Cinematic Nebula Rift ── */}
-      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        {/* === DEEP CORE GLOW === */}
-        <div className="absolute top-[30%] left-[35%] w-[700px] h-[700px] rounded-full z-0"
-          style={{
-            background: "radial-gradient(ellipse at center, rgba(16,185,129,0.18) 0%, rgba(5,150,105,0.10) 40%, transparent 75%)",
-            filter: "blur(80px)",
-          }}
-        />
+      {/* ── Deep Green Orb Gradient Background (suraj.dsgn style) ── */}
+      <div className="absolute inset-x-0 top-0 bottom-[-200px] pointer-events-none z-0 overflow-visible">
 
-        {/* === RIFT BEAMS — Angled, cinematic === */}
-        <div className="absolute z-0"
-          style={{
-            top: "-8%",
-            left: "-15%",
-            width: "95%",
-            height: "480px",
-            background: "linear-gradient(105deg, rgba(16,185,129,0.13) 0%, rgba(52,211,153,0.07) 50%, transparent 100%)",
-            filter: "blur(100px)",
-            borderRadius: "60% 40% 50% 60%",
-            transform: "rotate(-22deg)",
-          }}
-        />
+        {/* BASE — Inherit from SectionRenderer to avoid seams */}
+        <div className="absolute inset-0 bg-transparent" />
 
-        <div className="absolute z-0"
+        {/* MAIN ORB — big glowing green mass, bottom-left */}
+        <div
+          className="absolute z-0"
           style={{
-            top: "5%",
-            right: "-20%",
-            width: "80%",
-            height: "420px",
-            background: "linear-gradient(75deg, transparent 0%, rgba(74,222,128,0.06) 50%, rgba(16,185,129,0.09) 100%)",
-            filter: "blur(110px)",
-            borderRadius: "50% 60% 40% 55%",
-            transform: "rotate(18deg)",
-          }}
-        />
-
-        {/* === MID ATMOSPHERE === */}
-        <div className="absolute z-0"
-          style={{
-            top: "38%",
+            bottom: "-10%",
             left: "-5%",
-            width: "55%",
-            height: "280px",
-            background: "radial-gradient(ellipse, rgba(5,150,105,0.10) 0%, rgba(6,95,70,0.05) 60%, transparent 100%)",
-            filter: "blur(90px)",
-            transform: "rotate(28deg)",
-          }}
-        />
-
-        <div className="absolute z-0"
-          style={{
-            top: "45%",
-            right: "-5%",
-            width: "52%",
-            height: "320px",
-            background: "radial-gradient(ellipse, rgba(16,185,129,0.07) 0%, rgba(20,184,166,0.04) 55%, transparent 100%)",
-            filter: "blur(100px)",
-            transform: "rotate(-40deg)",
-          }}
-        />
-
-        {/* Center horizontal sweep */}
-        <div className="absolute z-0"
-          style={{
-            top: "55%",
-            left: "5%",
-            width: "90%",
-            height: "160px",
-            background: "linear-gradient(90deg, transparent 0%, rgba(52,211,153,0.05) 30%, rgba(16,185,129,0.08) 55%, rgba(52,211,153,0.04) 80%, transparent 100%)",
+            width: "75%",
+            height: "75%",
+            borderRadius: "50%",
+            background: "radial-gradient(ellipse at 40% 60%, #2d6a4f 0%, #1b4332 30%, #0d2b1a 55%, transparent 80%)",
             filter: "blur(60px)",
+            opacity: 0.95,
           }}
         />
 
-        {/* === BOTTOM BLEED === */}
-        <div className="absolute z-0"
+        {/* BRIGHT HOT SPOT — lighter center punch */}
+        <div
+          className="absolute z-0"
           style={{
-            bottom: "-120px",
-            left: "50%",
-            transform: "translateX(-50%) rotate(-4deg)",
-            width: "130%",
-            height: "450px",
-            background: "radial-gradient(ellipse at center, rgba(16,185,129,0.09) 0%, rgba(5,150,105,0.05) 50%, transparent 75%)",
-            filter: "blur(130px)",
-          }}
-        />
-
-        {/* Bottom-left corner accent */}
-        <div className="absolute z-0"
-          style={{
-            bottom: "0",
-            left: "-10%",
-            width: "40%",
-            height: "300px",
-            background: "radial-gradient(ellipse, rgba(6,95,70,0.12) 0%, transparent 70%)",
-            filter: "blur(80px)",
-          }}
-        />
-
-        {/* === SHARP HIGHLIGHT STREAKS === */}
-        <div className="absolute z-0"
-          style={{
-            top: "22%",
-            left: "15%",
+            bottom: "5%",
+            left: "5%",
             width: "45%",
-            height: "2px",
-            background: "linear-gradient(90deg, transparent, rgba(52,211,153,0.25), transparent)",
-            filter: "blur(3px)",
-            transform: "rotate(-8deg)",
+            height: "45%",
+            borderRadius: "50%",
+            background: "radial-gradient(ellipse at 45% 55%, #52b788 0%, #40916c 25%, #2d6a4f 50%, transparent 75%)",
+            filter: "blur(45px)",
+            opacity: 0.7,
           }}
         />
 
-        <div className="absolute z-0"
+        {/* SECONDARY SPREAD — fills mid-left atmosphere */}
+        <div
+          className="absolute z-0"
           style={{
-            top: "68%",
-            right: "10%",
-            width: "35%",
-            height: "1px",
-            background: "linear-gradient(90deg, transparent, rgba(74,222,128,0.2), transparent)",
-            filter: "blur(2px)",
-            transform: "rotate(5deg)",
+            top: "20%",
+            left: "-15%",
+            width: "65%",
+            height: "60%",
+            borderRadius: "50%",
+            background: "radial-gradient(ellipse at 50% 50%, #1b4332 0%, #081c10 50%, transparent 80%)",
+            filter: "blur(80px)",
+            opacity: 0.8,
           }}
         />
 
-        {/* === GRAIN / NOISE LAYER === */}
+        {/* RIGHT SIDE — Softened to match global background */}
+        <div
+          className="absolute inset-0 z-0"
+          style={{
+            background: "linear-gradient(to right, transparent 30%, #050505 85%)",
+          }}
+        />
+
+        {/* GRAIN — double layer */}
         <div
           className="absolute inset-0 z-10"
           style={{
-            backgroundImage: `url("https://grainy-gradients.vercel.app/noise.svg")`,
-            opacity: 0.055,
+            backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")',
+            opacity: 0.08,
             mixBlendMode: "overlay",
           }}
         />
-
         <div
           className="absolute inset-0 z-10"
           style={{
-            backgroundImage: `url("https://grainy-gradients.vercel.app/noise.svg")`,
-            opacity: 0.025,
+            backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")',
+            opacity: 0.04,
             mixBlendMode: "screen",
-            backgroundSize: "150px 150px",
+            backgroundSize: "120px 120px",
           }}
         />
 
-        {/* === VIGNETTE === */}
-        <div
-          className="absolute inset-0 z-20"
-          style={{
-            background: "radial-gradient(ellipse at center, transparent 30%, rgba(5,8,5,0.5) 70%, rgba(3,5,3,0.85) 100%)",
-          }}
-        />
-
-        {/* Top vignette strip */}
-        <div
-          className="absolute top-0 left-0 right-0 h-32 z-20"
-          style={{
-            background: "linear-gradient(to bottom, rgba(5,8,5,0.7) 0%, transparent 100%)",
-          }}
-        />
-
-        {/* Bottom vignette strip */}
-        <div
-          className="absolute bottom-0 left-0 right-0 h-32 z-20"
-          style={{
-            background: "linear-gradient(to top, rgba(5,8,5,0.7) 0%, transparent 100%)",
-          }}
-        />
       </div>
 
-      <div className="relative z-20 w-full max-w-4xl mx-auto flex flex-col items-center text-center mt-4 sm:mt-6 md:mt-8 mb-8 md:mb-12">
+      <div className="relative z-20 w-full max-w-4xl mx-auto flex flex-col items-center text-center mt-4 sm:mt-6 md:mt-8 mb-0">
 
         {/* Top Label */}
         <div className="hero-reveal mb-8 flex items-center justify-center">
@@ -276,7 +187,7 @@ export const Hero = ({ content }: { content?: any }) => {
 
         {/* Video Player Card (Next-Level Glass Styling) */}
         {videoUrl && (
-          <div className="hero-reveal relative w-full aspect-video rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.8)] bg-black/40 backdrop-blur-2xl group mb-8 p-1 sm:p-2">
+          <div className="hero-reveal relative w-full aspect-video rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.8)] bg-black/40 backdrop-blur-2xl group mb-0 p-1 sm:p-2">
             <div className="absolute inset-0 bg-linear-to-br from-white/10 via-transparent to-transparent pointer-events-none z-10" />
             <div className="relative w-full h-full rounded-[2rem] md:rounded-[3rem] overflow-hidden bg-black">
               {!isVideoPlaying ? (

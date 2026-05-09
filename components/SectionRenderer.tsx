@@ -148,7 +148,15 @@ interface SectionRendererProps {
 
 export function SectionRenderer({ sections, documentId }: SectionRendererProps) {
   return (
-    <main className="bg-[#050505] min-h-screen flex flex-col overflow-x-clip">
+    <main className="bg-[#050505] min-h-screen flex flex-col overflow-x-clip relative">
+      {/* --- GLOBAL ATMOSPHERE LAYER --- */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        {/* Continuous Noise Texture */}
+        <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')] repeat" />
+        
+        {/* Global Technical Grid */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:80px_80px]" />
+      </div>
       {!sections || sections.length === 0 ? (
         <DefaultSections />
       ) : (

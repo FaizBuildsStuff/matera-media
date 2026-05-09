@@ -56,21 +56,9 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
     const testimonialChunks = chunkArray(currentItems, chunkSize);
 
     return (
-        <section className="relative w-full py-12 md:py-16 px-6  font-satoshi">
-            {/* --- RESTORED TECHNICAL BACKGROUND --- */}
-            {/* Grid removed to connect sections */}
-            {/* ── Powerful Static Fractal Rift Wall Background ── */}
-            <div className="absolute inset-0 pointer-events-none z-0">
-                {/* Multi-layered Static Ambient Rifts */}
-                <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[120%] h-[600px] bg-emerald-500/[0.08] blur-[160px] rounded-[100%] rotate-[-15deg] z-0" />
-                <div className="absolute bottom-[10%] right-[-10%] w-[90%] h-[500px] bg-lime-400/[0.06] blur-[140px] rounded-[100%] rotate-[18deg] z-0" />
-
-                {/* Secondary Static Sparks */}
-                <div className="absolute top-[30%] left-[-10%] w-[400px] h-[400px] bg-emerald-600/[0.1] blur-[120px] rounded-full z-0" />
-
-                {/* Global Textures */}
-                <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
-            </div>
+        <section className="relative w-full pt-0 pb-24 md:pb-32 px-6 font-satoshi -mt-16 md:-mt-24 z-10">
+            {/* --- BACKGROUND REMOVED TO CONNECT SECTIONS --- */}
+            {/* All textures and glows are now handled globally or by the section bleed */}
 
             <div className="mx-auto max-w-6xl relative z-10">
                 {/* --- HEADER --- */}
