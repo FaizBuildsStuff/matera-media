@@ -56,7 +56,7 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
     const testimonialChunks = chunkArray(currentItems, chunkSize);
 
     return (
-        <section className="relative w-full pt-0 pb-24 md:pb-32 px-6 font-satoshi -mt-16 md:-mt-24 z-10">
+        <section className="relative w-full pt-12 pb-24 md:pb-32 px-6 font-satoshi z-10">
             {/* --- BACKGROUND REMOVED TO CONNECT SECTIONS --- */}
             {/* All textures and glows are now handled globally or by the section bleed */}
 

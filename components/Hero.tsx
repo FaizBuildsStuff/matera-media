@@ -42,10 +42,10 @@ export const Hero = ({ content }: { content?: any }) => {
   return (
     <section
       ref={containerRef}
-      className="relative w-full flex flex-col items-center justify-start pt-20 sm:pt-24 md:pt-28 pb-0 px-4 sm:px-6 font-satoshi z-10"
+      className="relative w-full flex flex-col items-center justify-start pt-20 sm:pt-24 md:pt-28 pb-20 sm:pb-24 md:pb-32 px-4 sm:px-6 font-satoshi z-10"
     >
       {/* ── Deep Green Orb Gradient Background (suraj.dsgn style) ── */}
-      <div className="absolute inset-x-0 top-0 bottom-[-200px] pointer-events-none z-0 overflow-visible">
+      <div className="absolute inset-x-0 top-0 bottom-[-500px] pointer-events-none z-0 overflow-visible">
 
         {/* BASE — Inherit from SectionRenderer to avoid seams */}
         <div className="absolute inset-0 bg-transparent" />
@@ -54,13 +54,13 @@ export const Hero = ({ content }: { content?: any }) => {
         <div
           className="absolute z-0"
           style={{
-            bottom: "-10%",
+            bottom: "15%",
             left: "-5%",
-            width: "75%",
-            height: "75%",
+            width: "85%",
+            height: "85%",
             borderRadius: "50%",
             background: "radial-gradient(ellipse at 40% 60%, #2d6a4f 0%, #1b4332 30%, #0d2b1a 55%, transparent 80%)",
-            filter: "blur(60px)",
+            filter: "blur(90px)",
             opacity: 0.95,
           }}
         />
@@ -69,13 +69,13 @@ export const Hero = ({ content }: { content?: any }) => {
         <div
           className="absolute z-0"
           style={{
-            bottom: "5%",
+            bottom: "25%",
             left: "5%",
-            width: "45%",
-            height: "45%",
+            width: "55%",
+            height: "55%",
             borderRadius: "50%",
             background: "radial-gradient(ellipse at 45% 55%, #52b788 0%, #40916c 25%, #2d6a4f 50%, transparent 75%)",
-            filter: "blur(45px)",
+            filter: "blur(70px)",
             opacity: 0.7,
           }}
         />
@@ -95,11 +95,11 @@ export const Hero = ({ content }: { content?: any }) => {
           }}
         />
 
-        {/* RIGHT SIDE — Softened to match global background */}
+        {/* RIGHT SIDE — Radial fade instead of linear to avoid horizontal seams */}
         <div
           className="absolute inset-0 z-0"
           style={{
-            background: "linear-gradient(to right, transparent 30%, #050505 85%)",
+            background: "radial-gradient(circle at 100% 50%, #050505 0%, transparent 70%)",
           }}
         />
 
