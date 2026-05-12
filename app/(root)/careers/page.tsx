@@ -23,7 +23,7 @@ export default async function CareersPage() {
   >(careersPageQuery, {}, { cache: "no-store" });
 
   return (
-    <main className="min-h-screen bg-[#050505]">
+    <main className="min-h-screen bg-[#050a07]">
       <CareersPageClient content={data ?? undefined} />
     </main>
   );

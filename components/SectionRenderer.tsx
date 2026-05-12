@@ -149,21 +149,42 @@ interface SectionRendererProps {
 
 export function SectionRenderer({ sections, documentId }: SectionRendererProps) {
   return (
-    <main className="bg-[#050505] min-h-screen flex flex-col overflow-x-clip relative">
+    <main className="bg-[#050a07] min-h-screen flex flex-col overflow-x-clip relative">
       {/* --- GLOBAL ATMOSPHERE LAYER --- */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-
-        
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
         {/* Global Technical Grid */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-size-[80px_80px]" />
       </div>
+
+      {/* --- GLOBAL SEAMLESS BLEND LAYER --- */}
+      {/* This sits above all section backgrounds (z-0) but below all content (z-10) */}
+      <div className="fixed inset-0 pointer-events-none z-[5]">
+        {/* Anti-Banding Noise Layer */}
+        <div
+            className="absolute inset-0 opacity-[0.045] mix-blend-soft-light"
+            style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
+            }}
+        />
+
+        {/* Global Floating Orbs — spans across all sections */}
+        <div className="absolute top-[20%] left-[-10%] w-[60%] h-[40%] rounded-full bg-[#1c7c54]/10 blur-[140px] animate-[pulse_12s_ease-in-out_infinite]" />
+        <div className="absolute bottom-[20%] right-[-10%] w-[50%] h-[40%] rounded-full bg-[#2d9e6b]/05 blur-[160px] animate-[pulse_18s_ease-in-out_infinite_reverse]" />
+
+        {/* Reduced Blur Overlay for clearer depth */}
+        <div className="absolute inset-0 backdrop-blur-[40px]" />
+      </div>
+
       {!sections || sections.length === 0 ? (
         <DefaultSections />
       ) : (
         sections.map((section, index) => (
-          <div key={section._key} className="relative group/section -mt-px border-none outline-none overflow-visible">
+          <div key={section._key} className="relative group/section -mt-px border-0 outline-0 ring-0 bg-transparent overflow-visible">
             <SectionBackground index={index} type={section._type} variant={section._type === "hero" ? "hero" : "subtle"} />
-            <RenderBlock section={section} documentId={documentId} />
+            
+            <div className="relative z-10 w-full">
+              <RenderBlock section={section} documentId={documentId} />
+            </div>
 
             {/* Section-level Controls */}
             {documentId && (
@@ -264,9 +285,12 @@ function DefaultSections() {
         { component: <FAQ />, type: "faq" },
         { component: <CalendlyWidget />, type: "calendlyWidget" },
       ].map((s, i) => (
-        <div key={i} className="relative -mt-px border-none outline-none">
+        <div key={i} className="relative -mt-px border-0 outline-0 ring-0 bg-transparent overflow-visible">
           <SectionBackground index={i} type={s.type} variant={s.type === "hero" ? "hero" : "subtle"} />
-          {s.component}
+          
+          <div className="relative z-10 w-full">
+            {s.component}
+          </div>
         </div>
       ))}
     </>

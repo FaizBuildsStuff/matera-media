@@ -89,15 +89,6 @@ export const CalendlyWidget = ({ content }: { content?: CalendlyContent }) => {
       id="schedule"
       className="relative pt-16 md:pt-20 pb-0 px-6 font-satoshi"
     >
-      {/* ── Powerful Static Fractal Rift System Background ── */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        {/* Multi-layered Static Core Glows */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[700px] bg-emerald-500/[0.1] blur-[160px] rounded-full z-0" />
-        <div className="absolute top-[40%] left-[10%] w-[60%] h-[400px] bg-lime-400/[0.06] blur-[120px] rounded-[100%] rotate-[-15deg] z-0" />
-        <div className="absolute bottom-[20%] right-[10%] w-[70%] h-[500px] bg-emerald-600/[0.08] blur-[140px] rounded-[100%] rotate-[20deg] z-0" />
-
-        {/* Grid removed to connect sections */}
-      </div>
 
       <div className="relative z-20 max-w-7xl mx-auto">
 

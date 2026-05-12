@@ -152,7 +152,7 @@ export const ProblemSolutionComparison = ({
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} className="relative py-24 px-6 " style={{ perspective: "1000px" }}>
+    <section ref={containerRef} className="relative py-24 px-6 border-none outline-none" style={{ perspective: "1000px" }}>
       {/* Top & Bottom borders removed to connect sections */}
 
       {/* Background Elements Container with Vertical Masking */}
@@ -161,21 +161,6 @@ export const ProblemSolutionComparison = ({
           maskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)',
           WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)'
         }}>
-
-        {/* Technical Grid Overlay */}
-        <div className="absolute inset-0 opacity-40"
-          style={{
-            backgroundImage: `linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)`,
-            backgroundSize: '40px 40px',
-          }}
-        />
-
-        {/* Dynamic Ambient Orbs */}
-        <div className="absolute inset-0">
-          <div className="gsap-orb absolute top-[10%] left-[-5%] w-[500px] h-[500px] bg-red-600/[0.1] blur-[140px] rounded-full" />
-          <div className="gsap-orb absolute bottom-[10%] right-[-5%] w-[600px] h-[600px] bg-emerald-500/[0.12] blur-[150px] rounded-full" />
-          <div className="gsap-orb absolute top-[40%] right-[10%] w-[400px] h-[400px] bg-emerald-600/[0.08] blur-[130px] rounded-full" />
-        </div>
 
         {/* Parallax Background Text */}
         <div className="absolute inset-0 flex flex-col justify-around overflow-hidden opacity-[0.03] select-none">

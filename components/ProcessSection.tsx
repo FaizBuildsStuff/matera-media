@@ -45,12 +45,7 @@ export const ProcessSection = ({ data, documentId }: ProcessSectionProps) => {
   const steps = getLiveItems(documentId || "", "processSteps", originalSteps);
 
   return (
-    <section ref={container} className="relative -mt-px py-12 md:py-16 px-6  border-none z-10">
-      {/* Fades disabled to allow glow bleed */}
-      {/* Intense Nebula Beam Design */}
-      <div className="absolute top-[10%] left-[-10%] w-[110%] h-[500px] bg-emerald-600/[0.1] blur-[160px] rounded-[100%] rotate-[-12deg] pointer-events-none z-0" />
-      <div className="absolute bottom-[0%] right-[-10%] w-[80%] h-[400px] bg-lime-400/[0.08] blur-[140px] rounded-[100%] rotate-[15deg] pointer-events-none z-0" />
-      <div className="absolute top-[35%] left-1/2 -translate-x-1/2 w-[350px] h-[350px] bg-emerald-400/[0.12] blur-[110px] rounded-full pointer-events-none z-0 animate-pulse" />
+    <section ref={container} className="relative -mt-px py-12 md:py-16 px-6 border-none z-10 overflow-visible">
 
       <div className="max-w-7xl mx-auto relative z-30">
         <div className="mb-16 md:mb-20">
@@ -86,7 +81,7 @@ export const ProcessSection = ({ data, documentId }: ProcessSectionProps) => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-12">
             {steps.map((step: any, i: number) => (
               <div key={step._key || i} className="pt-10 md:pt-14 relative group pl-8 md:pl-0">
-                <div className="absolute top-0 left-[-7px] md:left-0 md:-translate-y-1/2 w-3.5 h-3.5 rounded-full bg-lime-400 border-4 border-[#051A0E] z-20 group-hover:scale-125 transition-transform shadow-[0_0_10px_rgba(163,230,53,0.5)]" />
+                <div className="absolute top-0 left-[-7px] md:left-0 md:-translate-y-1/2 w-3.5 h-3.5 rounded-full bg-[#2d9e6b] border-4 border-[#051A0E] z-20 group-hover:scale-125 transition-transform shadow-[0_0_10px_rgba(45,158,107,0.5)]" />
 
                 <div className="flex justify-between items-start mb-3">
                   <span className="text-white font-bold text-[9px] tracking-widest block uppercase opacity-50 group-hover:opacity-100 transition-opacity">Step 0{i + 1}</span>

@@ -13,7 +13,7 @@ export default async function Home() {
   );
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#05180D]">
+    <div className="flex flex-col min-h-screen bg-[#050a07]">
       <main className="grow">
         <SectionRenderer sections={page?.sections ?? undefined} documentId={page?._id} />
       </main>

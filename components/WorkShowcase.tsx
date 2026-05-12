@@ -314,14 +314,14 @@ export const WorkShowcase = ({
                 >
                   <span className="relative z-10">{cat.title}</span>
                   {activeCategory === cat.slug && (
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-r from-emerald-500/20 to-lime-500/20 blur-md -z-10 animate-pulse" />
+                    <div className="absolute inset-0 rounded-full bg-emerald-500/20 blur-md -z-10 animate-pulse" />
                   )}
                 </button>
               ))}
             </nav>
           </aside>
 
-          <div ref={rightRef} className="flex-1 min-w-0 overflow-hidden">
+          <div ref={rightRef} className="flex-1 min-w-0 overflow-visible">
             <div ref={gridWrapperRef} className="relative">
               <div ref={reelContainerRef} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-8">
                 {filteredWorks.length > 0 ? (
@@ -413,7 +413,7 @@ function ReelCard({
           duration={12} 
           delay={9} 
           colorFrom="#10b981" 
-          colorTo="#84cc16" 
+          colorTo="#2d9e6b" 
           className="opacity-0 group-hover:opacity-100 transition-opacity duration-500" 
         />
 
@@ -494,7 +494,7 @@ function ReelCard({
             )}
 
             {/* Glass Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-70" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#050a07] via-transparent to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-70" />
 
             {/* Center Play Icon */}
             <div className="absolute inset-0 flex items-center justify-center">

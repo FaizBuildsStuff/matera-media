@@ -136,14 +136,8 @@ export default function CareersPageClient({ content }: CareersPageProps) {
   }, [content]);
 
   return (
-    <div ref={sectionRef} className="relative overflow-hidden pt-16 md:pt-24 ">
+    <div ref={sectionRef} className="relative overflow-visible pt-16 md:pt-24 ">
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none z-0" />
-      {/* Intense Nebula Beam Design */}
-      {/* Border removed to connect sections */}
-      
-      <div className="absolute top-[5%] left-[-10%] md:left-[-15%] w-[130%] md:w-[120%] h-[350px] md:h-[500px] bg-emerald-500/[0.1] blur-[100px] md:blur-[160px] rounded-[100%] rotate-[-12deg] pointer-events-none z-0" />
-      <div className="absolute top-[40%] right-[-10%] md:right-[-15%] w-[100%] md:w-[70%] h-[300px] md:h-[450px] bg-lime-400/[0.08] blur-[80px] md:blur-[140px] rounded-[100%] rotate-[15deg] pointer-events-none z-0" />
-      <div className="absolute bottom-[5%] left-1/2 -translate-x-1/2 w-[300px] md:w-[450px] h-[300px] md:h-[450px] bg-emerald-400/[0.12] blur-[90px] md:blur-[120px] rounded-full pointer-events-none z-0 animate-pulse" />
 
       <div className="max-w-5xl mx-auto relative z-10 py-20 px-6">
         

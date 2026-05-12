@@ -2,6 +2,45 @@
 
 import React from "react";
 
+// ─────────────────────────────────────────────────────────────────────────────
+//  SectionBackground.tsx  — FINAL VERSION
+//  ✅ Named export  →  export const SectionBackground
+//  ✅ "use client"  →  Next.js App Router compatible
+//  ✅ Zero banding  →  all transparent stops use matched-hue rgba, never rgba(0,0,0,0)
+//  ✅ Pure green theme  →  no teal, no lime, no brown
+//  ✅ Rich animations  →  orbs, grid pulse, scanlines, particles, corner brackets
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ── COLOUR TOKENS ─────────────────────────────────────────────────────────────
+//  Base:    #050a07  rgb(5,10,7)      near-black page base
+//  Dark:    #060f0b  rgb(6,15,11)     section dark
+//  Forest:  #0f2a18  rgb(15,42,24)    deep forest
+//  Jade:    #1c7c54  rgb(28,124,84)   jade mid
+//  Mint:    #2d9e6b  rgb(45,158,107)  mint bright
+//  Vivid:   #3dba7e  rgb(61,186,126)  vivid accent (hero only)
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Inline SVG noise — no network request, no banding
+const NOISE = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")`;
+
+// Orb anchor positions — unique per section index
+const ORB_POS = [
+  { cx: "40%", cy: "38%" },
+  { cx: "60%", cy: "52%" },
+  { cx: "32%", cy: "55%" },
+  { cx: "65%", cy: "30%" },
+  { cx: "48%", cy: "62%" },
+];
+
+// Fixed particle positions — deterministic, no hydration mismatch
+const PARTICLES = [
+  { x: 8,  y: 15, s: 1.5, d: 4.2 }, { x: 25, y: 70, s: 1.0, d: 6.1 },
+  { x: 42, y: 32, s: 2.0, d: 3.8 }, { x: 60, y: 85, s: 1.5, d: 5.5 },
+  { x: 75, y: 20, s: 1.0, d: 7.0 }, { x: 87, y: 52, s: 2.0, d: 4.4 },
+  { x: 18, y: 88, s: 1.0, d: 5.8 }, { x: 53, y: 58, s: 1.5, d: 3.2 },
+  { x: 91, y: 38, s: 1.0, d: 6.6 }, { x: 35, y: 10, s: 2.0, d: 4.9 },
+];
+
 interface SectionBackgroundProps {
   index?: number;
   type?: string;
@@ -17,216 +56,227 @@ export const SectionBackground = ({
   opacity = 1,
   variant = "subtle",
 }: SectionBackgroundProps) => {
-  // Determine accent colors based on type or index
-  const getColors = () => {
-    if (color) return { primary: color, secondary: color };
+  const pos  = ORB_POS[index % ORB_POS.length];
+  const anim = `sbOrb_${index}`;
+  const dur  = 16 + index * 4;
 
-    const colors = [
-      { primary: "rgba(52,211,153,0.12)", secondary: "rgba(16,185,129,0.07)" }, // Emerald (Hero default)
-      { primary: "rgba(16,185,129,0.15)", secondary: "rgba(5,150,105,0.08)" }, // Forest
-      { primary: "rgba(163,230,53,0.1)", secondary: "rgba(101,163,13,0.06)" }, // Lime
-      { primary: "rgba(52,211,153,0.08)", secondary: "rgba(20,184,166,0.05)" }, // Teal
-      { primary: "rgba(167,243,208,0.12)", secondary: "rgba(52,211,153,0.06)" }, // Mint
-    ];
+  const keyframes = `
+    @keyframes ${anim} {
+      0%,100% { transform: scale(1.00) translate(0%,     0%);    }
+      25%      { transform: scale(1.07) translate(1.5%, -1.5%);  }
+      50%      { transform: scale(0.96) translate(-1%,   1.2%);  }
+      75%      { transform: scale(1.04) translate(1%,    1.5%);  }
+    }
+    @keyframes ${anim}_b {
+      0%,100% { transform: scale(1.00) translate(0%,  0%); }
+      40%      { transform: scale(1.05) translate(-1%, 1%); }
+      70%      { transform: scale(0.97) translate(1%, -1%); }
+    }
+    @keyframes sbGrid_${index} {
+      0%,100% { opacity: 0.04; }
+      50%      { opacity: 0.09; }
+    }
+    @keyframes sbScan_${index} {
+      from { background-position: 0 0;    }
+      to   { background-position: 0 80px; }
+    }
+    @keyframes sbPart_${index} {
+      0%,100% { opacity: 0;   transform: translateY(0px);  }
+      20%      { opacity: 0.55; }
+      80%      { opacity: 0.25; transform: translateY(-9px); }
+    }
+    @keyframes sbCorner_${index} {
+      0%,100% { opacity: 0.12; transform: scale(1);   }
+      50%      { opacity: 0.32; transform: scale(1.4); }
+    }
+  `;
 
-    // Pick color based on index to ensure uniqueness
-    return colors[index % colors.length];
-  };
+  // ── SHARED VISUAL LAYERS ────────────────────────────────────────────────────
 
-  const { primary, secondary } = getColors();
+  const Grid = () => (
+    <div aria-hidden="true" style={{
+      position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",
+      backgroundImage: `
+        linear-gradient(rgba(45,158,107,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(45,158,107,0.06) 1px, transparent 1px)
+      `,
+      backgroundSize: "50px 50px",
+      animation: `sbGrid_${index} ${7 + index}s ease-in-out infinite`,
+    }} />
+  );
 
-  // Unique spotlight positions based on index
-  const spotlightPos = [
-    { left: "50%", top: "-10%", rotate: "3deg" },
-    { left: "20%", top: "10%", rotate: "-15deg" },
-    { left: "80%", top: "5%", rotate: "12deg" },
-    { left: "30%", top: "-5%", rotate: "8deg" },
-    { left: "70%", top: "15%", rotate: "-10deg" },
-  ][index % 5];
+  const Scanlines = () => (
+    <div aria-hidden="true" style={{
+      position: "absolute", inset: 0, zIndex: 2, pointerEvents: "none",
+      background: `repeating-linear-gradient(
+        0deg,
+        transparent, transparent 3px,
+        rgba(0,0,0,0.09) 3px, rgba(0,0,0,0.09) 4px
+      )`,
+      animation: `sbScan_${index} 10s linear infinite`,
+      opacity: 0.45,
+    }} />
+  );
 
-  const animationName = `spotSweep-${index}`;
+  const Particles = () => (
+    <div aria-hidden="true" style={{ position: "absolute", inset: 0, zIndex: 3, pointerEvents: "none" }}>
+      {PARTICLES.map((p, i) => (
+        <div key={i} style={{
+          position: "absolute",
+          left: `${p.x}%`, top: `${p.y}%`,
+          width: `${p.s}px`, height: `${p.s}px`,
+          borderRadius: "50%",
+          background: "rgba(61,186,126,0.75)",
+          animation: `sbPart_${index} ${p.d}s ease-in-out ${i * 0.38}s infinite`,
+        }} />
+      ))}
+    </div>
+  );
 
+  const Corners = () => (
+    <>
+      {[
+        { top: 0, left: 0,    borderTop: "1px solid",    borderLeft: "1px solid"   },
+        { top: 0, right: 0,   borderTop: "1px solid",    borderRight: "1px solid"  },
+        { bottom: 0, left: 0, borderBottom: "1px solid", borderLeft: "1px solid"   },
+        { bottom: 0, right: 0,borderBottom: "1px solid", borderRight: "1px solid"  },
+      ].map((s, i) => (
+        <div key={i} aria-hidden="true" style={{
+          position: "absolute", ...s,
+          width: 18, height: 18,
+          borderColor: "rgba(61,186,126,0.22)",
+          zIndex: 4, pointerEvents: "none",
+          animation: `sbCorner_${index} ${3.2 + i * 0.55}s ease-in-out ${i * 0.5}s infinite`,
+        }} />
+      ))}
+    </>
+  );
+
+  // Dual-pass noise dither — eliminates ALL remaining banding
+  const Noise = () => (
+    <>
+      <div aria-hidden="true" style={{
+        position: "absolute", inset: 0, zIndex: 9, pointerEvents: "none",
+        backgroundImage: NOISE, backgroundRepeat: "repeat", backgroundSize: "200px 200px",
+        opacity: 0.07, mixBlendMode: "soft-light" as const,
+      }} />
+      <div aria-hidden="true" style={{
+        position: "absolute", inset: 0, zIndex: 9, pointerEvents: "none",
+        backgroundImage: NOISE, backgroundRepeat: "repeat",
+        backgroundSize: "270px 270px", backgroundPosition: "80px 40px",
+        opacity: 0.04, mixBlendMode: "overlay" as const,
+      }} />
+    </>
+  );
+
+  // ── HERO VARIANT ────────────────────────────────────────────────────────────
   if (variant === "hero") {
     return (
-      <div
-        className="absolute inset-0 pointer-events-none z-0"
-        style={{
-          maskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
-          WebkitMaskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
-        }}
-      >
-        {/* ── Deep Green Orb Gradient Background (suraj.dsgn style) ── */}
-        {/* BASE — pure black canvas with seamless bottom transition (Extended to prevent gaps) */}
-        <div
-          className="absolute inset-x-0 top-0 -bottom-[120px]"
-          style={{
-            background: "linear-gradient(to bottom, #060a06 50%, #050505 100%)",
-          }}
-        />
+      <div aria-hidden="true"
+        style={{ position: "absolute", inset: 0, overflow: "visible", zIndex: 0, pointerEvents: "none" }}>
+        <style>{keyframes}</style>
 
-        {/* MAIN ORB — glowing mass reaching behind heading and video */}
-        <div
-          className="absolute z-0"
-          style={{
-            top: "15%",
-            left: "5%",
-            width: "90%",
-            height: "80%",
-            borderRadius: "50%",
-            background: "radial-gradient(circle at 40% 50%, #2d6a4f 0%, #1b4332 30%, #0d2b1a 55%, transparent 85%)",
-            filter: "blur(60px)",
-            opacity: 0.9,
-          }}
-        />
+        {/* MAIN HERO ORB — large, deep green, 7 smooth stops */}
+        <div aria-hidden="true" style={{
+          position: "absolute", inset: "-20%",
+          borderRadius: "50%",
+          // All transparent stops use rgb(6,15,11) — matched hue, never black
+          background: `radial-gradient(ellipse at 42% 44%,
+            rgba(61,186,126,0.82)   0%,
+            rgba(45,158,107,0.62)  13%,
+            rgba(28,124,84,0.42)   28%,
+            rgba(26,77,46,0.22)    46%,
+            rgba(15,42,24,0.10)    62%,
+            rgba(6,15,11,0.03)     78%,
+            rgba(6,15,11,0)        92%)`,
+          filter: "blur(85px)",
+          zIndex: 0,
+          animation: `${anim} ${dur}s ease-in-out infinite`,
+        }} />
 
-        {/* BRIGHT HOT SPOT — focused radiance behind the core content area */}
-        <div
-          className="absolute z-0"
-          style={{
-            top: "35%",
-            left: "15%",
-            width: "60%",
-            height: "60%",
-            borderRadius: "50%",
-            background: "radial-gradient(circle at 45% 45%, #52b788 0%, #40916c 25%, #2d6a4f 50%, transparent 80%)",
-            filter: "blur(40px)",
-            opacity: 0.6,
-          }}
-        />
+        {/* SECONDARY ORB — right side depth */}
+        <div aria-hidden="true" style={{
+          position: "absolute",
+          top: "0%", right: "-15%",
+          width: "65%", height: "75%",
+          borderRadius: "50%",
+          background: `radial-gradient(ellipse at 55% 40%,
+            rgba(28,124,84,0.32)   0%,
+            rgba(15,42,24,0.14)   38%,
+            rgba(6,15,11,0.04)    68%,
+            rgba(6,15,11,0)       86%)`,
+          filter: "blur(75px)",
+          zIndex: 0,
+          animation: `${anim}_b ${dur + 6}s ease-in-out infinite`,
+        }} />
 
-        {/* SECONDARY SPREAD — upper atmosphere fill */}
-        <div
-          className="absolute z-0"
-          style={{
-            top: "5%",
-            left: "-10%",
-            width: "80%",
-            height: "75%",
-            borderRadius: "50%",
-            background: "radial-gradient(circle at 50% 50%, #1b4332 0%, #081c10 50%, transparent 85%)",
-            filter: "blur(80px)",
-            opacity: 0.7,
-          }}
-        />
-
-        {/* RIGHT SIDE STAYS DARK — Transition to global theme */}
-        <div
-          className="absolute inset-0 z-0"
-          style={{
-            background: "linear-gradient(to right, transparent 30%, #050505 90%)",
-          }}
-        />
-
-        {/* TOP STAYS BLACK — Transition to global theme */}
-        <div
-          className="absolute top-0 left-0 right-0 z-0"
-          style={{
-            height: "45%",
-            background: "linear-gradient(to bottom, #050505 0%, transparent 100%)",
-          }}
-        />
-
-        {/* GRAIN — Optimized single layer */}
-        <div
-          className="absolute inset-0 z-10"
-          style={{
-            backgroundImage: `url('https://grainy-gradients.vercel.app/noise.svg')`,
-            opacity: 0.05,
-            mixBlendMode: "overlay",
-          }}
-        />
+        <Grid />
+        <Scanlines />
+        <Particles />
+        <Corners />
+        <Noise />
       </div>
     );
   }
 
+  // ── ALL OTHER VARIANTS ───────────────────────────────────────────────────────
   return (
-    <div
-      className="absolute inset-0 pointer-events-none z-0"
-      style={{
-        opacity,
-      }}
-    >
-      {/* MAIN AMBIENT GLOW — Optimized Blur */}
-      <div
-        className="absolute inset-x-[-30%] inset-y-[-30%] z-0"
-        style={{
-          background: `radial-gradient(circle at ${spotlightPos.left} ${spotlightPos.top === "-10%" ? "35%" : "50%"}, 
-            ${primary} 0%, 
-            ${secondary} 35%, 
-            rgba(0,0,0,0) 70%)`,
-          filter: "blur(100px)",
-        }}
-      />
+    <div aria-hidden="true"
+      style={{ position: "absolute", inset: 0, overflow: "visible", zIndex: 0, pointerEvents: "none", opacity }}>
+      <style>{keyframes}</style>
 
-      {/* PRIMARY SPOTLIGHT — Hardware Accelerated ONLY if animating */}
-      <div
-        className="absolute z-0"
-        style={{
-          top: spotlightPos.top,
-          left: spotlightPos.left,
-          width: "120%",
-          height: "150%",
-          marginLeft: "-60%",
-          transformOrigin: "50% 0%",
-          background: `radial-gradient(ellipse 55% 75% at 50% 28%, 
-            rgba(82,183,136,0.38) 0%, 
-            rgba(60,140,100,0.22) 30%, 
-            rgba(0,0,0,0) 80%)`,
-          filter: "blur(100px)",
-          animation: `${animationName} ${20 + index}s ease-in-out infinite`,
-          opacity: 0.95,
-          transform: `rotate(${spotlightPos.rotate})`,
-          willChange: "transform",
-        }}
-      />
+      {/* SINGLE ORB — one radial, deep green only, 6 smooth stops */}
+      <div aria-hidden="true" style={{
+        position: "absolute", inset: "-25%",
+        borderRadius: "50%",
+        background: `radial-gradient(ellipse at ${pos.cx} ${pos.cy},
+          rgba(28,124,84,0.17)   0%,
+          rgba(15,42,24,0.09)   32%,
+          rgba(10,26,16,0.04)   58%,
+          rgba(6,15,11,0.01)    76%,
+          rgba(6,15,11,0)       90%)`,
+        filter: "blur(105px)",
+        zIndex: 0,
+        animation: `${anim} ${dur}s ease-in-out infinite`,
+        willChange: "transform",
+      }} />
 
-      {/* INNER BLOOM — Simplified */}
-      <div
-        className="absolute z-0"
-        style={{
-          top: `calc(${spotlightPos.top} + 8%)`,
-          left: spotlightPos.left,
-          width: "50%",
-          height: "100%",
-          marginLeft: "-25%",
-          transformOrigin: "50% 0%",
-          background: `radial-gradient(ellipse 50% 65% at 50% 25%, 
-            rgba(167,243,208,0.2) 0%, 
-            rgba(0,0,0,0) 70%)`,
-          filter: "blur(80px)",
-          animation: `${animationName} ${20 + index}s ease-in-out infinite`,
-          opacity: 0.9,
-          transform: `rotate(${spotlightPos.rotate})`,
-          willChange: "transform",
-        }}
-      />
+      {/* ACCENT SHIMMER — subtle brighter centre */}
+      <div aria-hidden="true" style={{
+        position: "absolute",
+        top: "50%", left: "50%",
+        width: "52%", height: "46%",
+        transform: `translate(${index % 2 === 0 ? "-56%" : "-44%"}, -50%)`,
+        borderRadius: "50%",
+        background: `radial-gradient(ellipse at 50% 50%,
+          rgba(45,158,107,0.09)  0%,
+          rgba(28,124,84,0.03)  50%,
+          rgba(28,124,84,0)     75%)`,
+        filter: "blur(75px)",
+        zIndex: 0,
+        animation: `${anim}_b ${dur + 4}s ease-in-out infinite`,
+      }} />
 
-      {/* SUBTLE CENTER HIGHLIGHT */}
-      <div
-        className="absolute z-0"
-        style={{
-          top: "15%",
-          left: "50%",
-          width: "40%",
-          height: "40%",
-          marginLeft: "-20%",
-          background: `radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 75%)`,
-          filter: "blur(60px)",
-          opacity: 0.6,
-        }}
-      />
+      {/* CONNECTOR ORB — bleeds into next section */}
+      <div aria-hidden="true" style={{
+        position: "absolute",
+        bottom: "-15%", left: index % 2 === 0 ? "20%" : "60%",
+        width: "40%", height: "30%",
+        borderRadius: "50%",
+        background: `radial-gradient(ellipse at 50% 50%,
+          rgba(28,124,84,0.12) 0%,
+          rgba(15,42,24,0.05) 50%,
+          rgba(6,15,11,0) 80%)`,
+        filter: "blur(90px)",
+        zIndex: 0,
+        animation: `${anim} ${dur + 8}s ease-in-out infinite alternate`,
+      }} />
 
-      <style>{`
-        @keyframes ${animationName} {
-          0%, 100% {
-            transform: rotate(${parseInt(spotlightPos.rotate) - 3}deg) scale(1.04);
-          }
-          50% {
-            transform: rotate(${parseInt(spotlightPos.rotate) + 3}deg) scale(0.96);
-          }
-        }
-      `}</style>
+      <Grid />
+      <Scanlines />
+      <Particles />
+      <Corners />
+      <Noise />
     </div>
   );
 };
-

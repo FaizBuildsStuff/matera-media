@@ -28,14 +28,7 @@ export const CenteredPricing = ({ data, documentId }: CenteredPricingProps) => {
   const isTwoPlans = plans.length === 2;
 
   return (
-    <section className="relative -mt-[1px] py-24 px-6  border-none z-10">
-      {/* Top fade removed for glow bleed */}
-      {/* Intense Nebula Beam Design */}
-      {/* Border removed to connect sections */}
-      
-      <div className="absolute top-[5%] left-[-10%] w-[130%] md:w-[120%] h-[350px] md:h-[550px] bg-emerald-500/[0.12] blur-[100px] md:blur-[160px] rounded-[100%] rotate-[-12deg] pointer-events-none z-0" />
-      <div className="absolute bottom-[-5%] right-[-10%] w-[90%] md:w-[80%] h-[300px] md:h-[450px] bg-lime-400/[0.1] blur-[90px] md:blur-[140px] rounded-[100%] rotate-[15deg] pointer-events-none z-0" />
-      <div className="absolute top-[30%] left-1/2 -translate-x-1/2 w-[300px] md:w-[450px] h-[300px] md:h-[450px] bg-emerald-400/[0.15] blur-[80px] md:blur-[120px] rounded-full pointer-events-none z-0 animate-pulse" />
+    <section className="relative -mt-[1px] py-24 px-6 border-none z-10 overflow-visible">
 
       <div className="max-w-7xl mx-auto relative z-30 text-center mb-16">
         <div className="flex justify-between items-center w-full max-w-xs mx-auto mb-4">

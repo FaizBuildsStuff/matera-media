@@ -93,23 +93,7 @@ export const HowItWorksSimple = ({ data, _documentId, _sectionKey }: HowItWorksS
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} className="relative -mt-px py-32 px-6  selection:bg-white/30">
-
-      {/* Seamless Blending Masks */}
-      {/* Top fade removed for glow bleed */}
-      {/* Bottom fade removed for glow bleed */}
-
-      {/* Intense Nebula Beam Design */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="gsap-how-ambient absolute top-[10%] left-[-10%] md:left-[-15%] w-[120%] h-[300px] md:h-[500px] bg-emerald-500/[0.1] blur-[80px] md:blur-[150px] rounded-[100%] rotate-[-12deg] pointer-events-none z-0" />
-        <div className="gsap-how-ambient absolute bottom-[5%] right-[-10%] md:right-[-15%] w-[100%] md:w-[80%] h-[250px] md:h-[400px] bg-lime-400/[0.08] blur-[70px] md:blur-[120px] rounded-[100%] rotate-[15deg] pointer-events-none z-0" />
-        
-        {/* Core Focal Radiance */}
-        <div className="gsap-how-ambient absolute top-[30%] left-1/2 -translate-x-1/2 w-[250px] md:w-[400px] h-[250px] md:h-[400px] bg-emerald-400/[0.15] blur-[70px] md:blur-[100px] rounded-full pointer-events-none z-0 animate-pulse" />
-        
-        <div className="gsap-how-ambient absolute top-[20%] left-[20%] text-white/10 text-2xl font-light">+</div>
-        <div className="gsap-how-ambient absolute top-[70%] right-[15%] text-white/10 text-3xl font-light">+</div>
-      </div>
+    <section ref={containerRef} className="relative -mt-px py-32 px-6 selection:bg-white/30 border-none outline-none">
 
       <div className="max-w-7xl mx-auto relative z-10 text-center">
 

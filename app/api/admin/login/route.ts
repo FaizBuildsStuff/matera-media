@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
 const ADMIN_SECRET = process.env.ADMIN_EDIT_SECRET || "matera-admin";
@@ -11,7 +11,7 @@ const COOKIE_OPTIONS = {
 };
 
 // POST: used by the triple-tap logo dialog
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   const { secret } = await request.json().catch(() => ({ secret: "" }));
   if (secret === ADMIN_SECRET) {
     const cookieStore = await cookies();
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
 }
 
 // GET: legacy redirect-based login (kept for backward compatibility)
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const secret = searchParams.get("secret");
   if (secret === ADMIN_SECRET) {

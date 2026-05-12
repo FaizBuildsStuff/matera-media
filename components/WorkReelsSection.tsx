@@ -154,10 +154,6 @@ export const WorkReelsSection = ({ workData, documentId }: { workData?: any; doc
 
   return (
     <section className="relative -mt-px pt-24 pb-20 px-6  border-none z-10">
-      {/* Intense Nebula Beam Design */}
-      <div className="absolute top-[5%] left-[-10%] w-[120%] h-[550px] bg-emerald-500/[0.1] blur-[160px] rounded-[100%] rotate-[-10deg] pointer-events-none z-0" />
-      <div className="absolute bottom-[0%] right-[-10%] w-[90%] h-[450px] bg-lime-400/[0.08] blur-[140px] rounded-[100%] rotate-[15deg] pointer-events-none z-0" />
-      <div className="absolute top-[30%] left-[10%] w-[350px] h-[350px] bg-emerald-400/[0.12] blur-[110px] rounded-full pointer-events-none z-0 animate-pulse" />
 
       <div className="max-w-7xl mx-auto relative z-30">
         <div className="mb-10">

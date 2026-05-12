@@ -111,10 +111,6 @@ export const Hero = ({ content }: { content?: any }) => {
         {videoUrl && (
           <div className="hero-reveal relative w-full aspect-video group mb-0 overflow-visible">
 
-            {/* ── Massive Ambient Glow Behind Video ── */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-emerald-500/10 blur-[180px] md:blur-[260px] rounded-full pointer-events-none z-0 transition-all duration-1000 group-hover:bg-emerald-400/15 group-hover:scale-110" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] bg-white/5 blur-[280px] rounded-full pointer-events-none z-0" />
-
             {/* Glass Container */}
             <div className="relative z-10 w-full h-full rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden border border-white/10 group-hover:border-emerald-500/30 transition-colors duration-700 shadow-[0_20px_80px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(16,185,129,0.05)] bg-black/40 backdrop-blur-2xl p-1 sm:p-2">
               <div className="absolute inset-0 bg-linear-to-br from-white/10 via-transparent to-transparent pointer-events-none z-10" />

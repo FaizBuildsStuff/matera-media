@@ -56,7 +56,7 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
     const testimonialChunks = chunkArray(currentItems, chunkSize);
 
     return (
-        <section className="relative w-full pt-12 pb-24 md:pb-32 px-6 font-satoshi z-10">
+        <section className="relative w-full pt-12 pb-24 md:pb-32 px-6 font-satoshi z-10 border-none outline-none">
             {/* --- BACKGROUND REMOVED TO CONNECT SECTIONS --- */}
             {/* All textures and glows are now handled globally or by the section bleed */}
 
@@ -128,8 +128,8 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
                                             size={250}
                                             duration={20}
                                             delay={i * 2}
-                                            colorFrom="#00ffcc"
-                                            colorTo="#33ff00"
+                                            colorFrom="#10b981"
+                                            colorTo="#2d9e6b"
                                             className="opacity-60 group-hover:opacity-100 transition-opacity duration-500"
                                         />
 
@@ -224,7 +224,7 @@ export default function WallOfLoveSection({ content }: { content?: any }) {
                     <div className="mt-20 text-center relative z-20">
                         <button
                             onClick={() => setShowAll(true)}
-                            className="px-8 py-3 rounded-full border border-white/10 bg-[#0a2313]/40 text-white font-black text-[10px] hover:bg-white text-black hover:text-black transition-all duration-300 uppercase tracking-[0.2em] backdrop-blur-md"
+                            className="px-8 py-3 rounded-full border border-white/10 bg-[#050a07]/40 text-white font-black text-[10px] hover:bg-white text-black hover:text-black transition-all duration-300 uppercase tracking-[0.2em] backdrop-blur-md"
                         >
                             Expand Wall
                         </button>

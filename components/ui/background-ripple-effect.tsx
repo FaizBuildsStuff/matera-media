@@ -30,7 +30,7 @@ export const BackgroundRippleEffect = ({
         <div
           className="pointer-events-none absolute inset-0 z-[2] h-full w-full overflow-hidden"
           style={{
-            background: "radial-gradient(circle at top, transparent 0%, #05180D 80%)"
+            background: "radial-gradient(circle at top, transparent 0%, #0A0A0A 80%)"
           }}
         />
         <DivGrid

@@ -27,13 +27,6 @@ export const ResultsSection = ({ items: originalItems, title, documentId, label 
 
   return (
     <section className="relative -mt-px py-12 md:py-16 px-6  text-center border-none z-10">
-      {/* Fades disabled to allow glow bleed */}
-      {/* Intense Nebula Beam Design */}
-      {/* Border removed to connect sections */}
-
-      <div className="absolute top-[10%] right-[-10%] w-[120%] h-[500px] bg-emerald-500/[0.1] blur-[160px] rounded-[100%] rotate-[10deg] pointer-events-none z-0" />
-      <div className="absolute bottom-[0%] left-[-15%] w-[80%] h-[400px] bg-lime-400/[0.06] blur-[120px] rounded-[100%] rotate-[-15deg] pointer-events-none z-0" />
-      <div className="absolute top-[40%] left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-emerald-400/[0.15] blur-[100px] rounded-full pointer-events-none z-0 animate-pulse" />
 
       <div className="max-w-7xl mx-auto relative z-30">
         <div className="flex flex-col items-center mb-16">

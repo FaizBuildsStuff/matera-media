@@ -17,18 +17,13 @@ export default async function PrivacyPolicyPage() {
   const content = data?.content || [];
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#050505] selection:bg-white/30 text-white" style={{ fontFamily: "'Satoshi', sans-serif" }}>
+    <div className="flex flex-col min-h-screen bg-[#050a07] selection:bg-white/30 text-white" style={{ fontFamily: "'Satoshi', sans-serif" }}>
       <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,401,900&display=swap" rel="stylesheet" />
 
       <main className="grow">
         {/* --- LUXURY HERO SECTION --- */}
-        <section className="relative pt-44 pb-32 px-6 bg-[#050505] z-30">
-          {/* --- ULTRA-SMOOTH INFINITE BLOOM DESIGN --- */}
-          <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[160%] h-[1200px] bg-emerald-500/[0.04] blur-[220px] rounded-full pointer-events-none z-0" />
-          <div className="absolute top-[10%] left-[-10%] w-[100%] h-[800px] bg-lime-400/[0.03] blur-[180px] rounded-full pointer-events-none z-0" />
-          <div className="absolute top-[0%] right-[-10%] w-[100%] h-[1000px] bg-emerald-400/[0.04] blur-[200px] rounded-full pointer-events-none z-0" />
+        <section className="relative pt-44 pb-32 px-6 bg-[#050a07] z-30">
 
-          <div className="absolute top-[30%] left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-emerald-500/[0.08] blur-[150px] rounded-full pointer-events-none z-0" />
           {/* Central Atmosphere */}
           <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02] pointer-events-none z-0" />
 
@@ -62,16 +57,10 @@ export default async function PrivacyPolicyPage() {
 
         </section>
 
-        {/* --- EDITORIAL CONTENT SECTION --- */}
-        <section className="relative py-24 px-6 bg-[#050505] z-10">
+        <section className="relative py-24 px-6 bg-[#050a07] z-10">
 
 
-          {/* Ultra-Smooth Infinite Bloom Accents */}
-          <div className="absolute top-[10%] left-[-20%] w-[120%] h-[600px] bg-emerald-500/[0.04] blur-[200px] rounded-full pointer-events-none z-0" />
-          <div className="absolute bottom-[20%] right-[-20%] w-[100%] h-[800px] bg-lime-400/[0.03] blur-[180px] rounded-full pointer-events-none z-0" />
 
-          {/* Deep Closing Bloom */}
-          <div className="absolute bottom-[-5%] left-1/2 -translate-x-1/2 w-[140%] h-[500px] bg-emerald-500/[0.05] blur-[160px] rounded-full pointer-events-none z-0" />
 
           <div className="max-w-6xl mx-auto relative z-30">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">

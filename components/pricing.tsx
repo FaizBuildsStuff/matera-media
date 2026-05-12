@@ -96,7 +96,7 @@ export default function Pricing({ content }: { content?: any }) {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-16 md:py-20 px-6  relative font-satoshi selection:bg-white/30">
+    <section ref={sectionRef} className="py-16 md:py-20 px-6 relative font-satoshi selection:bg-white/30 border-none outline-none">
 
       {/* Fades disabled to allow glow bleed */}
 
